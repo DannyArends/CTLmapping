@@ -98,7 +98,7 @@ QCLscan <- function(cross, pheno.col=1, marker.col, QCL.threshold=0.25, signific
   s <- proc.time()
   if(doplot && !file.exists(directory)) dir.create(directory)
   if(verbose) cat("Analysis of ",ncol(cross$pheno)," traits at ",sum(nmar(cross))," markers\n")
-  phenoname <- phenames(bremcross)[pheno.col]
+  phenoname <- phenames(cross)[pheno.col]
   cross <- getCorrelatedPhenotypes(cross,pheno.col=pheno.col)
   if(nphe(cross)==0) stop("This phenotype doesn't show covariation with an other phenotype")
   if(!missing(marker.col)){
