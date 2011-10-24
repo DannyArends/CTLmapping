@@ -1,0 +1,19 @@
+"To do" list for QCL
+----------------------------------------------------------------------
+This file is intended to contain a list of many of the additions and
+revisions that are planned for the QCL package.  
+
+If you any additions or revisions to suggest, please send an email to
+Danny Arends, <Danny.Arends@Gmail.com>.
+----------------------------------------------------------------------
+ 
+SHORT TERM:
+ - QCL mapping algorithm
+ - Additional plots
+ - QCL result analysis
+
+MEDIUM TERM:
+ - Add D as correlation engine
+ 
+LONG TERM:
+ - Publish the article
