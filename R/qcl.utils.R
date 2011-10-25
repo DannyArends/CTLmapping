@@ -1,6 +1,5 @@
 #
-#
-# utils.R
+# qcl.utils.R
 #
 # copyright (c) 2010 Danny Arends and Bruno Tesson
 # last modified Jun, 2011

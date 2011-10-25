@@ -1,11 +1,12 @@
 #
-# QCL.R
+# correlations.R
 #
 # copyright (c) 2011 Danny Arends and Ritsert C. Jansen
-# last modified Okt, 2011
-# first written nov, 2010
+# last modified Oct, 2011
+# first written Oct, 2011
 # 
-# D functions to do correlations
+# R->D functions to do correlations
+#
 
 correlation <- function(x,y){
   if(is.matrix(x) && dim(x)[2] > 1){

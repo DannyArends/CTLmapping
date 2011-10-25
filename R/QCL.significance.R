@@ -1,17 +1,12 @@
 #
-#
-# QCL.significance.R
+# qcl.significance.R
 #
 # copyright (c) 2010 Danny Arends and Bruno Tesson
 # last modified feb, 2011
 # first written nov, 2010
 # 
 # R functions to do permutation on QCL mapping
-# Example data here is from C. Elegans and available at request ( Danny.Arends@gmail.com )
-# Main bottleneck system memory: (per DifCor object: 3* # of phenotype * #of phenotype)
-# Minor bottleneck system cpu: Depending on method, # of phenotype and # of markers
-#
-# Note: The differentialCorrelation function saves and overwrites the difCor object in the 'output' directory
+# Example data C. Elegans and available at request ( Danny.Arends@gmail.com )
 #
 
 QCL.permute <- function(cross, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, ...){

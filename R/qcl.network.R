@@ -1,3 +1,12 @@
+#
+# qcl.network.R
+#
+# copyright (c) 2010 Danny Arends and Bruno Tesson
+# last modified Oct, 2011
+# first written Oct, 2011
+# 
+# Network routines for QCL analysis
+#
 
 QCLscanToSIF <- function(QCLscan, cutoff=0.45, verbose = FALSE){
   cat("",file="network.sif")

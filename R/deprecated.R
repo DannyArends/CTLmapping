@@ -1,3 +1,13 @@
+#
+# deprecated.R
+#
+# copyright (c) 2010 Danny Arends and Bruno Tesson
+# last modified Oct, 2011
+# first written Nov, 2010
+# 
+# Old code for QCL analysis
+#
+
 #QCL internal routine - Optimized using snow and 2 cores
 #Does a Single marker return a list with:
 # [[1]] difCorMatrix 

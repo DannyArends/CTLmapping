@@ -1,12 +1,12 @@
 #
-#
-# QCL.R
+# qcl.R
 #
 # copyright (c) 2010 Danny Arends, Bruno Tesson and Ritsert C. Jansen
-# last modified feb, 2011
-# first written nov, 2010
+# last modified Oct, 2011
+# first written Oct, 2011
 # 
 # R functions to do QCL mapping
+#
 
 QCL.scan <- function(cross, pheno.col, verbose = FALSE){
   phenotypes <- apply(pull.pheno(cross),2,as.numeric)
