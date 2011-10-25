@@ -14,23 +14,27 @@
 # Note: The differentialCorrelation function saves and overwrites the difCor object in the 'output' directory
 #
 
-QCL.permute <- function(cross, n.perm=10, directory="permutations", verbose=TRUE, ...){
+QCL.permute <- function(cross, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, ...){
   if(!file.exists(directory)) dir.create(directory)
-  for(x in 1:n.perm){
-    sl <- proc.time()
-    if(verbose) cat("- Starting permutation",x,"/",n.perm,"\n")
-		cross$pheno <- cross$pheno[sample(nind(cross)),]
-    write.table(QCLscan(cross, ..., doplot=FALSE, writefile=FALSE, verbose=TRUE),paste(directory,"/Permutation_",x,".txt",sep=""))
-    el <- proc.time()
-    if(verbose) cat("- Permutation",x,"took:",as.numeric(el[3]-sl[3]),"Seconds.\n")
+  if(missing(pheno.col)) pheno.col <- 1:nphe(cross)
+  for(p in pheno.col){
+    cat("Starting permutation for phenotype",p,"\n")
+    for(x in 1:n.perm){
+      sl <- proc.time()
+      if(verbose) cat("- Starting permutation",x,"/",n.perm,"\n")
+		  cross$pheno <- cross$pheno[sample(nind(cross)),]
+      write.table(QCL.scan(cross, pheno.col=p, ...),file=paste(directory,"/Permutation_",x,".txt",sep=""))
+      el <- proc.time()
+      if(verbose) cat("- Permutation",x,"took:",as.numeric(el[3]-sl[3]),"Seconds.\n")
+    }
   }
-  QCLpermute <- read.QCL.permute(directory)
+  QCLpermute <- read.QCL.permute(directory,n.perm)
   invisible(QCLpermute)
 }
 
-read.QCL.permute <- function(directory="permutations"){
+read.QCL.permute <- function(directory="permutations", n.perm){
   files <- dir(directory)
-  n.perm <- length(files)
+  if(missing(n.perm)) n.perm <- length(files)
   if(n.perm < 1) stop(paste("No permutation files found in:",directory))
   QCLpermute <- vector("list", n.perm)
   for(x in 1:n.perm){
@@ -41,22 +45,8 @@ read.QCL.permute <- function(directory="permutations"){
   invisible(QCLpermute)
 }
 
-significance.QCL <- function(QCLpermute){
-  maximums <- lapply(QCLpermute,function(x){apply(x,2,max)})
-  sorted <- sort(unlist(maximums))
-  l <- length(sorted)
-  values <- NULL
-  valnames <- NULL
-  for(x in c(.95,.99,.999)){
-    values <- c(values,sorted[l*x])
-    valnames <- c(valnames,paste((1-x)*100,"%"))
-    cat((1-x)*100,"%\t",sorted[l*x],"\n")
-  }
-  names(values) <- valnames
-  invisible(values)
-}
-
 significance.QCLHotSpot <- function(QCLpermute,significant=212){
+  significant <- print.QCLpermute(QCLpermute)[3]
   maximums <- lapply(QCLpermute,function(x){max(apply(x,1,function(x){sum(x > significant)}))})
   sorted <- sort(unlist(maximums))
   l <- length(sorted)
