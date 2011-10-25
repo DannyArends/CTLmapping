@@ -5,25 +5,27 @@
 	Permutation routine for QCL mapping
 }
 \usage{
-QCL.permute(cross, n.perm=10, directory="permutations", verbose=TRUE, \dots)
+QCL.permute(cross, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, \dots)
 }
 
 \arguments{
-  \item{cross}{ An object of class \code{cross}. See \code{\link[qtl]{read.cross}} for details. }
+  \item{cross}{ An object of class \code{cross}. See
+                \code{\link[qtl]{read.cross}} for details. }
+  \item{pheno.col}{ Which phenotype column should we use in permutation analysis }
   \item{n.perm}{ Number of permutations }
   \item{directory}{ Directory in which to save the output }
   \item{verbose}{ Be verbose }
-  \item{\dots}{ Passed to the underlying \code{\link{QCLscan}} function }
+  \item{\dots}{ Passed to the underlying \code{\link{QCL.scan}} function }
 }
 \details{
 TODO
 \itemize{
-  \item NOTE: QCLscan is optimized for multicore machines its uses snow to use two cores
+  \item NOTE: Main bottleneck of the algorithm is the RAM available to the system
 }
 }
 \value{
-QCLpermute object, a list holding QCLscan objects from each permutation. To view significance thresholds use 
-the \code{\link{significance.QCL}} function.
+QCLpermute object, a list holding QCLscan objects ontained at each permutation. To view significance thresholds use 
+the \code{\link{print.QCLpermute}} function.
 }
 \references{ 
   TODO
@@ -36,7 +38,13 @@ the \code{\link{significance.QCL}} function.
   TODO
 }
 \examples{
-	#TODO
+  require(qtl)
+  data(multitrait)
+  multitrait = fill.geno(multitrait)
+  qcl.res <- QCL.scan(multitrait,pheno.col=1)
+  qcl.res
+  perm.res <- QCL.permute(multitrait,pheno.col=1)
+  perm.res
 }
 
 \keyword{methods}

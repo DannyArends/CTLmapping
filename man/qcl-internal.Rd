@@ -20,6 +20,22 @@
 \alias{gcLoop}
 \alias{test.QCL}
 
+\alias{QCLscan.deprecated}
+\alias{QCLscan.internal.deprecated}
+\alias{QCL.scan.internal}
+\alias{QCLscanToSIF}
+\alias{bplot.QCLscan}
+\alias{getCorrelatedPhenotypes}
+\alias{getMarkerOffsets}
+
+\alias{write.nodeAttributeFile}
+
+\alias{print.QCLscan}
+\alias{print.QCLpermute}
+
+\alias{correlation}
+\alias{matrix_correlation}
+
 \title{Internal QCL functions}
 
 \description{

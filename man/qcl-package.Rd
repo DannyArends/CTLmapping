@@ -8,7 +8,7 @@
 \description{
 	Includes the following functionality:
 	\itemize{
-    \item \code{\link{QCLscan}} - Scan for QCL
+    \item \code{\link{QCL.scan}} - Scan for QCL
     \item \code{\link{QCL.permute}} - Permutation routine for QCL mapping
 	}
 }
@@ -28,7 +28,7 @@
 
 \seealso{
 	\itemize{
-    \item \code{\link{QCLscan}} - Scan for QCL
+    \item \code{\link{QCL.scan}} - Scan for QCL
     \item \code{\link{QCL.permute}} - Permutation routine for QCL mapping
 	}
 }
