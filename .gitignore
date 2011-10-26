@@ -15,4 +15,6 @@ data/
 .project
 *.o
 .externalToolBuilders/
-
+tests/tmp_kegg
+*.attributes
+*.sif

@@ -1,5 +1,4 @@
 require(QCL)
-setwd("E:/github/Rpackages/QCLmapping/D")
 dyn.load("qcl.dll")
 
 depth <- 3
