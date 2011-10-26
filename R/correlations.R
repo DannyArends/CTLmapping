@@ -20,7 +20,7 @@ correlation <- function(x,y){
         y=as.numeric(y),
         as.integer(length(x)),
         cor=as.numeric(0),
-        PACKAGE="qcl")$cor
+        PACKAGE="d_qcl")$cor
       )
     }else{
       stop("The length of 'x' is not equal to the length of 'y'")
@@ -34,7 +34,7 @@ matrix_correlation <- function(x){
       ncx=as.integer(ncol(x)),
       x=as.numeric(x),
       cor=as.numeric(rep(1,ncol(x)*ncol(x))),
-      PACKAGE="qcl"
+      PACKAGE="d_qcl"
     )
   mcor = matrix(res$cor,ncol(x),ncol(x))
   mcor

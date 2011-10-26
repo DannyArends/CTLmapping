@@ -1,5 +1,4 @@
 require(QCL)
-dyn.load("qcl.dll")
 
 depth <- 3
 variables <- c(10,50,100,250,500)
