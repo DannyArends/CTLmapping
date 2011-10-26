@@ -33,6 +33,9 @@
 \alias{print.QCLscan}
 \alias{print.QCLpermute}
 
+\alias{KEGG.pathway.parser}
+\alias{nodesToGenes}
+
 \alias{correlation}
 \alias{matrix_correlation}
 
