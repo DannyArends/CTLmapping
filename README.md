@@ -32,7 +32,10 @@ Load the library in the R interface by the following command (in R):
 
 example:
     
-    $ > ?QCLscan                                    # Show the help
+    $ > ?QCL.scan                                   # Show the help
+    $ > data(multitrait)
+    $ > res <- QCL.scan(multitrait)
+    $ > res
 
 QCL TODO
 --------------------
