@@ -43,6 +43,26 @@ QCLscanToSIF <- function(QCLscan, cutoff=0.45, verbose = FALSE){
   invisible(unique(node_names))
 }
 
+nodesToGenes <- function(nodenames, spotAnnotation){
+  if(missing(nodenames)) stop("No names  to get annotation for supplied")
+  if(missing(spotAnnotation)) stop("No annotation file supplied")
+  cnt <- 0
+  not_cnt <- 0
+  genenames <- NULL
+  for(x in nodenames){
+    if(x %in% spotAnnotation$SPOT_ID){
+      id <- which(spotAnnotation$SPOT_ID %in% x)
+      genenames <- c(genenames,as.character(spotAnnotation$ORF[id[1]]))
+      cnt <- cnt+1
+    }else{
+      not_cnt <- not_cnt+1
+    }
+  }
+  cat("Found annotation for",cnt,"probes\n")
+  cat("Not found",not_cnt,"probes\n")
+  genenames
+}
+
 #Maps probeannot$SPOT_ID to the nodenames
 write.nodeAttributeFile <- function(nodenames, spotAnnotation){
   if(missing(nodenames)) stop("No names  to get annotation for supplied")
