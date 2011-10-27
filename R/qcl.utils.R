@@ -8,6 +8,11 @@
 # Plotting routines for QCL analysis
 #
 
+
+QCLscanToProfile <- function(QCL, qcl.threshold=0.1){
+  apply(QCL,2,function(x){length(which(x > qcl.threshold))})
+}
+
 #Change any list of lodscores into a scanone object (only pre-req: length(lodscores)==sum(nmar(cross))
 lodscorestoscanone <- function(cross,lodscores,traitnames = NULL){
   n <- unlist(lapply(FUN=names,pull.map(cross)))

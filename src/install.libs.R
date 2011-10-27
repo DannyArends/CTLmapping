@@ -1,4 +1,4 @@
-doCommand <- function(command){
+doDMDcompilation <- function(command){
   if(system(command)==0){
     cat("** DMD compiler found\n")
   }else{
@@ -7,11 +7,10 @@ doCommand <- function(command){
 }
 
 Dfiles <- paste(Sys.glob(c("D/*.d","D/dll/*","D/libs/*")),collapse=" ")
-
 if(WINDOWS){
-  doCommand(paste("dmd -ofDcode.dll -L/IMPLIB  -O -inline -release ",Dfiles," phobos.lib -IC:/D/dmd2/windows/bin",sep=""))
+  doDMDcompilation(paste("dmd -ofDcode.dll -L/IMPLIB  -O -inline -release ",Dfiles," phobos.lib -IC:/D/dmd2/windows/bin",sep=""))
 }else{
-  doCommand(paste("dmd -ofDcode.so ",Dfiles," phobos.lib",sep=""))
+  doDMDcompilation(paste("dmd -ofDcode.so ",Dfiles," phobos.lib",sep=""))
 }
 files <- Sys.glob(paste("*", SHLIB_EXT, sep=''))
 libarch <- if (nzchar(R_ARCH)) paste('libs', R_ARCH, sep='') else 'libs'
