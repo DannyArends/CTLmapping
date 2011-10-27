@@ -41,15 +41,19 @@ Scan your data
     $ > qcl_result <- QCLscan(multitrait)
 
 Plot a single phenotype
+
     $ > plot(qcl_result,pheno.col=12)
 
 Create an image of the phenotypes to phenotypes relation strength
+
     $ > r1 <- image(qcl_result,against="phenotypes")
 
 Create an image of the phenotypes to marker relation strength
+
     $ > r2 <- image(qcl_result,against="markers")
 
 Reconstruct the network
+
     $ > QCLnetwork(qcl_result)
 
 QCL TODO
