@@ -4,7 +4,6 @@
 *.exe
 *.map
 *.lib
-*.h
 *.a
 *.pdf
 *.png
