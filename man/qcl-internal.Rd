@@ -9,9 +9,6 @@
 \alias{significance.QCL}
 \alias{significance.QCLHotSpot}
 
-\alias{plot.QCLscan}
-\alias{image.QCLscan}
-
 \alias{plot.markerQCL}
 \alias{plot.markerQCL2}
 \alias{plot.markerQCL.detailed}
@@ -23,6 +20,7 @@
 \alias{QCLscan.deprecated}
 \alias{QCLscan.internal.deprecated}
 \alias{QCLscan.internal}
+\alias{QCLscanToProfile}
 \alias{QCLscanToSIF}
 \alias{bplot.QCLscan}
 \alias{getCorrelatedPhenotypes}
@@ -30,13 +28,11 @@
 
 \alias{write.nodeAttributeFile}
 
-\alias{print.QCLscan}
 \alias{print.QCLpermute}
 
 \alias{KEGG.pathway.parser}
 \alias{nodesToGenes}
 
-\alias{correlation}
 \alias{matrix_correlation}
 
 \title{Internal QCL functions}
