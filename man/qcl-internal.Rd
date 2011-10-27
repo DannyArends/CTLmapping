@@ -5,7 +5,7 @@
 \alias{count.QCL}
 \alias{countVThreshold}
 
-\alias{read.QCL.permute}
+\alias{read.QCLpermute}
 \alias{significance.QCL}
 \alias{significance.QCLHotSpot}
 
@@ -22,7 +22,7 @@
 
 \alias{QCLscan.deprecated}
 \alias{QCLscan.internal.deprecated}
-\alias{QCL.scan.internal}
+\alias{QCLscan.internal}
 \alias{QCLscanToSIF}
 \alias{bplot.QCLscan}
 \alias{getCorrelatedPhenotypes}

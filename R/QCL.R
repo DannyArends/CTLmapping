@@ -8,15 +8,15 @@
 # R functions to do QCL mapping
 #
 
-QCL.scan <- function(cross, pheno.col, verbose = FALSE){
+QCLscan <- function(cross, pheno.col, verbose = FALSE){
   phenotypes <- apply(pull.pheno(cross),2,as.numeric)
   genotypes <- pull.geno(cross)
   if(missing(pheno.col)) pheno.col <- 1:ncol(phenotypes)
   
-  QCL.scan.internal(genotypes, phenotypes,pheno.col=pheno.col,verbose=verbose)
+  QCLscan.internal(genotypes, phenotypes,pheno.col=pheno.col,verbose=verbose)
 }
 
-QCL.scan.internal <- function(genotypes, phenotypes, pheno.col, verbose = FALSE){
+QCLscan.internal <- function(genotypes, phenotypes, pheno.col, verbose = FALSE){
   results <- vector("list",length(pheno.col))
   cnt <- 1
   for(x in pheno.col){

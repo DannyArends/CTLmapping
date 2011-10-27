@@ -1,15 +1,15 @@
 \name{qcl-package}
-\alias{qcl}
-\alias{QCL}
+\alias{mapqcl}
+\alias{mapQCL}
 \docType{package}
 \title{
-	qcl - QCL mapping in experimental crosses
+	mapQCL - QCL mapping in experimental crosses
 }
 \description{
 	Includes the following functionality:
 	\itemize{
-    \item \code{\link{QCL.scan}} - Scan for QCL
-    \item \code{\link{QCL.permute}} - Permutation routine for QCL mapping
+    \item \code{\link{QCLscan}} - Scan for QCL
+    \item \code{\link{QCLpermute}} - Permutation routine for QCL mapping
 	}
 }
 \details{
@@ -28,7 +28,7 @@
 
 \seealso{
 	\itemize{
-    \item \code{\link{QCL.scan}} - Scan for QCL
-    \item \code{\link{QCL.permute}} - Permutation routine for QCL mapping
+    \item \code{\link{QCLscan}} - Scan for QCL
+    \item \code{\link{QCLpermute}} - Permutation routine for QCL mapping
 	}
 }

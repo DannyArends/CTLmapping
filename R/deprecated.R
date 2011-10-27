@@ -313,7 +313,7 @@ test.QCL <- function(){
   data(multitrait)
   s <- proc.time()
   multitrait = fill.geno(multitrait)
-  res <- QCL.scan(multitrait)
+  res <- QCLscan(multitrait)
   plot(res)
   e <- proc.time()
   

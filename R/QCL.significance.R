@@ -9,7 +9,7 @@
 # Example data C. Elegans and available at request ( Danny.Arends@gmail.com )
 #
 
-QCL.permute <- function(cross, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, ...){
+QCLpermute <- function(cross, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, ...){
   if(!file.exists(directory)) dir.create(directory)
   if(missing(pheno.col)) pheno.col <- 1:nphe(cross)
   for(p in pheno.col){
@@ -18,16 +18,16 @@ QCL.permute <- function(cross, pheno.col, n.perm=10, directory="permutations", v
       sl <- proc.time()
       if(verbose) cat("- Starting permutation",x,"/",n.perm,"\n")
 		  cross$pheno <- cross$pheno[sample(nind(cross)),]
-      write.table(QCL.scan(cross, pheno.col=p, ...),file=paste(directory,"/Permutation_",x,".txt",sep=""))
+      write.table(QCLscan(cross, pheno.col=p, ...),file=paste(directory,"/Permutation_",x,".txt",sep=""))
       el <- proc.time()
       if(verbose) cat("- Permutation",x,"took:",as.numeric(el[3]-sl[3]),"Seconds.\n")
     }
   }
-  QCLpermute <- read.QCL.permute(directory,n.perm)
+  QCLpermute <- read.QCLpermute(directory,n.perm)
   invisible(QCLpermute)
 }
 
-read.QCL.permute <- function(directory="permutations", n.perm){
+read.QCLpermute <- function(directory="permutations", n.perm){
   files <- dir(directory)
   if(missing(n.perm)) n.perm <- length(files)
   if(n.perm < 1) stop(paste("No permutation files found in:",directory))
@@ -55,4 +55,3 @@ significance.QCLHotSpot <- function(QCLpermute,significant=212){
   names(values) <- valnames
   invisible(values)
 }
-

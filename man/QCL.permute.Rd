@@ -1,11 +1,11 @@
-\name{QCL.permute}
-\alias{QCL.permute}
-\title{QCL.permute - Permutation routine for QCL mapping }
+\name{QCLpermute}
+\alias{QCLpermute}
+\title{QCLpermute - Permutation routine for QCL mapping }
 \description{
 	Permutation routine for QCL mapping
 }
 \usage{
-QCL.permute(cross, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, \dots)
+QCLpermute(cross, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, \dots)
 }
 
 \arguments{
@@ -15,7 +15,7 @@ QCL.permute(cross, pheno.col, n.perm=10, directory="permutations", verbose=TRUE,
   \item{n.perm}{ Number of permutations }
   \item{directory}{ Directory in which to save the output }
   \item{verbose}{ Be verbose }
-  \item{\dots}{ Passed to the underlying \code{\link{QCL.scan}} function }
+  \item{\dots}{ Passed to the underlying \code{\link{QCLscan}} function }
 }
 \details{
 TODO
@@ -41,9 +41,9 @@ the \code{\link{print.QCLpermute}} function.
   require(qtl)
   data(multitrait)
   multitrait = fill.geno(multitrait)
-  qcl.res <- QCL.scan(multitrait,pheno.col=1)
+  qcl.res <- QCLscan(multitrait,pheno.col=1)
   qcl.res
-  perm.res <- QCL.permute(multitrait,pheno.col=1)
+  perm.res <- QCLpermute(multitrait,pheno.col=1)
   perm.res
 }
 

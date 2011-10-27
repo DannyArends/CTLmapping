@@ -1,4 +1,4 @@
-Package: QCL
+Package: mapqcl
 Version: 0.0.0-1
 Date: 18 Oct 2011
 Title: QCL mapping in experimental crosses
@@ -6,5 +6,5 @@ Author: Danny Arends <Danny.Arends@gmail.com>
 Maintainer: Danny Arends <Danny.Arends@gmail.com>
 Depends: R (>= 1.12.1), qtl, RCurl
 Suggests: snow
-Description: QCL mapping: Map correlation changes in the observed phenotypes onto genotype data obtained from an experimental cross
+Description: mapQCL: Map correlation changes in the observed phenotypes onto genotype data obtained from an experimental cross
 License: GPL 3

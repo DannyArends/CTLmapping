@@ -1,9 +1,9 @@
-QCL mapping
-===========
-QCL mapping is a novel approach to detect genetic regulation of phenotypes in recombinant 
-inbred line populations (RIL). It is a method complementair to QTL analysis, and provides
-additional insights, overlooked by the classical QTL approach  
- 
+R package mapQCL
+================
+mapQCL provides an implementation in R for the novel quanitative correlation locus (QCL) 
+mapping methodology. QCL mapping is a novel approach to detect genetic regulation of 
+phenotypes in recombinant inbred line populations (RIL). It is a method complementair 
+to QTL analysis, and provides additional insights, overlooked by the classical QTL approach  
 
 Dependencies
 ------------
@@ -27,14 +27,14 @@ Starting
 --------
 Load the library in the R interface by the following command (in R):
     
-    $ > library(qcl)                                # Load the library
-    $ > ?qcl                                        # Show the help
+    $ > library(mapqcl)                            # Load the library
+    $ > ?mapqcl                                    # Show the help
 
 example:
     
-    $ > ?QCL.scan                                   # Show the help
+    $ > ?QCLscan                                   # Show the help
     $ > data(multitrait)
-    $ > res <- QCL.scan(multitrait)
+    $ > res <- QCLscan(multitrait)
     $ > res
 
 QCL TODO
