@@ -8,12 +8,25 @@ Danny Arends, <Danny.Arends@Gmail.com>.
 ----------------------------------------------------------------------
  
 SHORT TERM:
- - QCL mapping algorithm
  - Additional plots
  - QCL result analysis
+   - getPhenotypeCluster
+   - getAssociatedPhenotypes
+ - Combine QCL and QTL information
+ - Add additional network
+ - Batch and QTL correction
 
 MEDIUM TERM:
- - Add D as correlation engine
- 
-LONG TERM:
+ - Write manual on QCL
+ - Write QCL article
  - Publish the article
+ - Integrate snow code
+ - Add initial environment code
+   - Yeast ethanol versus glucose example
+ - Move larger parts into D
+ - Get it on CRAN
+
+LONG TERM:
+ - Multi conditional QCL mapping
+ - Add D as correlation engine
+ - Javascript QCL network engine

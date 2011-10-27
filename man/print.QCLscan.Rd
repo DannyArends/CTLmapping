@@ -12,7 +12,7 @@
 }
 
 \arguments{
- \item{x}{ An object output by the function \code{\link{scanQCL}}.}
+ \item{x}{ An object output by the function \code{\link{QCLscan}}.}
  \item{\dots}{ Ignored.} 
 }
 
