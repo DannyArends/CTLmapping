@@ -7,8 +7,16 @@
 # 
 # .First.lib is run when the package is loaded with library(qtl)
 #
+
+.d_supported <- TRUE
+
 .First.lib <- function(lib, pkg){
  library.dynam("QCL", pkg, lib)
- library.dynam("D_QCL", pkg, lib)
+ tryCatch(
+   library.dynam("Dcode", pkg, lib),
+   error = function(e){
+     cat("No D code, falling back to R\n")
+     .d_supported <<- FALSE
+   })
 }
 # end of zzz.R
