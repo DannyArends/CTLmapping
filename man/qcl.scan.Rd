@@ -1,5 +1,6 @@
 \name{QCLscan}
 \alias{QCLscan}
+\alias{scanQCL}
 \title{QCLscan - Scan for quantitative correlation loci }
 \description{
 	Scan for quantitative correlation loci
@@ -21,7 +22,8 @@ TODO
 }
 }
 \value{
-QCLscan object, a list with at each index a QCL matrix (Rows: Phenotypes, Columns: Genetic markers) for the phenotype.
+QCLscan object, a list with at each index a QCL matrix (Rows: Phenotypes, 
+Columns: Genetic markers) for the phenotype.
 }
 \references{ 
   TODO
@@ -34,13 +36,13 @@ QCLscan object, a list with at each index a QCL matrix (Rows: Phenotypes, Column
   TODO
 }
 \examples{
-  require(qtl)
+  library(qcl)
   data(multitrait)
-  multitrait = fill.geno(multitrait)
-  res <- QCLscan(multitrait)
-  dim(res)              #show the dimensions
-  attr(res[[1]],"name") #show the name of the first phenotype
-  res[[1]][1:10,1:10]   #A piece of the QCL matrix
+  multitrait <- fill.geno(multitrait)
+  qcl_result <- QCLscan(multitrait)
+  qcl_result
+  names(qcl_result)     #Names of the analysed phenotypes
+  plot(qcl_result,16)   #Plot a phenotype
 }
 
 \keyword{methods}

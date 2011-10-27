@@ -21,7 +21,6 @@
 \alias{QCLscan.internal.deprecated}
 \alias{QCLscan.internal}
 \alias{QCLscanToProfile}
-\alias{QCLscanToSIF}
 \alias{bplot.QCLscan}
 \alias{getCorrelatedPhenotypes}
 \alias{getMarkerOffsets}

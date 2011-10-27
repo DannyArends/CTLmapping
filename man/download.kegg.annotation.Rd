@@ -1,8 +1,8 @@
 \name{download.KEGG.annotation}
 \alias{download.KEGG.annotation}
-\title{download.KEGG.annotation - Download pathway information from KEGG }
+\title{download.KEGG.annotation - Download gene and pathway information from KEGG }
 \description{
-	Download pathway information from KEGG
+	Download gene and pathway information from KEGG
 }
 \usage{
 download.KEGG.annotation(genenames, species = "sce", directory = "tmp_kegg", force.download=FALSE, verbose = FALSE)

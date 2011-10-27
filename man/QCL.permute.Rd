@@ -1,5 +1,6 @@
 \name{QCLpermute}
 \alias{QCLpermute}
+\alias{permuteQCL}
 \title{QCLpermute - Permutation routine for QCL mapping }
 \description{
 	Permutation routine for QCL mapping
@@ -38,13 +39,11 @@ the \code{\link{print.QCLpermute}} function.
   TODO
 }
 \examples{
-  require(qtl)
+  library(QCL)
   data(multitrait)
-  multitrait = fill.geno(multitrait)
-  qcl.res <- QCLscan(multitrait,pheno.col=1)
-  qcl.res
-  perm.res <- QCLpermute(multitrait,pheno.col=1)
-  perm.res
+  multitrait <- fill.geno(multitrait)
+  qcl_permutation <- QCLpermute(multitrait,1)
+  qcl_permutation
 }
 
 \keyword{methods}

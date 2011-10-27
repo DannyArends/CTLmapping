@@ -1,8 +1,8 @@
 \name{correlation}
 \alias{correlation}
-\title{correlation - Compute correlation using D programming language }
+\title{correlation - Compute correlations (D programming language) }
 \description{
-	Compute correlation using D programming language
+	Compute correlations (D programming language)
 }
 \usage{
 correlation(x, y, verbose = FALSE)

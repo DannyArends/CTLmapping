@@ -26,7 +26,11 @@
 }
 
 \examples{
-  #TODO
+  library(qcl)
+  data(multitrait)
+  multitrait = fill.geno(multitrait)
+  res <- QCLscan(multitrait)
+  plot(res)
 }
 
 \seealso{

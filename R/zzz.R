@@ -14,8 +14,8 @@
 
 #Package loading
 .First.lib <- function(lib, pkg){
- cat("- Loading package mapqcl\n")
- library.dynam("mapqcl", pkg, lib)
+ cat("- Loading package qcl\n")
+ library.dynam("qcl", pkg, lib)
  tryCatch(
    library.dynam("Dcode", pkg, lib),
    error = function(e){

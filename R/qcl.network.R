@@ -8,14 +8,14 @@
 # Network routines for QCL analysis
 #
 
-QCLscanToSIF <- function(QCLscan, cutoff=0.45, verbose = FALSE){
+QCLnetwork <- function(QCLscan, qcl.threshold=0.45, verbose = FALSE){
   cat("",file="network.sif")
   cnt <- 0
   edge_count <- NULL
   node_names <- NULL
   for(QCL in QCLscan){
     for(x in 1:ncol(QCL)){
-      for(id in which(QCL[,x] > cutoff)){
+      for(id in which(QCL[,x] > qcl.threshold)){
         edge_name <- paste(attr(QCL,"name"),"QCL",rownames(QCL)[id],sep="\t")
         if(edge_name %in% edge_count[,1]){
           edgeid <- which(edge_count[,1] %in% edge_name)
@@ -82,4 +82,3 @@ write.nodeAttributeFile <- function(nodenames, spotAnnotation){
   }
   cat("Wrote annotation for",length(nodenames),"probes to node.attributes\n")
 }
-
