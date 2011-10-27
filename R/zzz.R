@@ -8,15 +8,20 @@
 # .First.lib is run when the package is loaded with library(qtl)
 #
 
-.d_supported <- TRUE
+#Global package variables
+.d_supported  <- TRUE
+.d_warningmsg <- "- D not available, using standard R/C/C++ functionality\n"
 
+#Package loading
 .First.lib <- function(lib, pkg){
+ cat("- Loading package QCL\n")
  library.dynam("QCL", pkg, lib)
  tryCatch(
    library.dynam("Dcode", pkg, lib),
    error = function(e){
-     cat("No D code, falling back to R\n")
+     cat(.d_warningmsg)
      .d_supported <<- FALSE
    })
 }
+
 # end of zzz.R

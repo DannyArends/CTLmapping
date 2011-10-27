@@ -8,12 +8,13 @@
 # R->D functions to do correlations
 #
 
-correlation <- function(x,y){
-  if(!.d_supported){
-   return(cor(x,y))
+correlation <- function(x, y, verbose = FALSE){
+  if(is.matrix(x) && dim(x)[2] > 1){
+    return(matrix_correlation(x,verbose=verbose))
   }else{
-    if(is.matrix(x) && dim(x)[2] > 1){
-      return(matrix_correlation(x))
+    if(!.d_supported){
+      if(verbose) cat(.d_warningmsg)
+      return(cor(x,y))
     }else{
       if(missing(y))stop("'y' is missing");
       if(length(x) == length(y)){
@@ -31,8 +32,9 @@ correlation <- function(x,y){
   }
 }
 
-matrix_correlation <- function(x){
+matrix_correlation <- function(x, verbose = FALSE){
   if(!.d_supported){
+    if(verbose) cat(.d_warningmsg)
     return(cor(x))
   }else{
     res <- .C("correlation_m",
@@ -46,3 +48,5 @@ matrix_correlation <- function(x){
     return(mcor)
   }
 }
+
+# end of correlations.R
