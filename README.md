@@ -1,6 +1,6 @@
-R package mapQCL
+R package QCL
 ================
-mapQCL provides an implementation in R for the novel quanitative correlation locus (QCL) 
+QCL provides an implementation in R for the novel quanitative correlation locus (QCL) 
 mapping methodology. QCL mapping is a novel approach to detect genetic regulation of 
 phenotypes in recombinant inbred line populations (RIL). It is a method complementair 
 to QTL analysis, and provides additional insights, overlooked by the classical QTL approach  
@@ -27,15 +27,30 @@ Starting
 --------
 Load the library in the R interface by the following command (in R):
     
-    $ > library(mapqcl)                            # Load the library
-    $ > ?mapqcl                                    # Show the help
+    $ > library(qcl)                            # Load the library
+    $ > ?qcl                                    # Show the help
 
-example:
+Examples
+========
+Scan your data
     
     $ > ?QCLscan                                   # Show the help
+    $ > library(qcl)
     $ > data(multitrait)
-    $ > res <- QCLscan(multitrait)
-    $ > res
+    $ > multitrait = fill.geno(multitrait)
+    $ > qcl_result <- QCLscan(multitrait)
+
+Plot a single phenotype
+    $ > plot(qcl_result,pheno.col=12)
+
+Create an image of the phenotypes to phenotypes relation strength
+    $ > r1 <- image(qcl_result,against="phenotypes")
+
+Create an image of the phenotypes to marker relation strength
+    $ > r2 <- image(qcl_result,against="markers")
+
+Reconstruct the network
+    $ > QCLnetwork(qcl_result)
 
 QCL TODO
 --------------------

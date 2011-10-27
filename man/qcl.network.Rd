@@ -5,7 +5,7 @@
 	Creates a sif network from a genome-wide QCLscan of multiple traits
 }
 \usage{
-QCLscan(QCLscan, qcl.threshold=0.45, verbose = FALSE)
+QCLnetwork(QCLscan, qcl.threshold=0.45, verbose = FALSE)
 }
 
 \arguments{

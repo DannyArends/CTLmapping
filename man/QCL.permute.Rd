@@ -39,11 +39,11 @@ the \code{\link{print.QCLpermute}} function.
   TODO
 }
 \examples{
-  library(QCL)
+  library(qcl)
   data(multitrait)
   multitrait <- fill.geno(multitrait)
-  qcl_permutation <- QCLpermute(multitrait,1)
-  qcl_permutation
+  qcl_perms <- QCLpermute(multitrait,1)
+  qcl_perms
 }
 
 \keyword{methods}
