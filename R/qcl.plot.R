@@ -8,13 +8,6 @@
 # Plotting routines for QCL analysis
 #
 
-print.QCLscan <- function(x, ...){
-  cat("QCLscan summary\n\n")
-  cat("- Number of phenotypes scanned",length(x),"/",dim(x[[1]])[1],"\n")
-  cat("- Number of markers",dim(x[[1]])[2],"\n")
-  unlist(...)
-}
-
 plot.QCLscan <- function(x, pheno.col = 1, qcl.threshold =0.3, ...){
   npheno <- length(x)
   if(pheno.col > npheno) stop("No such phenotype")
@@ -30,21 +23,4 @@ plot.QCLscan <- function(x, pheno.col = 1, qcl.threshold =0.3, ...){
     colorz <- c(colorz,rgb((1/max(x[[pheno.col]]))*t,0,0))
   }
   legend("topleft",paste("Threshold =",seq(qcl.threshold,max(x[[pheno.col]]),0.05)),lwd=2,col=colorz)
-}
-
-image.QCLscan <- function(x, qcl.threshold = 0.35, against = c("markers","phenotypes"), do.grid=TRUE, grid.col = "black", ...){
-  colorrange <- c("white",gray.colors(100)[100:1])
-  mymatrix <- QCLprofiles(x, qcl.threshold=qcl.threshold, against=against)
-  if(!is.null(mymatrix)){ 
-    image(1:ncol(mymatrix),1:nrow(mymatrix),t(mymatrix),
-          main=paste("QCLs at",qcl.threshold,"phenotypes vs",against[1]),
-          yaxt="n",xaxt="n",ylab="", xlab="",col=colorrange)
-    axis(2,rownames(mymatrix),at=1:nrow(mymatrix),las=2,cex.axis=0.7)
-    axis(1,colnames(mymatrix),at=1:ncol(mymatrix),las=2,cex.axis=0.7)
-    if(do.grid){
-      abline(h=seq(-0.5,nrow(mymatrix)+0.5,1),col=grid.col,lwd=1)
-      abline(v=seq(-0.5,ncol(mymatrix)+0.5,1),col=grid.col,lwd=1)
-    }
-  }
-  invisible(mymatrix)
 }

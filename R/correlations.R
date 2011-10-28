@@ -12,7 +12,7 @@ correlation <- function(x, y, verbose = FALSE){
   if(is.matrix(x) && dim(x)[2] > 1){
     return(matrix_correlation(x,verbose=verbose))
   }else{
-    if(!.d_supported){
+    if(!.has_d){
       if(verbose) cat(.d_warningmsg)
       return(cor(x,y))
     }else{
@@ -33,7 +33,7 @@ correlation <- function(x, y, verbose = FALSE){
 }
 
 matrix_correlation <- function(x, verbose = FALSE){
-  if(!.d_supported){
+  if(!.has_d){
     if(verbose) cat(.d_warningmsg)
     return(cor(x))
   }else{
