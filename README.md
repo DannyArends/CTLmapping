@@ -8,15 +8,11 @@ approach. Using differences in correlation within an inbred population loci are
 associated with these differences, and from the amount of overlap between clusters of 
 phenotypes the underlying architecture is transformed into an interaction network.
 
-Dependencies
-------------
-R software environment from [www.r-project.org](http://www.r-project.org/ "www.r-project.org")
-
 Installation
 ------------
 Prepare your environment by following these steps:
 
-- Download and Install the R environment
+- Download and Install the R environment from [www.r-project.org](http://www.r-project.org/ "www.r-project.org")
 
 Then install into R by using (from a terminal / commanline):
 
