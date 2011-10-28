@@ -59,16 +59,14 @@ holds the edge summary network.
 
     $ > QCLnetwork(qcl_result)
 
-QCL TODO
---------
+Contributing and TODO
+---------------------
+Want to contribute? Great!
+
 See inst/TODO.txt
 
-Contributing
-------------
-
-Want to contribute? Great!
 Just post comments on code / commits.
-Or be a maintener, and adopt a function
+Or be a maintainer, and adopt a function
 
 Danny Arends
 
