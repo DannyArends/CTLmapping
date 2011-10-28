@@ -1,17 +1,20 @@
-\name{QCLscan}
-\alias{QCLscan}
-\title{QCLscan - Scan for quantitative correlation loci }
+\name{QCLscan.network}
+\alias{QCLscan.network}
+
+\title{QCLscan.network - Scan for quantitative correlation loci using a start phenotype }
 \description{
-	Scan for quantitative correlation loci
+	Scan for quantitative correlation loci using a start phenotype
 }
 \usage{
-QCLscan(genotypes, phenotypes, pheno.col, verbose = FALSE)
+QCLscan.network(genotypes, phenotypes, pheno.col, qcl.threshold = 0.4, max.depth=10, verbose = TRUE)
 }
 
 \arguments{
   \item{genotypes}{ Matrix of genotypes (individuals x markers) }
   \item{phenotypes}{ Matrix of phenotypes (individuals x phenotypes) }
   \item{pheno.col}{ Which phenotype column should we analyse }
+  \item{qcl.threshold}{ Threshold at which an QCL is considered significant. (See \code{\link{QCLpermute}}) }
+  \item{max.depth}{ Number of times to adding new phenotypes which show QCL }
   \item{verbose}{ Be verbose }
 }
 \details{
@@ -37,9 +40,8 @@ Columns: Genetic markers) for the phenotype.
 \examples{
   library(qcl)
   data(ath.metabolites) # Arabidopsis Thaliana dataset
-  qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes)
+  qcl_result <- QCLscan.network(ath.metab$genotypes, ath.metab$phenotypes,pheno.col=2)
   qcl_result
-  plot(qcl_result,16)   #Plot a phenotype
 }
 
 \keyword{methods}

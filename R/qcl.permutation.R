@@ -1,25 +1,15 @@
 #
-# qcl.significance.R
+# qcl.permutations.R
 #
-# copyright (c) 2010 Danny Arends and Bruno Tesson
-# last modified feb, 2011
+# copyright (c) 2010 Danny Arends, Bruno Tesson and Ritsert C. Jansen
+# last modified Oct, 2011
 # first written nov, 2010
 # 
 # R functions to do permutation on QCL mapping
 # Example data C. Elegans and available at request ( Danny.Arends@gmail.com )
 #
 
-QCLpermute.cross <- function(cross, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, ...){
-  if(.has_rqtl){
-    require(qtl)
-    phenotypes <- apply(pull.pheno(cross),2,as.numeric)
-    genotypes <- pull.geno(cross)
-    QCLpermute(genotypes, phenotypes,pheno.col=pheno.col,n.perm=n.perm,directory=directory,verbose=verbose)
-  }else{
-    stop(.has_rqtl_warnmsg)
-  }
-}
-
+#-- QCLpermute main function --#
 QCLpermute <- function(genotypes, phenotypes, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, ...){
   if(!file.exists(directory)) dir.create(directory)
   if(missing(pheno.col)) pheno.col <- 1:ncol(phenotypes)
@@ -65,4 +55,18 @@ significance.QCLHotSpot <- function(QCLpermute,significant=212){
   }
   names(values) <- valnames
   invisible(values)
+}
+
+#-- R/qtl interface --#
+QCLpermute.cross <- function(cross, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, ...){
+  if(missing(cross)) stop("cross is missing")
+  if(missing(pheno.col)) stop("pheno.col missing")
+  if(.has_rqtl){
+    require(qtl)
+    phenotypes <- apply(pull.pheno(cross),2,as.numeric)
+    genotypes <- pull.geno(cross)
+    QCLpermute(genotypes, phenotypes,pheno.col=pheno.col,n.perm=n.perm,directory=directory,verbose=verbose)
+  }else{
+    stop(.has_rqtl_warnmsg)
+  }
 }

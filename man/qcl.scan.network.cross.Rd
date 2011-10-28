@@ -1,17 +1,20 @@
-\name{QCLscan.cross}
-\alias{QCLscan.cross}
-\title{QCLscan.cross - Scan for quantitative correlation loci (R/qtl cross object) }
+\name{QCLscan.network.cross}
+\alias{QCLscan.network.cross}
+
+\title{QCLscan.network.cross - Scan for quantitative correlation loci using a start phenotype }
 \description{
-	Scan for quantitative correlation loci (using an R/qtl cross object)
+	Scan for quantitative correlation loci using a start phenotype  (using an R/qtl cross object)
 }
 \usage{
-QCLscan.cross(cross, pheno.col, verbose = FALSE)
+QCLscan.network.cross(cross, pheno.col, qcl.threshold = 0.4, max.depth=10, verbose = TRUE)
 }
 
 \arguments{
   \item{cross}{ An object of class \code{cross}. See
                 \code{\link[qtl]{read.cross}} for details. }
   \item{pheno.col}{ Which phenotype column should we analyse }
+  \item{qcl.threshold}{ Threshold at which an QCL is considered significant. (See \code{\link{QCLpermute}}) }
+  \item{max.depth}{ Number of times to adding new phenotypes which show QCL }
   \item{verbose}{ Be verbose }
 }
 \details{
@@ -36,13 +39,9 @@ Columns: Genetic markers) for the phenotype.
 }
 \examples{
   library(qcl)
-  if(.has_rqtl){
-    require(qtl)
-    data(multitrait) # Arabidopsis Thaliana (R/qtl cross object)
-    qcl_result <- QCLscan.cross(multitrait)
-    qcl_result
-    plot(qcl_result,16)   #Plot a phenotype
-  }
+  data(ath.metabolites) # Arabidopsis Thaliana dataset
+  qcl_result <- QCLscan.network(ath.metab$genotypes, ath.metab$phenotypes,pheno.col=2)
+  qcl_result
 }
 
 \keyword{methods}

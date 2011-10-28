@@ -42,7 +42,7 @@ the \code{\link{print.QCLpermute}} function.
   if(.has_rqtl){
     require(qtl)
     data(multitrait) # Arabidopsis Thaliana (R/qtl cross object)
-    qcl_perms <- QCLpermuteCross(multitrait,1)
+    qcl_perms <- QCLpermute.cross(multitrait,1)
     qcl_perms
   }
 }
