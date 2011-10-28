@@ -1,0 +1,116 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Danny Arends
+% The qcl mapping routine
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt]{article}
+
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{color}
+
+% revise margins
+\setlength{\headheight}{0.0in}
+\setlength{\topmargin}{-0.25in}
+\setlength{\headsep}{0.0in}
+\setlength{\textheight}{9.00in}
+\setlength{\footskip}{0.5in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textwidth}{6.5in}
+
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+
+\newcommand{\code}{\texttt}
+\newcommand{\lod}{\text{LOD}}
+
+% make "Figure" within figure captions a small font
+\renewcommand{\figurename}{\small Figure}
+
+\begin{document}
+
+\SweaveOpts{prefix.string=Figs/fig}
+\setkeys{Gin}{width=\textwidth} %% <- change width of figures
+% Try to get the R code from running into the margin
+<<echo=FALSE>>=
+options(width=87, digits=3, scipen=4)
+set.seed(61777369)
+@ 
+
+% Change S input/output font size
+\DefineVerbatimEnvironment{Sinput}{Verbatim}{fontsize=\footnotesize, baselinestretch=0.75, formatcom = {\color[rgb]{0, 0, 0.56}}}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{fontsize=\footnotesize, baselinestretch=0.75, formatcom = {\color[rgb]{0.56, 0, 0}}}
+
+\begin{center}
+\vspace*{1in}
+\textbf{\Large QCL mapping in R }
+ 
+\bigskip \bigskip 
+\bigskip \bigskip 
+ 
+{\large Danny Arends, and Ritsert C. Jansen} 
+
+\bigskip \bigskip
+
+{\color{blue} \tt \bfseries University of Groningen \\
+Groningen Bioinformatics centre \& GCC \\
+Technical Report \# 214 \\[24pt]
+XX Okt 2011}
+
+\end{center}
+
+\bigskip \bigskip
+
+\textbf{\sffamily Abstract}: Introduction into quanitative correlation 
+locus (QCL) mapping using the R package qcl
+\vfill
+
+\noindent \emph{email}: \verb|Danny.Arends@Gmail.com|
+\newpage
+
+\textbf{\sffamily Introduction}
+Some introduction text
+
+\bigskip 
+
+\textbf{\sffamily Format and load your data}
+\nopagebreak
+
+Loading your data
+
+\bigskip
+
+\textbf{\sffamily QCLscan and QCLscan.network}
+\nopagebreak
+
+Explains how to map QCL using the QCLscan and QCLscan.network functions.
+
+\bigskip
+\textbf{\sffamily Significance using QCLpermute}
+\nopagebreak
+
+Explains how to determine QCL significance using the QCLpermute function.
+
+\bigskip
+\textbf{\sffamily Advanced plots and QCL networks}
+\nopagebreak
+
+Some more advanced topics
+
+\newpage
+{\small
+\noindent \textbf{\sffamily Package qcl function overview} \\
+\noindent \begin{tabular}{ll} 
+\hspace*{25mm} & \hspace*{103mm} \\ \hline
+QCLscan & Genome wide scan for QCL \\
+QCLscan.network & Scan for QCL using start gene(s) \\
+QCLpermute & Significance thresholds for QCL by permutation \\
+plot.QCL & Plot QCL profiles at increasing cut-offs \\
+image.QCL & Image a multiple phenotype scan \\
+\hline
+\end{tabular}
+}
+
+\end{document}
