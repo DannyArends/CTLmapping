@@ -33,9 +33,8 @@
 
 \examples{
   library(qcl)
-  data(multitrait)
-  multitrait = fill.geno(multitrait)
-  qcl_result <- QCLscan(multitrait)
+  data(ath.metabolites) # Arabidopsis Thaliana dataset
+  qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes)
   #Phenotype to phenotype matrix
   p2p_matrix <- image(qcl_result, 0.5, against="phenotypes")
   #Phenotype to marker matrix

@@ -9,16 +9,27 @@
 # Example data C. Elegans and available at request ( Danny.Arends@gmail.com )
 #
 
-QCLpermute <- function(cross, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, ...){
+QCLpermuteCross <- function(cross, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, ...){
+  if(.has_rqtl){
+    require(qtl)
+    phenotypes <- apply(pull.pheno(cross),2,as.numeric)
+    genotypes <- pull.geno(cross)
+    QCLpermute(genotypes, phenotypes,pheno.col=pheno.col,n.perm=n.perm,directory=directory,verbose=verbose)
+  }else{
+    stop(.has_rqtl_warnmsg)
+  }
+}
+
+QCLpermute <- function(genotypes, phenotypes, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, ...){
   if(!file.exists(directory)) dir.create(directory)
-  if(missing(pheno.col)) pheno.col <- 1:nphe(cross)
+  if(missing(pheno.col)) pheno.col <- 1:ncol(phenotypes)
   for(p in pheno.col){
     cat("Starting permutation for phenotype",p,"\n")
     for(x in 1:n.perm){
       sl <- proc.time()
       if(verbose) cat("- Starting permutation",x,"/",n.perm,"\n")
-		  cross$pheno <- cross$pheno[sample(nind(cross)),]
-      write.table(QCLscan(cross, pheno.col=p, ...),file=paste(directory,"/Permutation_",x,".txt",sep=""))
+		  phenotypes <- phenotypes[sample(nrow(phenotypes)),]
+      write.table(QCLscan(genotypes, phenotypes, pheno.col=p, ...),file=paste(directory,"/Permutation_",x,".txt",sep=""))
       el <- proc.time()
       if(verbose) cat("- Permutation",x,"took:",as.numeric(el[3]-sl[3]),"Seconds.\n")
     }

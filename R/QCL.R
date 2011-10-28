@@ -21,7 +21,7 @@ QCLscanCross <- function(cross, pheno.col, verbose = FALSE){
   }
 }
 
-QCLscan <- function(genotypes, phenotypes, pheno.col, verbose = FALSE){
+QCLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), verbose = FALSE){
   results <- vector("list",length(pheno.col))
   cnt <- 1
   for(x in pheno.col){

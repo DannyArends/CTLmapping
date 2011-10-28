@@ -13,7 +13,7 @@ correlation <- function(x, y, verbose = FALSE){
     return(matrix_correlation(x,verbose=verbose))
   }else{
     if(!.has_d){
-      if(verbose) cat(.d_warningmsg)
+      if(verbose) cat(.has_d_warnmsg)
       return(cor(x,y))
     }else{
       if(missing(y))stop("'y' is missing");
@@ -34,7 +34,7 @@ correlation <- function(x, y, verbose = FALSE){
 
 matrix_correlation <- function(x, verbose = FALSE){
   if(!.has_d){
-    if(verbose) cat(.d_warningmsg)
+    if(verbose) cat(.has_d_warnmsg)
     return(cor(x))
   }else{
     res <- .C("correlation_m",

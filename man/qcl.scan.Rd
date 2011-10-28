@@ -6,12 +6,12 @@
 	Scan for quantitative correlation loci
 }
 \usage{
-QCLscan(cross, pheno.col, verbose = FALSE)
+QCLscan(genotypes, phenotypes, pheno.col, verbose = FALSE)
 }
 
 \arguments{
-  \item{cross}{ An object of class \code{cross}. See
-                \code{\link[qtl]{read.cross}} for details. }
+  \item{genotypes}{ Matrix of genotypes (individuals x markers) }
+  \item{phenotypes}{ Matrix of phenotypes (individuals x phenotypes) }
   \item{pheno.col}{ Which phenotype column should we analyse }
   \item{verbose}{ Be verbose }
 }
@@ -37,11 +37,9 @@ Columns: Genetic markers) for the phenotype.
 }
 \examples{
   library(qcl)
-  data(multitrait)
-  multitrait <- fill.geno(multitrait)
-  qcl_result <- QCLscan(multitrait)
+  data(ath.metabolites) # Arabidopsis Thaliana dataset
+  qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes)
   qcl_result
-  names(qcl_result)     #Names of the analysed phenotypes
   plot(qcl_result,16)   #Plot a phenotype
 }
 

@@ -1,15 +1,20 @@
 require(qcl)
 
-probeannot <- read.csv("small_annot.txt",sep="\t",header=TRUE,row.names=1)
-cross <- read.cross("csvr",file="brem_cross.csvr",geno=c("AA","AB"))
-cross <- convert2riself(cross)
+if(.has_rqtl){
+  require(qtl)
+  probeannot <- read.csv("small_annot.txt",sep="\t",header=TRUE,row.names=1)
+  cross <- read.cross("csvr",file="brem_cross.csvr",geno=c("AA","AB"))
+  cross <- convert2riself(cross)
 
-QCL <- QCLscan(cross,1:3, verbose=T)
-image(QCL)
-plot(QCL)
+  QCL <- QCLscanCross(cross,1:3, verbose=T)
+  image(QCL)
+  plot(QCL)
 
-nodes <- QCLnetwork(QCL,0.55)
+  nodes <- QCLnetwork(QCL,0.55)
 
-write.nodeAttributeFile(nodes,probeannot)
-genes <- nodesToGenes(nodes,probeannot)
-pathwaydata <- download.KEGG.annotation(genes,verb=T)
+  write.nodeAttributeFile(nodes,probeannot)
+  genes <- nodesToGenes(nodes,probeannot)
+  pathwaydata <- download.KEGG.annotation(genes,verb=T)
+}else{
+  cat("Test skipped because of missing R/qtl package")
+}

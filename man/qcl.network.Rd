@@ -31,9 +31,8 @@ TODO
 }
 \examples{
   library(qcl)
-  data(multitrait)
-  multitrait <- fill.geno(multitrait)
-  qcl_result <- QCLscan(multitrait)
+  data(ath.metabolites) # Arabidopsis Thaliana dataset
+  qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes)
   in_network <- QCLnetwork(qcl_result)
   in_network
 }

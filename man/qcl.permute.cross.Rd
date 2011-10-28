@@ -1,17 +1,17 @@
-\name{QCLpermute}
-\alias{QCLpermute}
-\alias{permuteQCL}
-\title{QCLpermute - Permutation routine for QCL mapping }
+\name{QCLpermuteCross}
+\alias{QCLpermuteCross}
+\alias{crossQCLpermute}
+\title{QCLpermuteCross - Permutation routine for QCL mapping (R/qtl cross object) }
 \description{
-	Permutation routine for QCL mapping
+	Permutation routine for QCL mapping (using an R/qtl cross object)
 }
 \usage{
-QCLpermute(genotypes, phenotypes, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, \dots)
+QCLpermuteCross(cross, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, \dots)
 }
 
 \arguments{
-  \item{genotypes}{ Matrix of genotypes (individuals x markers) }
-  \item{phenotypes}{ Matrix of phenotypes (individuals x phenotypes) }
+  \item{cross}{ An object of class \code{cross}. See
+                \code{\link[qtl]{read.cross}} for details. }
   \item{pheno.col}{ Which phenotype column should we use in permutation analysis }
   \item{n.perm}{ Number of permutations }
   \item{directory}{ Directory in which to save the output }
@@ -40,9 +40,12 @@ the \code{\link{print.QCLpermute}} function.
 }
 \examples{
   library(qcl)
-  data(ath.metabolites) # Arabidopsis Thaliana dataset
-  qcl_perms <- QCLpermute(ath.metab$genotypes, ath.metab$phenotypes,1)
-  qcl_perms
+  if(.has_rqtl){
+    require(qtl)
+    data(multitrait) # Arabidopsis Thaliana (R/qtl cross object)
+    qcl_perms <- QCLpermuteCross(multitrait,1)
+    qcl_perms
+  }
 }
 
 \keyword{methods}

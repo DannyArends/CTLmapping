@@ -1,7 +1,7 @@
 #
 # qcl.print.R
 #
-# copyright (c) 2010 Danny Arends and Bruno Tesson
+# copyright (c) 2010 Danny Arends and Ritsert C. Jansen
 # last modified Oct, 2011
 # first written Oct, 2011
 # 

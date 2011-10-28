@@ -1,7 +1,7 @@
 #
 # qcl.kegg.R
 #
-# copyright (c) 2010 Danny Arends and Bruno Tesson
+# copyright (c) 2010 Danny Arends
 # last modified Oct, 2011
 # first written Oct, 2011
 # 
@@ -27,7 +27,7 @@ KEGG.pathway.parser <- function(HTMLdata, verbose = FALSE){
 download.KEGG.annotation <- function(genenames, species = "sce", directory = "tmp_kegg", force.download=FALSE, verbose = FALSE){
   if(.has_rcurl){
     require("RCurl")
-    if(missing(genenames)) stop("No gene names  to get annotation for supplied")
+    if(missing(genenames)) stop("No gene names to get annotation for supplied")
     cnt <- 1
     p_cnt <- 1
     if(!file.exists(directory)) dir.create(directory)
