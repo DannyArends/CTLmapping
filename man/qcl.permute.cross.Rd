@@ -1,12 +1,11 @@
-\name{QCLpermuteCross}
-\alias{QCLpermuteCross}
-\alias{crossQCLpermute}
-\title{QCLpermuteCross - Permutation routine for QCL mapping (R/qtl cross object) }
+\name{QCLpermute.cross}
+\alias{QCLpermute.cross}
+\title{QCLpermute.cross - Permutation routine for QCL mapping (R/qtl cross object) }
 \description{
 	Permutation routine for QCL mapping (using an R/qtl cross object)
 }
 \usage{
-QCLpermuteCross(cross, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, \dots)
+QCLpermute.cross(cross, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, \dots)
 }
 
 \arguments{

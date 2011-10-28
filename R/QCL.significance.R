@@ -9,7 +9,7 @@
 # Example data C. Elegans and available at request ( Danny.Arends@gmail.com )
 #
 
-QCLpermuteCross <- function(cross, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, ...){
+QCLpermute.cross <- function(cross, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, ...){
   if(.has_rqtl){
     require(qtl)
     phenotypes <- apply(pull.pheno(cross),2,as.numeric)

@@ -22,8 +22,9 @@
 	lines, 24 phenotypes, and 117 markers on 5 chromosomes.
 }
 \source{
-  Part of the Arabidopsis RIL selfing experiment with Landsberg erecta (Ler) and Cape Verde Islands (Cvi) with 162 individuals scored (with errors at) 117 markers.
-  Dataset obtained from GBIC - Groningen BioInformatics Centre
+  Part of the Arabidopsis RIL selfing experiment with Landsberg erecta (Ler) and Cape Verde 
+  Islands (Cvi) with 162 individuals scored (with errors) at 117 markers. Dataset obtained 
+  from GBIC - Groningen BioInformatics Centre, University of Groningen
 }
 \references{
   \itemize{

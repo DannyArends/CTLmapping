@@ -19,7 +19,7 @@ QCLpermute(genotypes, phenotypes, pheno.col, n.perm=10, directory="permutations"
   \item{\dots}{ Passed to the underlying \code{\link{QCLscan}} function }
 }
 \details{
-TODO
+Permutation is one of the fundamental theorem a fundamental approach of 
 \itemize{
   \item NOTE: Main bottleneck of the algorithm is the RAM available to the system
 }

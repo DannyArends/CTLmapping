@@ -1,12 +1,12 @@
-\name{QCLscanCross}
-\alias{QCLscanCross}
-\alias{crossQCLscan}
-\title{QCLscanCross - Scan for quantitative correlation loci (R/qtl cross object) }
+\name{QCLscan.cross}
+\alias{QCLscan.cross}
+
+\title{QCLscan.cross - Scan for quantitative correlation loci (R/qtl cross object) }
 \description{
 	Scan for quantitative correlation loci (using an R/qtl cross object)
 }
 \usage{
-QCLscanCross(cross, pheno.col, verbose = FALSE)
+QCLscan.cross(cross, pheno.col, verbose = FALSE)
 }
 
 \arguments{
@@ -40,7 +40,7 @@ Columns: Genetic markers) for the phenotype.
   if(.has_rqtl){
     require(qtl)
     data(multitrait) # Arabidopsis Thaliana (R/qtl cross object)
-    qcl_result <- QCLscanCross(multitrait)
+    qcl_result <- QCLscan.cross(multitrait)
     qcl_result
     plot(qcl_result,16)   #Plot a phenotype
   }
