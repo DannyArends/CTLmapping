@@ -46,53 +46,32 @@ QCLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), verbo
   results
 }
 
-QCLscan.network <- function(genotypes, phenotypes, pheno.col = 1, qcl.threshold = 0.3, m.depth=5, verbose = TRUE){
-  todo <- pheno.col
-  at_my_depth <- 1
+QCLscan.network <- function(genotypes, phenotypes, pheno.col = 1, qcl.threshold = 0.3, max.depth=10, verbose = TRUE){
   depth <- 1
-  cnt <- 1
-  results <- vector("list",1)
-  while(depth <= m.depth){
-    at_next_depth <- 0
-    while(at_my_depth > 0){
-      x <- todo[1]
-      profile <- apply(genotypes,2, 
-      function(geno){
-          cor1 <- cor(phenotypes[geno==1,x],phenotypes[geno==1,],use="pair")
-          cor2 <- cor(phenotypes[geno==2,x],phenotypes[geno==2,],use="pair")
-          sign(cor1)*(cor1^2)-sign(cor2)*(cor2^2)
-        }
-      )
-      rownames(profile) <- colnames(phenotypes)
-      colnames(profile) <- colnames(genotypes)
-      results[[cnt]] <- profile
-      attr(results[[cnt]],"name") <- colnames(phenotypes)[x]
-      class(results[[cnt]]) <- c(class(results[[cnt]]),"QCL")
-      if(verbose){
-        cat("Phenotype:",colnames(phenotypes)[x],"\n")
-      }
-      myprofile <- QCLprofiles(results,qcl.threshold=qcl.threshold,against="phenotypes")
-      if(dim(myprofile)[2]!=0){
-        additional <- which(colnames(phenotypes) %in% colnames(myprofile))
-        done <- which(colnames(phenotypes)[additional] %in% unlist(lapply(results,attr,"name")))
-        if(!is.na(done&&1))additional <- additional[-done]
-        todo <- c(todo,additional)
-        todo <- todo[-1]
-        if(verbose){
-          cat("At",depth,", added ",length(additional),"phenotypes\n")
-        }
-        at_next_depth <- at_next_depth + length(additional)
-      }
-      at_my_depth <- at_my_depth-1
-      cnt <- cnt+1
-      if(at_my_depth==0 && depth == m.depth){ 
-      }else{
-        length(results) <- length(results) +1
+  qcl_done <- QCLscan(genotypes,phenotypes,pheno.col)
+  qcl_todo <- colnames(QCLprofiles(qcl_done,qcl.threshold,against="phenotypes"))
+  while(depth <= max.depth){
+    names_done <- unlist(lapply(qcl_done,attr,"name"))
+    still_need_todo <- NULL
+    for(x in qcl_todo){
+      if(!(x %in% names_done)){
+        still_need_todo <- c(still_need_todo,x)
       }
     }
-    at_my_depth <- at_next_depth
-    depth <- depth +1
+    cat("Depth:",depth,"done:",length(names_done),"Todo:",length(qcl_todo),"/",length(still_need_todo),"\n")
+    if(length(still_need_todo) > 0){
+      ids <- which(colnames(phenotypes) %in% still_need_todo)
+      tmp_scan <- QCLscan(genotypes,phenotypes,ids)
+      qcl_todo <- colnames(QCLprofiles(tmp_scan,qcl.threshold,against="phenotypes"))
+      qcl_done <- c(qcl_done,tmp_scan)
+      depth <- depth+1
+    }else{
+      cat("Finished at depth:",depth,", scanned",length(qcl_done),"phenotypes\n")
+      class(qcl_done) <- c(class(qcl_done),"QCLscan")
+      return(qcl_done)
+    }
   }
-  class(results) <- c(class(results),"QCLscan")
-  results
+  cat("Reached max.depth, scanned",length(qcl_done),"phenotypes\n")
+  class(qcl_done) <- c(class(qcl_done),"QCLscan")
+  qcl_done
 }
