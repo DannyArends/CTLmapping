@@ -56,7 +56,7 @@ set.seed(61777369)
 
 {\color{blue} \tt \bfseries University of Groningen \\
 Groningen Bioinformatics centre \& GCC \\
-Technical Report \# 214 \\[24pt]
+version \# 0.0.1 \\[24pt]
 XX Okt 2011}
 
 \end{center}
