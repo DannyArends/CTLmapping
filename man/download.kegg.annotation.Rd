@@ -10,13 +10,13 @@ download.KEGG.annotation(genenames, species = "sce", directory = "tmp_kegg", for
 
 \arguments{
   \item{genenames}{ A vector holding the names of the genes to be annotated }
-  \item{species}{ Species specific gene code, see: \url{http://www.genome.jp/kegg-bin/find_org_www?mode=abbr&obj=mode.map}{KEGG organisms} }
+  \item{species}{ KEGG Species code, see: \href{http://www.genome.jp/kegg-bin/find_org_www?mode=abbr&obj=mode.map}{KEGG organisms} }
   \item{directory}{ Directory to store the downloaded files (used as cache) }
-  \item{force.download}{ Force downloading of files, do not use the cached versions }
+  \item{force.download}{ Force the download of all files, overwrites the cached files }
   \item{verbose}{ Be verbose }
 }
 \details{
-TODO
+Default behaviour is force.download = FALSE, which creates a local cache used for annotation
 \itemize{
   \item NOTE: NO check for unknown names, just searches
 }
@@ -25,10 +25,10 @@ TODO
   List of length genenames with at each index the KEGG pathway annotation of the gene
 }
 \references{
-  \url{http://www.genome.jp/kegg/kegg2.html}{KEGG database}
+  \href{http://www.genome.jp/kegg/kegg2.html}{KEGG database}
 }
 \author{ 
-	Danny Arends \email{Danny.Arends@gmail.com}
+	Danny Arends \email{Danny.Arends@gmail.com}\cr
 	Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
 }
 \note{

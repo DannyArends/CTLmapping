@@ -52,7 +52,7 @@
 }
 
 \author{ 
-	Danny Arends \email{Danny.Arends@gmail.com}
+	Danny Arends \email{Danny.Arends@gmail.com}\cr
 	Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
 }
 

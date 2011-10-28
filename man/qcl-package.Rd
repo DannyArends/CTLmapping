@@ -19,8 +19,9 @@
   following core functionality:
 	\itemize{
     \item \code{\link{QCLscan}} - Scan for QCL
+    \item \code{\link{QCLscan.network}} - Scan for QCL using a start phenotype
     \item \code{\link{QCLpermute}} - Permutation routine for QCL mapping
-    \item \code{\link{QCLnetwork}} - Create a QCL network
+    \item \code{\link{QCLnetwork}} - Create a QCL network from a \code{\link{QCLscan}}
     \item \code{\link{QCLprofiles}} - Extract QCL interaction profiles 
     \item \code{\link{image.QCLscan}} - Heatmap overview of a QCLscan
     \item \code{\link{plot.QCLscan}} - Plot the QCL curve for a single trait
@@ -32,13 +33,16 @@
 	More detailed information and/or examples are given per function as needed.
 	Some additional functionality:
 	\itemize{
+    \item \code{\link{QCLscan.cross}} - Use an R/qtl cross object with \code{\link{QCLscan}}
+    \item \code{\link{QCLscan.network.cross}} - Use an R/qtl cross object with \code{\link{QCLscan.network}}
     \item \code{\link{download.KEGG.annotation}} - Download genes and pathways from KEGG
     \item \code{\link{correlation}} - Compute correlations (D programming language)
   }
 }
 \author{ 
-	Danny Arends \email{Danny.Arends@gmail.com}
-	Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
+	Danny Arends \email{Danny.Arends@gmail.com}\cr
+	Maintainer: Danny Arends \email{Danny.Arends@gmail.com}\cr
+  Contributions from: Bruno Tesson, Pjotr Prins and Ritsert C. Jansen
 }
 \references{
 	\itemize{
