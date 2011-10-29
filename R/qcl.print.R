@@ -14,6 +14,25 @@ print.QCLscan <- function(x, ...){
   cat("- Number of markers",dim(x[[1]])[2],"\n")
 }
 
+print.QCL  <- function(x, ...){
+  cat("Phenotype",attr(x,"name"),"QCL summary\n")
+  highest <- 0
+  np <- NULL
+  nm <- NULL
+  cutoffs <- c(0.2, 0.3, 0.4, 0.5, 0.55, 0.6, 0.65)
+  for(t in cutoffs){
+    smprofile <- QCLprofile(x, t, FALSE)
+    if(!is.null(dim(smprofile)[1])) highest = t
+    np  <- c(np,dim(smprofile)[1])
+    nm  <- c(nm,dim(smprofile)[2])
+  }
+  cat("Threshold:",  cutoffs,"\n",sep="\t")
+  cat("Phenotypes:", np,"\n",sep="\t")
+  cat("Markers:",    nm,"\n\n",sep="\t")
+  cat("Interaction matrix at highest cut-off", highest,":\n")
+  QCLprofile(x, highest, TRUE)
+}
+
 print.QCLpermute <- function(x, ...){
   maximums <- lapply(x,function(x){apply(x,2,max)})
   sorted <- sort(unlist(maximums))
