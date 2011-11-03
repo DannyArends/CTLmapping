@@ -8,7 +8,7 @@
 # Plotting routines for QCL analysis
 #
 
-plot.QCLscan <- function(x, pheno.col = 1, qcl.threshold =0.3, ...){
+plot.QCLscan <- function(x, pheno.col = 1, qcl.threshold =0.3, do.legend=TRUE, ...){
   npheno <- length(x)
   if(pheno.col > npheno) stop("No such phenotype")
   pname <- attr(x[[pheno.col]],"name") 
@@ -22,5 +22,7 @@ plot.QCLscan <- function(x, pheno.col = 1, qcl.threshold =0.3, ...){
     points(QCLprofiles(x,t)[pname,], lwd=2,col=rgb((1/max(x[[pheno.col]]))*t,0,0),type='l')
     colorz <- c(colorz,rgb((1/max(x[[pheno.col]]))*t,0,0))
   }
-  legend("topleft",paste("Threshold =",seq(qcl.threshold,max(x[[pheno.col]]),0.05)),lwd=2,col=colorz)
+  if(do.legend){
+    legend("topleft",paste("Threshold =",seq(qcl.threshold,max(x[[pheno.col]]),0.05)),lwd=2,col=colorz)
+  }
 }

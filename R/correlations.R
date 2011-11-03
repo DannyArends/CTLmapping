@@ -12,7 +12,7 @@ correlation <- function(x, y, verbose = FALSE){
   if(is.matrix(x) && dim(x)[2] > 1){
     return(matrix_correlation(x,verbose=verbose))
   }else{
-    if(!.has_d){
+    if(!get(".has_d", envir = .QclEnv)){
       if(verbose) cat(.has_d_warnmsg)
       return(cor(x,y))
     }else{
@@ -33,7 +33,7 @@ correlation <- function(x, y, verbose = FALSE){
 }
 
 matrix_correlation <- function(x, verbose = FALSE){
-  if(!.has_d){
+  if(!get(".has_d", envir = .QclEnv)){
     if(verbose) cat(.has_d_warnmsg)
     return(cor(x))
   }else{

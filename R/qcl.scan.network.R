@@ -46,13 +46,13 @@ QCLscan.network <- function(genotypes, phenotypes, pheno.col, qcl.threshold = 0.
 QCLscan.network.cross <- function(cross, pheno.col, qcl.threshold = 0.4, max.depth=10, verbose = TRUE){
   if(missing(cross)) stop("cross is missing")
   if(missing(pheno.col)) stop("pheno.col missing")
-  if(.has_rqtl){
+  if(get(".has_rqtl", envir = .QclEnv)){
     require(qtl)
-    phenotypes <- apply(pull.pheno(cross),2,as.numeric)
-    genotypes <- pull.geno(cross)  
+    phenotypes <- apply(qtl::pull.pheno(cross),2,as.numeric)
+    genotypes <- qtl::pull.geno(cross)  
     QCLscan.network(genotypes, phenotypes, pheno.col=pheno.col, 
                     qcl.threshold=qcl.threshold,max.depth=max.depth,verbose=verbose)
   }else{
-    stop(.has_rqtl_warnmsg)
+    warning(.has_rqtl_warnmsg)
   }
 }
