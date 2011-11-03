@@ -25,7 +25,7 @@ KEGG.pathway.parser <- function(HTMLdata, verbose = FALSE){
 }
 
 download.KEGG.annotation <- function(genenames, species = "sce", directory = "tmp_kegg", force.download=FALSE, verbose = FALSE){
-  if(.has_rcurl){
+  if(get(".has_rcurl", envir = .QclEnv)){
     require("RCurl")
     if(missing(genenames)) stop("No gene names to get annotation for supplied")
     cnt <- 1
@@ -40,7 +40,7 @@ download.KEGG.annotation <- function(genenames, species = "sce", directory = "tm
         if(verbose) cat("Loaded ",cnt,":",gene_name," from ",file_out_name,"\n",sep="")
       }else{
         url <- paste("http://www.kegg.jp/entry/",species,"/",gene_name,sep="")
-        HTMLdata <- getURL(url)
+        HTMLdata <- RCurl::getURL(url)
         cat(HTMLdata,file=paste(directory,"/kegg_",gene_name,".txt",sep=""))
         Sys.sleep(runif(1)*2)
         if(verbose) cat("Downloaded ",cnt,":",gene_name," from ",url,"\n",sep="")
@@ -62,6 +62,6 @@ download.KEGG.annotation <- function(genenames, species = "sce", directory = "tm
     cat("Pathways found for ",p_cnt,"/",cnt," genes\n",sep="")
     invisible(annotations)
   }else{
-    stop(.has_rcurl_warnmsg)
+    warning(.has_rcurl_warnmsg)
   }
 }

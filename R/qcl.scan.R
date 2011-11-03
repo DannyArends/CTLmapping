@@ -39,13 +39,13 @@ QCLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), verbo
 #-- R/qtl interface --#
 QCLscan.cross <- function(cross, pheno.col, verbose = FALSE){
   if(missing(cross)) stop("cross is missing")
-  if(.has_rqtl){
+  if(get(".has_rqtl", envir = .QclEnv)){
     require(qtl)
-    phenotypes <- apply(pull.pheno(cross),2,as.numeric)
+    phenotypes <- apply(qtl::pull.pheno(cross),2,as.numeric)
     if(missing(pheno.col)) pheno.col <- 1:ncol(phenotypes)
-    genotypes <- pull.geno(cross)
+    genotypes <- qtl::pull.geno(cross)
     QCLscan(genotypes, phenotypes,pheno.col=pheno.col,verbose=verbose)
   }else{
-    stop(.has_rqtl_warnmsg)
+    warning(.has_rqtl_warnmsg)
   }
 }

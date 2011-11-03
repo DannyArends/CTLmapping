@@ -14,9 +14,9 @@ image.QCLscan <- function(x, qcl.threshold = 0.35, against = c("markers","phenot
   if(!is.null(mymatrix)){ 
     image(1:ncol(mymatrix),1:nrow(mymatrix),t(mymatrix),
           main=paste("QCLs at",qcl.threshold,"phenotypes vs",against[1]),
-          yaxt="n",xaxt="n",ylab="", xlab="",col=colorrange)
-    axis(2,rownames(mymatrix),at=1:nrow(mymatrix),las=2,cex.axis=0.7)
-    axis(1,colnames(mymatrix),at=1:ncol(mymatrix),las=2,cex.axis=0.7)
+          yaxt="n",xaxt="n",ylab="", xlab="",col=colorrange,cex.main=0.7)
+    axis(2,rownames(mymatrix),at=1:nrow(mymatrix),las=2,cex.axis=0.5)
+    axis(1,colnames(mymatrix),at=1:ncol(mymatrix),las=2,cex.axis=0.3)
     if(do.grid){
       abline(h=seq(-0.5,nrow(mymatrix)+0.5,1),col=grid.col,lwd=1)
       abline(v=seq(-0.5,ncol(mymatrix)+0.5,1),col=grid.col,lwd=1)

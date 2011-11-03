@@ -61,12 +61,12 @@ significance.QCLHotSpot <- function(QCLpermute,significant=212){
 QCLpermute.cross <- function(cross, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, ...){
   if(missing(cross)) stop("cross is missing")
   if(missing(pheno.col)) stop("pheno.col missing")
-  if(.has_rqtl){
+  if(get(".has_rqtl", envir = .QclEnv)){
     require(qtl)
-    phenotypes <- apply(pull.pheno(cross),2,as.numeric)
-    genotypes <- pull.geno(cross)
+    phenotypes <- apply(qtl::pull.pheno(cross),2,as.numeric)
+    genotypes <- qtl::pull.geno(cross)
     QCLpermute(genotypes, phenotypes,pheno.col=pheno.col,n.perm=n.perm,directory=directory,verbose=verbose)
   }else{
-    stop(.has_rqtl_warnmsg)
+    warning(.has_rqtl_warnmsg)
   }
 }
