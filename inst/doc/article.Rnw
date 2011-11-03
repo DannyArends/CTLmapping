@@ -1,6 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Danny Arends
 % The qcl mapping routine
+%\VignetteIndexEntry{Article}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[12pt]{article}
@@ -36,8 +37,14 @@
 % Try to get the R code from running into the margin
 <<echo=FALSE>>=
 options(width=87, digits=3, scipen=4)
-set.seed(61777369)
 @ 
+
+<<echo=FALSE,results=hide>>=
+  require(qcl)
+  set.seed(61777369)
+  data(ath.metabolites) # Arabidopsis Thaliana dataset
+  qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes)
+@
 
 % Change S input/output font size
 \DefineVerbatimEnvironment{Sinput}{Verbatim}{fontsize=\footnotesize, baselinestretch=0.75, formatcom = {\color[rgb]{0, 0, 0.56}}}
@@ -190,9 +197,19 @@ and B.
 The threshold for a significant difference in QCL is assessed by using permutations, in 
 each round the link between genotype and phenotype is broken, by redistributing at random 
 genotypes amongst individuals not allowing for duplicates. The QCL on these new 
-‘individuals’ allows for estimation of the underlying null-distribution of QCL scores. 
+?ndividuals?allows for estimation of the underlying null-distribution of QCL scores. 
 
 \emph{\sffamily Step 2b Create single trait QCL profiles}
+
+Single trait QCL profiles can be obtained by setting a significance threshold. 
+
+\begin{figure}
+\centering
+<<singletrait, fig=TRUE, echo=FALSE, height=3.5>>=
+plot(qcl_result, 2, do.legend=FALSE)
+@ 
+\caption{Single trait QCL profile (A. Thaliana).\label{fig:singletrait}}
+\end{figure}
 
 \emph{\sffamily Step 3 Network scan for QCL}
 
@@ -228,7 +245,35 @@ controlling our phenotype we need to combine this information.
 \textbf{\sffamily Results}
 \nopagebreak
 
-Some resulting text
+Global overview of QCL scan after using a full scan for QCL
+<<echo=FALSE>>=
+  qcl_result
+@ 
+Single results from a QCL mapping, shows the pattern at the highest threshold.
+<<echo=FALSE>>=
+  qcl_result[[2]]
+@ 
+Phenotype x Marker image plot, this is 'comparable' to a QTL scan on mutliple traits.
+
+\begin{figure}[ht]
+\centering
+<<p2mmatrix, fig=TRUE, echo=FALSE, height=3.5>>=
+par(mar=c(3,8,1.1,1.1))
+image(qcl_result, 0.5, against="markers",do.grid=FALSE)
+@ 
+\caption{Phenotypes x Markers matrix (A. Thaliana).\label{fig:p2mmatrix}}
+\end{figure}
+
+Phenotype x Phenotype image plot, the new network information obtained by QCL mapping, 
+which can be used to reconstruct the underlying genetic architecture.
+\begin{figure}[ht]
+\centering
+<<p2pmatrix, fig=TRUE, echo=FALSE, height=3.5>>=
+par(mar=c(3,8,1.1,1.1))
+image(qcl_result, 0.5, against="phenotypes")
+@ 
+\caption{Phenotypes x Phenotypes matrix (A. Thaliana).\label{fig:p2pmatrix}}
+\end{figure}
 
 \bigskip
 \textbf{\sffamily Discussion}
