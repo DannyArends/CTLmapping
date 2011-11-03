@@ -12,7 +12,7 @@ QCLscan.cross(cross, pheno.col, verbose = FALSE)
   \item{cross}{ An object of class \code{cross}. See
                 \code{\link[qtl]{read.cross}} for details. }
   \item{pheno.col}{ Which phenotype column should we analyse }
-  \item{verbose}{ Be verbose }
+  \item{verbose}{ Be verbose. }
 }
 \details{
 TODO
@@ -36,7 +36,7 @@ Columns: Genetic markers) for the phenotype.
 }
 \examples{
   library(qcl)
-  if(.has_rqtl){
+  \dontrun{
     require(qtl)
     data(multitrait) # Arabidopsis Thaliana (R/qtl cross object)
     qcl_result <- QCLscan.cross(multitrait)

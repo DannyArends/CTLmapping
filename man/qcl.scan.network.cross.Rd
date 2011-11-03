@@ -39,9 +39,12 @@ Columns: Genetic markers) for the phenotype.
 }
 \examples{
   library(qcl)
-  data(ath.metabolites) # Arabidopsis Thaliana dataset
-  qcl_result <- QCLscan.network(ath.metab$genotypes, ath.metab$phenotypes,pheno.col=2)
-  qcl_result
+  \dontrun{
+    require(qtl)
+    data(multitrait) # Arabidopsis Thaliana (R/qtl cross object)
+    qcl_result <- QCLscan.network.cross(multitrait,pheno.col=2)
+    qcl_result
+  }
 }
 
 \keyword{methods}
