@@ -39,7 +39,7 @@ the \code{\link{print.QCLpermute}} function.
 }
 \examples{
   library(qcl)
-  if(.has_rqtl){
+  \dontrun{
     require(qtl)
     data(multitrait) # Arabidopsis Thaliana (R/qtl cross object)
     qcl_perms <- QCLpermute.cross(multitrait,1)
