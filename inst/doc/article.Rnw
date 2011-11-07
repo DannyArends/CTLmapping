@@ -32,7 +32,7 @@
 
 \begin{document}
 
-\SweaveOpts{prefix.string=Figs/fig}
+\SweaveOpts{prefix.string=fig}
 \setkeys{Gin}{width=\textwidth} %% <- change width of figures
 % Try to get the R code from running into the margin
 <<echo=FALSE>>=
@@ -52,7 +52,7 @@ options(width=87, digits=3, scipen=4)
 
 \begin{center}
 \vspace*{1in}
-\textbf{\Large QCL: the added value of correlation }
+\textbf{\Large QCL: Added value of differential correlation }
  
 \bigskip \bigskip 
 \bigskip \bigskip 
@@ -73,7 +73,7 @@ accepted on XX XXX 201X\\
 \bigskip \bigskip
 
 \textbf{\sffamily Abstract}: In this paper we present Quanitative Correlation Locus 
-(QCL) mapping a novel approach to detect genetic regulation of phenotypes in 
+(QCL) mapping, a novel approach to detect genetic regulation of phenotypes in 
 recombinant inbred line populations (RIL) or other experimental crosses. QCL mapping 
 allows association of phenotype correlation differences to genetic markers, in almost 
 the same way as QTL mapping associates genetic markers with differences in expression.
@@ -100,6 +100,7 @@ genotypic variation (Jansen and Nap, 2001). Quantitative Trait Locus (QTL) mappi
 gene identifies regions in the genome for which different genotypes lead to differential 
 expression level of the gene. This QTL mapping can be done on all molecular levels including, 
 gene expression (eQTL), protein abundance (pQTL) and metabolites (mQTL).
+
 Recently different methods have been proposed that allow studying, in addition to the genes 
 differentially expressed between conditions, the genes that are differentially coexpressed 
 between conditions (Tesson et al. 2010, Kompass et al. 2011). Such differential co-expression 
@@ -154,9 +155,9 @@ experimental settings are available in the original paper (Brem et al. 2005).
 
 Probes showing little to no variance (< 0.01) were removed from the analysis. Batch 
 effects due to different hybridization dates were estimated and removed from the data 
-by using a mean centering approach (Group means were estimated and corrected).  
+by using a mean centering approach (Group means were estimated and corrected).
 
-\textbf{\sffamily Algorithm: eQCL mapping}
+\textbf{\sffamily Algorithm: QCL mapping}
 
 Using recombinant inbred lines we introduce natural variation into a population 
 detectable as cis-QTL in a genome wide QTL scan. The effect of any such genetic 
@@ -179,12 +180,12 @@ regulators genes because variation of these genes causes many 'downstream' pheno
 to show differential correlation with the inducing phenotype, because QCL relies on 
 correlation changes as opposed to differences in phenotype mean QCL is unaffected by (p2).
 
-\emph{\sffamily Step 1 Choosing a start/seed probe}
+\emph{\sffamily Choosing a start/seed probe (Optional)}
 
 Choose a phenotype to subject to QCL analysis, this can be your favourite gene, 
 protein, metabolite or classical phenotype.
 
-\emph{\sffamily Step 2 Single phenotype QCL}
+\emph{\sffamily Single phenotype QCL}
 
 Using genotype data we can split individuals at each marker in two groups (A or B).
 At each marker calculate the correlation between our phenotype and all other 
@@ -192,16 +193,21 @@ phenotypes in groups A and B. Collect all the result vectors into two matrices A
 and B, and calculate the QCL matrix by taking the squared difference between matrix A 
 and B.
 
-\emph{\sffamily Step 2a Significance testing}
+\emph{\sffamily Significance testing}
 
 The threshold for a significant difference in QCL is assessed by using permutations, in 
 each round the link between genotype and phenotype is broken, by redistributing at random 
 genotypes amongst individuals not allowing for duplicates. The QCL on these new 
-?ndividuals?allows for estimation of the underlying null-distribution of QCL scores. 
+individuals allows for estimation of the underlying null-distribution of QCL scores. 
+See figures XX, and XX showing the score distribution in permuted data.
 
-\emph{\sffamily Step 2b Create single trait QCL profiles}
+\emph{\sffamily Creating single trait QCL profiles}
 
-Single trait QCL profiles can be obtained by setting a significance threshold. 
+After permutation single trait QCL profiles can be obtained by setting a qcl significance 
+threshold. This threshold defines when a change in correlation is significant, and at 
+each marker we can plot the count of number the other phenotypes that show a significant 
+difference in correlation. Overplotting chromosome, QTL information, and phenotype location 
+(if applicable) produces the single QCL plots seen in figures XX, and XX.
 
 \begin{figure}
 \centering
@@ -213,27 +219,36 @@ plot(qcl_result, 2, do.legend=FALSE)
 
 \emph{\sffamily Step 3 Network scan for QCL}
 
-Using the user defined seed gene we can reconstruct the interaction network, we 
-first do a single phenotype QCL scan (step 2), then using a threshold we select 
-phenotypes which show a significant change in QCL.
+If we find any significant QCL information we can try to reconstruct the interaction 
+network of the phenotype. We first do a single phenotype QCL scan (step 2), then 
+using a permutation determin a qcl threshold, and select phenotypes which show a 
+significant change in QCL.
 
-Two things can happen: 1) No genes show a significant change in QCL, which means we 
-cannot find any interaction partners for this phenotype, or 2) This genes has an QCL 
-with other genes, then the algorithm adds these genes onto a list to scan and repeats 
-the single phenotype QCL scan (step 2) for these phenotypes (not allowing for duplicate 
-scans). This is repeated until no more significant QCL are found or a user defined 
-search depth is reached.
+Two things can happen: 
+1) No genes show a significant change in QCL, which means we 
+cannot find any interaction partners for this phenotype, or 
+2) This genes has an QCL with other genes, then the algorithm adds 
+these genes onto a list to scan and repeats the single phenotype 
+QCL scan (step 2) for these phenotypes (not allowing for duplicate 
+scans). This is repeated until no more significant QCL are found or 
+a user defined search depth is reached.
 
-\emph{\sffamily Step 3a Visualizing the Phenotypes x Marker relations}
+\emph{\sffamily Visualizing the Phenotypes x Marker relations}
 
 When plotting multiple QCL profiles as a heatmap, multiple QCL are seen mapping to the 
 same genetic location. At these locations, we expect to find one (or more) of the genes 
-to show a cis-QTL, this phenotype (or phenotypes) introduced genetic variation, which is 
-seen also (and more pronounced) in a QTL scan. 
+to show a cis-QTL, this is because a QTL can induce a QCL, because variation of expression 
+in the phenotype is causing other phenotypes to become uncorrelated, when assigned to 
+groups determined by the QTL marker. This phenotype (or phenotypes) introduced genetic 
+variation, which is seen also (and more pronounced) in a QTL scan. 
 
-\emph{\sffamily Step 3b Visualizing the Phenotypes x Phenotypes relations}
+\emph{\sffamily Visualizing the Phenotypes x Phenotypes relations}
 
-\emph{\sffamily Step 4 Network reconstruction}
+The additional information obtained by QCL mapping is summarized in the 
+Phenotypes x Phenotypes matrix. This shows the summed evidence of interaction 
+between the phenotypes showing QCL transmitted through all the markers and the phenotype scanned.
+
+\emph{\sffamily Network reconstruction}
 
 So how do we build up gene interaction networks, This looks complicated but the information 
 is implicitely stored in the Phenotype x Marker and Phenotype x Phentype relations matrices. 
