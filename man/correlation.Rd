@@ -32,6 +32,7 @@ correlation(x, y, verbose = FALSE)
   TODO
 }
 \examples{
+  require(qcl)
   matr <- matrix(runif(100*300),100,300)
   res1 <- correlation(matr)
   res2 <- correlation(matr[,1],matr[,2])
