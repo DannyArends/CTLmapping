@@ -12,6 +12,7 @@
 \alias{plot.markerQCL2}
 \alias{plot.markerQCL.detailed}
 
+\alias{getCorrelatedPhenotypes}
 \alias{lodscorestoscanone}
 \alias{gcLoop}
 
@@ -28,6 +29,7 @@
 \alias{has_snow}
 \alias{has_rcurl}
 \alias{has_rqtl}
+\alias{get_QclEnv}
 
 \alias{matrix_correlation}
 

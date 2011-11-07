@@ -11,6 +11,7 @@
 #Global package variables
 .QclEnv <- new.env()
 
+get_QclEnv <- function(){.QclEnv}
 has_d <- function(){ get(".has_d", envir = .QclEnv) }
 has_snow <- function(){ get(".has_snow", envir = .QclEnv) }
 has_rcurl <- function(){ get(".has_rcurl", envir = .QclEnv) }
@@ -23,10 +24,6 @@ has_rqtl <- function(){ get(".has_rqtl", envir = .QclEnv) }
 
 #Package loading
 .onAttach <- function(lib, pkg){
-  assign(".has_d",     TRUE, envir = .QclEnv)
-  assign(".has_snow",  FALSE, envir = .QclEnv)
-  assign(".has_rcurl", FALSE, envir = .QclEnv)
-  assign(".has_rqtl",  FALSE, envir = .QclEnv)
   packageStartupMessage("- Loading package qcl\n", appendLF = FALSE)
   .has_d <- TRUE
   .has_snow <- FALSE
@@ -36,7 +33,7 @@ has_rqtl <- function(){ get(".has_rqtl", envir = .QclEnv) }
   tryCatch(
     library.dynam("Dcode", pkg, lib),
     error = function(e){
-     .has_d <- FALSE
+     .has_d <<- FALSE
    })
   .has_snow  <- ("snow" %in% installed.packages()[,1])
   .has_rcurl <- ("RCurl" %in% installed.packages()[,1])
