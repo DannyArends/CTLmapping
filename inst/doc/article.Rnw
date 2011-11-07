@@ -61,8 +61,8 @@ options(width=87, digits=3, scipen=4)
 
 \bigskip \bigskip
 
-{\color{blue} \tt \bfseries $^{1}$ Groningen Bioinformatics Centre - University of Groningen \\
-$^{2}$ Genomics Coordination Centre \& University Medical Centre Groningen \\
+{\color{blue} \tt \bfseries $^{1}$ Groningen Bioinformatics Centre - University of Groningen\\
+$^{2}$ Genomics Coordination Centre - University Medical Centre Groningen\\
 version: \# 0.0.1\\[24pt]
 received on XX XXX 201X\\
 accepted on XX XXX 201X\\
@@ -81,15 +81,15 @@ We use QCL mapping to reconstruct underlying genetic architecture, and provide i
 into regulation of (gene) expression. QCL information in combination with classical QTL 
 information leads to a more detailed insight into the genetic architecture underlying 
 complex traits. 
-In two example we reconstruct part of the genetic architecture in S. Cerevisiae grown 
-under ethanol conditions. The other example shows the reconstruction of the chain 
-elongation pathway in A. Thaliana. In both examples we map the observe differences 
-in correlation to genetic markers, and show the biological relevance of QCL peeks and 
-hotspots in regulatory network reconstruction.
+In two example we reconstruct part of the genetic architecture in S. Cerevisiae, another 
+example shows the reconstruction of the chain elongation pathway in A. Thaliana. In both 
+examples we are able to map the observe differences in correlation to genetic markers, 
+and show the biological relevance of QCL peeks and hotspots in regulatory network 
+reconstruction.
 
 \vfill
 
-\noindent Corresponding Author: \verb|Danny.Arends@Gmail.com|
+\noindent Corresponding Author: Danny Arends \verb|Danny.Arends@Gmail.com|
 \noindent Associate Editor: XXXX XXXX
 \newpage
 
@@ -148,7 +148,7 @@ dataset contains expression profiles of parental strains and haploid progenies f
 cross of strain BY4716 and the wild wine strain RM11-1a. Data was collected for 4482 
 probes. Genotype data for the 109 progenies was available at 282 genetic markers 
 obtained by contacting the authors of the original paper. Expression of probes was 
-measured under growth conditions containing 1% ethanol. Additional details about the 
+measured under growth conditions containing 1\% ethanol. Additional details about the 
 experimental settings are available in the original paper (Brem et al. 2005).
 
 \emph{\sffamily Preprocessing}
@@ -268,6 +268,9 @@ Single results from a QCL mapping, shows the pattern at the highest threshold.
 <<echo=FALSE>>=
   qcl_result[[2]]
 @ 
+
+\emph{\sffamily The Phenotypes x Marker relations}
+
 Phenotype x Marker image plot, this is 'comparable' to a QTL scan on mutliple traits.
 
 \begin{figure}[ht]
@@ -279,7 +282,9 @@ image(qcl_result, 0.5, against="markers",do.grid=FALSE)
 \caption{Phenotypes x Markers matrix (A. Thaliana).\label{fig:p2mmatrix}}
 \end{figure}
 
-Phenotype x Phenotype image plot, the new network information obtained by QCL mapping, 
+\emph{\sffamily The Phenotypes x Phenotypes relations}
+
+Phenotype x Phenotype image plot, additional information obtained by QCL mapping, 
 which can be used to reconstruct the underlying genetic architecture.
 \begin{figure}[ht]
 \centering
@@ -296,20 +301,29 @@ image(qcl_result, 0.5, against="phenotypes")
 
 Microarray experiments have allowed the identification of genes differentially 
 expressed between various conditions, or groups of genes coexpressed across 
-samples. Many genetical genomics screens have been carried out to map differential 
+samples. 
+
+Many genetical genomics screens have been carried out to map differential 
 expression to genetic variation. Screening the genome for genotype combinations 
 for which there is differential expression has been a successful strategy when 
-mapping Mendelian traits. Results on complex traits have been however less then 
-satisfactory with only small amount of heritability explained by individuals loci. 
+mapping Mendelian traits. However results on complex traits have been less 
+then satisfactory with only small amounts of heritability explained by 
+individuals loci. 
 QCL mapping however 'borrows' information from each phenotype in the analysis set, 
-and enables easy extraction of phenotype marker phenotype networks. furthermore QCL 
-seem to 'transfer' between phenotypes in a more stabile fashion which gives greater 
-detail and confidence when reconstructing genetic architecture.
+and enables extraction of phenotype to marker to phenotype networks. 
+Furthermore QCLs seem to 'transfer' from phenotype to phenotypes in a stabile 
+fashion, which gives greater detail and confidence when reconstructing genetic 
+architecture. 
+It can provides better insight in the missing of heritability of variation, we 
+hypothesize that changes in variation are affecting (by loss of) correlation in 
+the normally correlated phenotypes leading to an amplification of this variation, 
+by distrupting the network environment of which endo-phenotypes are part of.
 
 \newpage
 \textbf{\sffamily Bibliography}
 
-Langfelder P, Horvath S (2008) WGCNA: an R package for weighted correlation network analysis. BMC Bioinformatics 2008, 9:559
+Langfelder P, Horvath S (2008) WGCNA: an R package for weighted correlation network 
+analysis. \emph{BMC Bioinformatics}, 9:559
 
 Jansen R. C, and Nap J. P. (2001) Genetical Genomics: the added value from seggregation. 
 \emph{Trends Genet}, 17(7), 388-391.
