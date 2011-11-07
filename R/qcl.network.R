@@ -15,7 +15,7 @@ QCLnetwork <- function(QCLscan, qcl.threshold=0.45, verbose = FALSE){
   node_names <- NULL
   for(QCL in QCLscan){
     for(x in 1:ncol(QCL)){
-      for(id in which(QCL[,x] > qcl.threshold)){
+      for(id in which(abs(QCL[,x]) > qcl.threshold)){
         edge_name <- paste(attr(QCL,"name"),"QCL",rownames(QCL)[id],sep="\t")
         if(edge_name %in% edge_count[,1]){
           edgeid <- which(edge_count[,1] %in% edge_name)
