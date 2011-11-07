@@ -1,12 +1,12 @@
-require(qcl)
+library(qcl)
 
-if(.has_rqtl){
+if(has_rqtl()){
   require(qtl)
   probeannot <- read.csv("small_annot.txt",sep="\t",header=TRUE,row.names=1)
   cross <- read.cross("csvr",file="brem_cross.csvr",geno=c("AA","AB"))
   cross <- convert2riself(cross)
 
-  QCL <- QCLscanCross(cross,1:3, verbose=T)
+  QCL <- QCLscan.cross(cross,1:3, verbose=T)
   image(QCL)
   plot(QCL)
 
