@@ -1,9 +1,8 @@
 \name{qcl-internal}
-\alias{QCLscan.internal}
+
 \alias{correlationmatrix}
 \alias{summary.QCL}
 \alias{count.QCL}
-\alias{countVThreshold}
 
 \alias{read.QCLpermute}
 \alias{significance.QCL}
@@ -15,14 +14,7 @@
 
 \alias{lodscorestoscanone}
 \alias{gcLoop}
-\alias{test.QCL}
 
-\alias{QCLscan.deprecated}
-\alias{QCLscan.internal.deprecated}
-\alias{QCLscan.internal}
-\alias{QCLscanToProfile}
-\alias{bplot.QCLscan}
-\alias{getCorrelatedPhenotypes}
 \alias{getMarkerOffsets}
 
 \alias{write.nodeAttributeFile}
