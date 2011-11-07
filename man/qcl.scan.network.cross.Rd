@@ -38,8 +38,8 @@ Columns: Genetic markers) for the phenotype.
   TODO
 }
 \examples{
-  library(qcl)
-  \dontrun{
+  require(qcl)
+  if(has_rqtl()){
     require(qtl)
     data(multitrait) # Arabidopsis Thaliana (R/qtl cross object)
     qcl_result <- QCLscan.network.cross(multitrait,pheno.col=2)

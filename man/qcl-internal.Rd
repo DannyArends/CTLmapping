@@ -32,6 +32,11 @@
 \alias{KEGG.pathway.parser}
 \alias{nodesToGenes}
 
+\alias{has_d}
+\alias{has_snow}
+\alias{has_rcurl}
+\alias{has_rqtl}
+
 \alias{matrix_correlation}
 
 \title{Internal QCL functions}
