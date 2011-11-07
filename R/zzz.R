@@ -10,11 +10,11 @@
 
 #Global package variables
 .QclEnv <- new.env()
-assign(".has_d",     TRUE, envir = .QclEnv)
-assign(".has_snow",  FALSE, envir = .QclEnv)
-assign(".has_rcurl", FALSE, envir = .QclEnv)
-assign(".has_rqtl",  FALSE, envir = .QclEnv)
 
+has_d <- function(){ get(".has_d", envir = .QclEnv) }
+has_snow <- function(){ get(".has_snow", envir = .QclEnv) }
+has_rcurl <- function(){ get(".has_rcurl", envir = .QclEnv) }
+has_rqtl <- function(){ get(".has_rqtl", envir = .QclEnv) }
 
 .has_d_warnmsg       <- "- D not available, using standard R/C/C++ functionality\n"
 .has_snow_warnmsg    <- "- Package: SNOW not found, multi CPU support is not available/disabled\n"
@@ -23,7 +23,11 @@ assign(".has_rqtl",  FALSE, envir = .QclEnv)
 
 #Package loading
 .onAttach <- function(lib, pkg){
-  packageStartupMessage("- Loading package qcl\n")
+  assign(".has_d",     TRUE, envir = .QclEnv)
+  assign(".has_snow",  FALSE, envir = .QclEnv)
+  assign(".has_rcurl", FALSE, envir = .QclEnv)
+  assign(".has_rqtl",  FALSE, envir = .QclEnv)
+  packageStartupMessage("- Loading package qcl\n", appendLF = FALSE)
   .has_d <- TRUE
   .has_snow <- FALSE
   .has_rcurl <- FALSE
@@ -32,19 +36,19 @@ assign(".has_rqtl",  FALSE, envir = .QclEnv)
   tryCatch(
     library.dynam("Dcode", pkg, lib),
     error = function(e){
-     .has_d <<- FALSE
+     .has_d <- FALSE
    })
-  .has_snow  <<- ("snow" %in% installed.packages()[,1])
-  .has_rcurl <<- ("RCurl" %in% installed.packages()[,1])
-  .has_rqtl  <<- ("qtl" %in% installed.packages()[,1])
+  .has_snow  <- ("snow" %in% installed.packages()[,1])
+  .has_rcurl <- ("RCurl" %in% installed.packages()[,1])
+  .has_rqtl  <- ("qtl" %in% installed.packages()[,1])
   assign(".has_d",     .has_d,     envir = .QclEnv)
   assign(".has_snow",  .has_snow,  envir = .QclEnv)
   assign(".has_rcurl", .has_rcurl, envir = .QclEnv)
   assign(".has_rqtl",  .has_rqtl,  envir = .QclEnv)
-  if(!get(".has_d", envir = .QclEnv)) packageStartupMessage(.has_d_warnmsg)
-  if(!get(".has_snow", envir = .QclEnv)) packageStartupMessage(.has_snow_warnmsg)
-  if(!get(".has_rcurl", envir = .QclEnv)) packageStartupMessage(.has_rcurl_warnmsg)
-  if(!get(".has_rqtl", envir = .QclEnv)) packageStartupMessage(.has_rqtl_warnmsg)
+  if(!get(".has_d", envir = .QclEnv)) packageStartupMessage(.has_d_warnmsg, appendLF = FALSE)
+  if(!get(".has_snow", envir = .QclEnv)) packageStartupMessage(.has_snow_warnmsg, appendLF = FALSE)
+  if(!get(".has_rcurl", envir = .QclEnv)) packageStartupMessage(.has_rcurl_warnmsg, appendLF = FALSE)
+  if(!get(".has_rqtl", envir = .QclEnv)) packageStartupMessage(.has_rqtl_warnmsg, appendLF = FALSE)
 }
 
 # end of zzz.R
