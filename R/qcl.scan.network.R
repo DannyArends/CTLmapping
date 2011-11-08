@@ -25,6 +25,7 @@ QCLscan.network <- function(genotypes, phenotypes, pheno.col, qcl.threshold = 0.
       }
     }
     cat("Depth:",depth,"done:",length(names_done),"Todo:",length(qcl_todo),"/",length(still_need_todo),"\n")
+    gcLoop()
     if(length(still_need_todo) > 0){
       ids <- which(colnames(phenotypes) %in% still_need_todo)
       tmp_scan <- QCLscan(genotypes,phenotypes,ids)
@@ -56,3 +57,5 @@ QCLscan.network.cross <- function(cross, pheno.col, qcl.threshold = 0.4, max.dep
     warning(.has_rqtl_warnmsg)
   }
 }
+
+# end of qcl.scan.network.R
