@@ -6,20 +6,22 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[12pt]{article}
 
+\usepackage{scicite}
 \usepackage{times}
 \usepackage{amsmath}
 \usepackage{url}
+\usepackage{graphicx}
 \usepackage{color}
 
 % revise margins
 \setlength{\headheight}{0.0in}
-\setlength{\topmargin}{-0.25in}
+\setlength{\topmargin}{0.0cm}
 \setlength{\headsep}{0.0in}
-\setlength{\textheight}{9.00in}
-\setlength{\footskip}{0.5in}
+\setlength{\textheight}{21.0cm}
+\setlength{\footskip}{1.0cm}
 \setlength{\oddsidemargin}{0in}
 \setlength{\evensidemargin}{0in}
-\setlength{\textwidth}{6.5in}
+\setlength{\textwidth}{16.0cm}
 
 \setlength{\parskip}{6pt}
 \setlength{\parindent}{0pt}
@@ -30,7 +32,71 @@
 % make "Figure" within figure captions a small font
 \renewcommand{\figurename}{\small Figure}
 
+%The next command sets up an environment for the abstract to your paper.
+
+\newenvironment{sciabstract}{%
+\begin{quote} \bf}
+{\end{quote}}
+
+
+% If your reference list includes text notes as well as references,
+% include the following line; otherwise, comment it out.
+
+\renewcommand\refname{References and Notes}
+
+% The following lines set up an environment for the last note in the
+% reference list, which commonly includes acknowledgments of funding,
+% help, etc.  It's intended for users of BibTeX or the {thebibliography}
+% environment.  Users who are hand-coding their references at the end
+% using a list environment such as {enumerate} can simply add another
+% item at the end, and it will be numbered automatically.
+
+\newcounter{lastnote}
+\newenvironment{scilastnote}{%
+\setcounter{lastnote}{\value{enumiv}}%
+\addtocounter{lastnote}{+1}%
+\begin{list}%
+{\arabic{lastnote}.}
+{\setlength{\leftmargin}{.22in}}
+{\setlength{\labelsep}{.5em}}}
+{\end{list}}
+
+
+\title{QCL: Added value of differential correlation} 
+
+
+% Place the author information here.  Please hand-code the contact
+% information and notecalls; do *not* use \footnote commands.  Let the
+% author contact information appear immediately below the author names
+% as shown.  We would also prefer that you don't change the type-size
+% settings shown here.
+
+\author
+{Danny Arends,$^{1\ast,2}$ Ritsert C. Jansen,$^{1}$\\
+\\
+\normalsize{$^{1}$Groningen Bioinformatics Centre - University of Groningen}\\
+\normalsize{Nijenborgh 7, 9747 AG Groningen, The Netherlands}\\
+\normalsize{$^{2}$Genomics Coordination Centre - University Medical Centre Groningen}\\
+\normalsize{Hanzeplein 1, 9700 RB Groningen, The Netherlands}\\
+\\
+\normalsize{$^\ast$To whom correspondence should be addressed; E-mail:  Danny.Arends@Gmail.com.}
+}
+
+% Include the date command, but leave its argument blank.
+
+\date{}
+
+%%%%%%%%%%%%%%%%% END OF PREAMBLE %%%%%%%%%%%%%%%%
+
 \begin{document}
+
+% Double-space the manuscript.
+
+\baselineskip24pt
+
+% Make the title.
+
+\maketitle 
 
 \SweaveOpts{prefix.string=fig}
 \setkeys{Gin}{width=\textwidth} %% <- change width of figures
@@ -50,114 +116,37 @@ options(width=87, digits=3, scipen=4)
 \DefineVerbatimEnvironment{Sinput}{Verbatim}{fontsize=\footnotesize, baselinestretch=0.75, formatcom = {\color[rgb]{0, 0, 0.56}}}
 \DefineVerbatimEnvironment{Soutput}{Verbatim}{fontsize=\footnotesize, baselinestretch=0.75, formatcom = {\color[rgb]{0.56, 0, 0}}}
 
-\begin{center}
-\vspace*{1in}
-\textbf{\Large QCL: Added value of differential correlation }
- 
-\bigskip \bigskip 
-\bigskip \bigskip 
- 
-{\large Danny Arends$^{1,2}$ and Ritsert C. Jansen$^{1}$} 
-
-\bigskip \bigskip
-
-{\color{blue} \tt \bfseries $^{1}$ Groningen Bioinformatics Centre - University of Groningen\\
-$^{2}$ Genomics Coordination Centre - University Medical Centre Groningen\\
-version: \# 0.0.1\\[24pt]
-received on XX XXX 201X\\
-accepted on XX XXX 201X\\
-}
-
-\end{center}
-
-\bigskip \bigskip
-
-\textbf{\sffamily Abstract}: In this paper we present Quanitative Correlation Locus 
-(QCL) mapping, a novel approach to detect genetic regulation of phenotypes in 
-recombinant inbred line populations (RIL) or other experimental crosses. QCL mapping 
-allows association of phenotype correlation differences to genetic markers, in almost 
-the same way as QTL mapping associates genetic markers with differences in expression.
+\begin{sciabstract}
+In this paper we present Quanitative Correlation Locus (QCL) mapping, a novel approach 
+to detect genetic regulation of phenotypes in recombinant inbred line populations (RIL) 
+or other experimental crosses. QCL mapping allows association of phenotype correlation 
+differences to genetic markers, in almost the same way as QTL mapping associates genetic 
+markers with differences in expression.
 We use QCL mapping to reconstruct underlying genetic architecture, and provide insight 
 into regulation of (gene) expression. QCL information in combination with classical QTL 
 information leads to a more detailed insight into the genetic architecture underlying 
-complex traits. 
-In two example we reconstruct part of the genetic architecture in S. Cerevisiae, another 
-example shows the reconstruction of the chain elongation pathway in A. Thaliana. In both 
-examples we are able to map the observe differences in correlation to genetic markers, 
-and show the biological relevance of QCL peeks and hotspots in regulatory network 
-reconstruction.
+complex traits. The method also provides a vital link in regulatory network reconstruction.
+\end{sciabstract}
 
-\vfill
-
-\noindent Corresponding Author: Danny Arends \verb|Danny.Arends@Gmail.com|
-\noindent Associate Editor: XXXX XXXX
-\newpage
-
-\textbf{\sffamily Introduction}
+\section*{Introduction}
 
 Genetical genomics experiments have shown that gene expression variation can be mapped to 
-genotypic variation (Jansen and Nap, 2001). Quantitative Trait Locus (QTL) mapping of a 
+genotypic variation \cite{Jansen:2001}. Quantitative Trait Locus (QTL) mapping of a 
 gene identifies regions in the genome for which different genotypes lead to differential 
 expression level of the gene. This QTL mapping can be done on all molecular levels including, 
 gene expression (eQTL), protein abundance (pQTL) and metabolites (mQTL).
 
 Recently different methods have been proposed that allow studying, in addition to the genes 
 differentially expressed between conditions, the genes that are differentially coexpressed 
-between conditions (Tesson et al. 2010, Kompass et al. 2011). Such differential co-expression 
+between conditions \cite{Tesson:2010,Kompass:2011}. Such differential co-expression 
 is taken as another level of information from genomic data. This level of information can for 
-example be used to expose transcriptional network rewiring (Langfelder et al. 2008). Differential 
+example be used to expose transcriptional network rewiring \cite{Langfelder:2008}. Differential 
 co-expression has been observed in studies of different diseases, including between healthy and 
 cancer tissue studies. In parallel, correlations between phenotypes are studied for various 
 reasons e.g. discovering and detecting batch effects, marker assisted breeding and causal 
 inference. The importance of identifying differences in correlation has been increasingly 
 recognized and this led to the development of this algorithm to perform QCL analysis in 
 experimental crosses.
-
-We proposed to map not differential co-expression but differential correlation to genetic 
-variation, i.e. to identify regions in the genome for which one genotype value leads to 
-correlated expression between a start gene and all other genes, exploiting the fact that any 
-cis-QTL will induce variation which will in turn lead to correlation differences among 
-individuals carrying the other genotype. We merge information comming from QCL and QTL to reveal 
-underlying genetic architecture, which would remain hidden when using only classical QTL information.
-
-We urge all QTL researchers to combine QCL analysis with existing QTL analysis to expose 
-transcriptional networks involved in the regulation of complex phenotypes. For this we 
-provide an R package with a reference implementation  of the QCL algorithm
-
-\bigskip 
-
-\textbf{\sffamily Methodology}
-\nopagebreak
-
-We show two examples in which we reconstruct the genetic architecture using QCL mapping. 
-Both datasets are available inside the R package, as well as the code to analyse these 
-two datasets.
-
-\emph{\sffamily Dataset Example 1. A. Thaliana}
-
-Metabolite data from an A. Thaliana Landsberg erecta (Ler) and Cape Verde Islands (Cvi) 
-dataset from R/qtl, 24 characterized metabolites which are the products of chain elongation. 
-There are 162	recombinant inbred lines genotyped at 117 markers on 5 chromosomes. Additional 
-details about the experimental settings are available in the original paper (Keurentjes et al. 2006,
-Alonso-Blanco et al. 1998)
-
-\emph{\sffamily Dataset Example 2. S. Cerevisiae}
-
-S. Cerevisiae dataset from the gene expression omnibus (GEO) (GDS1115 / GDS1116). This 
-dataset contains expression profiles of parental strains and haploid progenies from a 
-cross of strain BY4716 and the wild wine strain RM11-1a. Data was collected for 4482 
-probes. Genotype data for the 109 progenies was available at 282 genetic markers 
-obtained by contacting the authors of the original paper. Expression of probes was 
-measured under growth conditions containing 1\% ethanol. Additional details about the 
-experimental settings are available in the original paper (Brem et al. 2005).
-
-\emph{\sffamily Preprocessing}
-
-Probes showing little to no variance (< 0.01) were removed from the analysis. Batch 
-effects due to different hybridization dates were estimated and removed from the data 
-by using a mean centering approach (Group means were estimated and corrected).
-
-\textbf{\sffamily Algorithm: QCL mapping}
 
 Using recombinant inbred lines we introduce natural variation into a population 
 detectable as cis-QTL in a genome wide QTL scan. The effect of any such genetic 
@@ -170,6 +159,30 @@ of genes are obscured by many phenotypes co-localizing at a single genetic marke
 (p2) due to buffering the effect of any variation will 'fade' quickly and not be 
 detectable as the difference in mean phenotype in the population does not change 
 significantly.
+
+We proposed to map not differential co-expression but differential correlation to genetic 
+variation, i.e. to identify regions in the genome for which one genotype value leads to 
+correlated expression between a start gene and all other genes, exploiting the fact that any 
+cis-QTL will induce variation which will in turn lead to correlation differences among 
+individuals carrying the other genotype. We merge information coming from QCL and QTL to reveal 
+underlying genetic architecture, which would remain hidden when using only classical QTL information.
+
+We urge all QTL researchers to combine QCL analysis with existing QTL analysis to expose 
+transcriptional networks involved in the regulation of complex phenotypes. For this we 
+provide an R package with a reference implementation  of the QCL algorithm
+
+\bigskip 
+
+\section*{Methodology}
+\nopagebreak
+
+\emph{\sffamily Preprocessing}
+
+Probes showing little to no variance (< 0.01) were removed from the analysis. Batch 
+effects due to different hybridization dates were estimated and removed from the data 
+by using a mean centering approach (Group means were estimated and corrected).
+
+\section*{Algorithm: QCL mapping}
 
 QCL mapping however uses this buffering to detect interaction partners. The hypothesis 
 is that when we split the population based on genotype at the cis-marker, related phenotypes 
@@ -209,14 +222,6 @@ each marker we can plot the count of number the other phenotypes that show a sig
 difference in correlation. Overplotting chromosome, QTL information, and phenotype location 
 (if applicable) produces the single QCL plots seen in figures XX, and XX.
 
-\begin{figure}
-\centering
-<<singletrait, fig=TRUE, echo=FALSE, height=3.5>>=
-plot(qcl_result, 2, do.legend=FALSE)
-@ 
-\caption{Single trait QCL profile (A. Thaliana).\label{fig:singletrait}}
-\end{figure}
-
 \emph{\sffamily Step 3 Network scan for QCL}
 
 If we find any significant QCL information we can try to reconstruct the interaction 
@@ -224,7 +229,7 @@ network of the phenotype. We first do a single phenotype QCL scan (step 2), then
 using a permutation determin a qcl threshold, and select phenotypes which show a 
 significant change in QCL.
 
-Two things can happen: 
+Two things can occur: 
 1) No genes show a significant change in QCL, which means we 
 cannot find any interaction partners for this phenotype, or 
 2) This genes has an QCL with other genes, then the algorithm adds 
@@ -256,47 +261,64 @@ By using network scanning we only identify part of the network in which our phen
 active and closely related interaction partners. To identify a pathway or main regulatory phenotypes 
 controlling our phenotype we need to combine this information.
 
+We show two examples in which we reconstruct the genetic architecture using QCL mapping. 
+Both datasets are available inside the R package, as well as the code to analyse these 
+two datasets.
+
+\subsection*{Materials}
+\emph{\sffamily Dataset Example 1. A. Thaliana}
+
+Metabolite data from an A. Thaliana Landsberg erecta (Ler) and Cape Verde Islands (Cvi) 
+dataset from R/qtl, 24 characterized metabolites which are the products of chain elongation. 
+There are 162	recombinant inbred lines genotyped at 117 markers on 5 chromosomes. Additional 
+details about the experimental settings are available in the original paper \cite{Keurentjes:2006,AlonsoBlanco:1998}
+
+\emph{\sffamily Dataset Example 2. S. Cerevisiae}
+
+S. Cerevisiae dataset from the gene expression omnibus (GEO) \cite{Edgar:2002} (GEO 
+accession GDS1115, and GDS1116, \cite{Brem:2005}. This dataset contains expression 
+profiles of parental strains and haploid progenies from a cross of strain BY4716 and 
+the wild wine strain RM11-1a. Data was collected for 4482 probes. Genotype data 
+for the 109 progenies was available at 282 genetic markers obtained by contacting 
+the authors of the original paper. 
+Expression of probes was measured under growth conditions containing 1\% ethanol. 
+Additional details about the experimental settings are available in the original 
+paper \cite{Brem:2005}.
+
 \bigskip
-\textbf{\sffamily Results}
+\section*{Results}
 \nopagebreak
 
-Global overview of QCL scan after using a full scan for QCL
-<<echo=FALSE>>=
-  qcl_result
-@ 
-Single results from a QCL mapping, shows the pattern at the highest threshold.
-<<echo=FALSE>>=
-  qcl_result[[2]]
-@ 
+\emph{\sffamily Example 1. A. Thaliana}
 
-\emph{\sffamily The Phenotypes x Marker relations}
+QCL mapping was performed on 24 characterized metabolities measured in Arabidopsis 
+Thaliana. A significance threshold for QCL mapping was determined by using 1000 
+permutations, the outcomes can be seen in table XX. We opted for the stringent 
+threshold at P < 0.001 to use as 'significant' QCL score for further analysis.
 
-Phenotype x Marker image plot, this is 'comparable' to a QTL scan on mutliple traits.
+Overview plots of the results of the QCL mapping in Arabidopsis can be found in 
+Figure XX Phenotype to Marker interaction, which is comparable to the QTL mapping 
+(Fig. XX). The additional information obtained by QCL mapping is shown in a heatmap 
+of the Phenotype to Phenotype interaction matrix (figure XX) and the same information 
+but now represented as an interaction network is seen in figure XX
+\begin{table}[ht]
+\begin{tabular}{ l | c c }
+P-value & QCL threshold Arabidopsis & QCL threshold Saccharomyces\\
+\hline
+5 \% & 0.220 & 0.435\\
+1 \% & 0.294 & 0.495\\
+0.1 \% & 0.375 & 0.562\\
+\end{tabular}
+\caption{QCL thresholds obtained after 1000 permutations}
+\label{permutations}
+\end{table}
 
-\begin{figure}[ht]
-\centering
-<<p2mmatrix, fig=TRUE, echo=FALSE, height=3.5>>=
-par(mar=c(3,8,1.1,1.1))
-image(qcl_result, 0.5, against="markers",do.grid=FALSE)
-@ 
-\caption{Phenotypes x Markers matrix (A. Thaliana).\label{fig:p2mmatrix}}
-\end{figure}
+\emph{\sffamily Example 1. S. Cerevisiae}
 
-\emph{\sffamily The Phenotypes x Phenotypes relations}
-
-Phenotype x Phenotype image plot, additional information obtained by QCL mapping, 
-which can be used to reconstruct the underlying genetic architecture.
-\begin{figure}[ht]
-\centering
-<<p2pmatrix, fig=TRUE, echo=FALSE, height=3.5>>=
-par(mar=c(3,8,1.1,1.1))
-image(qcl_result, 0.5, against="phenotypes")
-@ 
-\caption{Phenotypes x Phenotypes matrix (A. Thaliana).\label{fig:p2pmatrix}}
-\end{figure}
+QCL mapping was performed on 
 
 \bigskip
-\textbf{\sffamily Discussion}
+\section*{Discussion}
 \nopagebreak
 
 Microarray experiments have allowed the identification of genes differentially 
@@ -319,57 +341,79 @@ hypothesize that changes in variation are affecting (by loss of) correlation in
 the normally correlated phenotypes leading to an amplification of this variation, 
 by distrupting the network environment of which endo-phenotypes are part of.
 
-\newpage
-\textbf{\sffamily Bibliography}
+\section*{Acknowledgements}
+This work was supported by the Centre for BioSystems Genomics (CBSG) and the 
+Netherlands Consortium of Systems Biology (NCSB), both of which are part of the Netherlands 
+Genomics Initiative / Netherlands Organisation for Scientific Research [to DA], and 
+by the EU 7th Framework Programme under the Research Project PANACEA, [222936 to RJ].
 
-Langfelder P, Horvath S (2008) WGCNA: an R package for weighted correlation network 
-analysis. \emph{BMC Bioinformatics}, 9:559
+Also we'd like to mention Joeri van der Velde and Konrad Zych for supporting me with some very 
+valuable feedback on figures presented here.
 
-Jansen R. C, and Nap J. P. (2001) Genetical Genomics: the added value from seggregation. 
-\emph{Trends Genet}, 17(7), 388-391.
-
-Tesson, B. M., Breitling R. and Jansen, R. C. (2010). DiffCoEx: a simple and sensitive method 
-to find differentially coexpressed gene modules. \emph{BMC Bioinformatics}, 11,497-506.
-
-Kompass, K. and Witte, J. (2011) - Co-regulatory expression quantitative trait loci mapping: 
-method and application to endometrial cancer. \emph{BMC Medical Genomics}, 4, 6.
-
-Broman, K.W., Wu, H., Sen, S. and Churchill, G.A. (2003) - R/qtl: QTL mapping in experimental 
-crosses. \emph{Bioinformatics}, 19, 889-890.
-
-Arends, D., Prins, P., Jansen, R.C. and Broman, K.W. (2010) - R/qtl: high-throughput multiple 
-QTL mapping. \emph{Bioinformatics}, 26, 2990-2992.
-
-R Development Core Team (2010) - R: A Language and Environment for Statistical Computing. 
-http://www.R-project.org, ISBN: 3-900051-07-0
-
-Edgar R., Domrachev M., Lash A.E. (2002) - Gene Expression Omnibus: NCBI gene expression and 
-hybridization array data repository. \emph{Nucleic Acids Res.}, 30,207-210.
-
-Keurentjes, J. J., Fu, J., de Vos, C. H., Lommen, A., Hall, R. D., Bino, R. J., van der Plas, 
-L. H., Jansen, R. C., Vreugdenhil, D., Koornneef, M. (2006) - The genetics of plant metabolism. 
-\emph{Nature Genetics.}, 38(7), 842-849.
-
-Alonso-Blanco, C., Peeters, A. J., Koornneef, M., Lister, C., Dean, C., van den Bosch, N., Pot, 
-J., Kuiper, M. T. (1998) - Development of an AFLP based linkage map of Ler, Col and Cvi 
-Arabidopsis thaliana ecotypes and construction of a Ler/Cvi recombinant inbred line population. 
-\emph{Plant J.}, 14, 259-271.
-
-Brem RB, Storey JD, Whittle J, Kruglyak L. (2005) - Genetic interactions between polymorphisms 
-that affect gene expression in yeast. \emph{Nature}, 436(7051),701-703.
+We'd like to thank readers for their attention, and invite them to 
+address any questions to Danny Arends, at Danny.Arends@gmail.com.
 
 \newpage
-{\small
-\noindent \textbf{\sffamily Package qcl function overview} \\
-\noindent \begin{tabular}{ll} 
-\hspace*{25mm} & \hspace*{103mm} \\ \hline
-QCLscan & Genome wide scan for QCL \\
-QCLscan.network & Scan for QCL using start gene(s) \\
-QCLpermute & Significance thresholds for QCL by permutation \\
-plot.QCL & Plot QCL profiles at increasing cut-offs \\
-image.QCL & Image a multiple phenotype scan \\
-\hline
-\end{tabular}
-}
+\bibliography{scibib}
+\bibliographystyle{Science}
+
+\newpage
+
+\section*{Figures}
+
+\begin{figure}[ht]
+  \centerline{\includegraphics{QCL.pdf}}
+  \caption{QCL mapping: The underlying hypothesis of QCL mapping. Seen here is a network of 3 phenotypes, in 
+  which expression of P1, P2 and P3 is measured, and we want to infer the hidden relation between P1 
+  and P2. In our model a genetic pertubation is causing P1 to show a QTL at a certain marker. We expect variation 
+  induced by P1 to transfer to P2, However (like in most biological systems) expression of P2 is tightly controlled, 
+  and variation seen in phenotype 1 wil not induce a QTL in phenotype 2. However when we partition individuals based 
+  on the genotype at the QTL marker of P1, we can make use of the correlation structure between P1 and P2. Allowing 
+  us to infer the relationship between phenotype 1 and 2, when we see difference in correlation between P1A and P2A 
+  and P1B and P2B. We don't observe this difference in correlation between P3 and P1, meaning there is no relation 
+  between P1 and P3}
+  \label{QCL_img}
+\end{figure}
+
+\begin{figure}
+  \centering
+<<singletrait, fig=TRUE, echo=FALSE, height=3.5>>=
+plot(qcl_result, 2, do.legend=FALSE)
+@ 
+  \caption{Single trait QCL profile (A. Thaliana) shows the number of phenotypes that have a significant 
+  QCL with the scanned phenotype at different QCL significance thresholds.\label{fig:singletrait}}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+<<p2mmatrix, fig=TRUE, echo=FALSE, height=3.5>>=
+par(mar=c(3,8,1.1,1.1))
+image(qcl_result, 0.5, against="markers",do.grid=FALSE)
+@ 
+  \caption{Phenotypes x Markers matrix (A. Thaliana) this is 'comparable' to a QTL scan on multiple traits.\label{fig:p2mmatrix}}
+\end{figure}
+
+
+\begin{figure}[ht]
+  \centering
+<<p2pmatrix, fig=TRUE, echo=FALSE, height=3.5>>=
+par(mar=c(3,8,1.1,1.1))
+image(qcl_result, 0.5, against="phenotypes")
+@ 
+  \caption{Phenotypes x Phenotypes matrix (A. Thaliana) additional information obtained by QCL mapping, 
+  which can be used to reconstruct the underlying genetic architecture.\label{fig:p2pmatrix}}
+\end{figure}
+
+\begin{figure}[ht]
+  \centerline{\includegraphics{AraNet.pdf}}
+  \caption{Reconstructed network for chain elongation in Arabidopsis Thaliana}
+  \label{AraNet}
+\end{figure}
+
+\begin{figure}[ht]
+  \centerline{\includegraphics{AraPerm.pdf}}
+  \caption{Histogram of scores obtained durting permutation of the QCL mapping methodology}
+  \label{AraPerm}
+\end{figure}
 
 \end{document}
