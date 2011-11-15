@@ -305,9 +305,9 @@ but now represented as an interaction network is seen in figure XX
 \begin{tabular}{ l | c c }
 P-value & QCL threshold Arabidopsis & QCL threshold Saccharomyces\\
 \hline
-5 \% & 0.220 & 0.435\\
-1 \% & 0.294 & 0.495\\
-0.1 \% & 0.375 & 0.562\\
+5 \% & 0.220 & 0.436\\
+1 \% & 0.294 & 0.491\\
+0.1 \% & 0.375 & 0.556\\
 \end{tabular}
 \caption{QCL thresholds obtained after 1000 permutations}
 \label{permutations}
