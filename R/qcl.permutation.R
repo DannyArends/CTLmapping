@@ -24,17 +24,17 @@ QCLpermute <- function(genotypes, phenotypes, pheno.col, n.perm=10, directory="p
       if(verbose) cat("- Permutation",x,"took:",as.numeric(el[3]-sl[3]),"Seconds.\n")
     }
   }
-  QCLpermute <- read.QCLpermute(directory,n.perm)
+  QCLpermute <- read.QCLpermute(directory,n.perm,verbose)
   invisible(QCLpermute)
 }
 
-read.QCLpermute <- function(directory="permutations", n.perm){
+read.QCLpermute <- function(directory="permutations", n.perm, verbose){
   files <- dir(directory)
   if(missing(n.perm)) n.perm <- length(files)
   if(n.perm < 1) stop(paste("No permutation files found in:",directory))
   QCLpermute <- vector("list", n.perm)
   for(x in 1:n.perm){
-    cat("Trying to read:",paste(directory,"/Permutation_",x,".txt\n",sep=""))
+    if(verbose) cat("Trying to read:",paste(directory,"/Permutation_",x,".txt\n",sep=""))
     QCLpermute[[x]]  <- read.table(paste(directory,"/Permutation_",x,".txt",sep=""))
   }
   class(QCLpermute) <- c(class(QCLpermute),"QCLpermute")

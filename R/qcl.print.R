@@ -34,7 +34,9 @@ print.QCL  <- function(x, ...){
 }
 
 print.QCLpermute <- function(x, ...){
-  maximums <- lapply(x,function(x){apply(x,2,max)})
+  maximums <- lapply(x,function(v){
+    apply(abs(v),2,max)}
+  )
   sorted <- sort(unlist(maximums))
   l <- length(sorted)
   values <- NULL
