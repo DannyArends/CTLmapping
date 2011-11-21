@@ -15,7 +15,7 @@ QCLprofiles <- function(QCLscan, qcl.threshold=0.4, against = c("markers","pheno
   phenotypenames <- NULL
   if(against[1] == "markers"){
     for(p in 1:length(QCLscan)){
-      mymatrix <- rbind(mymatrix,apply(QCLscan[[p]],2,function(x){length(which(x > qcl.threshold))}))
+      mymatrix <- rbind(mymatrix,apply(abs(QCLscan[[p]]),2,function(x){length(which(x > qcl.threshold))}))
       phenotypenames <- c(phenotypenames,attr(QCLscan[[p]],"name"))
     }
     mymatrix <- matrix(unlist(mymatrix),length(QCLscan),ncol(QCLscan[[1]]))
@@ -28,14 +28,14 @@ QCLprofiles <- function(QCLscan, qcl.threshold=0.4, against = c("markers","pheno
   if(against[1] == "phenotypes"){
     targets <- NULL
     for(p in 1:length(QCLscan)){
-      targets <- unique(c(targets,unique(as.character(unlist(apply(QCLscan[[p]],2,function(x){names(which(x > qcl.threshold))}))))))
+      targets <- unique(c(targets,unique(as.character(unlist(apply(abs(QCLscan[[p]]),2,function(x){names(which(x > qcl.threshold))}))))))
       phenotypenames <- c(phenotypenames,attr(QCLscan[[p]],"name"))
     }
     if(!is.null(targets)){
       mymatrix <- matrix(0,length(QCLscan),length(targets))
       colnames(mymatrix) <- targets
       for(p in 1:length(QCLscan)){
-        current_table <- table(as.character(unlist(apply(QCLscan[[p]],2,function(x){names(which(x > qcl.threshold))}))))
+        current_table <- table(as.character(unlist(apply(abs(QCLscan[[p]]),2,function(x){names(which(x > qcl.threshold))}))))
         mymatrix[p,names(current_table)] <- current_table
       }
       class(mymatrix) <- c(class(mymatrix),"P2Pmatrix")
