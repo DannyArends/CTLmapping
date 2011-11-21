@@ -28,11 +28,9 @@ plot.QCLscan <- function(x, pheno.col = 1, qcl.threshold =0.3, do.legend=TRUE, .
   }
 }
 
-
 plotAsLOD <- function(x, permutations, pheno.col = 1, qcl.threshold =0.3, do.legend=TRUE, ...){
-  if(missing(permutations)) 
   npheno <- length(x)
   if(pheno.col > npheno) stop("No such phenotype")
   pname <- attr(x[[pheno.col]],"name") 
-  plot(apply(apply(qcl_result[[1]],1,function(x){QCLtoLOD(x,permutations=permutations)}),1,sum),type='l')
+  plot(QCLtoLOD(x,permutations=permutations),type='l')
 }

@@ -11,7 +11,7 @@
 
 QCLtoPvalue <- function(QCLscan, permutations, pheno.col=1){
   if(missing(permutations)) stop("Please provide permutations")
-  maximums <- lapply(permutations, function(x){
+  maximums <- lapply(permutations[[pheno.col]], function(x){
     apply(abs(x), 2, max)
   })
   sorted <- sort(unlist(maximums))
@@ -53,7 +53,8 @@ QCLtoPvalue.internal <- function(QCLscore, sorted, l){
 }
 
 extrapolateBeyondRange <- function(permvalues, value = 0.6){
-  #We use the top 10% of data to estimate the GPD distribution
+  require(POT)
+  #We use the top 10% of data to estimate the GPD uppertail distribution
   mle <- fitgpd(permvalues, permvalues[.90*length(permvalues)], "mle")
   shape <- mle$param["shape"]
   scale <- mle$scale
@@ -62,8 +63,14 @@ extrapolateBeyondRange <- function(permvalues, value = 0.6){
   dens(value)
 }
 
-QCLtoLOD <- function(QCLscan, permutations){
-  apply(-log10(QCLtoPvalue(QCLscan,permutations)),1,sum)
+QCLtoLOD <- function(QCLscan, permutations, pheno.col = 1){
+  apply(-log10(QCLtoPvalue(QCLscan, permutations, pheno.col)),1,sum)
+}
+
+QCLscantoScanone <- function(cross, QCLscan, permutations, pheno.col=1){
+  scores <- QCLtoLOD(QCLscan, permutations, pheno.col)
+  scores[which(!is.finite(scores))] <- NA
+  lodscorestoscanone(cross, scores)
 }
 
 plot.QCLpermute <- function(x, ...){

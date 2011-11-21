@@ -10,10 +10,13 @@
 #
 
 #-- QCLpermute main function --#
-QCLpermute <- function(genotypes, phenotypes, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, ...){
+QCLpermute <- function(genotypes, phenotypes, pheno.col, n.perm=10, directory="permutations", verbose=FALSE, ...){
   if(!file.exists(directory)) dir.create(directory)
   if(missing(pheno.col)) pheno.col <- 1:ncol(phenotypes)
+  QCLperm <- vector("list",length(pheno.col))
+  idx <- 1
   for(p in pheno.col){
+    ss <- proc.time()
     cat("Starting permutation for phenotype",p,"\n")
     for(x in 1:n.perm){
       sl <- proc.time()
@@ -23,9 +26,11 @@ QCLpermute <- function(genotypes, phenotypes, pheno.col, n.perm=10, directory="p
       el <- proc.time()
       if(verbose) cat("- Permutation",x,"took:",as.numeric(el[3]-sl[3]),"Seconds.\n")
     }
+    cat("-",x,"Permutations took:",as.numeric(el[3]-ss[3]),"Seconds.\n")
+    QCLperm[[idx]] <- read.QCLpermute(directory,n.perm,verbose)
+    idx <- idx+1
   }
-  QCLpermute <- read.QCLpermute(directory,n.perm,verbose)
-  invisible(QCLpermute)
+  invisible(QCLperm)
 }
 
 read.QCLpermute <- function(directory="permutations", n.perm, verbose){
