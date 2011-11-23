@@ -176,19 +176,13 @@ provide an R package with a reference implementation  of the QCL algorithm
 \section*{Methodology}
 \nopagebreak
 
-\emph{\sffamily Preprocessing}
+\emph{\sffamily QCL mapping}
 
-Probes showing little to no variance (< 0.01) were removed from the analysis. Batch 
-effects due to different hybridization dates were estimated and removed from the data 
-by using a mean centering approach (Group means were estimated and corrected).
-
-\section*{Algorithm: QCL mapping}
-
-QCL mapping however uses this buffering to detect interaction partners. The hypothesis 
+QCL mapping uses this buffering to detect interaction partners. The hypothesis 
 is that when we split the population based on genotype at the cis-marker, related phenotypes 
 will loosing correlation with the gene under investigation. This allows us to not only 
-only identify its interaction partners. QCL mapping is thus not suffering from (p1) many 
-phenotypes co-localizing). Additionally it is more sensitive to detect variation caused by 
+only identify its interaction partners, but also QCL mapping does not suffering from (p1) many 
+phenotypes co-localizing. Additionally it is more sensitive to detect variation caused by 
 regulators genes because variation of these genes causes many 'downstream' phenotypes 
 to show differential correlation with the inducing phenotype, because QCL relies on 
 correlation changes as opposed to differences in phenotype mean QCL is unaffected by (p2).
@@ -287,6 +281,12 @@ paper \cite{Brem:2005}.
 
 \bigskip
 \section*{Results}
+\emph{\sffamily Preprocessing}
+
+Probes showing little to no variance (< 0.01) were removed from the analysis. Batch 
+effects due to different hybridization dates were estimated and removed from the data 
+by using a mean centering approach (Group means were estimated and corrected).
+
 \nopagebreak
 
 \emph{\sffamily Example 1. A. Thaliana}

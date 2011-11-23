@@ -64,11 +64,15 @@ extrapolateBeyondRange <- function(permvalues, value = 0.6){
 }
 
 QCLtoLOD <- function(QCLscan, permutations, pheno.col = 1){
-  apply(-log10(QCLtoPvalue(QCLscan, permutations, pheno.col)),1,sum)
+  -log10(QCLtoPvalue(QCLscan, permutations, pheno.col))
+}
+
+QCLtoLODvector <- function(QCLscan, permutations, pheno.col = 1){
+  apply(QCLtoLOD(QCLscan, permutations, pheno.col),1,sum)
 }
 
 QCLscantoScanone <- function(cross, QCLscan, permutations, pheno.col=1){
-  scores <- QCLtoLOD(QCLscan, permutations, pheno.col)
+  scores <- QCLtoLODvector(QCLscan, permutations, pheno.col)
   scores[which(!is.finite(scores))] <- NA
   lodscorestoscanone(cross, scores)
 }

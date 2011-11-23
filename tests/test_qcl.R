@@ -6,7 +6,7 @@ if(has_rqtl()){
   cross <- read.cross("csvr",file="brem_cross.csvr",geno=c("AA","AB"))
   cross <- convert2riself(cross)
 
-  QCL <- QCLscan.cross(cross,1:3, verbose=T)
+  QCL <- QCLscan.cross(cross,1, verbose=T)
   image(QCL)
   plot(QCL)
 
