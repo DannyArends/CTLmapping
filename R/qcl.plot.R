@@ -34,3 +34,21 @@ plotAsLOD <- function(x, permutations, pheno.col = 1, qcl.threshold =0.3, do.leg
   pname <- attr(x[[pheno.col]],"name") 
   plot(QCLtoLOD(x,permutations=permutations),type='l')
 }
+
+plotAsStackedHist <- function(qcl_result,qcl_perms,pheno.col=1, ...){
+  summarized <- QCLtoLODvector(qcl_result, qcl_perms, pheno.col=pheno.col)
+  plot(summarized,type='l',...)
+  p <- rep(0,ncol(qcl_result[[pheno.col]]))
+  i <- 1;
+  mycolors <- rainbow(nrow(qcl_result[[pheno.col]]))
+  apply(QCLtoLOD(qcl_result,qcl_perms,pheno.col),2,
+    function(d){
+     for(idx in 1:length(d)){
+        rect(idx-0.5,p[idx],idx+0.5,p[idx]+d[idx],type='s',col=mycolors[i])
+      }
+      p <<- p + d
+      i <<- i + 1
+    }
+  )
+  points(summarized,type='l',lwd=2)
+}
