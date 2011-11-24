@@ -19,8 +19,8 @@ image.QCLscan <- function(x, qcl_perms, qcl.threshold = 0.35, against = c("marke
     for(p in 1:length(x)){
       if(verbose) cat("Processing:",p,"from QCL to LOD\n")
       mymatrix <- rbind(mymatrix,QCLtoLODvector(x,qcl_perms,p))
-      rownames(mymatrix) <- unlist(lapply(x,attr,"name"))
     }
+    rownames(mymatrix) <- unlist(lapply(x,attr,"name"))
     mainlabel <- paste("QCL phenotypes vs",against[1])
   }
   if(!is.null(mymatrix)){ 

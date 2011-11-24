@@ -93,14 +93,14 @@ options(width=87, digits=3, scipen=4)
 
 <<echo=FALSE,results=hide>>=
   require(qcl)
-  set.seed(61777369)
+  set.seed(200)
   data(ath.metabolites) # Arabidopsis Thaliana dataset
   cat("QCL scan\n")
   qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes)
   cat("QTL scan\n")
   qtl_result <- QTLscan(ath.metab$genotypes, ath.metab$phenotypes)
   cat("QCL permutation\n")
-  qcl_perms <- QCLpermute(ath.metab$genotypes, ath.metab$phenotypes,1:24,20)
+  qcl_perms <- QCLpermute(ath.metab$genotypes, ath.metab$phenotypes,1:24,20, n.cores = 3)
   #qcl_perms <- vector("list",24)
   #idx <- 1
   #for(p in 1:24){
@@ -288,15 +288,17 @@ options(width=87, digits=3, scipen=4)
   difference in squared correlation larger then 0.7 (yellow).
   
   \emph{\sffamily Single trait QCL}\\
-  The 24 QCL profiles were compared to the QTL profiles previously determined. We observed 3 cases:
-  1) Additional QCL found, where no QTL was present as seen in the QCL profile X3.Hydroxypropyl (Fig. \ref{fig:singletraitLOD}), 
-  These are the cases in which the loss of variation in the genes underneath the QCL is not causing 
-  variation differences in the observed phenotype, but correlation differences.
-  2) QCL co-localized with QTL, (Also QCL gives a detailed view of which phenotypes are underneath its peek, we 
-  interpret this as variation transfered from the phenotypes underneath the QCL to the phenotype investigated.
-  3) QTL with no QCL, we interpret this as the source of the variation.
-  Analysis in this way of all 24 Single trait QCL profiles combined with their QTL profiles 
-  allows us to reconstruct the source of natural variation and follow it down the network.
+  The 24 QCL profiles were compared to the QTL profiles previously determined. We observed 3 cases:\\
+  1) Additional QCL found, where no QTL was present as seen in the QCL profile X3.Hydroxypropyl 
+  (Fig. \ref{fig:singletraitLOD}), these are the cases in which the loss of variation in the genes 
+  underneath the QCL is not causing variation differences in the observed phenotype, but still 
+  we're able to detect the correlation differences.\\
+  2) QCL co-localized with QTL, in this situation QCL gives a detailed view of which phenotypes 
+  are underneath its peek, we interpret this as variation transfered from the phenotypes underneath 
+  the QCL to the phenotype investigated.\\
+  3) QTL with no QCL, we interpret this as the source of the variation. Analysis in this way of 
+  all 24 Single trait QCL profiles combined with their QTL profiles allows us to reconstruct the 
+  source of natural variation and follow it down the network.
   
   \emph{\sffamily QCL combined with QTL}\\
   Plots of the results of the QCL mapping in Arabidopsis can be found in 
