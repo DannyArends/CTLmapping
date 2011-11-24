@@ -33,12 +33,20 @@ QCLtoPvalue.internal <- function(QCLscore, sorted, l){
   res <- NULL
   warn <- TRUE
   for(y in QCLscore){
-    index_l <- min(which(sorted > y))
-    index_r <- max(which(sorted < y))
+    if(!is.na(which(sorted > y)&&1)){
+      index_l <- min(which(sorted > y))
+    }else{
+      index_l <- Inf
+    }
+    if(!is.na(which(sorted < y)&&1)){
+      index_r <- max(which(sorted < y))
+    }else{
+      index_r <- Inf
+    }
     if(!is.finite(index_l)){
       res <- c(res,extrapolateBeyondRange(sorted, y)) #res <- c(res,1-((index_r-1)/l))
       if(warn){
-        cat("Warning: scores out of permutation range, please do more permutations\n")
+        #cat("Warning: scores out of permutation range, please do more permutations\n")
         warn <- FALSE  
       }
     }
@@ -60,6 +68,9 @@ extrapolateBeyondRange <- function(permvalues, value = 0.6){
   scale <- mle$scale
   loc <- mle$threshold[1]
   dens <- function(x) dgpd(x, loc, scale, shape)
+  while(as.numeric(dens(value))==0){
+    value <- value - 0.01
+  }
   dens(value)
 }
 
