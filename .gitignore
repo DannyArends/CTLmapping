@@ -17,3 +17,8 @@ data/
 tests/tmp_kegg
 *.attributes
 *.sif
+*.aux
+*.bbl
+*.blg
+*.log
+inst/doc/permutations/*
