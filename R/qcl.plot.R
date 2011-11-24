@@ -28,27 +28,33 @@ plot.QCLscan <- function(x, pheno.col = 1, qcl.threshold =0.3, do.legend=TRUE, .
   }
 }
 
-plotAsLOD <- function(x, permutations, pheno.col = 1, qcl.threshold =0.3, do.legend=TRUE, ...){
+plotAsLOD <- function(x, permutations, pheno.col = 1, addQTL=TRUE, ...){
   npheno <- length(x)
   if(pheno.col > npheno) stop("No such phenotype")
-  pname <- attr(x[[pheno.col]],"name") 
-  plot(QCLtoLOD(x,permutations=permutations),type='l')
+  pname <- paste("Comparison QCL, QTL",attr(x[[pheno.col]],"name"))
+  QCLscores <- QCLtoLODvector(x, permutations, pheno.col=pheno.col)
+  QTLscores <- as.numeric(QTLscan(ath.metab$genotypes, ath.metab$phenotypes,1))
+  plot(c(0,length(QCLscores)),c(0,max(c(QCLscores,QTLscores))), main=pname, ylab="LOD",xlab="Marker")
+  points(QCLscores,type='l',col="black",lwd=3)
+  points(QTLscores,type='l',col="red",lwd=2,lty=3)
+  legend("topleft",c("QCL","QTL"),col=c("black","red"),lty=c(1,3),lwd=c(3,2))
 }
 
-plotAsStackedHist <- function(qcl_result,qcl_perms,pheno.col=1, ...){
+plotAsStackedHist <- function(qcl_result, qcl_perms, pheno.col=1, do.legend=TRUE, ...){
   summarized <- QCLtoLODvector(qcl_result, qcl_perms, pheno.col=pheno.col)
-  plot(summarized,type='l',...)
+  plot(summarized, type='l',main=attr(qcl_result[[pheno.col]],"name"),...)
   p <- rep(0,ncol(qcl_result[[pheno.col]]))
   i <- 1;
   mycolors <- rainbow(nrow(qcl_result[[pheno.col]]))
   apply(QCLtoLOD(qcl_result,qcl_perms,pheno.col),2,
     function(d){
      for(idx in 1:length(d)){
-        rect(idx-0.5,p[idx],idx+0.5,p[idx]+d[idx],type='s',col=mycolors[i])
+        rect(idx-0.5,p[idx],idx+0.5,p[idx]+d[idx],col=mycolors[i])
       }
       p <<- p + d
       i <<- i + 1
     }
   )
+  if(do.legend) legend("topleft",unlist(lapply(qcl_result,attr,"name")),col=mycolors,lwd=1,cex=0.7)
   points(summarized,type='l',lwd=2)
 }
