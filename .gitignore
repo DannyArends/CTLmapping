@@ -20,5 +20,6 @@ tests/tmp_kegg
 *.aux
 *.bbl
 *.blg
+*.tex
 *.log
 inst/doc/permutations/*
