@@ -100,7 +100,9 @@ options(width=87, digits=3, scipen=4)
   cat("QTL scan\n")
   qtl_result <- QTLscan(ath.metab$genotypes, ath.metab$phenotypes)
   cat("QCL permutation\n")
-  qcl_perms <- QCLpermute(ath.metab$genotypes, ath.metab$phenotypes,1:24,20, n.cores = 3)
+  qcl_perms1 <- QCLpermute(ath.metab$genotypes, ath.metab$phenotypes, 1:3, 200, n.cores = 3)
+  qcl_perms2 <- QCLpermute(ath.metab$genotypes, ath.metab$phenotypes, 4:24, 50, n.cores = 3)
+  qcl_perms <- c(qcl_perms1,qcl_perms2)
   #qcl_perms <- vector("list",24)
   #idx <- 1
   #for(p in 1:24){
@@ -186,9 +188,9 @@ options(width=87, digits=3, scipen=4)
 \emph{\sffamily QCL mapping}\\
   As mentioned in the introduction QCL mapping uses buffering to detect interaction partners. 
   When we split the population based on genotype at a QTL marker, only related phenotypes 
-  will loosing correlation with the gene under investigation. This allows us to not only 
-  only identify its interaction partners, but also means QCL mapping does not suffering from 
-  (p1) many phenotypes co-localizing. Additionally it is more sensitive to detect variation 
+  will loose correlation with the gene under investigation. This allows us to not only 
+  only identify its interaction partners, while not suffering from (p1) many phenotypes 
+  co-localizing. Additionally it is more sensitive to detect variation 
   caused by regulatory phenotypes because variation of these regulators causes many 'downstream' 
   phenotypes to show differential correlation with the inducing phenotype, because QCL relies on 
   correlation changes as opposed to differences in phenotype mean QCL is unaffected by (p2).
@@ -213,8 +215,9 @@ options(width=87, digits=3, scipen=4)
   real data which is higher than any QCL score obtained during permutation. When this 
   happens we use a generalized Pareto distribution (GPD) to estimate the extreme tail 
   of the distribution \cite{Knijnenburg:2009}, to also get likelyhood estimates for the 
-  extreme scores observed. See figures XX, and XX showing the score distribution in 
-  permuted data, Fig XX also shows a tail estimation using the GPD method.
+  extreme scores observed. See Fig. \ref{fig:permutation_scores} showing the score 
+  distribution in permuted data of 3 traits in A. Thaliana, Fig XX also shows a tail 
+  estimation using the GPD method.
 
 \emph{\sffamily Creating single trait QCL profiles}\\
   After permutation single trait QCL profiles can be obtained by transforming the QCL scores 
@@ -383,7 +386,7 @@ address any questions to Danny Arends, at Danny.Arends@gmail.com.
 
 \begin{figure}[ht]
   \centering
-<<permutation_scores, fig=TRUE, echo=FALSE, height=3.5>>=
+<<permutation_scores, fig=TRUE, echo=FALSE, height=3.0>>=
 op <- par(cex=0.5)
 plot(c(0,0.8),c(0,400),type='n',main="QCL scores permutations",ylab="Frequency",xlab="Difference in correlation^2")
 hist(qcl_perms[[3]],add=T, col="yellow")
@@ -440,7 +443,7 @@ axis(1,colnames(qtl_result),at=1:ncol(qtl_result),las=2,cex.axis=0.3)
 
 \begin{figure}[ht]
   \centering
-<<p2pmatrix, fig=TRUE, echo=FALSE, height=3.5>>=
+<<p2pmatrix, fig=TRUE, echo=FALSE, height=3.0>>=
 par(mar=c(3,8,1.1,1.1))
 image(qcl_result, 0.5, against="phenotypes")
 @ 
