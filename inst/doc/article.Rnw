@@ -388,7 +388,7 @@ address any questions to Danny Arends, at Danny.Arends@gmail.com.
   \centering
 <<permutation_scores, fig=TRUE, echo=FALSE, height=3.0>>=
 op <- par(cex=0.5)
-plot(c(0,0.8),c(0,400),type='n',main="QCL scores permutations",ylab="Frequency",xlab="Difference in correlation^2")
+plot(c(0,0.8),c(0,1000),type='n',main="QCL scores permutations",ylab="Frequency",xlab="Difference in correlation^2")
 hist(qcl_perms[[3]],add=T, col="yellow")
 hist(qcl_perms[[2]],add=T, col="red")
 hist(qcl_perms[[1]],add=T, col="green")
