@@ -20,7 +20,11 @@ QCLpermuteMC <- function(genotypes, phenotypes, pheno.col, n.perm=10, n.cores=2,
   for(p in pheno.col){
     ss <- proc.time()
     cat("Starting multi core permutation for phenotype",p,"\n")
-    parLapply(cl,as.list(1:n.perm),get("QCLpermute.internal"), genotypes=genotypes, phenotypes=phenotypes, pheno.col=p,directory=directory,verbose=verbose)
+    rvm <- NULL
+    for(x in 1:n.perm){
+      rvm <- rbind(rvm,sample(nrow(phenotypes)))
+    }
+    parLapply(cl,as.list(1:n.perm),get("QCLpermute.internal"), genotypes=genotypes, phenotypes=phenotypes, pheno.col=p, rvm, directory=directory,verbose=verbose)
     QCLperm[[idx]] <- read.QCLpermute(directory, p, n.perm, verbose)
     idx <- idx+1
     el <- proc.time()
@@ -30,11 +34,11 @@ QCLpermuteMC <- function(genotypes, phenotypes, pheno.col, n.perm=10, n.cores=2,
   invisible(QCLperm)
 }
 
-QCLpermute.internal <- function(perm, genotypes, phenotypes, pheno.col, directory="permutations", verbose=FALSE, ...){
+QCLpermute.internal <- function(perm, genotypes, phenotypes, pheno.col, rvm, directory="permutations", verbose=FALSE, ...){
   require(qcl)
   sl <- proc.time()
   if(verbose) cat("- Starting permutation",perm,"\n")
-  phenotypes <- phenotypes[sample(nrow(phenotypes)),]
+  phenotypes <- phenotypes[rvm[perm,],]
   write.table(QCLscan(genotypes, phenotypes, pheno.col, ...),file=paste(directory,"/Permutation_",pheno.col,"_",perm,".txt",sep=""))
   el <- proc.time()
   if(verbose) cat("- permutation",perm,"took:",as.numeric(el[3]-sl[3]),"seconds.\n")
@@ -55,7 +59,10 @@ QCLpermute <- function(genotypes, phenotypes, pheno.col, n.perm=10, n.cores=2, d
       ss <- proc.time()
       cat("Starting permutation for phenotype",p,"\n")
       for(x in 1:n.perm){
-        QCLpermute.internal(x,genotypes,phenotypes,p,directory,verbose)
+        rvm <- rbind(rvm,sample(nrow(phenotypes)))
+      }
+      for(x in 1:n.perm){
+        QCLpermute.internal(x,genotypes,phenotypes,p,rvm,directory,verbose)
       }
       cat("-",n.perm,"permutations took:",as.numeric(el[3]-ss[3]),"seconds.\n")
       QCLperm[[idx]] <- read.QCLpermute(directory, p, n.perm, verbose)

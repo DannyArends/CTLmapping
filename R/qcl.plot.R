@@ -16,7 +16,7 @@ plot.QCLscan <- function(x, pheno.col = 1, qcl.threshold =0.3, do.legend=TRUE, .
   totpheno <- dim(x[[pheno.col]])[1]
   totmarkers <- dim(x[[pheno.col]])[2]
   y_range <- c(0,1.25*max(QCLprofiles(x,qcl.threshold)[pname,]))
-  plot(c(0,totmarkers),y_range,type="n",main=paste("QCL mapping of ",attr(x[[pheno.col]],"name")),ylab="# of significant QCL", xlab="Genetic marker")
+  plot(c(0,totmarkers),y_range,type="n",main=paste("QCL mapping of",attr(x[[pheno.col]],"name")),ylab="# of significant QCL", xlab="Genetic marker")
   colorz <- NULL
   max_value <- max(abs(x[[pheno.col]]))
   for(t in seq(qcl.threshold,max_value,0.05)){
@@ -31,10 +31,10 @@ plot.QCLscan <- function(x, pheno.col = 1, qcl.threshold =0.3, do.legend=TRUE, .
 plotAsLOD <- function(x, permutations, pheno.col = 1, addQTL=TRUE, ...){
   npheno <- length(x)
   if(pheno.col > npheno) stop("No such phenotype")
-  pname <- paste("Comparison QCL, QTL",attr(x[[pheno.col]],"name"))
+  pname <- paste("Comparison QCL:QTL of",attr(x[[pheno.col]],"name"))
   QCLscores <- QCLtoLODvector(x, permutations, pheno.col=pheno.col)
   QTLscores <- as.numeric(QTLscan(ath.metab$genotypes, ath.metab$phenotypes,1))
-  plot(c(0,length(QCLscores)),c(0,max(c(QCLscores,QTLscores))), main=pname, ylab="LOD",xlab="Marker")
+  plot(c(0,length(QCLscores)),c(0,max(c(QCLscores,QTLscores))),type='n', main=pname, ylab="LOD",xlab="Marker")
   points(QCLscores,type='l',col="black",lwd=3)
   points(QTLscores,type='l',col="red",lwd=2,lty=3)
   legend("topleft",c("QCL","QTL"),col=c("black","red"),lty=c(1,3),lwd=c(3,2))
@@ -42,7 +42,7 @@ plotAsLOD <- function(x, permutations, pheno.col = 1, addQTL=TRUE, ...){
 
 plotAsStackedHist <- function(qcl_result, qcl_perms, pheno.col=1, do.legend=TRUE, ...){
   summarized <- QCLtoLODvector(qcl_result, qcl_perms, pheno.col=pheno.col)
-  plot(summarized, type='l',main=attr(qcl_result[[pheno.col]],"name"),...)
+  plot(summarized, type='l',main=paste("Phenotype contribution to QCL of",attr(qcl_result[[pheno.col]],"name")),...)
   p <- rep(0,ncol(qcl_result[[pheno.col]]))
   i <- 1;
   mycolors <- rainbow(nrow(qcl_result[[pheno.col]]))

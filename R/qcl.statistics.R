@@ -46,7 +46,7 @@ QCLtoPvalue.internal <- function(QCLscore, sorted, l){
     if(!is.finite(index_l)){
       res <- c(res,extrapolateBeyondRange(sorted, y)) #res <- c(res,1-((index_r-1)/l))
       if(warn){
-        #cat("Warning: scores out of permutation range, please do more permutations\n")
+        cat("Warning: scores out of permutation range, please do more permutations\n")
         warn <- FALSE  
       }
     }
@@ -68,8 +68,14 @@ extrapolateBeyondRange <- function(permvalues, value = 0.6){
   scale <- mle$scale
   loc <- mle$threshold[1]
   dens <- function(x) dgpd(x, loc, scale, shape)
+  warn <- FALSE
+  prev.value <- value
   while(as.numeric(dens(value))==0){
+    warn <- TRUE
     value <- value - 0.01
+  }
+  if(warn){
+    cat("Warning: scores out of permutation range, unable to estimate correctly",value,"/",prev.value,"\n")
   }
   dens(value)
 }
