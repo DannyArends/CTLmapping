@@ -9,14 +9,24 @@
 # Example data C. Elegans and available at request ( Danny.Arends@gmail.com )
 #
 
-QCLtoPvalue <- function(QCLscan, permutations, pheno.col=1){
+QCLtoPvalue <- function(QCLscan, permutations, pheno.col=1, onlySignificant = TRUE){
   if(missing(permutations)) stop("Please provide permutations")
   maximums <- lapply(permutations[[pheno.col]], function(x){
     apply(abs(x), 2, max)
   })
   sorted <- sort(unlist(maximums))
   l <- length(sorted)
-  apply(abs(QCLscan[[pheno.col]]),1,function(x){QCLtoPvalue.internal(x,sorted,l)})
+  if(onlySignificant){
+    mysignificant <- as.numeric(which(apply(abs(QCLscan[[pheno.col]]),1,max) > getPermuteThresholds(QCL_p, pheno.col)[1]))
+    if(length(mysignificant) != 0){
+      scaled <- abs(QCLscan[[pheno.col]][mysignificant, ])
+    }else{
+      scaled <- abs(QCLscan[[pheno.col]])
+    }
+  }else{
+    scaled <- abs(QCLscan[[pheno.col]])
+  }
+  apply(scaled, 1, function(x){QCLtoPvalue.internal(x,sorted,l)})
 }
 
 QCLscoretoPvalue <- function(QCLscore, permutations){
@@ -25,7 +35,7 @@ QCLscoretoPvalue <- function(QCLscore, permutations){
     apply(abs(x), 2, max)
   })
   sorted <- sort(unlist(maximums))
-  sorted <- sort(unlist(maximums))
+  l <- length(sorted)
   QCLtoPvalue.internal(QCLscore,sorted,l)
 }
 
@@ -80,12 +90,12 @@ extrapolateBeyondRange <- function(permvalues, value = 0.6){
   dens(value)
 }
 
-QCLtoLOD <- function(QCLscan, permutations, pheno.col = 1){
-  -log10(QCLtoPvalue(QCLscan, permutations, pheno.col))
+QCLtoLOD <- function(QCLscan, permutations, pheno.col = 1, onlySignificant = TRUE){
+  -log10(QCLtoPvalue(QCLscan, permutations, pheno.col, onlySignificant))
 }
 
 QCLtoLODvector <- function(QCLscan, permutations, pheno.col = 1){
-  apply(QCLtoLOD(QCLscan, permutations, pheno.col),1,sum)
+  apply(QCLtoLOD(QCLscan, permutations, pheno.col, FALSE),1,sum)
 }
 
 QCLscantoScanone <- function(cross, QCLscan, permutations, pheno.col=1){

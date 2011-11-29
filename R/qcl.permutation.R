@@ -85,7 +85,7 @@ read.QCLpermute <- function(directory="permutations", pheno.col=1, n.perm, verbo
   invisible(QCLpermute)
 }
 
-significance.QCLHotSpot <- function(QCLpermute,significant=212){
+significance.QCLHotSpot <- function(QCLpermute, significant=212){
   significant <- print.QCLpermute(QCLpermute)[3]
   maximums <- lapply(QCLpermute,function(x){max(apply(x,1,function(x){sum(x > significant)}))})
   sorted <- sort(unlist(maximums))
