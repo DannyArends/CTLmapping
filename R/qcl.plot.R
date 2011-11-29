@@ -28,25 +28,29 @@ plot.QCLscan <- function(x, pheno.col = 1, qcl.threshold =0.3, do.legend=TRUE, .
   }
 }
 
-plotAsLOD <- function(x, permutations, pheno.col = 1, addQTL=TRUE, ...){
-  npheno <- length(x)
+plotAsLOD <- function(QTLscores, QCLscan, permutations, pheno.col = 1){
+  npheno <- length(QCLscan)
   if(pheno.col > npheno) stop("No such phenotype")
-  pname <- paste("Comparison QCL:QTL of",attr(x[[pheno.col]],"name"))
-  QCLscores <- QCLtoLODvector(x, permutations, pheno.col=pheno.col)
-  QTLscores <- as.numeric(QTLscan(ath.metab$genotypes, ath.metab$phenotypes,1))
+  pname <- paste("Comparison QCL:QTL of",attr(QCLscan[[pheno.col]],"name"))
+  QCLscores <- QCLtoLODvector(QCLscan, permutations, pheno.col=pheno.col)
   plot(c(0,length(QCLscores)),c(0,max(c(QCLscores,QTLscores))),type='n', main=pname, ylab="LOD",xlab="Marker")
   points(QCLscores,type='l',col="black",lwd=3)
   points(QTLscores,type='l',col="red",lwd=2,lty=3)
   legend("topleft",c("QCL","QTL"),col=c("black","red"),lty=c(1,3),lwd=c(3,2))
 }
 
-plotAsStackedHist <- function(qcl_result, qcl_perms, pheno.col=1, do.legend=TRUE, ...){
+plotAsStackedHist <- function(qcl_result, qcl_perms, pheno.col=1, onlySignificant = TRUE, do.legend=TRUE, ...){
   summarized <- QCLtoLODvector(qcl_result, qcl_perms, pheno.col=pheno.col)
   plot(summarized, type='l',main=paste("Phenotype contribution to QCL of",attr(qcl_result[[pheno.col]],"name")),...)
   p <- rep(0,ncol(qcl_result[[pheno.col]]))
   i <- 1;
-  mycolors <- rainbow(nrow(qcl_result[[pheno.col]]))
-  apply(QCLtoLOD(qcl_result,qcl_perms,pheno.col),2,
+  QCLmatrix <- QCLtoLOD(qcl_result, qcl_perms, pheno.col, onlySignificant)
+  if(!onlySignificant && ncol(QCLmatrix) > 15){
+    cat("Warning disabled the legend please use onlySignificant = TRUE")
+    do.legend=FALSE
+  }
+  mycolors <- rainbow(ncol(QCLmatrix))
+  apply(QCLmatrix,2,
     function(d){
      for(idx in 1:length(d)){
         rect(idx-0.5,p[idx],idx+0.5,p[idx]+d[idx],col=mycolors[i])
@@ -55,6 +59,7 @@ plotAsStackedHist <- function(qcl_result, qcl_perms, pheno.col=1, do.legend=TRUE
       i <<- i + 1
     }
   )
-  if(do.legend) legend("topleft",unlist(lapply(qcl_result,attr,"name")),col=mycolors,lwd=1,cex=0.7)
+  if(do.legend) legend("topleft",colnames(QCLmatrix),col=mycolors,lwd=1,cex=0.7)
   points(summarized,type='l',lwd=2)
+  invisible(QCLmatrix)
 }
