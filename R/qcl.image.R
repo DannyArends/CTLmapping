@@ -8,9 +8,9 @@
 # Image plot routines for QCL analysis
 #
 
-image.QCLscan <- function(x, qcl_perms, qcl.threshold = 0.35, against = c("markers","phenotypes"), do.grid=TRUE, grid.col = "black", verbose = FALSE, ...){
+image.QCLscan <- function(x, QCLpermute, qcl.threshold = 0.35, against = c("markers","phenotypes"), do.grid=TRUE, grid.col = "black", verbose = FALSE, ...){
   colorrange <- c("white",gray.colors(10)[10:1])
-  if(missing(qcl_perms) || against=="phenotypes"){
+  if(missing(QCLpermute) || against=="phenotypes"){
     if(verbose) cat("No permutations, using a cut-off leading to sub-optimal results\n")
     mymatrix <- QCLprofiles(x, qcl.threshold=qcl.threshold, against=against)
     mainlabel <- paste("QCLs at",qcl.threshold,"phenotypes vs",against[1])
@@ -18,7 +18,7 @@ image.QCLscan <- function(x, qcl_perms, qcl.threshold = 0.35, against = c("marke
     mymatrix <- NULL
     for(p in 1:length(x)){
       if(verbose) cat("Processing:",p,"from QCL to LOD\n")
-      mymatrix <- rbind(mymatrix,QCLtoLODvector(x,qcl_perms,p))
+      mymatrix <- rbind(mymatrix,QCLtoLODvector(x, QCLpermute, p))
     }
     rownames(mymatrix) <- unlist(lapply(x,attr,"name"))
     mainlabel <- paste("QCL phenotypes vs",against[1])

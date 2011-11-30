@@ -10,8 +10,8 @@
 
 #-- QCLscan main function --#
 QCLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), verbose = FALSE){
-  if(missing(genotypes)) stop("genotypes are missing")
-  if(missing(phenotypes)) stop("phenotypes are missing")
+  if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
+  if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   results <- vector("list",length(pheno.col))
   cnt <- 1
   for(x in pheno.col){
@@ -38,7 +38,7 @@ QCLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), verbo
 
 #-- R/qtl interface --#
 QCLscan.cross <- function(cross, pheno.col, verbose = FALSE){
-  if(missing(cross)) stop("cross is missing")
+  if(missing(cross)) stop("argument 'cross' is missing, with no default")
   if(get(".has_rqtl", envir = .QclEnv)){
     require(qtl)
     phenotypes <- apply(qtl::pull.pheno(cross),2,as.numeric)
