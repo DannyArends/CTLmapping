@@ -9,9 +9,10 @@
 # Example data C. Elegans and available at request ( Danny.Arends@gmail.com )
 #
 
-QCLtoPvalue <- function(QCLscan, permutations, pheno.col=1, onlySignificant = TRUE){
-  if(missing(permutations)) stop("Please provide permutations")
-  maximums <- lapply(permutations[[pheno.col]], function(x){
+QCLtoPvalue <- function(QCLscan, QCLpermute, pheno.col=1, onlySignificant = TRUE){
+  if(missing(QCLscore)) stop("argument 'QCLscore' is missing, with no default")
+  if(missing(QCLpermute)) stop("argument 'QCLpermute' is missing, with no default")
+  maximums <- lapply(QCLpermute[[pheno.col]], function(x){
     apply(abs(x), 2, max)
   })
   sorted <- sort(unlist(maximums))
@@ -29,32 +30,33 @@ QCLtoPvalue <- function(QCLscan, permutations, pheno.col=1, onlySignificant = TR
   apply(scaled, 1, function(x){QCLtoPvalue.internal(x,sorted,l)})
 }
 
-QCLscoretoPvalue <- function(QCLscore, permutations){
-  if(missing(permutations)) stop("Please provide permutations")
-  maximums <- lapply(permutations, function(x){
+QCLscoretoPvalue <- function(QCLscore, QCLpermute){
+  if(missing(QCLscore)) stop("argument 'QCLscore' is missing, with no default")
+  if(missing(QCLpermute)) stop("argument 'QCLpermute' is missing, with no default")
+  maximums <- lapply(QCLpermute, function(x){
     apply(abs(x), 2, max)
   })
-  sorted <- sort(unlist(maximums))
-  l <- length(sorted)
-  QCLtoPvalue.internal(QCLscore,sorted,l)
+  permvalues <- sort(unlist(maximums))
+  l <- length(permvalues)
+  QCLtoPvalue.internal(QCLscore,permvalues,l)
 }
 
-QCLtoPvalue.internal <- function(QCLscore, sorted, l){
+QCLtoPvalue.internal <- function(QCLscore, permvalues, l){
   res <- NULL
   warn <- TRUE
   for(y in QCLscore){
-    if(!is.na(which(sorted > y)&&1)){
-      index_l <- min(which(sorted > y))
+    if(!is.na(which(permvalues > y)&&1)){
+      index_l <- min(which(permvalues > y))
     }else{
       index_l <- Inf
     }
-    if(!is.na(which(sorted < y)&&1)){
-      index_r <- max(which(sorted < y))
+    if(!is.na(which(permvalues < y)&&1)){
+      index_r <- max(which(permvalues < y))
     }else{
       index_r <- Inf
     }
     if(!is.finite(index_l)){
-      res <- c(res,extrapolateBeyondRange(sorted, y)) #res <- c(res,1-((index_r-1)/l))
+      res <- c(res,extrapolateBeyondRange(permvalues, y)) #res <- c(res,1-((index_r-1)/l))
       if(warn){
         cat("Warning: scores out of permutation range, please do more permutations\n")
         warn <- FALSE  
@@ -90,21 +92,26 @@ extrapolateBeyondRange <- function(permvalues, value = 0.6){
   dens(value)
 }
 
-QCLtoLOD <- function(QCLscan, permutations, pheno.col = 1, onlySignificant = TRUE){
-  -log10(QCLtoPvalue(QCLscan, permutations, pheno.col, onlySignificant))
+QCLtoLOD <- function(QCLscan, QCLpermute, pheno.col = 1, onlySignificant = TRUE){
+  -log10(QCLtoPvalue(QCLscan, QCLpermute, pheno.col, onlySignificant))
 }
 
-QCLtoLODvector <- function(QCLscan, permutations, pheno.col = 1){
-  apply(QCLtoLOD(QCLscan, permutations, pheno.col, FALSE),1,sum)
+QCLtoLODvector <- function(QCLscan, QCLpermute, pheno.col = 1){
+  apply(QCLtoLOD(QCLscan, QCLpermute, pheno.col, FALSE),1,sum)
 }
 
-QCLscantoScanone <- function(cross, QCLscan, permutations, pheno.col=1){
-  scores <- QCLtoLODvector(QCLscan, permutations, pheno.col)
+QCLscantoScanone <- function(cross, QCLscan, QCLpermute, pheno.col=1){
+  if(missing(cross)) stop("argument 'cross' is missing, with no default")
+  if(missing(QCLscan)) stop("argument 'QCLscan' is missing, with no default")
+  if(missing(QCLpermute)) stop("argument 'QCLpermute' is missing, with no default")
+  
+  scores <- QCLtoLODvector(QCLscan, QCLpermute, pheno.col)
   scores[which(!is.finite(scores))] <- NA
   lodscorestoscanone(cross, scores)
 }
 
 plot.QCLpermute <- function(x, ...){
+  if(missing(x)) stop("argument 'x' which expects a 'QCLpermute' object is missing, with no default")
   plot(seq(0,0.5,0.01),QCLscoretoPvalue(seq(0,0.5,0.01),x),main="QCL to P.value",xlab="QCL",ylab="Pvalue")
   significant <- print.QCLpermute(x)
   mycolors <- c("red","orange","green")
@@ -117,7 +124,7 @@ plot.QCLpermute <- function(x, ...){
 }
 
 hist.QCLpermute <- function(x, ...){
-  if(missing(x)) stop("Please provide permutations")
+  if(missing(x)) stop("argument 'x' which expects a 'QCLpermute' object is missing, with no default")
   maximums <- lapply(x, function(v){
     apply(abs(v), 2, max)
   })

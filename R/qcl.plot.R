@@ -28,25 +28,30 @@ plot.QCLscan <- function(x, pheno.col = 1, qcl.threshold =0.3, do.legend=TRUE, .
   }
 }
 
-plotAsLOD <- function(QTLscores, QCLscan, permutations, pheno.col = 1, main, do.legend=TRUE){
+plotAsLOD <- function(QTLscores, QCLscan, QCLpermute, pheno.col = 1, main, do.legend=TRUE){
+  if(missing(QTLscores)) stop("argument 'QTLscores' is missing, with no default")
+  if(missing(QCLscan)) stop("argument 'QCLscan' is missing, with no default")
+  if(missing(QCLpermute)) stop("argument 'QCLpermute' is missing, with no default")
   npheno <- length(QCLscan)
   if(pheno.col > npheno) stop("No such phenotype")
   if(missing(main)){
     main <- paste("Comparison QCL:QTL of",attr(QCLscan[[pheno.col]],"name"))
   }
-  QCLscores <- QCLtoLODvector(QCLscan, permutations, pheno.col=pheno.col)
+  QCLscores <- QCLtoLODvector(QCLscan, QCLpermute, pheno.col=pheno.col)
   plot(c(0,length(QCLscores)),c(0,max(c(QCLscores,QTLscores))),type='n', main=main, ylab="LOD",xlab="Marker")
   points(QCLscores,type='l',col="black",lwd=3)
   points(QTLscores,type='l',col="red",lwd=2,lty=1)
   if(do.legend) legend("topleft",c("QCL","QTL"),col=c("black","red"),lty=c(1,1),lwd=c(3,2))
 }
 
-plotAsStackedHist <- function(qcl_result, qcl_perms, pheno.col=1, onlySignificant = TRUE, do.legend=TRUE, ...){
-  summarized <- QCLtoLODvector(qcl_result, qcl_perms, pheno.col=pheno.col)
-  plot(summarized, type='l',main=paste("Phenotype contribution to QCL of",attr(qcl_result[[pheno.col]],"name")),...)
-  p <- rep(0,ncol(qcl_result[[pheno.col]]))
+plotAsStackedHist <- function(QCLscan, QCLpermute, pheno.col=1, onlySignificant = TRUE, do.legend=TRUE, ...){
+  if(missing(QCLscan)) stop("argument 'QCLscan' is missing, with no default")
+  if(missing(QCLpermute)) stop("argument 'QCLpermute' is missing, with no default")
+  summarized <- QCLtoLODvector(QCLscan, QCLpermute, pheno.col=pheno.col)
+  plot(summarized, type='l',main=paste("Phenotype contribution to QCL of",attr(QCLscan[[pheno.col]],"name")),...)
+  p <- rep(0,ncol(QCLscan[[pheno.col]]))
   i <- 1;
-  QCLmatrix <- QCLtoLOD(qcl_result, qcl_perms, pheno.col, onlySignificant)
+  QCLmatrix <- QCLtoLOD(QCLscan, QCLpermute, pheno.col, onlySignificant)
   if(!onlySignificant && ncol(QCLmatrix) > 15){
     cat("Minor: Disabled legend, please use onlySignificant = TRUE\n")
     do.legend=FALSE
