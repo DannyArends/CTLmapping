@@ -15,8 +15,8 @@ QCLtoPvalue <- function(QCLscan, QCLpermute, pheno.col=1, onlySignificant = TRUE
   maximums <- lapply(QCLpermute[[pheno.col]], function(x){
     apply(abs(x), 2, max)
   })
-  sorted <- sort(unlist(maximums))
-  l <- length(sorted)
+  permvalues <- sort(unlist(maximums))
+  l <- length(permvalues)
   if(onlySignificant){
     mysignificant <- as.numeric(which(apply(abs(QCLscan[[pheno.col]]),1,max) > getPermuteThresholds(QCL_p, pheno.col)[1]))
     if(length(mysignificant) > 1){
@@ -27,7 +27,7 @@ QCLtoPvalue <- function(QCLscan, QCLpermute, pheno.col=1, onlySignificant = TRUE
   }else{
     scaled <- abs(QCLscan[[pheno.col]])
   }
-  apply(scaled, 1, function(x){QCLtoPvalue.internal(x,sorted,l)})
+  apply(scaled, 1, function(x){QCLtoPvalue.internal(x, permvalues, l)})
 }
 
 QCLscoretoPvalue <- function(QCLscore, QCLpermute){
@@ -41,6 +41,8 @@ QCLscoretoPvalue <- function(QCLscore, QCLpermute){
   QCLtoPvalue.internal(QCLscore,permvalues,l)
 }
 
+#Determine a P-value based on the relative position of the score within the permutations
+#Out of range values are tested using a GPD to estimate a P-value
 QCLtoPvalue.internal <- function(QCLscore, permvalues, l){
   res <- NULL
   warn <- TRUE
@@ -56,7 +58,7 @@ QCLtoPvalue.internal <- function(QCLscore, permvalues, l){
       index_r <- Inf
     }
     if(!is.finite(index_l)){
-      res <- c(res,extrapolateBeyondRange(permvalues, y)) #res <- c(res,1-((index_r-1)/l))
+      res <- c(res,extrapolateBeyondRange(permvalues, y))
       if(warn){
         cat("Warning: scores out of permutation range, please do more permutations\n")
         warn <- FALSE  
@@ -72,9 +74,11 @@ QCLtoPvalue.internal <- function(QCLscore, permvalues, l){
   res
 }
 
+#Use the top 10% of permutation scores and fit a GPD uppertail distribution, then use the 
+#GPD to obtain P-values for outliers, If the GPD is 0 we reduce our value till we get the 
+#minimum P-value
 extrapolateBeyondRange <- function(permvalues, value = 0.6){
   require(POT)
-  #We use the top 10% of data to estimate the GPD uppertail distribution
   mle <- fitgpd(permvalues, permvalues[.90*length(permvalues)], "mle")
   shape <- mle$param["shape"]
   scale <- mle$scale
