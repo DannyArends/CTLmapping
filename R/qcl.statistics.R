@@ -18,7 +18,7 @@ QCLtoPvalue <- function(QCLscan, permutations, pheno.col=1, onlySignificant = TR
   l <- length(sorted)
   if(onlySignificant){
     mysignificant <- as.numeric(which(apply(abs(QCLscan[[pheno.col]]),1,max) > getPermuteThresholds(QCL_p, pheno.col)[1]))
-    if(length(mysignificant) != 0){
+    if(length(mysignificant) > 1){
       scaled <- abs(QCLscan[[pheno.col]][mysignificant, ])
     }else{
       scaled <- abs(QCLscan[[pheno.col]])
@@ -82,10 +82,10 @@ extrapolateBeyondRange <- function(permvalues, value = 0.6){
   prev.value <- value
   while(as.numeric(dens(value))==0){
     warn <- TRUE
-    value <- value - 0.01
+    value <- value - 0.0001
   }
   if(warn){
-    cat("Warning: scores out of permutation range, unable to estimate correctly",value,"/",prev.value,"\n")
+    cat("Warning: scores out of permutation range, unable to estimate correctly",value,"/",prev.value,dens(value),"\n")
   }
   dens(value)
 }
