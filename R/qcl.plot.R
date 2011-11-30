@@ -28,15 +28,17 @@ plot.QCLscan <- function(x, pheno.col = 1, qcl.threshold =0.3, do.legend=TRUE, .
   }
 }
 
-plotAsLOD <- function(QTLscores, QCLscan, permutations, pheno.col = 1){
+plotAsLOD <- function(QTLscores, QCLscan, permutations, pheno.col = 1, main, do.legend=TRUE){
   npheno <- length(QCLscan)
   if(pheno.col > npheno) stop("No such phenotype")
-  pname <- paste("Comparison QCL:QTL of",attr(QCLscan[[pheno.col]],"name"))
+  if(missing(main)){
+    main <- paste("Comparison QCL:QTL of",attr(QCLscan[[pheno.col]],"name"))
+  }
   QCLscores <- QCLtoLODvector(QCLscan, permutations, pheno.col=pheno.col)
-  plot(c(0,length(QCLscores)),c(0,max(c(QCLscores,QTLscores))),type='n', main=pname, ylab="LOD",xlab="Marker")
+  plot(c(0,length(QCLscores)),c(0,max(c(QCLscores,QTLscores))),type='n', main=main, ylab="LOD",xlab="Marker")
   points(QCLscores,type='l',col="black",lwd=3)
-  points(QTLscores,type='l',col="red",lwd=2,lty=3)
-  legend("topleft",c("QCL","QTL"),col=c("black","red"),lty=c(1,3),lwd=c(3,2))
+  points(QTLscores,type='l',col="red",lwd=2,lty=1)
+  if(do.legend) legend("topleft",c("QCL","QTL"),col=c("black","red"),lty=c(1,1),lwd=c(3,2))
 }
 
 plotAsStackedHist <- function(qcl_result, qcl_perms, pheno.col=1, onlySignificant = TRUE, do.legend=TRUE, ...){
@@ -46,10 +48,10 @@ plotAsStackedHist <- function(qcl_result, qcl_perms, pheno.col=1, onlySignifican
   i <- 1;
   QCLmatrix <- QCLtoLOD(qcl_result, qcl_perms, pheno.col, onlySignificant)
   if(!onlySignificant && ncol(QCLmatrix) > 15){
-    cat("Warning disabled the legend please use onlySignificant = TRUE")
+    cat("Minor: Disabled legend, please use onlySignificant = TRUE\n")
     do.legend=FALSE
   }
-  mycolors <- rainbow(ncol(QCLmatrix))
+  mycolors <- terrain.colors(ncol(QCLmatrix))
   apply(QCLmatrix,2,
     function(d){
      for(idx in 1:length(d)){

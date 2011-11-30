@@ -26,7 +26,7 @@ image.QCLscan <- function(x, qcl_perms, qcl.threshold = 0.35, against = c("marke
   if(!is.null(mymatrix)){ 
     image(1:ncol(mymatrix),1:nrow(mymatrix),t(mymatrix),
           main=mainlabel,
-          yaxt="n",xaxt="n",ylab="", xlab="",col=colorrange,cex.main=0.7)
+          yaxt="n",xaxt="n",ylab="", xlab="",col=colorrange,cex.main=0.7,breaks = c(1,2,3,4,5,6,7,8,9,10,11,100))
     axis(2,rownames(mymatrix),at=1:nrow(mymatrix),las=2,cex.axis=0.5)
     axis(1,colnames(mymatrix),at=1:ncol(mymatrix),las=2,cex.axis=0.3)
     if(do.grid){

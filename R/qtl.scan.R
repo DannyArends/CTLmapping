@@ -20,7 +20,7 @@ QTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), verbo
     results <- rbind(results,apply(genotypes,2, 
       function(geno){
         linmod <- lm(phenotypes[,x] ~ geno)
-        myanova <- -log10(anova(linmod)[[5]][1])
+        -log10(anova(linmod)[[5]][1])
       }
     ))
     if(verbose){
