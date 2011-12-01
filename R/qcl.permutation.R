@@ -9,7 +9,7 @@
 # Example data C. Elegans and available at request ( Danny.Arends@gmail.com )
 #
 
-#-- QCLpermute main function --#
+#-- QCLpermuteMC function --#
 QCLpermuteMC <- function(genotypes, phenotypes, pheno.col, n.perm=10, n.cores=2, directory="permutations", verbose=FALSE, ...){
   if(!has_snow()) stop("SNOW is not installed (or not yet loaded)")
   if(!file.exists(directory)) dir.create(directory)
@@ -20,10 +20,7 @@ QCLpermuteMC <- function(genotypes, phenotypes, pheno.col, n.perm=10, n.cores=2,
   for(p in pheno.col){
     ss <- proc.time()
     cat("Starting multi core permutation for phenotype",p,"\n")
-    rvm <- NULL
-    for(x in 1:n.perm){
-      rvm <- rbind(rvm,sample(nrow(phenotypes)))
-    }
+    rvm <- getRVM(n.perm,nrow(phenotypes))
     parLapply(cl,as.list(1:n.perm),get("QCLpermute.internal"), genotypes=genotypes, phenotypes=phenotypes, pheno.col=p, rvm, directory=directory,verbose=verbose)
     QCLperm[[idx]] <- read.QCLpermute(directory, p, n.perm, verbose)
     idx <- idx+1
@@ -58,9 +55,7 @@ QCLpermute <- function(genotypes, phenotypes, pheno.col, n.perm=10, n.cores=2, d
     for(p in pheno.col){
       ss <- proc.time()
       cat("Starting permutation for phenotype",p,"\n")
-      for(x in 1:n.perm){
-        rvm <- rbind(rvm,sample(nrow(phenotypes)))
-      }
+      rvm <- getRVM(n.perm,nrow(phenotypes))
       for(x in 1:n.perm){
         QCLpermute.internal(x,genotypes,phenotypes,p,rvm,directory,verbose)
       }
@@ -83,22 +78,6 @@ read.QCLpermute <- function(directory="permutations", pheno.col=1, n.perm, verbo
   }
   class(QCLpermute) <- c(class(QCLpermute),"QCLpermute")
   invisible(QCLpermute)
-}
-
-significance.QCLHotSpot <- function(QCLpermute, significant=212){
-  significant <- print.QCLpermute(QCLpermute)[3]
-  maximums <- lapply(QCLpermute,function(x){max(apply(x,1,function(x){sum(x > significant)}))})
-  sorted <- sort(unlist(maximums))
-  l <- length(sorted)
-  values <- NULL
-  valnames <- NULL
-  for(x in c(.95,.99,.999)){
-    values <- c(values,sorted[l*x])
-    valnames <- c(valnames,paste((1-x)*100,"%"))
-    cat((1-x)*100,"%\t",sorted[l*x],"\n")
-  }
-  names(values) <- valnames
-  invisible(values)
 }
 
 #-- R/qtl interface --#

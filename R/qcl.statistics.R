@@ -10,7 +10,7 @@
 #
 
 QCLtoPvalue <- function(QCLscan, QCLpermute, pheno.col=1, onlySignificant = TRUE){
-  if(missing(QCLscore)) stop("argument 'QCLscore' is missing, with no default")
+  if(missing(QCLscan)) stop("argument 'QCLscan' is missing, with no default")
   if(missing(QCLpermute)) stop("argument 'QCLpermute' is missing, with no default")
   maximums <- lapply(QCLpermute[[pheno.col]], function(x){
     apply(abs(x), 2, max)
@@ -27,7 +27,9 @@ QCLtoPvalue <- function(QCLscan, QCLpermute, pheno.col=1, onlySignificant = TRUE
   }else{
     scaled <- abs(QCLscan[[pheno.col]])
   }
-  apply(scaled, 1, function(x){QCLtoPvalue.internal(x, permvalues, l)})
+  result <- apply(scaled, 2, function(x){QCLtoPvalue.internal(x, permvalues, l)})
+  rownames(result) <- rownames(QCLscan[[pheno.col]])
+  result
 }
 
 QCLscoretoPvalue <- function(QCLscore, QCLpermute){
@@ -38,7 +40,7 @@ QCLscoretoPvalue <- function(QCLscore, QCLpermute){
   })
   permvalues <- sort(unlist(maximums))
   l <- length(permvalues)
-  QCLtoPvalue.internal(QCLscore,permvalues,l)
+  QCLtoPvalue.internal(QCLscore, permvalues, l)
 }
 
 #Determine a P-value based on the relative position of the score within the permutations
@@ -58,11 +60,16 @@ QCLtoPvalue.internal <- function(QCLscore, permvalues, l){
       index_r <- Inf
     }
     if(!is.finite(index_l)){
-      res <- c(res,extrapolateBeyondRange(permvalues, y))
-      if(warn){
-        cat("Warning: scores out of permutation range, please do more permutations\n")
-        warn <- FALSE  
+      estimate <- extrapolateBeyondRange(permvalues, y)
+      if(estimate > 1-((l-1)/l)){
+        estimate <- 1-((l-1)/l)
       }
+     # cat(y,estimate,"\n")
+      res <- c(res,estimate)
+     # if(warn){
+     #   cat("Warning: scores out of permutation range, please do more permutations\n")
+     #   warn <- FALSE  
+     # }
     }
     if(!is.finite(index_r)){
       res <- c(res,1-(index_l/l))
@@ -79,7 +86,8 @@ QCLtoPvalue.internal <- function(QCLscore, permvalues, l){
 #minimum P-value
 extrapolateBeyondRange <- function(permvalues, value = 0.6){
   require(POT)
-  mle <- fitgpd(permvalues, permvalues[.90*length(permvalues)], "mle")
+  gpd.threshold <- permvalues[(.80*length(permvalues))]
+  mle <- fitgpd(permvalues, gpd.threshold, "mle")
   shape <- mle$param["shape"]
   scale <- mle$scale
   loc <- mle$threshold[1]
@@ -90,18 +98,19 @@ extrapolateBeyondRange <- function(permvalues, value = 0.6){
     warn <- TRUE
     value <- value - 0.0001
   }
-  if(warn){
-    cat("Warning: scores out of permutation range, unable to estimate correctly",value,"/",prev.value,dens(value),"\n")
-  }
-  dens(value)
+  #if(warn){
+  ##  cat("Warning: scores out of permutation range, unable to estimate correctly",value,"/",prev.value,dens(value),"\n")
+  #}
+  as.numeric(dens(value))
 }
 
 QCLtoLOD <- function(QCLscan, QCLpermute, pheno.col = 1, onlySignificant = TRUE){
   -log10(QCLtoPvalue(QCLscan, QCLpermute, pheno.col, onlySignificant))
 }
 
-QCLtoLODvector <- function(QCLscan, QCLpermute, pheno.col = 1){
-  apply(QCLtoLOD(QCLscan, QCLpermute, pheno.col, FALSE),1,sum)
+QCLtoLODvector <- function(QCLscan, QCLpermute, pheno.col = 1, against = c("markers","phenotypes")){
+  if(against=="markers")apply(QCLtoLOD(QCLscan, QCLpermute, pheno.col, FALSE),2,sum)
+  if(against=="phenotypes")apply(QCLtoLOD(QCLscan, QCLpermute, pheno.col, FALSE),1,sum)
 }
 
 QCLscantoScanone <- function(cross, QCLscan, QCLpermute, pheno.col=1){
@@ -116,7 +125,7 @@ QCLscantoScanone <- function(cross, QCLscan, QCLpermute, pheno.col=1){
 
 plot.QCLpermute <- function(x, ...){
   if(missing(x)) stop("argument 'x' which expects a 'QCLpermute' object is missing, with no default")
-  plot(seq(0,0.5,0.01),QCLscoretoPvalue(seq(0,0.5,0.01),x),main="QCL to P.value",xlab="QCL",ylab="Pvalue")
+  plot(seq(0,0.9,0.01),QCLscoretoPvalue(seq(0,0.9,0.01),x),main="QCL to P.value",xlab="QCL",ylab="Pvalue")
   significant <- print.QCLpermute(x)
   mycolors <- c("red","orange","green")
   idx <- 1
