@@ -7,6 +7,14 @@
 # 
 # nchr
 
+getRVM <- function(n.perms, n.rows){
+  rvm <- NULL
+  for(x in 1:n.perms){
+    rvm <- rbind(rvm,sample(n.rows))
+  }
+  rvn
+}
+
 #Change any list of lodscores into a scanone object (only pre-req: length(lodscores)==sum(nmar(cross))
 lodscorestoscanone <- function(cross,lodscores,traitnames = NULL){
   if(get(".has_rqtl", envir = .QclEnv)){
