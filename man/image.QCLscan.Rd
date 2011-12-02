@@ -8,18 +8,18 @@
 }
 
 \usage{
-\method{image}{QCLscan}(x, qcl.threshold= 0.35, against = c("markers","phenotypes"), 
-        do.grid = TRUE, grid.col = "black", \dots)
+\method{image}{QCLscan}(x, QCLpermute, against = c("markers","phenotypes"), 
+        do.grid = TRUE, grid.col = "black", verbose=FALSE, \dots)
 }
 
 \arguments{
   \item{x}{ An object of class \code{"QCLscan"}, as output by \code{\link{QCLscan}}. }
-  \item{qcl.threshold}{ Threshold at which an QCL is considered 
-                        significant. (See \code{\link{QCLpermute}}) }
+  \item{QCLpermute}{ An object of class \code{"QCLpermute"}, as output by \code{\link{QCLpermute}}. }
   \item{against}{ Image one of these interaction matrices, 
                   this parameter is passed to the \code{\link{QCLprofiles}} function }
   \item{do.grid}{ Draw grid lines. }
   \item{grid.col}{ Colors used to draw the grid. }
+    \item{verbose}{ Be verbose }
   \item{\dots}{ Passed to the function \code{\link[graphics]{image}} when it is called. }
 }
 
@@ -35,10 +35,11 @@
   library(qcl)
   data(ath.metabolites) # Arabidopsis Thaliana dataset
   qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes)
+  qcl_perms <- QCLpermute(ath.metab$genotypes, ath.metab$phenotypes,1:24,15)
   #Phenotype to phenotype matrix
-  p2p_matrix <- image(qcl_result, 0.5, against="phenotypes")
+  p2p_matrix <- image(qcl_result, qcl_perms, against="phenotypes")
   #Phenotype to marker matrix
-  p2m_matrix <- image(qcl_result, 0.5, against="markers")
+  p2m_matrix <- image(qcl_result, qcl_perms, against="markers")
 }
 
 \seealso{

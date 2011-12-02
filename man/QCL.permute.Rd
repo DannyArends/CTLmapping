@@ -6,7 +6,7 @@
 	Permutation routine for QCL mapping
 }
 \usage{
-QCLpermute(genotypes, phenotypes, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, \dots)
+QCLpermute(genotypes, phenotypes, pheno.col, n.perm=10, n.cores=2, directory="permutations", saveFiles = FALSE, verbose=FALSE, \dots)
 }
 
 \arguments{
@@ -14,12 +14,14 @@ QCLpermute(genotypes, phenotypes, pheno.col, n.perm=10, directory="permutations"
   \item{phenotypes}{ Matrix of phenotypes (individuals x phenotypes) }
   \item{pheno.col}{ Which phenotype column should we use in permutation analysis }
   \item{n.perm}{ Number of permutations }
+  \item{n.cores}{ Number of CPU cores to use during the analysis }
   \item{directory}{ Directory in which to save the output }
+  \item{saveFiles}{ Save the permjutation matrices to HDD }
   \item{verbose}{ Be verbose }
   \item{\dots}{ Passed to the underlying \code{\link{QCLscan}} function }
 }
 \details{
-Permutation is one of the fundamental theorem a fundamental approach of 
+Permutation is one of the fundamental approach to determine probability when nothing is known about the underlying NULL-ditribution
 \itemize{
   \item NOTE: Main bottleneck of the algorithm is the RAM available to the system
 }
