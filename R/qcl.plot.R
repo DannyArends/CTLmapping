@@ -37,13 +37,10 @@ plotAsLOD <- function(QCLscan, QCLpermute, QTLscores, pheno.col = 1, main, do.le
   if(missing(main)){
     main <- paste("Comparison QCL:QTL of",attr(QCLscan[[pheno.col]],"name"))
   }
-  cat("?\n")
   QCLscores <- QCLtoLODvector(QCLscan, QCLpermute, pheno.col=pheno.col)
-  cat("?\n")
   plot(c(0,length(QCLscores)),c(0,max(c(QCLscores,QTLscores))),type='n', main=main, ylab="LOD",xlab="Marker")
   points(QCLscores,type='l',col="black",lwd=3)
   points(QTLscores,type='l',col="red",lwd=2,lty=1)
-  cat("?\n")
   if(do.legend) legend("topleft",c("QCL","QTL"),col=c("black","red"),lty=c(1,1),lwd=c(3,2))
 }
 

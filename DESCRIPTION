@@ -4,7 +4,7 @@ Date: 18 Oct 2011
 Title: QCL mapping in experimental crosses
 Author: Danny Arends <Danny.Arends@gmail.com>
 Maintainer: Danny Arends <Danny.Arends@gmail.com>
-Depends: R (>= 1.12.1), utils
+Depends: R (>= 1.12.1), utils, POT
 Enhances: snow, qtl, RCurl
 Description: Analysis of experimental crosses to identify genetic markers associated with correlation changes in quantitative trait (QCL)
 License: GPL 3
