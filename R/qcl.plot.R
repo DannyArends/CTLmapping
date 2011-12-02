@@ -28,7 +28,7 @@ plot.QCLscan <- function(x, pheno.col = 1, qcl.threshold =0.3, do.legend=TRUE, .
   }
 }
 
-plotAsLOD <- function(QTLscores, QCLscan, QCLpermute, pheno.col = 1, main, do.legend=TRUE){
+plotAsLOD <- function(QCLscan, QCLpermute, QTLscores, pheno.col = 1, main, do.legend=TRUE){
   if(missing(QTLscores)) stop("argument 'QTLscores' is missing, with no default")
   if(missing(QCLscan)) stop("argument 'QCLscan' is missing, with no default")
   if(missing(QCLpermute)) stop("argument 'QCLpermute' is missing, with no default")
@@ -52,12 +52,12 @@ plotAsStackedHist <- function(QCLscan, QCLpermute, pheno.col=1, onlySignificant 
   p <- rep(0,ncol(QCLscan[[pheno.col]]))
   i <- 1;
   QCLmatrix <- QCLtoLOD(QCLscan, QCLpermute, pheno.col, onlySignificant)
-  if(!onlySignificant && ncol(QCLmatrix) > 15){
+  if(!onlySignificant && nrow(QCLmatrix) > 15){
     cat("Minor: Disabled legend, please use onlySignificant = TRUE\n")
     do.legend=FALSE
   }
-  mycolors <- terrain.colors(ncol(QCLmatrix))
-  apply(QCLmatrix,2,
+  mycolors <- terrain.colors(nrow(QCLmatrix))
+  apply(QCLmatrix,1,
     function(d){
      for(idx in 1:length(d)){
         rect(idx-0.5,p[idx],idx+0.5,p[idx]+d[idx],col=mycolors[i])
@@ -66,7 +66,7 @@ plotAsStackedHist <- function(QCLscan, QCLpermute, pheno.col=1, onlySignificant 
       i <<- i + 1
     }
   )
-  if(do.legend) legend("topleft",colnames(QCLmatrix),col=mycolors,lwd=1,cex=0.7)
+  if(do.legend) legend("topleft",rownames(QCLmatrix),col=mycolors,lwd=1,cex=0.7)
   points(summarized,type='l',lwd=2)
   invisible(QCLmatrix)
 }

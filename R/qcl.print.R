@@ -36,17 +36,21 @@ print.QCL  <- function(x, ...){
 
 getPermuteThresholds <-function(x, pheno.col=1, verbose = FALSE){
   if(!any(class(x)=="QCLpermute")) x <- x[[pheno.col]]
-  maximums <- lapply(x,function(v){
-    apply(abs(v),2,max)}
-  )
+  maximums <- x
   sorted <- sort(unlist(maximums))
   l <- length(sorted)
   values <- NULL
   valnames <- NULL
   for(x in c(.95,.99,.999)){
+    if(1/(1-x) < length(sorted)){
     values <- c(values,sorted[l*x])
     valnames <- c(valnames,paste((1-x)*100,"%"))
     if(verbose) cat((1-x)*100,"%\t",sorted[l*x],"\n")
+    }else{
+    values <- c(values,NaN)
+    valnames <- c(valnames,paste((1-x)*100,"%"))
+    if(verbose) cat((1-x)*100,"%\t",NaN,"\n")
+    }
   }
   names(values) <- valnames
   values

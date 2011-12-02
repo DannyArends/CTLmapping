@@ -12,33 +12,30 @@
 QCLtoPvalue <- function(QCLscan, QCLpermute, pheno.col=1, onlySignificant = TRUE){
   if(missing(QCLscan)) stop("argument 'QCLscan' is missing, with no default")
   if(missing(QCLpermute)) stop("argument 'QCLpermute' is missing, with no default")
-  maximums <- lapply(QCLpermute[[pheno.col]], function(x){
-    apply(abs(x), 2, max)
-  })
-  permvalues <- sort(unlist(maximums))
+  permvalues <- sort(unlist(QCLpermute[[pheno.col]]))
   l <- length(permvalues)
   if(onlySignificant){
-    mysignificant <- as.numeric(which(apply(abs(QCLscan[[pheno.col]]),1,max) > getPermuteThresholds(QCL_p, pheno.col)[1]))
+    mysignificant <- as.numeric(which(apply(abs(QCLscan[[pheno.col]]),1,max) > getPermuteThresholds(QCLpermute, pheno.col)[1]))
     if(length(mysignificant) > 1){
       scaled <- abs(QCLscan[[pheno.col]][mysignificant, ])
+      rnames <- rownames(QCLscan[[pheno.col]])[mysignificant]
     }else{
       scaled <- abs(QCLscan[[pheno.col]])
+      rnames <- rownames(QCLscan[[pheno.col]])
     }
   }else{
     scaled <- abs(QCLscan[[pheno.col]])
+    rnames <- rownames(QCLscan[[pheno.col]])
   }
   result <- apply(scaled, 2, function(x){QCLtoPvalue.internal(x, permvalues, l)})
-  rownames(result) <- rownames(QCLscan[[pheno.col]])
+  rownames(result) <- rnames
   result
 }
 
 QCLscoretoPvalue <- function(QCLscore, QCLpermute){
   if(missing(QCLscore)) stop("argument 'QCLscore' is missing, with no default")
   if(missing(QCLpermute)) stop("argument 'QCLpermute' is missing, with no default")
-  maximums <- lapply(QCLpermute, function(x){
-    apply(abs(x), 2, max)
-  })
-  permvalues <- sort(unlist(maximums))
+  permvalues <- sort(unlist(QCLpermute))
   l <- length(permvalues)
   QCLtoPvalue.internal(QCLscore, permvalues, l)
 }
@@ -109,8 +106,8 @@ QCLtoLOD <- function(QCLscan, QCLpermute, pheno.col = 1, onlySignificant = TRUE)
 }
 
 QCLtoLODvector <- function(QCLscan, QCLpermute, pheno.col = 1, against = c("markers","phenotypes")){
-  if(against=="markers")apply(QCLtoLOD(QCLscan, QCLpermute, pheno.col, FALSE),2,sum)
-  if(against=="phenotypes")apply(QCLtoLOD(QCLscan, QCLpermute, pheno.col, FALSE),1,sum)
+  if(against[1]=="markers")return(apply(QCLtoLOD(QCLscan, QCLpermute, pheno.col, FALSE),2,sum))
+  if(against[1]=="phenotypes")return(apply(QCLtoLOD(QCLscan, QCLpermute, pheno.col, FALSE),1,sum))
 }
 
 QCLscantoScanone <- function(cross, QCLscan, QCLpermute, pheno.col=1){

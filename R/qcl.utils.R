@@ -12,7 +12,7 @@ getRVM <- function(n.perms, n.rows){
   for(x in 1:n.perms){
     rvm <- rbind(rvm,sample(n.rows))
   }
-  rvn
+  rvm
 }
 
 #Change any list of lodscores into a scanone object (only pre-req: length(lodscores)==sum(nmar(cross))
