@@ -5,7 +5,7 @@
 	Permutation routine for QCL mapping (using an R/qtl cross object)
 }
 \usage{
-QCLpermute.cross(cross, pheno.col, n.perm=10, directory="permutations", verbose=TRUE, \dots)
+QCLpermute.cross(cross, pheno.col, n.perm=10, n.cores=2, directory="permutations", saveFiles=FALSE, verbose=FALSE, \dots)
 }
 
 \arguments{
@@ -13,7 +13,9 @@ QCLpermute.cross(cross, pheno.col, n.perm=10, directory="permutations", verbose=
                 \code{\link[qtl]{read.cross}} for details. }
   \item{pheno.col}{ Which phenotype column should we use in permutation analysis }
   \item{n.perm}{ Number of permutations }
+  \item{n.cores}{ Number of CPU cores to use during the analysis }
   \item{directory}{ Directory in which to save the output }
+  \item{saveFiles}{ Save the permjutation matrices to HDD }
   \item{verbose}{ Be verbose }
   \item{\dots}{ Passed to the underlying \code{\link{QCLscan}} function }
 }

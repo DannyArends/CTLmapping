@@ -84,14 +84,14 @@ read.QCLpermute <- function(directory="permutations", pheno.col=1, n.perm, verbo
 }
 
 #-- R/qtl interface --#
-QCLpermute.cross <- function(cross, pheno.col, n.perm=10, n.cores=2, directory="permutations", verbose=FALSE, ...){
+QCLpermute.cross <- function(cross, pheno.col, n.perm=10, n.cores=2, directory="permutations", saveFiles = FALSE, verbose=FALSE, ...){
   if(missing(cross)) stop("cross is missing")
   if(missing(pheno.col)) stop("pheno.col missing")
   if(has_rqtl()){
     require(qtl)
     phenotypes <- apply(qtl::pull.pheno(cross),2,as.numeric)
     genotypes <- qtl::pull.geno(cross)
-    QCLpermute(genotypes, phenotypes, pheno.col=pheno.col, n.perm=n.perm, n.cores=n.cores, directory=directory, verbose=verbose)
+    QCLpermute(genotypes, phenotypes, pheno.col=pheno.col, n.perm=n.perm, n.cores=n.cores, directory=directory, saveFiles = saveFiles, verbose=verbose)
   }else{
     warning(.has_rqtl_warnmsg)
   }
