@@ -1,21 +1,17 @@
-\name{QCLscan}
-\alias{QCLscan}
-\title{QCLscan - Scan for quantitative correlation loci }
+\name{QCLmapping}
+\alias{QCLmapping}
+\title{QCLmapping - Scan for quantitative correlation loci }
 \description{
 	Scan for quantitative correlation loci
 }
 \usage{
-QCLscan(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE)
+QCLmapping(genotypes, phenotypes, pheno.col, verbose = FALSE)
 }
 
 \arguments{
   \item{genotypes}{ Matrix of genotypes (individuals x markers) }
   \item{phenotypes}{ Matrix of phenotypes (individuals x phenotypes) }
   \item{pheno.col}{ Which phenotype column should we analyse }
-  \item{n.perm}{ Number of permutations }
-  \item{n.cores}{ Number of CPU cores to use during the analysis }
-  \item{directory}{ Directory in which to save the output }
-  \item{saveFiles}{ Save the permjutation matrices to HDD }
   \item{verbose}{ Be verbose }
 }
 \details{
@@ -25,7 +21,8 @@ TODO
 }
 }
 \value{
-QCL object, a list with at each index a $qclscan, $permutations, $lodmatrix
+QCLscan object, a list with at each index a QCL matrix (Rows: Phenotypes, 
+Columns: Genetic markers) for the phenotype.
 }
 \references{ 
   TODO
@@ -40,7 +37,7 @@ QCL object, a list with at each index a $qclscan, $permutations, $lodmatrix
 \examples{
   library(qcl)
   data(ath.metabolites) # Arabidopsis Thaliana dataset
-  qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes)
+  qcl_result <- QCLmapping(ath.metab$genotypes, ath.metab$phenotypes)
   qcl_result
   plot(qcl_result,16)   #Plot a phenotype
 }

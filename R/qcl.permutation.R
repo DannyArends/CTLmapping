@@ -36,11 +36,11 @@ QCLpermute.internal <- function(perm, genotypes, phenotypes, pheno.col, rvm, dir
   sl <- proc.time()
   if(verbose) cat("- Starting permutation",perm,"\n")
   genotypes <- genotypes[rvm[perm,],]
-  perm <- QCLscan(genotypes, phenotypes, pheno.col, ...)
+  perm <- QCLmapping(genotypes, phenotypes, pheno.col, ...)
   if(saveFiles) write.table(perm, file=paste(directory,"/Permutation_",pheno.col,"_",perm,".txt",sep=""))
   el <- proc.time()
   if(verbose) cat("- permutation",perm,"took:",as.numeric(el[3]-sl[3]),"seconds.\n")
-  as.numeric(lapply(perm,function(x){max(abs(x))}))
+  as.numeric(max(abs(perm)))
 }
 
 #-- QCLpermute main function --#
