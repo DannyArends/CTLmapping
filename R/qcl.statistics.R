@@ -9,23 +9,22 @@
 # Example data C. Elegans and available at request ( Danny.Arends@gmail.com )
 #
 
-QCLtoPvalue <- function(QCLscan, QCLpermute, pheno.col=1, onlySignificant = TRUE){
+QCLtoP <- function(QCLscan, onlySignificant = TRUE){
   if(missing(QCLscan)) stop("argument 'QCLscan' is missing, with no default")
-  if(missing(QCLpermute)) stop("argument 'QCLpermute' is missing, with no default")
-  permvalues <- sort(unlist(QCLpermute[[pheno.col]]))
+  permvalues <- sort(unlist(QCLscan$p))
   l <- length(permvalues)
   if(onlySignificant){
-    mysignificant <- as.numeric(which(apply(abs(QCLscan[[pheno.col]]),1,max) > getPermuteThresholds(QCLpermute, pheno.col)[1]))
+    mysignificant <- as.numeric(which(apply(abs(QCLscan$s),1,max) > getPermuteThresholds(QCLscan$p, pheno.col)[1]))
     if(length(mysignificant) > 1){
-      scaled <- abs(QCLscan[[pheno.col]][mysignificant, ])
-      rnames <- rownames(QCLscan[[pheno.col]])[mysignificant]
+      scaled <- abs(QCLscan$s[mysignificant, ])
+      rnames <- rownames(QCLscan$s)[mysignificant]
     }else{
-      scaled <- abs(QCLscan[[pheno.col]])
-      rnames <- rownames(QCLscan[[pheno.col]])
+      scaled <- abs(QCLscan$s)
+      rnames <- rownames(QCLscan$s)
     }
   }else{
-    scaled <- abs(QCLscan[[pheno.col]])
-    rnames <- rownames(QCLscan[[pheno.col]])
+    scaled <- abs(QCLscan$s)
+    rnames <- rownames(QCLscan$s)
   }
   result <- apply(scaled, 2, function(x){QCLtoPvalue.internal(x, permvalues, l)})
   rownames(result) <- rnames
@@ -58,15 +57,16 @@ QCLtoPvalue.internal <- function(QCLscore, permvalues, l){
     }
     if(!is.finite(index_l)){
       estimate <- extrapolateBeyondRange(permvalues, y)
+      cat(y,estimate,"\n")
       if(estimate > 1-((l-1)/l)){
         estimate <- 1-((l-1)/l)
       }
-     # cat(y,estimate,"\n")
+      cat(y,estimate,"\n")
       res <- c(res,estimate)
-     # if(warn){
-     #   cat("Warning: scores out of permutation range, please do more permutations\n")
-     #   warn <- FALSE  
-     # }
+      if(warn){
+        cat("Warning: scores out of permutation range, please do more permutations\n")
+        warn <- FALSE  
+      }
     }
     if(!is.finite(index_r)){
       res <- c(res,1-(index_l/l))
@@ -101,21 +101,20 @@ extrapolateBeyondRange <- function(permvalues, value = 0.6){
   as.numeric(dens(value))
 }
 
-QCLtoLOD <- function(QCLscan, QCLpermute, pheno.col = 1, onlySignificant = TRUE){
-  -log10(QCLtoPvalue(QCLscan, QCLpermute, pheno.col, onlySignificant))
+toLod <- function(QCLscan, onlySignificant = TRUE){
+  -log10(QCLtoP(QCLscan, onlySignificant))
 }
 
-QCLtoLODvector <- function(QCLscan, QCLpermute, pheno.col = 1, against = c("markers","phenotypes")){
-  if(against[1]=="markers")return(apply(QCLtoLOD(QCLscan, QCLpermute, pheno.col, FALSE),2,sum))
-  if(against[1]=="phenotypes")return(apply(QCLtoLOD(QCLscan, QCLpermute, pheno.col, FALSE),1,sum))
+QCLtoLODvector <- function(QCLscan, against = c("markers","phenotypes")){
+  if(against[1]=="markers")return(apply(QCLscan$l,2,sum))
+  if(against[1]=="phenotypes")return(apply(QCLscan$l,1,sum))
 }
 
-QCLscantoScanone <- function(cross, QCLscan, QCLpermute, pheno.col=1){
+QCLscantoScanone <- function(cross, QCLscan){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
   if(missing(QCLscan)) stop("argument 'QCLscan' is missing, with no default")
-  if(missing(QCLpermute)) stop("argument 'QCLpermute' is missing, with no default")
   
-  scores <- QCLtoLODvector(QCLscan, QCLpermute, pheno.col)
+  scores <- QCLtoLODvector(QCLscan)
   scores[which(!is.finite(scores))] <- NA
   lodscorestoscanone(cross, scores)
 }

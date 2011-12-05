@@ -8,54 +8,43 @@
 # Plotting routines for QCL analysis
 #
 
-plot.QCLscan <- function(x, pheno.col = 1, qcl.threshold =0.3, do.legend=TRUE, ...){
-  npheno <- length(x)
-  if(pheno.col > npheno) stop("No such phenotype")
-  pname <- attr(x[[pheno.col]],"name") 
-  if(max(QCLprofiles(x,qcl.threshold)[pname,]) == 0) stop(paste("Threshold too high"))
-  totpheno <- dim(x[[pheno.col]])[1]
-  totmarkers <- dim(x[[pheno.col]])[2]
-  y_range <- c(0,1.25*max(QCLprofiles(x,qcl.threshold)[pname,]))
-  plot(c(0,totmarkers),y_range,type="n",main=paste("QCL mapping of",attr(x[[pheno.col]],"name")),ylab="# of significant QCL", xlab="Genetic marker")
-  colorz <- NULL
-  max_value <- max(abs(x[[pheno.col]]))
-  for(t in seq(qcl.threshold,max_value,0.05)){
-    points(QCLprofiles(x,t)[pname,], lwd=2,col=rgb((1/max_value)*t,0,0),type='l')
-    colorz <- c(colorz,rgb((1/max_value)*t,0,0))
-  }
-  if(do.legend){
-    legend("topleft",paste("Threshold =",seq(qcl.threshold,max_value,0.05)),lwd=2,col=colorz)
-  }
-}
-
-plotAsLOD <- function(QCLscan, QCLpermute, QTLscores, pheno.col = 1, main, do.legend=TRUE){
-  if(missing(QTLscores)) stop("argument 'QTLscores' is missing, with no default")
+QCLasLOD <- function(QCLscan, QTLscores, main, do.legend=TRUE){
   if(missing(QCLscan)) stop("argument 'QCLscan' is missing, with no default")
-  if(missing(QCLpermute)) stop("argument 'QCLpermute' is missing, with no default")
-  npheno <- length(QCLscan)
-  if(pheno.col > npheno) stop("No such phenotype")
+
   if(missing(main)){
-    main <- paste("Comparison QCL:QTL of",attr(QCLscan[[pheno.col]],"name"))
+    main <- paste("Comparison QCL:QTL of",attr(QCLscan$s,"name"))
   }
-  QCLscores <- QCLtoLODvector(QCLscan, QCLpermute, pheno.col=pheno.col)
-  plot(c(0,length(QCLscores)),c(0,max(c(QCLscores,QTLscores))),type='n', main=main, ylab="LOD",xlab="Marker")
-  points(QCLscores,type='l',col="black",lwd=3)
-  points(QTLscores,type='l',col="red",lwd=2,lty=1)
-  if(do.legend) legend("topleft",c("QCL","QTL"),col=c("black","red"),lty=c(1,1),lwd=c(3,2))
+  QCLscores <- QCLtoLODvector(QCLscan)
+  if(!missing(QTLscores)){
+    plot(c(0,length(QCLscores)),c(0,max(c(QCLscores,QTLscores))),type='n', main=main, ylab="LOD",xlab="Marker")
+    points(QCLscores,type='l',col="black",lwd=3)
+    points(QTLscores,type='l',col="red",lwd=2,lty=1)
+    if(do.legend) legend("topleft",c("QCL","QTL"),col=c("black","red"),lty=c(1,1),lwd=c(3,2))
+  }else{
+    plot(c(0,length(QCLscores)),c(0,max(c(QCLscores))),type='n', main=main, ylab="LOD",xlab="Marker")
+    points(QCLscores,type='l',col="black",lwd=3)
+  }
 }
 
-plotAsStackedHist <- function(QCLscan, QCLpermute, pheno.col=1, onlySignificant = TRUE, do.legend=TRUE, ...){
-  if(missing(QCLscan)) stop("argument 'QCLscan' is missing, with no default")
-  if(missing(QCLpermute)) stop("argument 'QCLpermute' is missing, with no default")
-  summarized <- QCLtoLODvector(QCLscan, QCLpermute, pheno.col=pheno.col)
-  plot(summarized, type='l',main=paste("Phenotype contribution to QCL of",attr(QCLscan[[pheno.col]],"name")),...)
-  p <- rep(0,ncol(QCLscan[[pheno.col]]))
-  i <- 1;
-  QCLmatrix <- QCLtoLOD(QCLscan, QCLpermute, pheno.col, onlySignificant)
-  if(!onlySignificant && nrow(QCLmatrix) > 15){
-    cat("Minor: Disabled legend, please use onlySignificant = TRUE\n")
-    do.legend=FALSE
+plot.QCLobject <- function(x, ...){
+  if(length(x) == 1){
+    plot.QCLscan(x[[1]])
+  }else{
+    image.QCLobject(x)
   }
+}
+
+plot.QCLscan <- function(x, onlySignificant = TRUE, do.legend=TRUE, ...){
+  if(missing(x)) stop("argument 'x' is missing, with no default")
+  mysign <- as.numeric(which(apply(abs(x$s),1,max) > getPermuteThresholds(x$p)[1]))
+  if(length(mysign) ==0){
+    mysign <- 1:nrow(x$s)
+  }
+  QCLmatrix <- matrix(x$l[mysign, ],length(mysign),ncol(x$l))
+  summarized <- apply(QCLmatrix,2,sum)
+  plot(c(0,ncol(x$s)),c(0,max(summarized)), type='n',main=paste("Phenotype contribution to QCL of",attr(QCLscan$s,"name")),...)
+  p <- rep(0,ncol(x$l))
+  i <- 1;
   mycolors <- terrain.colors(nrow(QCLmatrix))
   apply(QCLmatrix,1,
     function(d){
@@ -66,7 +55,7 @@ plotAsStackedHist <- function(QCLscan, QCLpermute, pheno.col=1, onlySignificant 
       i <<- i + 1
     }
   )
-  if(do.legend) legend("topleft",rownames(QCLmatrix),col=mycolors,lwd=1,cex=0.7)
+  if(do.legend) legend("topleft",rownames(x$l)[mysign],col=mycolors,lwd=1,cex=0.7)
   points(summarized,type='l',lwd=2)
-  invisible(QCLmatrix)
+  invisible(summarized)
 }

@@ -31,6 +31,23 @@
 \alias{has_rqtl}
 \alias{get_QclEnv}
 
+\alias{QCLpermute.internal}
+\alias{QCLpermuteMC}
+\alias{QCLscantoScanone}
+\alias{QCLscoretoPvalue}
+\alias{QCLtoLOD}
+\alias{QCLtoLODvector}
+\alias{QCLtoPvalue}
+\alias{QCLtoPvalue.internal}
+\alias{QTLscan}
+\alias{extrapolateBeyondRange}
+\alias{getPermuteThresholds}
+\alias{getRVM}
+\alias{hist.QCLpermute}
+\alias{plot.QCLpermute}
+\alias{plotAsLOD}
+\alias{plotAsStackedHist}
+
 \alias{matrix_correlation}
 
 \title{Internal QCL functions}
