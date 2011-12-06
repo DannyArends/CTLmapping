@@ -42,7 +42,7 @@ plot.QCLscan <- function(x, onlySignificant = TRUE, do.legend=TRUE, ...){
   }
   QCLmatrix <- matrix(x$l[mysign, ],length(mysign),ncol(x$l))
   summarized <- apply(QCLmatrix,2,sum)
-  plot(c(0,ncol(x$s)),c(0,max(summarized)), type='n',main=paste("Phenotype contribution to QCL of",attr(QCLscan$s,"name")),...)
+  plot(c(0,ncol(x$s)),c(0,max(summarized)), type='n',xlab="Marker", ylab="-log10(P-value)", main=paste("Phenotype contribution to QCL of",attr(x$s,"name")),...)
   p <- rep(0,ncol(x$l))
   i <- 1;
   mycolors <- terrain.colors(nrow(QCLmatrix))
