@@ -49,14 +49,14 @@ QCLmapping <- function(genotypes, phenotypes, pheno.col = 1, verbose = FALSE){
 }
 
 #-- R/qtl interface --#
-QCLscan.cross <- function(cross, pheno.col, verbose = FALSE){
+QCLscan.cross <- function(cross, pheno.col, n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
-  if(get(".has_rqtl", envir = .QclEnv)){
+  if(has_rqtl()){
     require(qtl)
     phenotypes <- apply(qtl::pull.pheno(cross),2,as.numeric)
     if(missing(pheno.col)) pheno.col <- 1:ncol(phenotypes)
     genotypes <- qtl::pull.geno(cross)
-    QCLscan(genotypes, phenotypes, pheno.col, verbose)
+    QCLscan(genotypes, phenotypes, pheno.col, n.perm, n.cores, directory, saveFiles, verbose)
   }else{
     warning(.has_rqtl_warnmsg)
   }
