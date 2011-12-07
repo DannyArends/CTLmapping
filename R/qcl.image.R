@@ -15,7 +15,7 @@ image.QCLobject <- function(x, against = c("markers","phenotypes"), do.grid=TRUE
   for(p in 1:length(x)){
     if(verbose) cat("Processing:",p,"from QCL to LOD\n")
     mymatrix <- rbind(mymatrix,QCLtoLODvector(x[[p]], against))
-    mynames <- c(mynames,attr(x[[p]]$s,"name"))
+    mynames <- c(mynames,attr(x[[p]]$qcl,"name"))
   }
   rownames(mymatrix) <- mynames
   mainlabel <- paste("QCL phenotypes vs",against[1])
