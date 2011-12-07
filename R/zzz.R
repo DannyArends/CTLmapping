@@ -24,6 +24,7 @@ has_rqtl <- function(){ get(".has_rqtl", envir = .QclEnv) }
 
 #Package loading
 .onAttach <- function(lib, pkg){
+  cat("LIB:",lib,"\n")
   packageStartupMessage("- Loading package qcl\n", appendLF = FALSE)
   .has_d <- TRUE
   .has_snow <- FALSE
@@ -35,9 +36,9 @@ has_rqtl <- function(){ get(".has_rqtl", envir = .QclEnv) }
     error = function(e){
      .has_d <<- FALSE
    })
-  .has_snow  <- ("snow" %in% installed.packages()[,1])
-  .has_rcurl <- ("RCurl" %in% installed.packages()[,1])
-  .has_rqtl  <- ("qtl" %in% installed.packages()[,1])
+  .has_snow  <- ("snow" %in% installed.packages(lib.loc=lib)[,1])
+  .has_rcurl <- ("RCurl" %in% installed.packages(lib.loc=lib)[,1])
+  .has_rqtl  <- ("qtl" %in% installed.packages(lib.loc=lib)[,1])
   assign(".has_d",     .has_d,     envir = .QclEnv)
   assign(".has_snow",  .has_snow,  envir = .QclEnv)
   assign(".has_rcurl", .has_rcurl, envir = .QclEnv)

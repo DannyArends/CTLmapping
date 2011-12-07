@@ -9,16 +9,25 @@
 #
 
 #-- QCLscan main function --#
-QCLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE){
+QCLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.perm=0, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE){
   results <- vector("list",length(pheno.col))
   idx <- 1
   for(p in pheno.col){
-    cat("Scanning\n")
-    results[[idx]]$s <- QCLmapping(genotypes, phenotypes, p, verbose)
-    cat("Permutation\n")
-    results[[idx]]$p <- QCLpermute(genotypes, phenotypes, p, n.perm, n.cores, directory, saveFiles, verbose)
-    cat("toLOD\n")
-    results[[idx]]$l <- toLod(results[[idx]], FALSE)
+    cat("Stage 1: Scanning QCL\n")
+    results[[idx]]$qcl <- QCLmapping(genotypes, phenotypes, p, verbose)
+    cat("Stage 2: Scanning QTL\n")
+    results[[idx]]$qtl <- QTLscan(genotypes, phenotypes, p, verbose)
+    
+    if(n.perm > 0){
+      cat("Stage 3: Permutation\n")
+      results[[idx]]$p <- QCLpermute(genotypes, phenotypes, p, n.perm, n.cores, directory, saveFiles, verbose)
+      
+      cat("Stage 4: Transformation into LOD\n")
+      results[[idx]]$l <- toLod(results[[idx]], TRUE, FALSE)
+    }else{
+      cat("Stage 3: Skipping permutation\n")
+      cat("Stage 4: Skipping transformation into LOD\n")
+    }
     class(results[[idx]]) <- c(class(results[[idx]]),"QCLscan")
     idx <- idx + 1
   }
@@ -29,6 +38,7 @@ QCLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.per
 QCLmapping <- function(genotypes, phenotypes, pheno.col = 1, verbose = FALSE){
   if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
+  ss <- proc.time()
   results <- NULL
   profile <- apply(genotypes,2, 
     function(geno){
@@ -42,8 +52,9 @@ QCLmapping <- function(genotypes, phenotypes, pheno.col = 1, verbose = FALSE){
   results <- profile
   attr(results,"name") <- colnames(phenotypes)[pheno.col]
   class(results) <- c(class(results),"QCL")
+  ee <- proc.time()
   if(verbose){
-    cat("Phenotype:",colnames(phenotypes)[pheno.col],"\n")
+    cat("  - QCLscan of",colnames(phenotypes)[pheno.col],"took",as.numeric(ee[3]-ss[3]),"seconds\n")
   }
   results
 }

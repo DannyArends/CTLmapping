@@ -10,7 +10,7 @@
 #
 
 #-- QCLpermuteMC function --#
-QCLpermuteMC <- function(genotypes, phenotypes, pheno.col, n.perm=10, n.cores=2, directory="permutations", saveFiles = FALSE, verbose=FALSE, ...){
+QCLpermuteMC <- function(genotypes, phenotypes, pheno.col, n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose=FALSE, ...){
   if(!has_snow()) stop("SNOW is not installed (or not yet loaded)")
   if(!file.exists(directory)) dir.create(directory)
   if(missing(pheno.col)) pheno.col <- 1:ncol(phenotypes)
@@ -19,13 +19,13 @@ QCLpermuteMC <- function(genotypes, phenotypes, pheno.col, n.perm=10, n.cores=2,
   cl <- makeCluster(rep("localhost",n.cores))
   for(p in pheno.col){
     ss <- proc.time()
-    cat("Starting multi core permutation for phenotype",p,"\n")
+    cat("  - Starting multi core permutation for phenotype",p,"\n")
     rvm <- getRVM(n.perm,nrow(genotypes))
     QCLperm[[idx]] <- unlist(parLapply(cl,as.list(1:n.perm),get("QCLpermute.internal"), genotypes, phenotypes, p, rvm, directory, saveFiles, verbose))
     class(QCLperm[[idx]]) <- c(class(QCLperm[[idx]]),"QCLpermute")
     idx <- idx+1
     el <- proc.time()
-    cat("-",n.perm,"permutations took:",as.numeric(el[3]-ss[3]),"seconds.\n")
+    cat("  -",n.perm,"permutations took:",as.numeric(el[3]-ss[3]),"seconds.\n")
   }
   stopCluster(cl)
   invisible(QCLperm)
@@ -34,12 +34,12 @@ QCLpermuteMC <- function(genotypes, phenotypes, pheno.col, n.perm=10, n.cores=2,
 QCLpermute.internal <- function(perm, genotypes, phenotypes, pheno.col, rvm, directory="permutations", saveFiles = FALSE, verbose=FALSE, ...){
   require(qcl)
   sl <- proc.time()
-  if(verbose) cat("- Starting permutation",perm,"\n")
+  if(verbose) cat("  - Starting permutation",perm,"\n")
   genotypes <- genotypes[rvm[perm,],]
   perm <- QCLmapping(genotypes, phenotypes, pheno.col, ...)
   if(saveFiles) write.table(perm, file=paste(directory,"/Permutation_",pheno.col,"_",perm,".txt",sep=""))
   el <- proc.time()
-  if(verbose) cat("- permutation",perm,"took:",as.numeric(el[3]-sl[3]),"seconds.\n")
+  if(verbose) cat("  - Permutation",perm,"took:",as.numeric(el[3]-sl[3]),"seconds.\n")
   as.numeric(max(abs(perm)))
 }
 
@@ -47,7 +47,7 @@ QCLpermute.internal <- function(perm, genotypes, phenotypes, pheno.col, rvm, dir
 QCLpermute <- function(genotypes, phenotypes, pheno.col, n.perm=10, n.cores=2, directory="permutations", saveFiles = FALSE, verbose=FALSE, ...){
   if(has_snow() && n.cores > 1){
     require(snow)
-    cat("- SNOW found using",n.cores,"processors for calculation\n")
+    cat("  - SNOW found using",n.cores,"processors for calculation\n")
     QCLpermuteMC(genotypes, phenotypes, pheno.col, n.perm=n.perm, n.cores=n.cores, directory, saveFiles, verbose, ...)
   }else{
     if(!file.exists(directory)) dir.create(directory)
@@ -56,14 +56,14 @@ QCLpermute <- function(genotypes, phenotypes, pheno.col, n.perm=10, n.cores=2, d
     idx <- 1
     for(p in pheno.col){
       ss <- proc.time()
-      cat("Starting permutation for phenotype",p,"\n")
+      cat("  - Starting permutation for phenotype",p,"\n")
       rvm <- getRVM(n.perm,nrow(genotypes))
       for(x in 1:n.perm){
         QCLperm[[idx]] <- c(QCLperm[[idx]],QCLpermute.internal(x,genotypes,phenotypes,p,rvm,directory,saveFiles,verbose))
       }
       class(QCLperm[[idx]]) <- c(class(QCLperm[[idx]]),"QCLpermute")
       el <- proc.time()
-      cat("-",n.perm,"permutations took:",as.numeric(el[3]-ss[3]),"seconds.\n")
+      cat("  -",n.perm,"permutations took:",as.numeric(el[3]-ss[3]),"seconds.\n")
       idx <- idx+1
     }
     invisible(QCLperm)
