@@ -57,15 +57,16 @@ QCLpermute <- function(genotypes, phenotypes, pheno.col, n.perm=10, n.cores=2, d
     for(p in pheno.col){
       ss <- proc.time()
       cat("  - Starting permutation for phenotype",p,"\n")
+      #Generate random number from a single thread, so we don't run into concurrency issues
       rvm <- getRVM(n.perm,nrow(genotypes))
       for(x in 1:n.perm){
         QCLperm[[idx]] <- c(QCLperm[[idx]],QCLpermute.internal(x,genotypes,phenotypes,p,rvm,directory,saveFiles,verbose))
       }
-      class(QCLperm[[idx]]) <- c(class(QCLperm[[idx]]),"QCLpermute")
       el <- proc.time()
       cat("  -",n.perm,"permutations took:",as.numeric(el[3]-ss[3]),"seconds.\n")
       idx <- idx+1
     }
+    class(QCLperm) <- c(class(QCLperm),"QCLpermute")
     invisible(QCLperm)
   }
 }
