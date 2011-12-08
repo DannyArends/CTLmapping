@@ -14,7 +14,7 @@ QCLasLOD <- function(QCLscan, QTLscores, main, do.legend=TRUE){
     main <- paste("Comparison QCL:QTL of",attr(QCLscan$qcl,"name"))
   }
   op <- par(mfrow=c(2,1))
-  plot.QCLscan(QCLscan)
+  plot.QCLscan(QCLscan,do.legend=do.legend)
   QCLscores <- QCLtoLODvector(QCLscan)
   if(!missing(QTLscores)){
     plot(c(0,length(QCLscores)),c(0,max(c(QCLscores,QTLscores))),type='n', main=main, ylab="LOD",xlab="Marker")

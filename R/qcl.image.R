@@ -8,17 +8,30 @@
 # Image plot routines for QCL analysis
 #
 
-image.QCLobject <- function(x, against = c("markers","phenotypes"), do.grid=TRUE, grid.col = "black", verbose = FALSE, ...){
+image.QCLobject <- function(x, against = c("markers","phenotypes"), onlySignificant = FALSE, significance = 0.05, do.grid=TRUE, grid.col = "black", verbose = FALSE, ...){
   colorrange <- c("white",gray.colors(10)[10:1])
   mymatrix <- NULL
   mynames <- NULL
   for(p in 1:length(x)){
     if(verbose) cat("Processing:",p,"from QCL to LOD\n")
-    mymatrix <- rbind(mymatrix,QCLtoLODvector(x[[p]], against))
-    mynames <- c(mynames,attr(x[[p]]$qcl,"name"))
+    lod <- QCLtoLODvector(x[[p]], against)
+    if(onlySignificant){
+      if(max(lod) > -log10(significance)){
+        mymatrix <- rbind(mymatrix,lod)
+        mynames <- c(mynames,attr(x[[p]]$qcl,"name"))  
+      }
+    }else{
+      mymatrix <- rbind(mymatrix,lod)
+      mynames <- c(mynames,attr(x[[p]]$qcl,"name"))
+    }
+    
   }
   rownames(mymatrix) <- mynames
-  mainlabel <- paste("QCL phenotypes vs",against[1])
+  mainlabel <- paste("QCL phenotypes vs",against[1],"at P-value <",significance)
+  image.internal(mymatrix, colorrange, mainlabel,do.grid, grid.col)
+}
+
+image.internal <- function(mymatrix, colorrange, mainlabel, do.grid, grid.col){
   if(!is.null(mymatrix)){ 
     image(1:ncol(mymatrix),1:nrow(mymatrix),t(mymatrix),
           main=mainlabel,
@@ -32,4 +45,30 @@ image.QCLobject <- function(x, against = c("markers","phenotypes"), do.grid=TRUE
     box()
   }
   invisible(mymatrix)
+}
+
+imageQTLfromQCLobject <- function(x, onlySignificant = FALSE, significance = 0.05, do.grid=TRUE, grid.col = "black", verbose = FALSE, ...){
+  colorrange <- c("white",gray.colors(10)[10:1])
+  mymatrix <- NULL
+  mynames <- NULL
+  for(p in 1:length(x)){
+    if(verbose) cat("Processing QTL",p,"from QCLobject\n")
+    lod <- x[[p]]$qtl
+    if(onlySignificant){
+      if(max(QCLtoLODvector(x[[p]], "markers")) > -log10(significance)){
+        mymatrix <- rbind(mymatrix,lod)
+        mynames <- c(mynames,attr(x[[p]]$qcl,"name"))  
+      }
+    }else{
+      mymatrix <- rbind(mymatrix,lod)
+      mynames <- c(mynames,attr(x[[p]]$qcl,"name"))
+    }
+  }
+  rownames(mymatrix) <- mynames
+  if(onlySignificant){
+    mainlabel <- paste("QTL heatmap at P-value <", significance)
+  }else{
+    mainlabel <- paste("QTL heatmap")
+  }
+  image.internal(mymatrix, colorrange, mainlabel,do.grid, grid.col)
 }
