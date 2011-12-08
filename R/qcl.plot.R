@@ -38,7 +38,7 @@ plot.QCLobject <- function(x, ...){
 plot.QCLscan <- function(x, onlySignificant = TRUE, qcl.threshold =0.6, do.legend=TRUE, ...){
   if(missing(x)) stop("argument 'x' is missing, with no default")
   if(!is.null(x$p)){
-    mysign <- as.numeric(which(apply(abs(x$qcl),1,max) > getPermuteThresholds(x$p)[1]))
+    mysign <- as.numeric(which(apply(abs(x$qcl),1,max) > getPermuteThresholds(x)[1]))
   }else{
     mysign <- as.numeric(which(apply(abs(x$qcl),1,max) > qcl.threshold))
   }

@@ -61,12 +61,10 @@ QCLtoPvalue.internal <- function(QCLscore, permvalues, l){
       index_r <- Inf
     }
     if(!is.finite(index_l)){
-      tryCatch(estimate <- extrapolateBeyondRange(permvalues, y),  error = function(e) {cat("erororor");estimate <<- 1})
-      cat(y,estimate,"\n")
+      tryCatch(estimate <- extrapolateBeyondRange(permvalues, y),  error = function(e) {estimate <<- 1})
       if(estimate > 1-((l-1)/l)){
         estimate <- 1-((l-1)/l)
       }
-      cat(y,estimate,"\n")
       res <- c(res,estimate)
       if(warn){
         cat("  - [Warning] Scores out of permutation range, please do more permutations\n")

@@ -24,7 +24,6 @@ has_rqtl <- function(){ get(".has_rqtl", envir = .QclEnv) }
 
 #Package loading
 .onAttach <- function(lib, pkg){
-  cat("LIB:",lib,"\n")
   packageStartupMessage("- Loading package qcl\n", appendLF = FALSE)
   .has_d <- TRUE
   .has_snow <- FALSE
