@@ -5,13 +5,18 @@
 	Scan for quantitative correlation loci (using an R/qtl cross object)
 }
 \usage{
-QCLscan.cross(cross, pheno.col, verbose = FALSE)
+QCLscan.cross(cross, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE)
 }
 
 \arguments{
   \item{cross}{ An object of class \code{cross}. See
                 \code{\link[qtl]{read.cross}} for details. }
   \item{pheno.col}{ Which phenotype column should we analyse }
+  \item{method}{ Character string indicating which correlation coefficient is to be computed. One of "pearson" (default), "kendall", or "spearman". }
+  \item{n.perm}{ Number of permutations }
+  \item{n.cores}{ Number of CPU cores to use during the analysis }
+  \item{directory}{ Directory in which to save the output }
+  \item{saveFiles}{ Save the permjutation matrices to HDD }
   \item{verbose}{ Be verbose. }
 }
 \details{
@@ -41,7 +46,7 @@ Columns: Genetic markers) for the phenotype.
     data(multitrait) # Arabidopsis Thaliana (R/qtl cross object)
     qcl_result <- QCLscan.cross(multitrait)
     qcl_result
-    plot(qcl_result,16)   #Plot a phenotype
+    plot(qcl_result[[16]])   #Plot a phenotype
   }
 }
 

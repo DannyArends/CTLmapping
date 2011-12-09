@@ -12,7 +12,6 @@
 QCLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), method = c("pearson", "kendall", "spearman"), n.perm=0, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE){
   results <- vector("list",length(pheno.col))
   idx <- 1
-  cat(method,"\n")
   for(p in pheno.col){
     cat("Stage 1: Scanning QCL\n")
     results[[idx]]$qcl <- QCLmapping(genotypes, phenotypes, p, method=method, verbose)

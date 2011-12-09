@@ -5,13 +5,14 @@
 	Permutation routine for QCL mapping (using an R/qtl cross object)
 }
 \usage{
-QCLpermute.cross(cross, pheno.col, n.perm=10, n.cores=2, directory="permutations", saveFiles=FALSE, verbose=FALSE, \dots)
+QCLpermute.cross(cross, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=10, n.cores=2, directory="permutations", saveFiles=FALSE, verbose=FALSE, \dots)
 }
 
 \arguments{
   \item{cross}{ An object of class \code{cross}. See
                 \code{\link[qtl]{read.cross}} for details. }
   \item{pheno.col}{ Which phenotype column should we use in permutation analysis }
+  \item{method}{ Character string indicating which correlation coefficient is to be computed. One of "pearson" (default), "kendall", or "spearman". }
   \item{n.perm}{ Number of permutations }
   \item{n.cores}{ Number of CPU cores to use during the analysis }
   \item{directory}{ Directory in which to save the output }

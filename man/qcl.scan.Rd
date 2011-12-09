@@ -5,13 +5,14 @@
 	Scan for quantitative correlation loci
 }
 \usage{
-QCLscan(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE)
+QCLscan(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), method = c("pearson", "kendall", "spearman"), n.perm=0, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE)
 }
 
 \arguments{
   \item{genotypes}{ Matrix of genotypes (individuals x markers) }
   \item{phenotypes}{ Matrix of phenotypes (individuals x phenotypes) }
-  \item{pheno.col}{ Which phenotype column should we analyse }
+  \item{pheno.col}{ Which phenotype column(s) should we analyse. Defaults to analyse all phenotype columns }
+  \item{method}{ Character string indicating which correlation coefficient is to be computed. One of "pearson" (default), "kendall", or "spearman". }
   \item{n.perm}{ Number of permutations }
   \item{n.cores}{ Number of CPU cores to use during the analysis }
   \item{directory}{ Directory in which to save the output }
@@ -42,7 +43,7 @@ QCL object, a list with at each index a $qclscan, $permutations, $lodmatrix
   data(ath.metabolites) # Arabidopsis Thaliana dataset
   qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes)
   qcl_result
-  plot(qcl_result,16)   #Plot a phenotype
+  plot(qcl_result[[16]])   #Plot a phenotype
 }
 
 \keyword{methods}
