@@ -14,19 +14,20 @@ QCLnetwork <- function(QCLscan, qcl.threshold=0.45, verbose = FALSE){
   edge_count <- NULL
   node_names <- NULL
   for(QCL in QCLscan){
-    for(x in 1:ncol(QCL)){
-      for(id in which(abs(QCL[,x]) > qcl.threshold)){
-        edge_name <- paste(attr(QCL,"name"),"QCL",rownames(QCL)[id],sep="\t")
+    for(x in 1:ncol(QCL$qcl)){
+      if(is.null(QCL$p)) stop("No permutations found, need permutations to determine likelihood\n")
+      for(id in which(abs(QCL$qcl[,x]) > getPermuteThresholds(QCL)[1])){
+        edge_name <- paste(attr(QCL$qcl,"name"),"QCL",rownames(QCL$qcl)[id],sep="\t")
         if(edge_name %in% edge_count[,1]){
           edgeid <- which(edge_count[,1] %in% edge_name)
           if(verbose) cat("Duplicate edge",edgeid,":", edge_name,"\n")
-          edge_count[edgeid,2] <- as.numeric(edge_count[edgeid,2])+QCL[id,x]
+          edge_count[edgeid,2] <- as.numeric(edge_count[edgeid,2])+QCL$qcl[id,x]
           edge_count[edgeid,3] <- as.numeric(edge_count[edgeid,3])+1
         }else{
-          edge_count <- rbind(edge_count,c(edge_name, QCL[id,x], 1))
+          edge_count <- rbind(edge_count,c(edge_name, QCL$qcl[id,x], 1))
         }
-        node_names <- c(node_names,attr(QCL,"name"),rownames(QCL)[id])
-        cat(attr(QCL,"name"),"QCL",rownames(QCL)[id],QCL[id,x],colnames(QCL)[x],"\n",file="network.sif",append=TRUE)
+        node_names <- c(node_names,attr(QCL$qcl,"name"),rownames(QCL$qcl)[id])
+        cat(attr(QCL$qcl,"name"),"QCL",rownames(QCL$qcl)[id],QCL$qcl[id,x],colnames(QCL$qcl)[x],"\n",file="network.sif",append=TRUE)
         cnt <- cnt+1
       }
     }
