@@ -8,14 +8,15 @@
 }
 
 \usage{
-\method{plot}{QCLscan}(x, pheno.col=1, qcl.threshold=0.3, do.legend = TRUE, \dots)
+\method{plot}{QCLscan}(x, onlySignificant = TRUE, qcl.threshold =0.6, do.legend=TRUE, ...)
 }			    
 
 \arguments{
   \item{x}{ An object of class \code{"QCLscan"}, as output by \code{\link{QCLscan}}. }
-  \item{pheno.col}{ Phenotype to plot. }
-  \item{qcl.threshold}{ Threshold at which an QCL is considered significant. (See \code{\link{QCLpermute}}) }
-  \item{do.legend}{ Adds a legend with the different qcl.significance thresholds used. }
+  \item{onlySignificant}{ Plot only the significant contributions to the QCL profile. }
+  \item{qcl.threshold}{ Threshold at which an QCL is considered significant, this is 
+  used when onlySignificant == TRUE but no permutations are present in the QCLscan object. (See \code{\link{QCLscan}}). }
+  \item{do.legend}{ Adds a legend showing which phenotypes contribute to the QCL profile. }
   \item{\dots}{ Passed to the function \code{\link[graphics]{plot}} when it is called. }
 }
 \value{

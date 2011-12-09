@@ -16,18 +16,18 @@ QCLpermuteMC <- function(genotypes, phenotypes, pheno.col, method = c("pearson",
   if(missing(pheno.col)) pheno.col <- 1:ncol(phenotypes)
   QCLperm <- vector("list",length(pheno.col))
   idx <- 1
-  cl <- makeCluster(rep("localhost",n.cores))
+  cl <- snow::makeCluster(rep("localhost",n.cores))
   for(p in pheno.col){
     ss <- proc.time()
     cat("  - Starting multi core permutation for phenotype",p,"\n")
     rvm <- getRVM(n.perm,nrow(genotypes))
-    QCLperm[[idx]] <- unlist(parLapply(cl,as.list(1:n.perm),get("QCLpermute.internal"), genotypes, phenotypes, p, method, rvm, directory, saveFiles, verbose))
+    QCLperm[[idx]] <- unlist(snow::parLapply(cl,as.list(1:n.perm),get("QCLpermute.internal"), genotypes, phenotypes, p, method, rvm, directory, saveFiles, verbose))
     idx <- idx+1
     el <- proc.time()
     cat("  -",n.perm,"permutations took:",as.numeric(el[3]-ss[3]),"seconds.\n")
   }
   class(QCLperm) <- c(class(QCLperm),"QCLpermute")
-  stopCluster(cl)
+  snow::stopCluster(cl)
   invisible(QCLperm)
 }
 

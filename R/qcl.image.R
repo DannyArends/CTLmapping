@@ -28,10 +28,10 @@ image.QCLobject <- function(x, against = c("markers","phenotypes"), onlySignific
   }
   rownames(mymatrix) <- mynames
   mainlabel <- paste("QCL phenotypes vs",against[1],"at P-value <",significance)
-  image.internal(mymatrix, colorrange, mainlabel,do.grid, grid.col)
+  internal.image(mymatrix, colorrange, mainlabel,do.grid, grid.col)
 }
 
-image.internal <- function(mymatrix, colorrange, mainlabel, do.grid, grid.col){
+internal.image <- function(mymatrix, colorrange, mainlabel, do.grid, grid.col){
   if(!is.null(mymatrix)){ 
     image(1:ncol(mymatrix),1:nrow(mymatrix),t(mymatrix),
           main=mainlabel,
@@ -70,5 +70,5 @@ imageQTLfromQCLobject <- function(x, onlySignificant = FALSE, significance = 0.0
   }else{
     mainlabel <- paste("QTL heatmap")
   }
-  image.internal(mymatrix, colorrange, mainlabel,do.grid, grid.col)
+  internal.image(mymatrix, colorrange, mainlabel,do.grid, grid.col)
 }
