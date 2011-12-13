@@ -9,18 +9,25 @@
 #
 
 #-- QCLscan main function --#
-QCLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), method = c("pearson", "kendall", "spearman"), n.perm=0, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE){
+QCLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), method = c("pearson", "kendall", "spearman"), n.perm=0, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles = FALSE, verbose = FALSE){
+  if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
+  if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
+  
+  cat("Stage 0: Checking data\n")
+  toremove <- check.genotypes(genotypes,genotype.values)
+  if(!is.null(toremove)) genotypes <- genotypes[,-toremove]
+
   results <- vector("list",length(pheno.col))
   idx <- 1
   for(p in pheno.col){
     cat("Stage 1: Scanning QCL\n")
-    results[[idx]]$qcl <- QCLmapping(genotypes, phenotypes, p, method=method, verbose)
+    results[[idx]]$qcl <- QCLmapping(genotypes, phenotypes, p, method=method, genotype.values, verbose)
     cat("Stage 2: Scanning QTL\n")
     results[[idx]]$qtl <- QTLscan(genotypes, phenotypes, p, verbose)
     
     if(n.perm > 0){
       cat("Stage 3: Permutation\n")
-      results[[idx]]$p <- QCLpermute(genotypes, phenotypes, p, method=method, n.perm, n.cores, directory, saveFiles, verbose)
+      results[[idx]]$p <- QCLpermute(genotypes, phenotypes, p, method=method, n.perm, n.cores, genotype.values, directory, saveFiles, verbose)
       
       cat("Stage 4: Transformation into LOD\n")
       results[[idx]]$l <- toLod(results[[idx]], TRUE, FALSE)
@@ -35,15 +42,15 @@ QCLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), metho
   results
 }
 
-QCLmapping <- function(genotypes, phenotypes, pheno.col = 1, method = c("pearson", "kendall", "spearman"), verbose = FALSE){
+QCLmapping <- function(genotypes, phenotypes, pheno.col = 1, method = c("pearson", "kendall", "spearman"), genotype.values=c(1,2), verbose = FALSE){
   if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   ss <- proc.time()
   results <- NULL
   profile <- apply(genotypes,2, 
     function(geno){
-      cor1 <- cor(phenotypes[geno==1,pheno.col],phenotypes[geno==1,],use="pair",method=method[1])
-      cor2 <- cor(phenotypes[geno==2,pheno.col],phenotypes[geno==2,],use="pair",method=method[1])
+      cor1 <- cor(phenotypes[geno==genotype.values[1],pheno.col],phenotypes[geno==genotype.values[1],],use="pair",method=method[1])
+      cor2 <- cor(phenotypes[geno==genotype.values[2],pheno.col],phenotypes[geno==genotype.values[2],],use="pair",method=method[1])
       sign(cor1)*(cor1^2)-sign(cor2)*(cor2^2)
     }
   )
@@ -71,4 +78,20 @@ QCLscan.cross <- function(cross, pheno.col, method = c("pearson", "kendall", "sp
   }else{
     warning(.has_rqtl_warnmsg)
   }
+}
+
+check.genotypes <- function(genotypes,genotype.values=c(1,2), verbose=FALSE){
+  cat(" - Genotypes, ind=",nrow(genotypes),", markers=",ncol(genotypes),"\n",sep="")
+  if(length(genotype.values)!=2) stop("argument 'genotype.values' length is incorrect, provide two genotype.values")
+  toremove <- NULL
+  idx <- 1
+  checks <- apply(genotypes,2,function(geno){
+    if(length(which(geno==genotype.values[1])) == 0 | length(which(geno==genotype.values[2])) == 0){
+      if(verbose) cat("Severe: Empty group, removing marker",idx,"\n")
+      toremove <<- c(idx,toremove)
+    }
+    idx <<- idx+1
+  })
+  cat(" - Genotypes, removing",length(toremove),"markers\n")
+  toremove
 }
