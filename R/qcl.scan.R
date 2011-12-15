@@ -22,6 +22,7 @@ QCLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), metho
   for(p in pheno.col){
     cat("Stage 1: Scanning QCL\n")
     results[[idx]]$qcl <- QCLmapping(genotypes, phenotypes, p, method=method, genotype.values, verbose)
+    
     cat("Stage 2: Scanning QTL\n")
     results[[idx]]$qtl <- QTLscan(genotypes, phenotypes, p, verbose)
     
@@ -30,7 +31,7 @@ QCLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), metho
       results[[idx]]$p <- QCLpermute(genotypes, phenotypes, p, method=method, n.perm, n.cores, genotype.values, directory, saveFiles, verbose)
       
       cat("Stage 4: Transformation into LOD\n")
-      results[[idx]]$l <- toLod(results[[idx]], TRUE, FALSE)
+      results[[idx]]$l <- toLod(results[[idx]], FALSE, FALSE)
     }else{
       cat("Stage 3: Skipping permutation\n")
       cat("Stage 4: Skipping transformation into LOD\n")
@@ -45,18 +46,19 @@ QCLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), metho
 QCLmapping <- function(genotypes, phenotypes, pheno.col = 1, method = c("pearson", "kendall", "spearman"), genotype.values=c(1,2), verbose = FALSE){
   if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
+  if(length(pheno.col)!=1) stop("QCLmapping can only scan 1 phenotype at once, use QCLscan for multiple phenotypes")
   ss <- proc.time()
   results <- NULL
-  profile <- apply(genotypes,2, 
+  qcl_profile <- apply(genotypes,2, 
     function(geno){
       cor1 <- cor(phenotypes[geno==genotype.values[1],pheno.col],phenotypes[geno==genotype.values[1],],use="pair",method=method[1])
       cor2 <- cor(phenotypes[geno==genotype.values[2],pheno.col],phenotypes[geno==genotype.values[2],],use="pair",method=method[1])
       sign(cor1)*(cor1^2)-sign(cor2)*(cor2^2)
     }
   )
-  rownames(profile) <- colnames(phenotypes)
-  colnames(profile) <- colnames(genotypes)
-  results <- profile
+  rownames(qcl_profile) <- colnames(phenotypes)
+  colnames(qcl_profile) <- colnames(genotypes)
+  results <- qcl_profile
   attr(results,"name") <- colnames(phenotypes)[pheno.col]
   class(results) <- c(class(results),"QCL")
   ee <- proc.time()
@@ -67,7 +69,7 @@ QCLmapping <- function(genotypes, phenotypes, pheno.col = 1, method = c("pearson
 }
 
 #-- R/qtl interface --#
-QCLscan.cross <- function(cross, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE){
+QCLscan.cross <- function(cross, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=100, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles = FALSE, verbose = FALSE){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
   if(has_rqtl()){
     require(qtl)
@@ -78,20 +80,4 @@ QCLscan.cross <- function(cross, pheno.col, method = c("pearson", "kendall", "sp
   }else{
     warning(.has_rqtl_warnmsg)
   }
-}
-
-check.genotypes <- function(genotypes,genotype.values=c(1,2), verbose=FALSE){
-  cat(" - Genotypes, ind=",nrow(genotypes),", markers=",ncol(genotypes),"\n",sep="")
-  if(length(genotype.values)!=2) stop("argument 'genotype.values' length is incorrect, provide two genotype.values")
-  toremove <- NULL
-  idx <- 1
-  checks <- apply(genotypes,2,function(geno){
-    if(length(which(geno==genotype.values[1])) == 0 | length(which(geno==genotype.values[2])) == 0){
-      if(verbose) cat("Severe: Empty group, removing marker",idx,"\n")
-      toremove <<- c(idx,toremove)
-    }
-    idx <<- idx+1
-  })
-  cat(" - Genotypes, removing",length(toremove),"markers\n")
-  toremove
 }

@@ -5,7 +5,23 @@
 # last modified Jun, 2011
 # first written nov, 2010
 # 
-# nchr
+# check.genotypes, getRVM, lodscorestoscanone, getCorrelatedPhenotypes, gcLoop
+
+check.genotypes <- function(genotypes,genotype.values=c(1,2), verbose=FALSE){
+  cat(" - Genotypes, ind=",nrow(genotypes),", markers=",ncol(genotypes),"\n",sep="")
+  if(length(genotype.values)!=2) stop("argument 'genotype.values' length is incorrect, provide two genotype.values")
+  toremove <- NULL
+  idx <- 1
+  checks <- apply(genotypes,2,function(geno){
+    if(length(which(geno==genotype.values[1])) == 0 | length(which(geno==genotype.values[2])) == 0){
+      if(verbose) cat("Severe: Empty group, removing marker",idx,"\n")
+      toremove <<- c(idx,toremove)
+    }
+    idx <<- idx+1
+  })
+  cat(" - Genotypes, removing",length(toremove),"markers\n")
+  toremove
+}
 
 getRVM <- function(n.perms, n.rows){
   rvm <- NULL

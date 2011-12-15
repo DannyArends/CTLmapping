@@ -24,7 +24,6 @@ image.QCLobject <- function(x, against = c("markers","phenotypes"), onlySignific
       mymatrix <- rbind(mymatrix,lod)
       mynames <- c(mynames,attr(x[[p]]$qcl,"name"))
     }
-    
   }
   rownames(mymatrix) <- mynames
   mainlabel <- paste("QCL phenotypes vs",against[1],"at P-value <",significance)
