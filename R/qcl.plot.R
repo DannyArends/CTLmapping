@@ -55,11 +55,11 @@ plot.QCLscan <- function(x, onlySignificant = TRUE, qcl.threshold =0.6, do.legen
   plot(c(0,ncol(x$qcl)),c(0,max(summarized)), type='n',xlab="Marker", ylab="-log10(P-value)", main=paste("Phenotype contribution to QCL of",attr(x$qcl,"name")),...)
   p <- rep(0,ncol(x$qcl))
   i <- 1;
-  mycolors <- terrain.colors(nrow(QCLmatrix))
+  mycolors <- topo.colors(nrow(QCLmatrix))
   apply(QCLmatrix,1,
     function(d){
      for(idx in 1:length(d)){
-        rect(idx-0.5,p[idx],idx+0.5,p[idx]+d[idx],col=mycolors[i])
+        rect(idx-0.5,p[idx],idx+0.5,p[idx]+d[idx],col=mycolors[i],lwd=0,lty=0)
       }
       p <<- p + d
       i <<- i + 1
@@ -72,6 +72,7 @@ plot.QCLscan <- function(x, onlySignificant = TRUE, qcl.threshold =0.6, do.legen
   if(do.legend){
     legend("topleft",rownames(x$qcl)[mysign],col=mycolors,lwd=1,cex=0.7)
   }
-  points(summarized,type='l',lwd=2)
-  invisible(summarized)
+  points(summarized,type='l',lwd=1)
+  rownames(QCLmatrix) <- rownames(x$qcl)[mysign]
+  invisible(QCLmatrix)
 }

@@ -11,11 +11,10 @@
 
 QCLtoP <- function(QCLscan, onlySignificant = TRUE, verbose = TRUE){
   if(missing(QCLscan)) stop("argument 'QCLscan' is missing, with no default")
-  ss <- proc.time()
   permvalues <- sort(unlist(QCLscan$p))
   l <- length(permvalues)
   if(onlySignificant){
-    mysignificant <- as.numeric(which(apply(abs(QCLscan$qcl),1,max) > getPermuteThresholds(QCLscan$p, pheno.col)[1]))
+    mysignificant <- as.numeric(which(apply(abs(QCLscan$qcl),1,max) > getPermuteThresholds(QCLscan$p)[1]))
     if(length(mysignificant) > 1){
       scaled <- abs(QCLscan$qcl[mysignificant, ])
       rnames <- rownames(QCLscan$qcl)[mysignificant]
@@ -29,10 +28,6 @@ QCLtoP <- function(QCLscan, onlySignificant = TRUE, verbose = TRUE){
   }
   result <- apply(scaled, 2, function(x){QCLtoPvalue.internal(x, permvalues, l)})
   rownames(result) <- rnames
-  ee <- proc.time()
-  if(verbose){
-    cat("toLOD took",as.numeric(ee[3]-ss[3]),"seconds\n")
-  }
   result
 }
 
@@ -109,8 +104,11 @@ extrapolateBeyondRange <- function(permvalues, value = 0.6){
   as.numeric(dens(value))
 }
 
-toLod <- function(QCLscan, correction=FALSE, onlySignificant = TRUE){
-  pmatrix <- QCLtoP(QCLscan, onlySignificant)
+toLod <- function(QCLscan, onlySignificant = TRUE, verbose = FALSE){
+  ss <- proc.time()
+  pmatrix <- QCLtoP(QCLscan, onlySignificant, verbose)
+  ee <- proc.time()
+  if(verbose) cat("  - toLOD took",as.numeric(ee[3]-ss[3]),"seconds\n")
   -log10(pmatrix)
 }
 
