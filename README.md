@@ -4,9 +4,12 @@ QCL provides an implementation in R for the novel quanitative correlation locus 
 mapping methodology. QCL mapping is a novel approach to detect genetic regulation of 
 phenotypes in recombinant inbred line populations (RIL). It is a method complementair 
 to QTL analysis, and provides additional insights, overlooked by the classical QTL 
-approach. Using differences in correlation within an inbred population loci are 
-associated with these differences, and from the amount of overlap between clusters of 
-phenotypes the underlying architecture is transformed into an interaction network.
+approach. Differences in correlations between traits within an inbred population are 
+determined per genetic marker. At each marker phenotypes are grouped and a single 
+phenotype is used to distinguish these differences. The likelyhood profiles (similar 
+to QTL profiles) of this 'loss of correlation' measurement shows a very high degree 
+of overlap with classical QTL profiles, BUT provide additional information on the 
+genetic network underlying these QTL.
 
 Installation
 ------------
@@ -37,11 +40,11 @@ Scan your data
     $ > data(multitrait)
     $ > multitrait = fill.geno(multitrait)
     $ > ?QCLscan                                   # Show the help
-    $ > qcl_result <- QCLscan(multitrait)
+    $ > qcl_result <- QCLscan.cross(multitrait)
 
 Plot a single phenotype
 
-    $ > plot(qcl_result,pheno.col=12)
+    $ > plot(qcl_result, pheno.col=12)
 
 Create an image of the phenotypes to marker relation strength, this matrix is 'comparible' 
 to a QTL scan, this is because the underlying model assumptions are different but comparible 
