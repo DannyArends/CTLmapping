@@ -37,16 +37,21 @@
 \alias{QCLscoretoPvalue}
 \alias{QCLtoLOD}
 \alias{QCLtoLODvector}
-\alias{QCLtoPvalue}
+\alias{QCLtoP}
 \alias{QCLtoPvalue.internal}
+
+\alias{check.genotypes}
+\alias{toLOD}
+\alias{QCLasLOD}
+
 \alias{QTLscan}
+\alias{QTLscan.cross}
+
 \alias{extrapolateBeyondRange}
 \alias{getPermuteThresholds}
 \alias{getRVM}
 \alias{hist.QCLpermute}
 \alias{plot.QCLpermute}
-\alias{plotAsLOD}
-\alias{plotAsStackedHist}
 
 \alias{matrix_correlation}
 

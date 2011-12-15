@@ -5,7 +5,7 @@
 	Scan for quantitative correlation loci
 }
 \usage{
-QCLmapping(genotypes, phenotypes, pheno.col = 1, method = c("pearson", "kendall", "spearman"), verbose = FALSE)
+QCLmapping(genotypes, phenotypes, pheno.col = 1, method = c("pearson", "kendall", "spearman"), genotype.values=c(1,2), verbose = FALSE)
 }
 
 \arguments{
@@ -13,6 +13,7 @@ QCLmapping(genotypes, phenotypes, pheno.col = 1, method = c("pearson", "kendall"
   \item{phenotypes}{ Matrix of phenotypes (individuals x phenotypes) }
   \item{pheno.col}{ Which phenotype column should we analyse }
   \item{method}{ Character string indicating which correlation coefficient is to be computed. One of "pearson" (default), "kendall", or "spearman". }
+  \item{genotype.values}{ Two values specifying the encoding of the genotype matrix }
   \item{verbose}{ Be verbose }
 }
 \details{
@@ -40,7 +41,7 @@ Columns: Genetic markers) for the phenotype.
   data(ath.metabolites) # Arabidopsis Thaliana dataset
   qcl_result <- QCLmapping(ath.metab$genotypes, ath.metab$phenotypes)
   qcl_result
-  plot(qcl_result[[16]])   #Plot a phenotype
+  plot(qcl_result)   #Plot a phenotype
 }
 
 \keyword{methods}
