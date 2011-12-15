@@ -42,13 +42,15 @@ Scan your data
     $ > ?QCLscan                                   # Show the help
     $ > qcl_result <- QCLscan.cross(multitrait)
 
-Plot a single phenotype
+Plot a single phenotype, the profile is comparable to the QTL profile, 
+in QCL mapping we know which phenotypes are differentially correlated 
+underneath the peak.
 
     $ > plot(qcl_result, pheno.col=12)
 
 Create an image of the phenotypes to marker relation strength, this matrix is 'comparible' 
-to a QTL scan, this is because the underlying model assumptions are different but comparible 
-to those used when QTL mapping.
+to a heatmap of QTL scans on many phenotypes, the underlying model assumptions are different 
+from QTL mapping but comparible, thus the outut is not shockingly different from QTL mapping.
 
     $ > r1 <- image(qcl_result,against="markers")
 
