@@ -32,7 +32,7 @@ TODO
 \examples{
   library(qcl)
   data(ath.metabolites) # Arabidopsis Thaliana dataset
-  qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes)
+  qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes, 1:3, n.perm=10)
   in_network <- QCLnetwork(qcl_result)
   in_network
 }

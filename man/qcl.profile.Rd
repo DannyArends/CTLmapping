@@ -7,12 +7,13 @@
 }
 
 \usage{
-  QCLprofile(QCL, qcl.threshold=0.4, verbose=TRUE)
+  QCLprofile(QCLobject, pheno.col=1, significance = 0.05, verbose = TRUE)
 }
 
 \arguments{
-  \item{QCL}{ A single element from an object of class \code{"QCLscan"}, as output by \code{\link{QCLscan}}. }
-  \item{qcl.threshold}{ Threshold at which an QCL is considered significant. (See \code{\link{QCLpermute}}) }
+  \item{QCLobject}{ A single element from an object of class \code{"QCLobject"}, as output by \code{\link{QCLscan}}. }
+  \item{significance}{ Significance threshold for setting a genomewide FDR. }
+  \item{pheno.col}{ Phenotype from the QCLobject to use. }
   \item{verbose}{ Be verbose. }
 }
 
@@ -39,8 +40,8 @@
 \examples{
   library(qcl)
   data(ath.metabolites) # Arabidopsis Thaliana dataset
-  qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes)
-  p2m_matrix <- QCLprofile(qcl_result[[2]])
+  qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes,1:3,n.perm=10)
+  p2m_matrix <- QCLprofile(qcl_result)
 }
 
 \keyword{methods}
