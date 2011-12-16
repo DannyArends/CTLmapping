@@ -36,11 +36,13 @@
 \alias{QCLscantoScanone}
 \alias{QCLscoretoPvalue}
 \alias{QCLtoLOD}
+\alias{toLod}
 \alias{QCLtoLODvector}
 \alias{QCLtoP}
 \alias{QCLtoPvalue.internal}
 
 \alias{check.genotypes}
+\alias{internal.image}
 \alias{toLOD}
 \alias{QCLasLOD}
 

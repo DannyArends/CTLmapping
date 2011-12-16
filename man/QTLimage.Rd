@@ -1,22 +1,23 @@
-\name{plot.QCLscan}
-\alias{plot.QCLscan}
+\name{QTLimage}
+\alias{QTLimage}
 
-\title{Plot QCL curves}
+\title{Plot QTL curves}
 
 \description{
-  Plot the QCL curve for a genome scan (the output of \code{\link{QCLscan}}).
+  Plots the QTL heatmap of a genome wide QTL scan (part of the output of \code{\link{QCLscan}}).
 }
 
 \usage{
-\method{plot}{QCLscan}(x, onlySignificant = TRUE, qcl.threshold =0.6, do.legend=TRUE, \dots)
+QTLimage(x, onlySignificant = FALSE, significance = 0.05, do.grid=TRUE, grid.col = "black", verbose = FALSE, \dots)
 }			    
 
 \arguments{
-  \item{x}{ An object of class \code{"QCLscan"}, as output by \code{\link{QCLscan}}. }
-  \item{onlySignificant}{ Plot only the significant contributions to the QCL profile. }
-  \item{qcl.threshold}{ Threshold at which an QCL is considered significant, this is 
-  used when onlySignificant == TRUE and no permutations are present in the QCLscan object. (See \code{\link{QCLscan}}). }
-  \item{do.legend}{ Adds a legend showing which phenotypes contribute to the QCL profile. }
+  \item{x}{ An object of class \code{"QCLobject"}, as output by \code{\link{QCLscan}}. }
+  \item{onlySignificant}{ Add only the significant QTL profiles to the image. }
+  \item{significance}{ Minimum significance level for QTL profiles to be added. }
+  \item{do.grid}{ Adds a grid to the plot. }
+  \item{grid.col}{ Color of the grid lines. }
+  \item{verbose}{ Be verbose. }
   \item{\dots}{ Passed to the function \code{\link[graphics]{plot}} when it is called. }
 }
 \value{
@@ -31,7 +32,7 @@
   library(qcl)
   data(ath.metabolites) # Arabidopsis Thaliana dataset
   qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes)
-  plot(qcl_result)
+  QTLimage(qcl_result)
 }
 
 \seealso{
