@@ -52,8 +52,6 @@
 \alias{extrapolateBeyondRange}
 \alias{getPermuteThresholds}
 \alias{getRVM}
-\alias{hist.QCLpermute}
-\alias{plot.QCLpermute}
 
 \alias{matrix_correlation}
 

@@ -1,11 +1,11 @@
 #
 # qcl.print.R
 #
-# copyright (c) 2010 Danny Arends and Ritsert C. Jansen
-# last modified Oct, 2011
+# copyright (c) 2010-2011 Danny Arends and Ritsert C. Jansen
+# last modified Dec, 2011
 # first written Oct, 2011
 # 
-# Plotting routines for QCL analysis
+# Print routines for QCL analysis
 #
 
 print.QCLscan <- function(x, ...){
