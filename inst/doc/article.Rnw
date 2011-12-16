@@ -376,11 +376,7 @@ address any questions to Danny Arends, at Danny.Arends@gmail.com.
   \centering
 <<permutation_scores, fig=TRUE, echo=FALSE, height=3.0>>=
 op <- par(cex=0.5)
-plot(c(0,0.8),c(0,1000),type='n',main="QCL scores permutations",ylab="Frequency",xlab="Difference in correlation^2")
-hist(qcl_perms[[3]],add=T, col="yellow")
-hist(qcl_perms[[2]],add=T, col="red")
-hist(qcl_perms[[1]],add=T, col="green")
-legend("topright",colnames(ath.metab$phenotypes)[1:3],col=c("yellow","red","green"),lwd=6)
+hist(qcl_result,c(3,2,1))
 op <- par(cex=1)
 @ 
   \caption{QCL scores obtained during permutations (A. Thaliana) additional information obtained by QCL mapping, 
@@ -391,7 +387,7 @@ op <- par(cex=1)
   \centering
 <<singletrait, fig=TRUE, echo=FALSE, height=3.0>>=
 op <- par(cex=0.5)
-plotAsLOD(qcl_result, qcl_perms, pheno.col=1)
+plot(qcl_result[[1]])
 op <- par(cex=1)
 @
   \caption{QCL profile (A. Thaliana, X3.Hydroxypropyl) transformed to LOD scores compared to the QTL profile of the same phenotype, We see an 
@@ -402,7 +398,7 @@ op <- par(cex=1)
   \centering
 <<singletraitLOD, fig=TRUE, echo=FALSE, height=3.0>>=
 op <- par(cex=0.5)
-plotAsStackedHist(qcl_result, qcl_perms, pheno.col=1)
+QCLasLOD(qcl_result[[1]], qcl_result[[1]]$qtl)
 op <- par(cex=1)
 @ 
   \caption{QCL profile (A. Thaliana, X3.Hydroxypropyl) transformed to LOD scores. Shown is the likelyhood contribution of each of 
@@ -413,7 +409,7 @@ op <- par(cex=1)
   \centering
 <<p2mmatrix, fig=TRUE, echo=FALSE, height=3.0>>=
 par(mar=c(3,8,1.1,1.1))
-image(qcl_result, qcl_perms, against="markers",do.grid=FALSE)
+plot(qcl_result, against="markers", do.grid=TRUE, grid.col="white")
 @ 
   \caption{Phenotypes x Markers matrix (A. Thaliana) this is 'comparable' to a QTL scan on multiple traits.\label{fig:p2mmatrix}}
 \end{figure}
@@ -422,10 +418,8 @@ image(qcl_result, qcl_perms, against="markers",do.grid=FALSE)
   \centering
 <<QTLmatrix, fig=TRUE, echo=FALSE, height=3.0>>=
 par(mar=c(3,8,1.1,1.1))
-image(1:ncol(qtl_result),1:nrow(qtl_result),t(qtl_result),col=c("white",gray.colors(100)[100:1]), yaxt="n", xaxt="n", ylab="", xlab="")
-axis(2,rownames(qtl_result),at=1:nrow(qtl_result),las=2,cex.axis=0.5)
-axis(1,colnames(qtl_result),at=1:ncol(qtl_result),las=2,cex.axis=0.3)
-@ 
+QTLimage(qcl_result, do.grid=TRUE, grid.col="white")
+@
   \caption{Heatmap showing QTL scores for all 24 metabolities in A. Thaliana.\label{fig:QTLmatrix}}
 \end{figure}
 
@@ -433,7 +427,7 @@ axis(1,colnames(qtl_result),at=1:ncol(qtl_result),las=2,cex.axis=0.3)
   \centering
 <<p2pmatrix, fig=TRUE, echo=FALSE, height=3.0>>=
 par(mar=c(3,8,1.1,1.1))
-image(qcl_result, 0.5, against="phenotypes")
+plot(qcl_result, against="phenotypes", do.grid=TRUE, grid.col="white")
 @ 
   \caption{Phenotypes x Phenotypes matrix (A. Thaliana) additional information obtained by QCL mapping, 
   which can be used to reconstruct the underlying genetic architecture.\label{fig:p2pmatrix}}

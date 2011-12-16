@@ -143,12 +143,3 @@ plot.QCLpermute <- function(x, ...){
     idx <- idx+1
   }
 }
-
-hist.QCLpermute <- function(x, ...){
-  if(missing(x)) stop("argument 'x' which expects a 'QCLpermute' object is missing, with no default")
-  maximums <- lapply(x, function(v){
-    apply(abs(v), 2, max)
-  })
-  sorted <- sort(unlist(maximums))
-  hist(sorted,breaks=100,main="QCL scores during permutation",...)
-}
