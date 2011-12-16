@@ -17,6 +17,7 @@ QCLasLOD <- function(QCLscan, QTLscores, main, do.legend=TRUE){
   plot.QCLscan(QCLscan,do.legend=do.legend)
   QCLscores <- QCLtoLODvector(QCLscan)
   if(!missing(QTLscores)){
+    QTLscores <- as.numeric(unlist(QTLscores))
     plot(c(0,length(QCLscores)),c(0,max(c(QCLscores,QTLscores))),type='n', main=main, ylab="LOD",xlab="Marker")
     points(QCLscores,type='l',col="black",lwd=3)
     points(QTLscores,type='l',col="red",lwd=2,lty=1)
