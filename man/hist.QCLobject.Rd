@@ -28,11 +28,8 @@
 \examples{
   library(qcl)
   data(ath.metabolites) # Arabidopsis Thaliana dataset
-  qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes, 1:5, n.perm=100)
-  #Phenotype to phenotype matrix
-  p2p_matrix <- image(qcl_result, against="phenotypes")
-  #Phenotype to marker matrix
-  p2m_matrix <- image(qcl_result, against="markers")
+  qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes, 1:3, n.perm=50)
+  hist(qcl_result,1:3)
 }
 
 \seealso{
