@@ -1,14 +1,17 @@
 library(qcl)
 data(ath.metabolites)
-library(qtl)
-data(multitrait)
-qcl_result <- QCLscan.cross(multitrait, 1:24)
-qcl_perms <- QCLpermute(ath.metab$genotypes, ath.metab$phenotypes,1:24,300)
+qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes, n.perm=100)
+
+jpeg("pxmmatrix.jpg",w=1024,h=768)
+image(qcl_result,grid.col="white")
+dev.off()
+
+jpeg("pxpmatrix.jpg",w=1024,h=768)
+image(qcl_result,grid.col="white",against="phenotypes")
+dev.off()
 
 for(x in 1:24){
   jpeg(paste("phenotype",x,".jpg",sep=""),w=1024,h=768)
-  op <- par(mfrow=c(2,1))
-  plot(QCLscantoScanone(multitrait, qcl_result, qcl_perms, pheno.col=x),scanone(multitrait,pheno.col=x),main="QCL versus QTL")
-  plotAsStackedHist(qcl_result, qcl_perms, pheno.col=x, main="Phenotypes contributing to QCL")
+  plot(qcl_result[[1]])  
   dev.off()
 }
