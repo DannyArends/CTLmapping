@@ -8,13 +8,15 @@
 }
 
 \usage{
-\method{plot}{QCLobject}(x, \dots)
+\method{plot}{QCLobject}(x, pheno.col=1:length(x), \dots)
 }			    
 
 \arguments{
   \item{x}{ An object of class \code{"QCLobject"}, as output by \code{\link{QCLscan}}. }
+  \item{pheno.col}{ Which phenotype column(s) should we plot. Defaults to creating an image of all phenotype columns }
   \item{\dots}{ Passed to the function \code{\link{image.QCLobject}} \code{\link{plot.QCLscan}} when it is called. }
 }
+
 \value{
   None.
 }

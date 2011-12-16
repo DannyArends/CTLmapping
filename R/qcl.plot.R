@@ -28,12 +28,14 @@ QCLasLOD <- function(QCLscan, QTLscores, main, do.legend=TRUE){
   }
 }
 
-plot.QCLobject <- function(x, ...){
+plot.QCLobject <- function(x, pheno.col=1:length(x) ...){
   if(length(x) == 1){
-    plot.QCLscan(x[[1]],...)
-  }else{
-    image.QCLobject(x,...)
+    return(plot.QCLscan(x[[1]],...))
   }
+  if(length(pheno.col) == 1){
+    return(plot.QCLscan(x[[pheno.col]],...))
+  }
+  return(image.QCLobject(x,...))
 }
 
 plot.QCLscan <- function(x, onlySignificant = TRUE, qcl.threshold =0.6, do.legend=TRUE, ...){
