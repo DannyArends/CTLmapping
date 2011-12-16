@@ -79,3 +79,17 @@ plot.QCLscan <- function(x, onlySignificant = TRUE, qcl.threshold =0.6, do.legen
   rownames(QCLmatrix) <- rownames(x$qcl)[mysign]
   invisible(QCLmatrix)
 }
+
+plot.QCLpermute <- function(x, type="s", ...){
+  if(missing(x)) stop("argument 'x' which expects a 'QCLpermute' object is missing, with no default")
+  plot(seq(0,0.9,0.01),QCLscoretoPvalue(seq(0,0.9,0.01),x),main="QCL to P.value",xlab="QCL",ylab="Pvalue", type=type,...)
+  significant <- print.QCLpermute(x)
+  mycolors <- c("red","orange","green")
+  idx <- 1
+  for(y in c(.05,.01,.001)){
+    lines(rbind(c(-1,y),c(significant[idx],y)),lty=2,col=mycolors[idx])
+    lines(rbind(c(significant[idx],-1),c(significant[idx],y)),lty=2,col=mycolors[idx])
+    idx <- idx+1
+  }
+  legend("topright",c("QCL-FDR: 5%","QCL-FDR: 1%","QCL-FDR: 0.1%"), col=mycolors, lty=2, lwd=1, cex=0.7)
+}

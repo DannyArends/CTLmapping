@@ -130,16 +130,3 @@ QCLscantoScanone <- function(cross, QCLscan){
   scores[which(!is.finite(scores))] <- NA
   lodscorestoscanone(cross, scores)
 }
-
-plot.QCLpermute <- function(x, ...){
-  if(missing(x)) stop("argument 'x' which expects a 'QCLpermute' object is missing, with no default")
-  plot(seq(0,0.9,0.01),QCLscoretoPvalue(seq(0,0.9,0.01),x),main="QCL to P.value",xlab="QCL",ylab="Pvalue")
-  significant <- print.QCLpermute(x)
-  mycolors <- c("red","orange","green")
-  idx <- 1
-  for(y in c(.05,.01,.001)){
-    lines(rbind(c(-1,y),c(significant[idx],y)),lty=2,col=mycolors[idx])
-    lines(rbind(c(significant[idx],-1),c(significant[idx],y)),lty=2,col=mycolors[idx])
-    idx <- idx+1
-  }
-}
