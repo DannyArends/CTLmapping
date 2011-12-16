@@ -7,6 +7,7 @@
 *.a
 *.pdf
 *.png
+*.ppt
 old/
 data/
 *.bin
