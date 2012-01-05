@@ -3,7 +3,7 @@
 \alias{permuteQCL}
 \title{QCLpermute - Permutation routine for QCL mapping }
 \description{
-	Permutation routine for QCL mapping
+  Permutation routine for QCL mapping
 }
 \usage{
 QCLpermute(genotypes, phenotypes, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=10, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles = FALSE, verbose=FALSE, \dots)
@@ -36,8 +36,8 @@ the \code{\link{print.QCLpermute}} function.
   TODO
 }
 \author{ 
-	Danny Arends \email{Danny.Arends@gmail.com}\cr
-	Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
+  Danny Arends \email{Danny.Arends@gmail.com}\cr
+  Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
 }
 \note{
   TODO

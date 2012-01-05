@@ -2,7 +2,7 @@
 \alias{download.KEGG.annotation}
 \title{download.KEGG.annotation - Download gene and pathway information from KEGG }
 \description{
-	Download gene and pathway information from KEGG
+  Download gene and pathway information from KEGG
 }
 \usage{
 download.KEGG.annotation(genenames, species = "sce", directory = "tmp_kegg", force.download=FALSE, verbose = FALSE)
@@ -28,8 +28,8 @@ Default behaviour is force.download = FALSE, which creates a local cache used fo
   \href{http://www.genome.jp/kegg/kegg2.html}{KEGG database}
 }
 \author{ 
-	Danny Arends \email{Danny.Arends@gmail.com}\cr
-	Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
+  Danny Arends \email{Danny.Arends@gmail.com}\cr
+  Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
 }
 \note{
   TODO

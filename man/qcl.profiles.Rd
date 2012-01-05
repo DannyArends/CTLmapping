@@ -3,7 +3,7 @@
 \title{QCLprofiles - Extract QCL interaction profiles }
 
 \description{
-	Extract the QCL interaction profiles: phenotype x marker (p2m matrix) 
+  Extract the QCL interaction profiles: phenotype x marker (p2m matrix) 
   and phenotype x phenotype (p2p matrix) from a \code{\link{QCLscan}}.
 }
 
@@ -40,8 +40,8 @@
   TODO
 }
 \author{ 
-	Danny Arends \email{Danny.Arends@gmail.com}\cr
-	Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
+  Danny Arends \email{Danny.Arends@gmail.com}\cr
+  Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
 }
 \note{
   TODO
