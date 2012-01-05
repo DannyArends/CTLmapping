@@ -71,19 +71,6 @@ QCLpermute <- function(genotypes, phenotypes, pheno.col, method = c("pearson", "
   }
 }
 
-read.QCLpermute <- function(directory="permutations", pheno.col=1, n.perm, verbose){
-  files <- dir(directory)
-  if(missing(n.perm)) n.perm <- length(files)
-  if(n.perm < 1) stop(paste("No permutation files found in:",directory))
-  QCLpermute <- vector("list", n.perm)
-  for(x in 1:n.perm){
-    if(verbose) cat("Trying to read:",paste(directory,"/Permutation_",pheno.col,"_",x,".txt\n",sep=""))
-    QCLpermute[[x]]  <- read.table(paste(directory,"/Permutation_",pheno.col,"_",x,".txt",sep=""))
-  }
-  class(QCLpermute) <- c(class(QCLpermute),"QCLpermute")
-  invisible(QCLpermute)
-}
-
 #-- R/qtl interface --#
 QCLpermute.cross <- function(cross, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=10, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles = FALSE, verbose=FALSE, ...){
   if(missing(cross)) stop("cross is missing")

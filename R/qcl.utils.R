@@ -23,6 +23,7 @@ check.genotypes <- function(genotypes,genotype.values=c(1,2), verbose=FALSE){
   toremove
 }
 
+#Create a matrix with row length = n.perms, filled with random numbers 1..n.rows
 getRVM <- function(n.perms, n.rows){
   rvm <- NULL
   for(x in 1:n.perms){
@@ -66,27 +67,6 @@ lodscorestoscanone <- function(cross,lodscores,traitnames = NULL){
     colnames(qtlprofile) <- c("chr","cM",traitnames)
     class(qtlprofile) <- c("scanone", "data.frame")
     qtlprofile
-  }else{
-    warning(.has_rqtl_warnmsg)
-  }
-}
-
-getCorrelatedPhenotypes <- function(cross, pheno.col=1, top=200, min_threshold=0.4){
-  if(get(".has_rqtl", envir = .QclEnv)){
-    require(qtl)
-    new_cross <- cross
-    phenotypes <- apply(qtl::pull.pheno(cross),2,as.numeric)
-    target <- phenotypes[,pheno.col]
-    cors <- apply(phenotypes,2,function(x){cor(x,target,use="pair")})
-    threshold <- min_threshold
-    significant_cors <- which(cors >= threshold)
-    while(length(significant_cors) > top){
-      threshold = threshold + 0.001
-      significant_cors <- which(cors >= threshold)
-    }
-    new_cross$pheno <- as.data.frame(phenotypes[,significant_cors])
-    cat("Selected:",length(significant_cors),"phenotypes with correlation >=",threshold,"\n")
-    new_cross
   }else{
     warning(.has_rqtl_warnmsg)
   }
