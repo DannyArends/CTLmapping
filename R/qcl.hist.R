@@ -2,7 +2,7 @@
 # qcl.hist.R
 #
 # copyright (c) 2010-2011 Danny Arends and Ritsert C. Jansen
-# last modified Dec, 2011
+# last modified Jan, 2012
 # first written Dec, 2011
 # 
 # Histogram routines for QCL analysis
@@ -20,3 +20,5 @@ hist.QCLobject <- function(x, pheno.col=1, ...){
   }
   legend("topright", namez, col=pheno.col,lwd=6)
 }
+
+# end of qcl.hist.R
