@@ -27,9 +27,8 @@
 
 \examples{
   library(qcl)
-  data(ath.metabolites) # Arabidopsis Thaliana dataset
-  qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes)
-  plot(qcl_result)
+  data(ath.result) # Arabidopsis Thaliana dataset
+  plot(ath.result)
 }
 
 \seealso{
