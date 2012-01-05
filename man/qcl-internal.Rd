@@ -1,58 +1,47 @@
 \name{qcl-internal}
 
-\alias{correlationmatrix}
-\alias{summary.QCL}
-\alias{count.QCL}
-
-\alias{read.QCLpermute}
-\alias{significance.QCL}
-\alias{significance.QCLHotSpot}
-
-\alias{plot.markerQCL}
-\alias{plot.markerQCL2}
-\alias{plot.markerQCL.detailed}
-
-\alias{getCorrelatedPhenotypes}
-\alias{lodscorestoscanone}
-\alias{gcLoop}
-
-\alias{getMarkerOffsets}
-
+%qcl.network.R
 \alias{write.nodeAttributeFile}
-
-\alias{print.QCLpermute}
-
 \alias{KEGG.pathway.parser}
 \alias{nodesToGenes}
 
+%zzz.r
 \alias{has_d}
 \alias{has_snow}
 \alias{has_rcurl}
 \alias{has_rqtl}
 \alias{get_QclEnv}
 
+%qcl.statistics.r
 \alias{QCLpermute.internal}
 \alias{QCLpermuteMC}
 \alias{QCLscantoScanone}
 \alias{QCLscoretoPvalue}
-\alias{QCLtoLOD}
 \alias{toLod}
+\alias{QCLasLOD}
 \alias{QCLtoLODvector}
 \alias{QCLtoP}
+\alias{extrapolateBeyondRange}
 \alias{QCLtoPvalue.internal}
 
+%qcl.utils.R
 \alias{check.genotypes}
-\alias{internal.image}
-\alias{toLOD}
-\alias{QCLasLOD}
+\alias{getRVM}
+\alias{lodscorestoscanone}
+\alias{gcLoop}
 
+%qcl.image.R
+\alias{internal.image}
+
+%qtl.scan.R
 \alias{QTLscan}
 \alias{QTLscan.cross}
 
-\alias{extrapolateBeyondRange}
+%qcl.print.R
 \alias{getPermuteThresholds}
-\alias{getRVM}
+\alias{print.QCLpermute}
 
+%correlations.R
 \alias{matrix_correlation}
 
 \title{Internal QCL functions}
