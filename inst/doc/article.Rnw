@@ -94,9 +94,7 @@ options(width=87, digits=3, scipen=4)
 <<echo=FALSE,results=hide>>=
   require(qcl)
   set.seed(200)
-  data(ath.metabolites) # Arabidopsis Thaliana dataset
-  cat("QCL scan\n")
-  qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes, 1:24, n.perm=250)
+  data(ath.result)
 @
 
 % Change S input/output font size
@@ -376,7 +374,7 @@ address any questions to Danny Arends, at Danny.Arends@gmail.com.
   \centering
 <<permutation_scores, fig=TRUE, echo=FALSE, height=3.0>>=
 op <- par(cex=0.5)
-hist(qcl_result,c(3,2,1))
+hist(ath.result,c(3,2,1))
 op <- par(cex=1)
 @ 
   \caption{QCL scores obtained during permutations (A. Thaliana) additional information obtained by QCL mapping, 
@@ -387,7 +385,7 @@ op <- par(cex=1)
   \centering
 <<singletrait, fig=TRUE, echo=FALSE, height=3.0>>=
 op <- par(cex=0.5)
-plot(qcl_result[[1]])
+plot(ath.result[[1]])
 op <- par(cex=1)
 @
   \caption{QCL profile (A. Thaliana, X3.Hydroxypropyl) transformed to LOD scores compared to the QTL profile of the same phenotype, We see an 
@@ -396,9 +394,9 @@ op <- par(cex=1)
 
 \begin{figure}
   \centering
-<<singletraitLOD, fig=TRUE, echo=FALSE, height=3.0>>=
+<<singletraitLOD, fig=TRUE, echo=FALSE, height=6.0>>=
 op <- par(cex=0.5)
-QCLasLOD(qcl_result[[1]], qcl_result[[1]]$qtl)
+QCLasLOD(ath.result[[1]], ath.result[[1]]$qtl)
 op <- par(cex=1)
 @ 
   \caption{QCL profile (A. Thaliana, X3.Hydroxypropyl) transformed to LOD scores. Shown is the likelyhood contribution of each of 
@@ -409,7 +407,7 @@ op <- par(cex=1)
   \centering
 <<p2mmatrix, fig=TRUE, echo=FALSE, height=3.0>>=
 par(mar=c(3,8,1.1,1.1))
-plot(qcl_result, against="markers", do.grid=TRUE, grid.col="white")
+plot(ath.result, against="markers", do.grid=TRUE, grid.col="white")
 @ 
   \caption{Phenotypes x Markers matrix (A. Thaliana) this is 'comparable' to a QTL scan on multiple traits.\label{fig:p2mmatrix}}
 \end{figure}
@@ -418,7 +416,7 @@ plot(qcl_result, against="markers", do.grid=TRUE, grid.col="white")
   \centering
 <<QTLmatrix, fig=TRUE, echo=FALSE, height=3.0>>=
 par(mar=c(3,8,1.1,1.1))
-QTLimage(qcl_result, do.grid=TRUE, grid.col="white")
+QTLimage(ath.result, do.grid=TRUE, grid.col="white")
 @
   \caption{Heatmap showing QTL scores for all 24 metabolities in A. Thaliana.\label{fig:QTLmatrix}}
 \end{figure}
@@ -427,7 +425,7 @@ QTLimage(qcl_result, do.grid=TRUE, grid.col="white")
   \centering
 <<p2pmatrix, fig=TRUE, echo=FALSE, height=3.0>>=
 par(mar=c(3,8,1.1,1.1))
-plot(qcl_result, against="phenotypes", do.grid=TRUE, grid.col="white")
+plot(ath.result, against="phenotypes", do.grid=TRUE, grid.col="white")
 @ 
   \caption{Phenotypes x Phenotypes matrix (A. Thaliana) additional information obtained by QCL mapping, 
   which can be used to reconstruct the underlying genetic architecture.\label{fig:p2pmatrix}}
