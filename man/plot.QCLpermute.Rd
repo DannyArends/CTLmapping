@@ -8,11 +8,12 @@
 }
 
 \usage{
-\method{plot}{QCLpermute}(x, \dots)
-}			    
+\method{plot}{QCLpermute}(x, type="s", \dots)
+}
 
 \arguments{
   \item{x}{ An object of class \code{"QCLpermute"}, as output by \code{\link{QCLpermute}}. }
+  \item{type}{ What type of plot should be drawn. for possible options see \code{\link[graphics]{plot}}. }
   \item{\dots}{ Passed to the function \code{\link[graphics]{plot}} when it is called. }
 }
 \value{
