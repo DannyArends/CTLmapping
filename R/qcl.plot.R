@@ -28,7 +28,7 @@ QCLasLOD <- function(QCLscan, QTLscores, main, do.legend=TRUE){
   }
 }
 
-plot.QCLobject <- function(x, pheno.col=1:length(x) ...){
+plot.QCLobject <- function(x, pheno.col=1:length(x), ...){
   if(length(x) == 1){
     return(plot.QCLscan(x[[1]],...))
   }
