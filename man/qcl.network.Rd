@@ -1,8 +1,8 @@
 \name{QCLnetwork}
 \alias{QCLnetwork}
-\title{QCLnetwork - Network from a genome-wide QCLscan of multiple traits }
+\title{QCLnetwork - Interaction network from a genome-wide QCLscan of multiple traits }
 \description{
-	Creates a sif network from a genome-wide QCLscan of multiple traits
+  Create a file containing the interaction network from a genome-wide QCLscan of multiple traits.
 }
 \usage{
 QCLnetwork(QCLscan, qcl.threshold=0.45, verbose = FALSE)
@@ -23,8 +23,8 @@ TODO
   TODO
 }
 \author{ 
-	Danny Arends \email{Danny.Arends@gmail.com}\cr
-	Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
+  Danny Arends \email{Danny.Arends@gmail.com}\cr
+  Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
 }
 \note{
   TODO

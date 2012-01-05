@@ -2,7 +2,7 @@
 \alias{QCLscan}
 \title{QCLscan - Scan for quantitative correlation loci }
 \description{
-	Scan for quantitative correlation loci
+  Scan for Quantitative Correlation Loci (QCL) in inbred populations
 }
 \usage{
 QCLscan(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), method = c("pearson", "kendall", "spearman"), n.perm=0, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles = FALSE, verbose = FALSE)
@@ -33,8 +33,8 @@ QCL object, a list with at each index a $qclscan, $permutations, $lodmatrix
   TODO
 }
 \author{ 
-	Danny Arends \email{Danny.Arends@gmail.com}\cr
-	Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
+  Danny Arends \email{Danny.Arends@gmail.com}\cr
+  Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
 }
 \note{
   TODO

@@ -2,7 +2,7 @@
 \alias{QCLscan.cross}
 \title{QCLscan.cross - Scan for quantitative correlation loci (R/qtl cross object) }
 \description{
-	Scan for quantitative correlation loci (using an R/qtl cross object)
+  Scan for Quantitative Correlation Loci (QCL) in inbred populations (using an R/qtl cross object)
 }
 \usage{
 QCLscan.cross(cross, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=100, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles = FALSE, verbose = FALSE)
@@ -34,8 +34,8 @@ Columns: Genetic markers) for the phenotype.
   TODO
 }
 \author{ 
-	Danny Arends \email{Danny.Arends@gmail.com}\cr
-	Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
+  Danny Arends \email{Danny.Arends@gmail.com}\cr
+  Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
 }
 \note{
   TODO

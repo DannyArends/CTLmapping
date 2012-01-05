@@ -2,7 +2,7 @@
 \alias{QCLpermute.cross}
 \title{QCLpermute.cross - Permutation routine for QCL mapping (R/qtl cross object) }
 \description{
-	Permutation routine for QCL mapping (using an R/qtl cross object)
+  Permutation routine for QCL mapping (using an R/qtl cross object)
 }
 \usage{
 QCLpermute.cross(cross, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=10, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles=FALSE, verbose=FALSE, \dots)
@@ -29,15 +29,15 @@ TODO
 }
 }
 \value{
-QCLpermute object, a list holding QCLscan objects ontained at each permutation. To view significance thresholds use 
-the \code{\link{print.QCLpermute}} function.
+QCLpermute object, a list holding QCLscan objects ontained at each permutation. To view significance 
+thresholds at different significance levels use the \code{\link{print.QCLpermute}} function.
 }
 \references{ 
   TODO
 }
 \author{ 
-	Danny Arends \email{Danny.Arends@gmail.com}\cr
-	Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
+  Danny Arends \email{Danny.Arends@gmail.com}\cr
+  Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
 }
 \note{
   TODO

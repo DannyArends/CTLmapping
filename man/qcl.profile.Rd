@@ -3,7 +3,7 @@
 \title{QCLprofile - Extract single QCL interaction profiles }
 
 \description{
-	Extract for this QCL interaction profile the corresponding: phenotype x marker (p2m matrix) 
+  Extract for this QCL interaction profile the corresponding: phenotype x marker (p2m matrix) 
 }
 
 \usage{
@@ -31,8 +31,8 @@
   TODO
 }
 \author{ 
-	Danny Arends \email{Danny.Arends@gmail.com}\cr
-	Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
+  Danny Arends \email{Danny.Arends@gmail.com}\cr
+  Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
 }
 \note{
   TODO

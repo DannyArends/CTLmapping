@@ -2,7 +2,7 @@
 \alias{QCLmapping}
 \title{QCLmapping - Scan for quantitative correlation loci }
 \description{
-	Scan for quantitative correlation loci
+  Scan for quantitative correlation loci
 }
 \usage{
 QCLmapping(genotypes, phenotypes, pheno.col = 1, method = c("pearson", "kendall", "spearman"), genotype.values=c(1,2), verbose = FALSE)
@@ -30,8 +30,8 @@ Columns: Genetic markers) for the phenotype.
   TODO
 }
 \author{ 
-	Danny Arends \email{Danny.Arends@gmail.com}\cr
-	Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
+  Danny Arends \email{Danny.Arends@gmail.com}\cr
+  Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
 }
 \note{
   TODO

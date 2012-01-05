@@ -25,8 +25,8 @@
 }
 
 \author{ 
-	Danny Arends \email{Danny.Arends@gmail.com}\cr
-	Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
+  Danny Arends \email{Danny.Arends@gmail.com}\cr
+  Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
 }
 
 \examples{
@@ -37,7 +37,7 @@
   \itemize{
     \item \code{\link{QCLscan}} - Scan for QCL
     \item \code{\link{plot.QCLscan}} - Plot a QCLscan object
-	}
+  }
 }
 
 \references{

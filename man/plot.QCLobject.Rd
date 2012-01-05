@@ -9,7 +9,7 @@
 
 \usage{
 \method{plot}{QCLobject}(x, pheno.col=1:length(x), \dots)
-}			    
+}
 
 \arguments{
   \item{x}{ An object of class \code{"QCLobject"}, as output by \code{\link{QCLscan}}. }
@@ -38,12 +38,12 @@
     \item \code{\link{print.QCLscan}} - Print a summary of a QCLscan
     \item \code{\link[graphics]{par}} - Plot parameters
     \item \code{\link[grDevices]{colors}} - Colors used in plotting
-	}
+  }
 }
 
 \author{ 
-	Danny Arends \email{Danny.Arends@gmail.com}\cr
-	Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
+  Danny Arends \email{Danny.Arends@gmail.com}\cr
+  Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
 }
 
 \keyword{hplot}
