@@ -2,7 +2,7 @@
 # qcl.R
 #
 # copyright (c) 2010 Danny Arends and Ritsert C. Jansen
-# last modified Oct, 2011
+# last modified Jan, 2012
 # first written Jan, 2011
 # 
 # R functions to do QCL mapping
@@ -14,7 +14,7 @@ QCLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), metho
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   
   cat("Stage 0: Checking data\n")
-  toremove <- check.genotypes(genotypes,genotype.values)
+  toremove <- check.genotypes(genotypes, genotype.values, verbose)
   if(!is.null(toremove)) genotypes <- genotypes[,-toremove]
 
   results <- vector("list",length(pheno.col))
@@ -30,11 +30,11 @@ QCLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), metho
       cat("Stage 3: Permutation\n")
       results[[idx]]$p <- QCLpermute(genotypes, phenotypes, p, method=method, n.perm, n.cores, genotype.values, directory, saveFiles, verbose)
       
-      cat("Stage 4: Transformation into LOD\n")
+      if(verbose)cat("Stage 4: Transformation into LOD\n")
       results[[idx]]$l <- toLod(results[[idx]], FALSE, FALSE)
     }else{
       cat("Stage 3: Skipping permutation\n")
-      cat("Stage 4: Skipping transformation into LOD\n")
+      if(verbose)cat("Stage 4: Skipping transformation into LOD\n")
     }
     class(results[[idx]]) <- c(class(results[[idx]]),"QCLscan")
     idx <- idx + 1
@@ -81,3 +81,5 @@ QCLscan.cross <- function(cross, pheno.col, method = c("pearson", "kendall", "sp
     warning(.has_rqtl_warnmsg)
   }
 }
+
+# end of qcl.scan.R

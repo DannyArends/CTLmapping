@@ -2,12 +2,12 @@
 # qcl.utils.R
 #
 # copyright (c) 2010 Danny Arends and Ritsert C. Jansen
-# last modified Jun, 2011
+# last modified Jan, 2012
 # first written nov, 2010
 # 
 # check.genotypes, getRVM, lodscorestoscanone, getCorrelatedPhenotypes, gcLoop
 
-check.genotypes <- function(genotypes,genotype.values=c(1,2), verbose=FALSE){
+check.genotypes <- function(genotypes, genotype.values=c(1,2), verbose=FALSE){
   cat(" - Genotypes, ind=",nrow(genotypes),", markers=",ncol(genotypes),"\n",sep="")
   if(length(genotype.values)!=2) stop("argument 'genotype.values' length is incorrect, provide two genotype.values")
   toremove <- NULL
@@ -81,3 +81,5 @@ gcLoop <- function(verbose = FALSE){
     if(verbose) cat("GCloop ",n_usage," ",p_usage,"\n")
   }
 }
+
+# end of qcl.utils.R

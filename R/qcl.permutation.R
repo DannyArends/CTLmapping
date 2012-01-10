@@ -2,8 +2,8 @@
 # qcl.permutations.R
 #
 # copyright (c) 2010 Danny Arends, Bruno Tesson and Ritsert C. Jansen
-# last modified Oct, 2011
-# first written nov, 2010
+# last modified Jan, 2012
+# first written Nov, 2010
 # 
 # R functions to do permutation on QCL mapping
 # Example data C. Elegans and available at request ( Danny.Arends@gmail.com )
@@ -84,3 +84,5 @@ QCLpermute.cross <- function(cross, pheno.col, method = c("pearson", "kendall", 
     warning(.has_rqtl_warnmsg)
   }
 }
+
+# end of qcl.permutations.R

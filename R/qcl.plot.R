@@ -2,7 +2,7 @@
 # qcl.plot.R
 #
 # copyright (c) 2010 Danny Arends and Bruno Tesson
-# last modified Oct, 2011
+# last modified Jan, 2012
 # first written Nov, 2010
 # 
 # Plotting routines for QCL analysis
@@ -93,3 +93,5 @@ plot.QCLpermute <- function(x, type="s", ...){
   }
   legend("topright",c("QCL-FDR: 5%","QCL-FDR: 1%","QCL-FDR: 0.1%"), col=mycolors, lty=2, lwd=1, cex=0.7)
 }
+
+# end of qcl.plot.R

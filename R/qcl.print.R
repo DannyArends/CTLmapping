@@ -2,7 +2,7 @@
 # qcl.print.R
 #
 # copyright (c) 2010-2011 Danny Arends and Ritsert C. Jansen
-# last modified Dec, 2011
+# last modified Jan, 2012
 # first written Oct, 2011
 # 
 # Print routines for QCL analysis
@@ -41,3 +41,5 @@ getPermuteThresholds <-function(x, ..., verbose = FALSE){
 print.QCLpermute <- function(x, ...){
   getPermuteThresholds(x, ..., verbose=TRUE)
 }
+
+# end of qcl.print.R

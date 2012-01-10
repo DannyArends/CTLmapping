@@ -2,7 +2,7 @@
 # qcl.profiles.R
 #
 # copyright (c) 2011 Danny Arends and Ritsert C. Jansen
-# last modified Oct, 2011
+# last modified Jan, 2012
 # first written Oct, 2010
 # 
 #
@@ -52,3 +52,5 @@ QCLprofile <- function(QCLobject, pheno.col=1, significance = 0.05, verbose = TR
     return(result)
   }
 }
+
+# end of qcl.profiles.R
