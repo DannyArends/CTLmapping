@@ -2,7 +2,7 @@
 # qcl.statistics.R
 #
 # copyright (c) 2010 Danny Arends, Bruno Tesson and Ritsert C. Jansen
-# last modified Nov, 2011
+# last modified Jan, 2012
 # first written Nov, 2011
 # 
 # R functions to do transform QCL mapping scores to Pvalues and LOD
@@ -130,3 +130,5 @@ QCLscantoScanone <- function(cross, QCLscan){
   scores[which(!is.finite(scores))] <- NA
   lodscorestoscanone(cross, scores)
 }
+
+# end of qcl.statistics.R

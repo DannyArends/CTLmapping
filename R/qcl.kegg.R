@@ -2,12 +2,11 @@
 # qcl.kegg.R
 #
 # copyright (c) 2010 Danny Arends
-# last modified Oct, 2011
+# last modified Jan, 2012
 # first written Oct, 2011
 # 
 # Download gene annotation from KEGG for QCL analysis
 #
-
 
 KEGG.pathway.parser <- function(HTMLdata, verbose = FALSE){
   possible <- regexpr("<nobr><a href=\"/kegg-bin/show_pathway(.+?)</tr>", HTMLdata,useBytes = TRUE)
@@ -65,3 +64,5 @@ download.KEGG.annotation <- function(genenames, species = "sce", directory = "tm
     warning(.has_rcurl_warnmsg)
   }
 }
+
+# end of qcl.kegg.R

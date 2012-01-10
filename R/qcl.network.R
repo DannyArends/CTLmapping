@@ -2,7 +2,7 @@
 # qcl.network.R
 #
 # copyright (c) 2010 Danny Arends and Bruno Tesson
-# last modified Oct, 2011
+# last modified Jan, 2012
 # first written Oct, 2011
 # 
 # Network routines for QCL analysis
@@ -120,3 +120,5 @@ write.nodeAttributeFile <- function(nodenames, spotAnnotation){
   }
   cat("Wrote annotation for",length(nodenames),"probes to node.attributes\n")
 }
+
+# end of qcl.network.R
