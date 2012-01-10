@@ -357,17 +357,23 @@ address any questions to Danny Arends, at Danny.Arends@gmail.com.
 \section*{Figures}
 
 \begin{figure}[ht]
-  \centerline{\includegraphics{QCL.pdf}}
-  \caption{QCL mapping: The underlying hypothesis of QCL mapping. Seen here is a network of 3 phenotypes, in 
-  which expression of P1, P2 and P3 is measured, and we want to infer the hidden relation between P1 
-  and P2. In our model a genetic pertubation is causing P1 to change in expression showing a QTL at a marker. We expect variation 
-  induced by P1 to transfer to P2, However (like in most biological systems) expression of P2 is tightly controlled, 
-  and variation seen in phenotype 1 wil not induce a QTL in phenotype 2. However when we partition individuals based 
-  on the genotype at the QTL marker of P1, we can make use of the correlation structure between P1 and P2. Allowing 
-  us to infer the relationship between phenotype 1 and 2, when we see difference in correlation between P1A and P2A 
-  and P1B and P2B. We don't observe this difference in correlation between P3 and P1, meaning there is no relation 
-  between P1 and P3}
-  \label{QCL_img}
+  \centerline{\includegraphics[height=7cm]{qcl.pdf}}
+  \vspace{-15pt}
+  \caption{{\scriptsize QCL mapping: We start by looking at a single genetic marker and dividing our populaiton into two groups.
+  We start by choosing a phenotype (red), and use its expression to detect the red module (high correlation in gray genotype). 
+  We see that something underlying our current marker in the gray genotype regulates the expression of red (but not blue)}}
+  \vspace{-20pt}
+  \label{fig:qcl}
+\end{figure}
+
+\begin{figure}[ht]
+  \centerline{\includegraphics[height=6cm]{qcl_n.pdf}}
+  \vspace{-15pt}
+  \caption{{\scriptsize Reconstructed pathway location from gene expression data: Insight into the underlying (hidden) regulatory network 
+  can be obtained when we look at the amount of expression showing the same switch. Depending on the amount of blue expressions 
+  co-affected we can guestimate the location of the red expression inside the pathway}}
+  \vspace{-20pt}
+  \label{fig:qcl_n}
 \end{figure}
 
 \begin{figure}[ht]
@@ -377,8 +383,9 @@ op <- par(cex=0.5)
 hist(ath.result,c(3,2,1))
 op <- par(cex=1)
 @ 
-  \caption{QCL scores obtained during permutations (A. Thaliana) additional information obtained by QCL mapping, 
-  which can be used to reconstruct the underlying genetic architecture.\label{fig:histPermAra}}
+  \caption{{\scriptsize QCL scores obtained during permutations (A. Thaliana) additional information obtained by QCL mapping, 
+  which can be used to reconstruct the underlying genetic architecture. }}
+  \label{fig:histPermAra}
 \end{figure}
 
 \begin{figure}
@@ -388,8 +395,9 @@ op <- par(cex=0.5)
 plot(ath.result[[1]])
 op <- par(cex=1)
 @
-  \caption{QCL profile (A. Thaliana, X3.Hydroxypropyl) transformed to LOD scores compared to the QTL profile of the same phenotype, We see an 
-  additional significant peek for this phenotype (Between Marker 50 to 60) \label{fig:singletrait}}
+  \caption{{\scriptsize QCL profile (A. Thaliana, X3.Hydroxypropyl) transformed to LOD scores compared to the QTL profile of the same phenotype, We see an 
+  additional significant peek for this phenotype (Between Marker 50 to 60) }}
+  \label{fig:singletrait}
 \end{figure}
 
 \begin{figure}
@@ -399,8 +407,9 @@ op <- par(cex=0.5)
 QCLasLOD(ath.result[[1]], ath.result[[1]]$qtl)
 op <- par(cex=1)
 @ 
-  \caption{QCL profile (A. Thaliana, X3.Hydroxypropyl) transformed to LOD scores. Shown is the likelyhood contribution of each of 
-  the 24 metabolites to the QCL profile. \label{fig:singletraitLOD}}
+  \caption{{\scriptsize QCL profile (A. Thaliana, X3.Hydroxypropyl) transformed to LOD scores. Shown is the likelyhood contribution of each of 
+  the 24 metabolites to the QCL profile.}}
+  \label{fig:singletraitLOD}
 \end{figure}
 
 \begin{figure}[ht]
@@ -409,7 +418,8 @@ op <- par(cex=1)
 par(mar=c(3,8,1.1,1.1))
 plot(ath.result, against="markers", do.grid=TRUE, grid.col="white")
 @ 
-  \caption{Phenotypes x Markers matrix (A. Thaliana) this is 'comparable' to a QTL scan on multiple traits.\label{fig:p2mmatrix}}
+  \caption{{\scriptsize Phenotypes x Markers matrix (A. Thaliana) this is 'comparable' to a QTL scan on multiple traits.}}
+  \label{fig:p2mmatrix}
 \end{figure}
 
 \begin{figure}[ht]
@@ -418,7 +428,8 @@ plot(ath.result, against="markers", do.grid=TRUE, grid.col="white")
 par(mar=c(3,8,1.1,1.1))
 QTLimage(ath.result, do.grid=TRUE, grid.col="white")
 @
-  \caption{Heatmap showing QTL scores for all 24 metabolities in A. Thaliana.\label{fig:QTLmatrix}}
+  \caption{{\scriptsize Heatmap showing QTL scores for all 24 metabolities in A. Thaliana.}}
+  \label{fig:QTLmatrix}
 \end{figure}
 
 \begin{figure}[ht]
@@ -427,14 +438,9 @@ QTLimage(ath.result, do.grid=TRUE, grid.col="white")
 par(mar=c(3,8,1.1,1.1))
 plot(ath.result, against="phenotypes", do.grid=TRUE, grid.col="white")
 @ 
-  \caption{Phenotypes x Phenotypes matrix (A. Thaliana) additional information obtained by QCL mapping, 
-  which can be used to reconstruct the underlying genetic architecture.\label{fig:p2pmatrix}}
-\end{figure}
-
-\begin{figure}[ht]
-  \centerline{\includegraphics{AraNet.pdf}}
-  \caption{Reconstructed network for chain elongation in Arabidopsis Thaliana}
-  \label{AraNet}
+  \caption{{\scriptsize Phenotypes x Phenotypes matrix (A. Thaliana) additional information obtained by QCL mapping, 
+  which can be used to reconstruct the underlying genetic architecture}}
+  \label{fig:p2pmatrix}
 \end{figure}
 
 \end{document}
