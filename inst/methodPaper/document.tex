@@ -20,11 +20,10 @@
 \maketitle
 \begin{abstract}
   \section{Motivation:}
-  Here we present the concept of Correlated Traits Locus (CTL) mapping, a novel approach 
-  to detect genetic regulation of traits in recombinant inbred line populations (RIL) 
-  or SNP genotypes populations. CTL mapping allows association of trait correlation 
-  differences to genetic markers, in almost the same way as QTL mapping associates genetic 
-  markers with differences in expression.
+  Here we present Correlated Traits Locus (CTL) mapping, a novel approach 
+  to detect genetic regulation of traits in natural and inbred populations. 
+  CTL mapping allows association of trait correlation differences to genetic 
+  markers, in almost the same way as QTL mapping associates genetic  markers with differences in expression.
   
   We use CTL mapping to reconstruct underlying genetic architecture, and provide insight 
   into regulation of (gene) expression. CTL information in combination with classical QTL 
@@ -48,12 +47,12 @@
   expression level of the gene. This QTL mapping can be done on all molecular levels including, 
   gene expression (eQTL), protein abundance (pQTL) and metabolites (mQTL).
   
-  We present Correlated Traits Locus (CTL) mapping as a comparable method to QCL mapping, 
-  CTL unlike QTL associates differential correlation to genetic variation, i.e. to identify regions in the 
-  genome for which one genotype value leads to correlated expression between a trait and all 
-  other traits, exploiting the fact that any QTL will be the result of either direct induced 
-  variation or indirect variation, which will be visible as correlation differences among 
-  individuals carrying different genotypes.
+  We present Correlated Traits Locus (CTL) mapping as a comparable method to QCL mapping.
+  CTL unlike QTL links differences in correlation to genetic variation, i.e. to identify regions in the 
+  genome for which one genotype value leads to correlated expression between a trait and  
+  other traits, while the other genotype doesn't show this correlation. CTL exploits the fact that 
+  any QTL will be the result of either direct induced variation or indirect variation. The latter is 
+  visible as correlation differences among individuals carrying different genotypes.
   
   We merge information coming from CTL and QTL to reveal underlying genetic architecture, which 
   would remain hidden when using only classical QTL information.
@@ -62,17 +61,10 @@
   Choose a trait to subject to CTL analysis, this can be your favourite gene, 
   protein, metabolite or classical trait.
 
-  Split the population at a genetic marker in two groups (aa and bb). Calculate the correlation 
-  between our trait of interest and other traits. Calculate the CTL matrix by taking the 
-  squared difference between matrix A and B.
+  Split the population at a genetic marker in two groups (A and B). Calculate the correlation 
+  between our trait of interest and other traits. Then calculate the CTL score by taking the 
+  squared difference between A and B.
 
-  Single trait CTL profiles can be obtained by transforming the CTL scores into LOD scores. 
-  For this we use permutations obtained during 15.000 permutation. We note that for each trait this 
-  shows a different distribution of permutation scores. We assess the likelyhood (per trait) and 
-  take the $-log10(P)$ of every CTL score to compare QTL profiles with summarized CTL profiles. 
-  A CTL profile show the contribution of each trait to the total likelyhood.
-
-  
   \begin{figure*}[ht]
     \begin{center}
     \vspace{-0.2cm}
@@ -96,9 +88,8 @@
   \label{newplots}
   \vspace{-0.7cm}
   \caption[Plots]{
-  {\emph {\bf a}}: Example CTL + QTL profiles (red). Seen are the QTL profile on top of the CTL profile. 
-  The first peak is a CTL caused by X4.Methylsulfinylbutyl and X5.Methylthiopenty showing a significant 
-  difference in correlation, we don't observe a QTL for this location. 
+  {\emph {\bf a}}: Example CTL + QTL profiles. Seen are the QTL profile on top of the CTL profile. 
+  The first peak is a CTL, we don't observe a QTL for this location. The second peak is a QTL peek, with no underlying CTL. 
   {\emph {\bf b}}: Traits x Traits interaction matrix (TxT matrix). Information obtained using CTL mapping, 
   showing for each trait the significance of the difference in correlation to all other traits. This 
   matrix can be transformed into .sif file to generate a network image. 
@@ -109,21 +100,13 @@
 \vspace{-0.5cm}
 \end{figure*}
 
-  
-\emph{ {\bf Network reconstruction}}
-  To build up gene interaction networks, we take the Traits x Marker and Traits x Phentype 
-  relations matrices.  From the TxM we can identify partners of our trait, and from the PxP we 
-  identify the location of out trait in the pathway or main regulatory traits.
-
 \emph{ {\bf Significance testing}}
   Comparing CTL profiles to QTL profiles CTL scores need to be converted to LOD scores. Significance 
   of CTL is assessed by using permutations, in each round the link between genotype and 
   trait is broken, by redistributing at random genotypes amongst individuals not 
-  allowing for duplicates. The CTL on these new individuals allows for estimation of 
-  the underlying 0-distribution of CTL scores. When observe CTL scores in 
-  real data which are higher than any CTL score obtained during permutation we 
-  use a generalized Pareto distribution (GPD) to estimate the extreme tail 
-  of the distribution \cite{Knijnenburg:2009}, to get likelyhood estimates for the 
+  allowing for duplicates. When we observe CTL scores in real data which are higher than any 
+  CTL score obtained during permutation a generalized Pareto distribution (GPD) is used to 
+  estimate the extreme tail of the distribution \cite{Knijnenburg:2009}, to get likelihood estimates for the 
   extreme scores observed.
 
 \emph{ {\bf Materials}}
@@ -133,15 +116,16 @@
   details about the experimental settings are available in the original paper \cite{Keurentjes:2006,AlonsoBlanco:1998}
 \vspace{-0.6cm}
 \section{Results}
-  CTL mapping was performed and a per trait CTL thresholds of $P < 0.001$ was determined by using 15.000 permutations.
+  CTL mapping was performed and a per trait CTL thresholds of $P < 0.001$ was 
+  determined by using 15,000 permutations.
   Information obtained by CTL mapping is shown in the trait to trait interaction matrix (Fig. \ref{subfigb}).
   The CTL profiles were combined with QTL information, leading to the following observations \ref{subfiga}:\\
-  1) Additional CTL found, where no QTL was present. Loss of variation in the genes 
+  1) Additional CTL found, where no QTL was present (Fig \ref{subfiga} - Peak 1). Loss of variation in the genes 
   underneath the CTL are not causing variation differences in the observed trait, CTL is able to 
   detect the differences in correlation.\\
   2) CTL co-localized with QTL, in this situation CTL gives a detailed view of which traits 
-  are contributing variation to the observed QTL.\\
-  3) QTL with no CTL, we interpret this as the source of the variation. Analysis in this way of 
+  are contributing variation to the observed QTL  (Fig \ref{subfiga} - Peak 3).\\
+  3) QTL with no CTL  (Fig \ref{subfiga} - Peak 2), we interpret this as the source of the variation. Analysis in this way of 
   all 24 Single trait CTL profiles combined with their QTL profiles allows us to reconstruct the 
   source of natural variation and follow it down the network.
 
