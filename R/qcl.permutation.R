@@ -40,7 +40,7 @@ QCLpermute.internal <- function(perm, genotypes, phenotypes, pheno.col, method =
   if(saveFiles) write.table(myperm, file=paste(directory,"/Permutation_",pheno.col,"_",perm,".txt",sep=""))
   el <- proc.time()
   if(verbose) cat("  - Permutation",perm,"took:",as.numeric(el[3]-sl[3]),"seconds.\n")
-  as.numeric(max(abs(myperm)))
+  as.numeric(apply(abs(myperm),2,max))
 }
 
 #-- QCLpermute main function --#
@@ -57,7 +57,7 @@ QCLpermute <- function(genotypes, phenotypes, pheno.col, method = c("pearson", "
     for(p in pheno.col){
       ss <- proc.time()
       cat("  - Starting permutation for phenotype",p,"\n")
-      #Generate random number from a single thread, so we don't run into concurrency issues
+      #Generate random numbers from a single thread, so we don't run into concurrency issues
       rvm <- getRVM(n.perm,nrow(genotypes))
       for(x in 1:n.perm){
         QCLperm[[idx]] <- c(QCLperm[[idx]],QCLpermute.internal(x,genotypes,phenotypes,p,method,rvm,genotype.values,directory,saveFiles,verbose))
