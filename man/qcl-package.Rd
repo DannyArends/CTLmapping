@@ -33,8 +33,7 @@
   Some additional functionality:
   \itemize{
     \item \code{\link{QCLscan.cross}} - Use an R/qtl cross object with \code{\link{QCLscan}}
-    \item \code{\link{download.KEGG.annotation}} - Download genes and pathways from KEGG
-    \item \code{\link{correlation}} - Compute correlations (D programming language)
+    \item \code{\link{QCLpermute.cross}} - Use an R/qtl cross object with \code{\link{QCLpermute}}
   }
 }
 \author{ 

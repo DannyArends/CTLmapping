@@ -12,7 +12,7 @@ print.QCLscan <- function(x, ...){
   cat("QCLscan summary",attr(x$qcl,"name"),"\n\n")
   cat("- Number of background phenotypes",dim(x$qcl)[1],"\n")
   cat("- Number of markers",dim(x$qcl)[2],"\n")
-  cat("- Number of permutations",length(unlist(x$p)),"\n")
+  cat("- Number of permutations",length(unlist(x$p))/dim(x$qcl)[2],"\n")
   getPermuteThresholds(x,..., verbose = TRUE)
 }
 
@@ -22,7 +22,10 @@ getPermuteThresholds <-function(x, ..., verbose = FALSE){
     x <- x$p
     if(!any(class(x)=="QCLpermute")) stop("No permutations found in the QCLscan object")
   }else{
-    stop("No QCLscan object")
+    n <- 1
+    if(!any(class(x)=="QCLpermute")){
+      stop("No QCLscan object")
+    }
   }
   sorted <- sort(unlist(x))
   l <- length(sorted)
