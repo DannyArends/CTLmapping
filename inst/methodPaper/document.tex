@@ -1,0 +1,178 @@
+\documentclass{bioinfo}
+\usepackage{subfigure}
+\usepackage{amsmath}
+
+\copyrightyear{2012}
+\pubyear{2012}
+
+\begin{document}
+\firstpage{1}
+\title[CTLmapping]{CTL mapping - The added value from segregating correlation}
+\author[Arends \emph{et al.}]{
+  Danny Arends\,$^{1,\footnote{to whom correspondence should be addressed}}$,
+  and Ritsert C. Jansen\,$^{1}$
+}
+\address{
+  $^{1}$Groningen Bioinformatics Centre, University of Groningen, Groningen, The Netherlands.
+}
+\history{Received on XXXXX; revised on XXXXX; accepted on XXXXX}
+\editor{Associate Editor: XXXXXXX}
+\maketitle
+\begin{abstract}
+  \section{Motivation:}
+  Here we present the concept of Correlated Traits Locus (CTL) mapping, a novel approach 
+  to detect genetic regulation of phenotypes in recombinant inbred line populations (RIL) 
+  or SNP genotypes populations. CTL mapping allows association of phenotype correlation 
+  differences to genetic markers, in almost the same way as QTL mapping associates genetic 
+  markers with differences in expression.
+  
+  We use CTL mapping to reconstruct underlying genetic architecture, and provide insight 
+  into regulation of (gene) expression. CTL information in combination with classical QTL 
+  information leads to a more detailed insight into the genetic architecture underlying 
+  complex traits. CTL mapping provides a missing link in regulatory network reconstruction.
+
+  \section{Results:}
+  The software is available under the terms of GNU General Public License, version 3
+  (\href{http://www.r-project.org/Licenses/GPL-3}{www.r-project.org/Licenses/GPL-3}).
+  \section{Availability:}
+  Software, documentation and source code are available from:
+  \href{http://www.mapctl.org}{www.mapctl.org}
+  \section{Contact:} 
+  \href{Danny.Arends@Gmail.com}{Danny.Arends@Gmail.com}
+\end{abstract}
+
+\section{Introduction}
+ Genetical genomics experiments have shown that gene expression variation can be mapped to 
+  genotypic variation \cite{Jansen:2001}. Quantitative Trait Locus (QTL) mapping of a 
+  gene identifies regions in the genome for which different genotypes lead to differential 
+  expression level of the gene. This QTL mapping can be done on all molecular levels including, 
+  gene expression (eQTL), protein abundance (pQTL) and metabolites (mQTL).
+  
+  We present Correlated Traits Locus (CTL) mapping as a comparable method to QCL mapping, 
+  CTL unlike QTL associates differential correlation to genetic variation, i.e. to identify regions in the 
+  genome for which one genotype value leads to correlated expression between a phenotype and all 
+  other phenotypes, exploiting the fact that any QTL will be the result of either direct induced 
+  variation or indirect variation, which will be visible as correlation differences among 
+  individuals carrying different genotypes.
+  
+  We merge information coming from CTL and QTL to reveal underlying genetic architecture, which 
+  would remain hidden when using only classical QTL information.
+
+\section{Methodology}
+  Choose a phenotype to subject to CTL analysis, this can be your favourite gene, 
+  protein, metabolite or classical phenotype.
+
+  Split the population at a genetic marker in two groups (aa and bb). Calculate the correlation 
+  between our phenotype (i) and all other phenotypes. Calculate the CTL matrix by taking the 
+  squared difference between matrix A and B.
+
+  Single trait CTL profiles can be obtained by transforming the CTL scores into LOD scores. 
+  For this we use a look-up table of scores obtained during 15.000 permutation. We note that for each trait this 
+  shows a different distribution. We assess the likelyhood and take the $-log10(P)$ of every CTL score to 
+  compare QTL profiles with summarized CTL profiles. A CTL profile show the contribution of each phenotype to 
+  the total likelyhood.
+
+  
+  \begin{figure*}[ht]
+    \begin{center}
+    \vspace{-0.2cm}
+    \hspace{-1.3cm}
+    \subfigure[CTL profiles]{
+      \includegraphics[keepaspectratio,scale=.26]{img/ctl_qtl.pdf}
+      \label{subfiga}
+    }
+    \hspace{0.3cm}
+    \subfigure[Phenotype x Phenotype interaction matrix]{
+      \includegraphics[keepaspectratio,scale=.65]{img/ctl_pxp.pdf}
+      \label{subfigb}
+    }
+    \hspace{0.3cm}
+    \subfigure[Reconstructed network]{
+      \includegraphics[keepaspectratio,scale=.17]{img/ctl_net.pdf}
+      \label{subfigc}
+    }
+  \end{center}
+  \begin{minipage}{7in}
+  \label{newplots}
+  \vspace{-0.7cm}
+  \caption[Plots]{
+  {\emph {\bf a}}: Example CTL + QTL profiles in Red we see the QTL profile on top of the CTL profile 
+  (which also shows the names of the underlying traits contributing to the CTL). {\emph {\bf b}}: 
+  Phenotype x Phenotype interaction matrix (PxP matrix). Information obtained using CTL mapping, showing 
+  for each phenotype the significance of the difference in correlation to all other phenotypes. 
+  This matrix can be transformed into .sif file to generate a network image. {\emph {\bf c}}: Reconstructed 
+  network, this shows the same information as the PxP matrix only in a more accessible way, we visualized our 
+  network using cytoscape, the linewidth is the summarized interaction evidence.
+ }
+\end{minipage}
+\vspace{-0.5cm}
+\end{figure*}
+
+  
+\emph{ {\bf Network reconstruction}}
+  To build up gene interaction networks, we take the Phenotype x Marker and Phenotype x Phentype 
+  relations matrices.  From the PxM we can identify partners of our phenotype, and from the PxP we 
+  identify the location of out phenotype in the pathway or main regulatory phenotypes.
+
+\emph{ {\bf Significance testing}}
+  Comparing CTL profiles to QTL profiles CTL scores need to be converted to LOD scores. Significance 
+  of CTL is assessed by using permutations, in each round the link between genotype and 
+  phenotype is broken, by redistributing at random genotypes amongst individuals not 
+  allowing for duplicates. The CTL on these new individuals allows for estimation of 
+  the underlying 0-distribution of CTL scores. When observe CTL scores in 
+  real data which are higher than any CTL score obtained during permutation we 
+  use a generalized Pareto distribution (GPD) to estimate the extreme tail 
+  of the distribution \cite{Knijnenburg:2009}, to get likelyhood estimates for the 
+  extreme scores observed.
+
+\emph{ {\bf Materials}}
+  Metabolite data from an \emph{A. Thaliana} Landsberg erecta (Ler) and Cape Verde Islands (Cvi) 
+  dataset from R/qtl, 24 characterized metabolites which are the products of chain elongation. 
+  There are 162 recombinant inbred lines genotyped at 117 markers on 5 chromosomes. Additional 
+  details about the experimental settings are available in the original paper \cite{Keurentjes:2006,AlonsoBlanco:1998}
+\vspace{-0.6cm}
+\section{Results}
+  CTL mapping was performed and a per trait CTL thresholds of $P < 0.001$ was determined by using 15.000 permutations.
+  Information obtained by CTL mapping is shown in the Phenotype to Phenotype interaction matrix (Fig. \ref{subfigb}).
+  The CTL profiles were combined with QTL information, leading to the following observations \ref{subfiga}:\\
+  1) Additional CTL found, where no QTL was present. Loss of variation in the genes 
+  underneath the CTL are not causing variation differences in the observed phenotype, CTL is able to 
+  detect the differences in correlation.\\
+  2) CTL co-localized with QTL, in this situation CTL gives a detailed view of which phenotypes 
+  are contributing variation to the observed QTL.\\
+  3) QTL with no CTL, we interpret this as the source of the variation. Analysis in this way of 
+  all 24 Single trait CTL profiles combined with their QTL profiles allows us to reconstruct the 
+  source of natural variation and follow it down the network.
+
+\emph{ {\bf Network reconstruction}}
+  Using the previously decribed method to draw the arrows between traits, we reconstruct the interaction 
+  network amongst the 24 metabolities in Arabidopsis (Fig. \ref{subfigc}). We observe that our network is 
+  composed of 2 parts which seem connected only by a just significant CTL from X3.Benzoyloxypropyl to 
+  Quercetin.deoxyhexosyl.dihexoside.
+
+\section{Conclusion \& Discussion}
+  Microarray experiments have identified genes differentially expressed between various 
+  conditions, or groups of genes coexpressed across samples. Genetical genomics screens 
+  are carried out to map differential expression to genetic variation. Screening 
+  the genome for genotype combinations for which there is differential expression is 
+  a successful strategy when mapping Mendelian traits. 
+  
+  Results on complex traits however have been less then satisfactory with only small 
+  amounts of heritability explained by individuals loci. CTL mapping 'borrows'
+  information from all phenotypes in the analysis, and extracts phenotype to phenotype 
+   information.
+ 
+  Furthermore CTLs seem to 'transfer' from phenotype to phenotypes in a stabile 
+  fashion, allowing reconstructing of genetic architecture. CTL combined with QTL 
+  data identify gene transcript introducing variation (by absense), while co-localizing 
+  with QTL affected by upstream variation.
+
+\paragraph{Funding\textcolon}
+The Centre for BioSystems Genomics (CBSG) and the Netherlands Consortium of Systems 
+Biology (NCSB), both of which are part of the Netherlands Genomics Initiative / 
+Netherlands Organisation for Scientiﬁc Research [to DA]; the EU 7th Framework 
+Programme under the Research Project PANACEA [222936 to R.J.].
+\vspace{-0.7cm}
+\bibliographystyle{natbib}
+\bibliography{document}
+\end{document}
