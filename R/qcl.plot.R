@@ -38,7 +38,7 @@ plot.QCLobject <- function(x, pheno.col=1:length(x), ...){
   return(image.QCLobject(x,...))
 }
 
-plot.QCLscan <- function(x, onlySignificant = TRUE, qcl.threshold =0.6, do.legend=TRUE, ...){
+plot.QCLscan <- function(x, addQTL = TRUE, onlySignificant = TRUE, qcl.threshold =0.6, do.legend=TRUE, ...){
   if(missing(x)) stop("argument 'x' is missing, with no default")
   if(!is.null(x$p)){
     mysign <- as.numeric(which(apply(abs(x$qcl),1,max) > getPermuteThresholds(x)[1]))
@@ -55,7 +55,7 @@ plot.QCLscan <- function(x, onlySignificant = TRUE, qcl.threshold =0.6, do.legen
     QCLmatrix <- matrix(x$l[mysign, ],length(mysign),ncol(x$l))
   }
   summarized <- apply(QCLmatrix,2,sum)
-  plot(c(0,ncol(x$qcl)),c(0,max(summarized)), type='n',xlab="Marker", ylab="-log10(P-value)", main=paste("Phenotype contribution to QCL of",attr(x$qcl,"name")),...)
+  plot(c(0,ncol(x$qcl)),c(0,max(c(summarized,x$qtl))), type='n',xlab="Marker", ylab="-log10(P-value)", main=paste("Phenotype contribution to QCL of",attr(x$qcl,"name")),...)
   p <- rep(0,ncol(x$qcl))
   i <- 1;
   mycolors <- topo.colors(nrow(QCLmatrix))
@@ -69,13 +69,15 @@ plot.QCLscan <- function(x, onlySignificant = TRUE, qcl.threshold =0.6, do.legen
     }
   )
   if(!is.null(x$l)){
-    abline(h=-log10(c(0.05,0.01,0.001)),col=c("red","orange","green"),lty=2)
+    n <- dim(x$qcl)[2]
+    abline(h=-log10(c(0.05/n,0.01/n,0.001/n)),col=c("red","orange","green"),lty=2)
     legend("topright",as.character(paste("QCL-FDR:",c(0.05,0.01,0.001),"%")),col=c("red","orange","green"),lty=rep(2,3),lwd=1,cex=0.7)
   }
   if(do.legend){
     legend("topleft",rownames(x$qcl)[mysign],col=mycolors,lwd=1,cex=0.7)
   }
   points(summarized,type='l',lwd=1)
+  points(as.numeric(x$qtl),type='l',lwd=2,col="red")
   rownames(QCLmatrix) <- rownames(x$qcl)[mysign]
   invisible(QCLmatrix)
 }

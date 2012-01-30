@@ -17,17 +17,23 @@ print.QCLscan <- function(x, ...){
 }
 
 getPermuteThresholds <-function(x, ..., verbose = FALSE){
-  if(!any(class(x)=="QCLpermute")) x <- x$p
-  if(!any(class(x)=="QCLpermute")) stop("No permutations found in the QCLscan object")
+  if(any(class(x)=="QCLscan")){
+    n <- dim(x$qcl)[2]
+    x <- x$p
+    if(!any(class(x)=="QCLpermute")) stop("No permutations found in the QCLscan object")
+  }else{
+    stop("No QCLscan object")
+  }
   sorted <- sort(unlist(x))
   l <- length(sorted)
   values <- NULL
   valnames <- NULL
   for(x in c(.95,.99,.999)){
-    if(1/(1-x) < length(sorted)){
-    values <- c(values,sorted[l*x])
+    if(1/((1-x)/n) < length(sorted)){
+    v <- sorted[l*(1-(1-x)/n)]
+    values <- c(values,v)
     valnames <- c(valnames,paste((1-x)*100,"%"))
-    if(verbose) cat((1-x)*100,"%\t",sorted[l*x],"\n")
+    if(verbose) cat((1-x)*100,"%\t",v,"\n")
     }else{
     values <- c(values,NaN)
     valnames <- c(valnames,paste((1-x)*100,"%"))
