@@ -1,7 +1,7 @@
-R package QCL
+R package CTL
 ================
-QCL provides an implementation in R for the novel quanitative correlation locus (QCL) 
-mapping methodology. QCL mapping is a novel approach to detect genetic regulation of 
+CTL provides an implementation in R for the novel Correlated Trait Locus (CTL) mapping
+mapping methodology. CTL mapping is a novel approach to detect genetic regulation of 
 phenotypes in recombinant inbred line populations (RIL). It is a method complementair 
 to QTL analysis, and provides additional insights, overlooked by the classical QTL 
 approach. 
@@ -12,9 +12,9 @@ is used to scan all other phenotypes for a loss in or a gain of correlation. The
 profiles (similar to QTL profiles) of this 'loss of correlation' measurement show a very 
 high degree of overlap with classical QTL profiles, BUT additional information is easily 
 extracted from phenotype x phenotype interaction plots. With the right dataset (ideally a 
-combination of: classical phenotypes, protein abundance and gene expression) QCL shows 
+combination of: classical phenotypes, protein abundance and gene expression) CTL shows 
 the genetic wiring of the classical phenotypes and identify key players in the genetic / 
-protein network underlying QTL and QCL.
+protein network underlying QTL and CTL.
 
 Installation
 ------------
@@ -22,7 +22,7 @@ Prepare your environment by following these steps:
 
 - Download and Install the R environment from [www.r-project.org](http://www.r-project.org/ "www.r-project.org")
 
-Then install into R by using (from a terminal / commanline):
+Then install into R by using (from a terminal / commandline):
 
     $ git clone git://github.com/DannyArends/QCLmapping.git  # Download the repository
     $ R CMD INSTALL QCLmapping                               # Install the package
@@ -34,40 +34,40 @@ Starting
 --------
 Load the library in the R interface by the following command (in R):
     
-    $ > library(qcl)                            # Load the library
-    $ > ?qcl                                    # Show the help
+    $ > library(ctl)                            # Load the library
+    $ > ?ctl                                    # Show the help
 
 Examples
 ========
 Scan your data
     
-    $ > library(qcl)
+    $ > library(ctl)
     $ > data(multitrait)
     $ > multitrait = fill.geno(multitrait)
     $ > ?QCLscan                                   # Show the help
-    $ > qcl_result <- QCLscan.cross(multitrait)
+    $ > ctl_result <- CTLscan.cross(multitrait)
 
 Plot a single phenotype, the profile is comparable to the QTL profile, 
-in QCL mapping we know which phenotypes are differentially correlated 
+in CTL mapping we know which phenotypes are differentially correlated 
 underneath the peak.
 
-    $ > plot(qcl_result, pheno.col=12)
+    $ > plot(ctl_result, pheno.col=12)
 
 Create an image of the phenotypes to marker relation strength, this matrix is 'comparible' 
 to a heatmap of QTL scans on many phenotypes, the underlying model assumptions are different 
 from QTL mapping but comparible, thus the outut is not shockingly different from QTL mapping.
 
-    $ > r1 <- image(qcl_result,against="markers")
+    $ > r1 <- image(ctl_result,against="markers")
 
 Create an image of the phenotypes to phenotypes relation strength, this is the additional 
 information matrix, which is not available in classical QTL mapping.
 
-    $ > r2 <- image(qcl_result,against="phenotypes")
+    $ > r2 <- image(ctl_result,against="phenotypes")
 
 Reconstruct the network and write two sif files. One sif file contains the full network, the other 
 holds the edge summary network.
 
-    $ > QCLnetwork(qcl_result)
+    $ > CTLnetwork(ctl_result)
 
 Contributing and TODO
 ---------------------
