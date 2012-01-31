@@ -2,13 +2,13 @@ R package CTL
 ================
 CTL provides an implementation in R for the novel Correlated Trait Locus (CTL) mapping
 mapping methodology. CTL mapping is a novel approach to detect genetic regulation of 
-phenotypes in recombinant inbred line populations (RIL). It is a method complementair 
-to QTL analysis, and provides additional insights, overlooked by the classical QTL 
+phenotypes in recombinant inbred line populations (RIL). It is a method which complements
+classical QTL analysis, providing additional insights overlooked by the classical QTL 
 approach. 
 
 Differences in correlations between traits within an inbred population are determined 
 at each genetic marker. Phenotypes are assigned to genotype groups and a single phenotype 
-is used to scan all other phenotypes for a loss in or a gain of correlation. The likelyhood 
+is used to scan all other phenotypes for a loss in or a gain of correlation. The likelihood 
 profiles (similar to QTL profiles) of this 'loss of correlation' measurement show a very 
 high degree of overlap with classical QTL profiles, BUT additional information is easily 
 extracted from phenotype x phenotype interaction plots. With the right dataset (ideally a 
@@ -22,10 +22,10 @@ Prepare your environment by following these steps:
 
 - Download and Install the R environment from [www.r-project.org](http://www.r-project.org/ "www.r-project.org")
 
-Then install into R by using (from a terminal / commandline):
+Then install into R by using (from a terminal / command line):
 
-    $ git clone git://github.com/DannyArends/QCLmapping.git  # Download the repository
-    $ R CMD INSTALL QCLmapping                               # Install the package
+    $ git clone git://github.com/DannyArends/CTLmapping.git  # Download the repository
+    $ R CMD INSTALL CTLmapping                               # Install the package
 
 Optionally you can install the pre-build packages by downloading the appropriate 
 package for your operating system. 
@@ -51,17 +51,17 @@ Scan your data
     ctl_result <- CTLscan.cross(multitrait)
 ```
 
-Plot a single phenotype, the profile is comparable to the QTL profile, 
-in CTL mapping we know which phenotypes are differentially correlated 
-underneath the peak.
+Plot a single phenotype, the profile is comparable to the QTL profile. However using 
+CTL mapping we know which phenotypes are differentially correlated underneath the peak.
+This additional information adds to the already known QTL information.
 
 ```R
     plot(ctl_result, pheno.col=12)
 ```
 
-Create an image of the phenotypes to marker relation strength, this matrix is 'comparible' 
-to a heatmap of QTL scans on many phenotypes, the underlying model assumptions are different 
-from QTL mapping but comparible, thus the outut is not shockingly different from QTL mapping.
+Create an image of the phenotypes to marker relation strength, this matrix is 'comparable' 
+to a heat map of QTL scans on many phenotypes, the underlying model assumptions are different 
+from QTL mapping but comparable, thus the output is not shockingly different from QTL mapping.
 
 ```R
     r1 <- image(ctl_result,against="markers")
