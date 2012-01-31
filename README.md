@@ -42,34 +42,46 @@ Load the library in the R interface by the following command (in R):
 Examples
 ========
 Scan your data
-    
-    $ > library(ctl)
-    $ > data(multitrait)
-    $ > multitrait = fill.geno(multitrait)
-    $ > ?CTLscan                                   # Show the help
-    $ > ctl_result <- CTLscan.cross(multitrait)
+
+```R
+    library(ctl)
+    data(multitrait)
+    multitrait = fill.geno(multitrait)
+    ?CTLscan                                # Show the help
+    ctl_result <- CTLscan.cross(multitrait)
+```
 
 Plot a single phenotype, the profile is comparable to the QTL profile, 
 in CTL mapping we know which phenotypes are differentially correlated 
 underneath the peak.
 
-    $ > plot(ctl_result, pheno.col=12)
+```R
+    plot(ctl_result, pheno.col=12)
+```
 
 Create an image of the phenotypes to marker relation strength, this matrix is 'comparible' 
 to a heatmap of QTL scans on many phenotypes, the underlying model assumptions are different 
 from QTL mapping but comparible, thus the outut is not shockingly different from QTL mapping.
 
-    $ > r1 <- image(ctl_result,against="markers")
+```R
+    r1 <- image(ctl_result,against="markers")
+```
 
 Create an image of the phenotypes to phenotypes relation strength, this is the additional 
 information matrix, which is not available in classical QTL mapping.
 
-    $ > r2 <- image(ctl_result,against="phenotypes")
+```R
+    r2 <- image(ctl_result,against="phenotypes")
+```
 
 Reconstruct the network and write two sif files. One sif file contains the full network, the other 
 holds the edge summary network.
 
+```R
     $ > CTLnetwork(ctl_result)
+```
+
+We can use Cytoscape to visualize the created network (available from [www.cytoscape.org](http://www.cytoscape.org// "www.cytoscape.org") )
 
 Contributing and TODO
 ---------------------
