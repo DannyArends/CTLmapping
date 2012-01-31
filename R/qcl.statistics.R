@@ -115,10 +115,10 @@ toLod <- function(QCLscan, onlySignificant = TRUE, verbose = FALSE){
 QCLtoLODvector <- function(QCLscan, against = c("markers","phenotypes")){
   if(!is.null(QCLscan$l)){
     if(against[1]=="markers")return(apply(QCLscan$l,2,sum))
-    if(against[1]=="phenotypes")return(apply(QCLscan$l,1,sum))
+    if(against[1]=="phenotypes")return(apply(QCLscan$l,1,max))
   }else{
     if(against[1]=="markers")return(apply(abs(QCLscan$qcl),2,sum))
-    if(against[1]=="phenotypes")return(apply(abs(QCLscan$qcl),1,sum))  
+    if(against[1]=="phenotypes")return(apply(abs(QCLscan$qcl),1,max))  
   }
 }
 
