@@ -46,8 +46,8 @@ Scan your data
 ```R
     library(ctl)
     data(multitrait)
-    multitrait = fill.geno(multitrait)
-    ?CTLscan                                # Show the help
+    multitrait = fill.geno(multitrait)      # Fill missing genotype values
+    ?CTLscan                                # Show the CTLscan function help
     ctl_result <- CTLscan.cross(multitrait)
 ```
 
