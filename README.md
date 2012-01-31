@@ -44,7 +44,7 @@ Scan your data
     $ > library(ctl)
     $ > data(multitrait)
     $ > multitrait = fill.geno(multitrait)
-    $ > ?QCLscan                                   # Show the help
+    $ > ?CTLscan                                   # Show the help
     $ > ctl_result <- CTLscan.cross(multitrait)
 
 Plot a single phenotype, the profile is comparable to the QTL profile, 
