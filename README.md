@@ -33,9 +33,11 @@ package for your operating system.
 Starting
 --------
 Load the library in the R interface by the following command (in R):
-    
-    $ > library(ctl)                            # Load the library
-    $ > ?ctl                                    # Show the help
+
+```R
+    library(ctl)                            # Load the library
+    ?ctl                                    # Show the help
+```
 
 Examples
 ========
