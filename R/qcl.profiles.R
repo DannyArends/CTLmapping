@@ -17,7 +17,7 @@ QCLprofiles <- function(QCLobject, significance = 0.05, against = c("markers","p
     if(verbose) cat("Processing:",p,"from QCL to LOD\n")
     lod <- QCLtoLODvector(QCLobject[[p]], against)
     cat(length(lod),"\n")
-    if(max(lod) > -log10(significance)){
+    if(max(lod) > getPermuteThresholds(QCLobject[[p]])[1]){
       mymatrix <- rbind(mymatrix,lod)
       mynames <- c(mynames,attr(QCLobject[[p]]$qcl,"name"))  
     }
