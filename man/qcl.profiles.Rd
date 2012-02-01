@@ -8,13 +8,13 @@
 }
 
 \usage{
-  QCLprofiles(QCLobject, significance = 0.05, against = c("markers","phenotypes"), verbose=FALSE)
+  QCLprofiles(QCLobject, against = c("markers","phenotypes"), significance = 0.05, verbose=FALSE)
 }
 
 \arguments{
   \item{QCLobject}{ An object of class \code{"QCLobject"}, as output by \code{\link{QCLscan}}. }
-  \item{significance}{ Significance threshold for setting a genomewide FDR. }
   \item{against}{ Plot the QCL against either: markers or phenotypes. }
+  \item{significance}{ Significance threshold for setting a genomewide FDR (Ignored when enough permutations are available). }
   \item{verbose}{ Be verbose. }
 }
 
