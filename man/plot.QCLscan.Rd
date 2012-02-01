@@ -15,7 +15,7 @@
   \item{x}{ An object of class \code{"QCLscan"}, as output by \code{\link{QCLscan}}. }
   \item{addQTL}{ Plot the QTL on top of the QTL plot. }
   \item{onlySignificant}{ Plot only the significant contributions to the QCL profile. }
-  \item{significance}{ Significance threshold for setting a genomewide FDR (Ignored when enough permutations are available). }
+  \item{significance}{ Significance threshold for setting a genomewide FDR. }
   \item{do.legend}{ Adds a legend showing which phenotypes contribute to the QCL profile. }
   \item{\dots}{ Passed to the function \code{\link[graphics]{plot}} when it is called. }
 }
