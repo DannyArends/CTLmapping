@@ -44,6 +44,10 @@
 %correlations.R
 \alias{matrix_correlation}
 
+%qcl.plot.R
+\alias{plot.QCLscan2}
+
+
 \title{Internal QCL functions}
 
 \description{
