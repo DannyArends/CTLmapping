@@ -66,15 +66,9 @@ plot.QCLscan2 <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance
       i <<- i + 1
     }
   )
-  #if(!is.null(x$l)){
-  #  n <- dim(x$qcl)[2]
-  #  abline(h=-log10(c(0.05/n,0.01/n,0.001/n)),col=c("red","orange","green"),lty=2)
-  #  legend("topright",as.character(paste("QCL-FDR:",c(0.05,0.01,0.001),"%")),col=c("red","orange","green"),lty=rep(2,3),lwd=1,cex=1)
-  #}
   if(do.legend){
     legend("topleft",c("QTL",paste("CTL",rownames(x$qcl)[mysign])),col=c("red",mycolors),lwd=2,pch=c(NA,1:length(mycolors)),cex=1.2)
   }
- # points(summarized,type='l',lwd=1)
   points(as.numeric(x$qtl),type='l',lwd=2,col="red")
   rownames(QCLmatrix) <- rownames(x$qcl)[mysign]
   invisible(QCLmatrix)
