@@ -8,14 +8,15 @@
 }
 
 \usage{
-  QCLprofiles(QCLobject, against = c("markers","phenotypes"), significance = 0.05, verbose=FALSE)
+  QCLprofiles(QCLobject, against = c("markers","phenotypes"), significance = 0.05, verbose=FALSE, warn=TRUE)
 }
 
 \arguments{
   \item{QCLobject}{ An object of class \code{"QCLobject"}, as output by \code{\link{QCLscan}}. }
   \item{against}{ Plot the QCL against either: markers or phenotypes. }
-  \item{significance}{ Significance threshold for setting a genomewide FDR (Ignored when enough permutations are available). }
+  \item{significance}{ Significance threshold for setting a genomewide FDR. }
   \item{verbose}{ Be verbose. }
+  \item{warn}{ Warn when there are not enough permutations. }
 }
 
 \details{
@@ -28,13 +29,12 @@
   phenotype x markers matrix (p2m matrix), which should be comparible to 
   the QTL profiles of the traits. 
   
-  When the 'against' parameter is set to "phenotypes" a phenotype x genetic 
-  marker matrix (p2m matrix) is returned, showing the number of markers at 
-  which interactions take occur.
+  When the 'against' parameter is set to "phenotypes" a phenotype x phenotype
+  matrix (p2p matrix) is returned, showing the interactions between the phenotypes.
 }
 
 \value{
-  Matrix: phenotypes x phenotypes or phenotypes x marker.
+  Matrix: phenotypes x marker or phenotypes x phenotypes
 }
 \references{ 
   TODO
