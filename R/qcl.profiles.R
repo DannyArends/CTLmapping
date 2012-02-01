@@ -7,9 +7,7 @@
 # 
 #
 
-#Create the 2 possible QCL matrices
-#Phenotypes versus markers
-#Phenotypes versus phenotypes
+#Create the 2 possible QCL matrices: 1) phenotypes versus markers (PxM) and 2) Phenotypes versus phenotypes (PxP)
 QCLprofiles <- function(QCLobject, against = c("markers","phenotypes"), significance=0.05, verbose=FALSE, warn = TRUE){
   mymatrix <- NULL
   mynames <- NULL
@@ -18,9 +16,9 @@ QCLprofiles <- function(QCLobject, against = c("markers","phenotypes"), signific
   for(p in 1:length(QCLobject)){
     lod <- QCLtoLODvector(QCLobject[[p]], against)
     threshold <- -log10(significance)
-    if(!is.nan(getPermuteThresholds(QCLobject[[p]])[1])){
+    if(!is.nan(getPermuteThresholds(QCLobject[[p]],significance)[1])){
       if(notice) cat("  - [Notice] Permutation available parameter 'significance' is ignored\n")
-      threshold <- getPermuteThresholds(QCLobject[[p]])[1]
+      threshold <- getPermuteThresholds(QCLobject[[p]],significance)[1]
       notice <- FALSE
     }else{
       if(warn) cat("  - [Warning] Too few permutations, unable to find significant\n")
@@ -40,13 +38,14 @@ QCLprofiles <- function(QCLobject, against = c("markers","phenotypes"), signific
   mymatrix
 }
 
+#Calculate a minimal PxM matrix
 QCLprofile <- function(QCLobject, pheno.col=1, significance=0.05, verbose = TRUE){
   p2mm <- QCLprofiles(QCLobject, "markers", significance, verbose, FALSE)
   p2pm <- QCLprofiles(QCLobject, "phenotypes", significance, verbose, FALSE)
   threshold <- -log10(significance)
-  if(!is.nan(getPermuteThresholds(QCLobject[[pheno.col]])[1])){
+  if(!is.nan(getPermuteThresholds(QCLobject[[pheno.col]],significance)[1])){
     cat("  - [Notice] Permutation available parameter 'significance' is ignored\n")
-    threshold <- getPermuteThresholds(QCLobject[[pheno.col]])[1]
+    threshold <- getPermuteThresholds(QCLobject[[pheno.col]],significance)[1]
   }else{
     cat("  - [Warning] Too few permutations, using the significe parameter\n")
   }

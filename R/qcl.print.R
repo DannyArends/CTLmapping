@@ -16,7 +16,7 @@ print.QCLscan <- function(x, ...){
   getPermuteThresholds(x,..., verbose = TRUE)
 }
 
-getPermuteThresholds <-function(x, ..., verbose = FALSE){
+getPermuteThresholds <-function(x, significance = c(.05,.01,.001), ..., verbose = FALSE){
   if(any(class(x)=="QCLscan")){
     n <- dim(x$qcl)[2]
     x <- x$p
@@ -31,16 +31,16 @@ getPermuteThresholds <-function(x, ..., verbose = FALSE){
   l <- length(sorted)
   values <- NULL
   valnames <- NULL
-  for(x in c(.95,.99,.999)){
-    if(1/((1-x)/n) < length(sorted)){
-    v <- sorted[l*(1-(1-x)/n)]
+  for(x in significance){
+    if(1/(x/n) < length(sorted)){
+    v <- sorted[l*((1-x)/n)]
     values <- c(values,v)
-    valnames <- c(valnames,paste((1-x)*100,"%"))
-    if(verbose) cat((1-x)*100,"%\t",v,"\n")
+    valnames <- c(valnames,paste(x*100,"%"))
+    if(verbose) cat(x*100,"%\t",v,"\n")
     }else{
     values <- c(values,NaN)
-    valnames <- c(valnames,paste((1-x)*100,"%"))
-    if(verbose) cat((1-x)*100,"%\t",NaN,"\n")
+    valnames <- c(valnames,paste(x*100,"%"))
+    if(verbose) cat(x*100,"%\t",NaN,"\n")
     }
   }
   names(values) <- valnames
