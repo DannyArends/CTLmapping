@@ -356,25 +356,25 @@ address any questions to Danny Arends, at Danny.Arends@gmail.com.
 
 \section*{Figures}
 
-\begin{figure}[ht]
-  \centerline{\includegraphics[height=7cm]{qcl.pdf}}
-  \vspace{-15pt}
-  \caption{{\scriptsize QCL mapping: We start by looking at a single genetic marker and dividing our populaiton into two groups.
-  We start by choosing a phenotype (red), and use its expression to detect the red module (high correlation in gray genotype). 
-  We see that something underlying our current marker in the gray genotype regulates the expression of red (but not blue)}}
-  \vspace{-20pt}
-  \label{fig:qcl}
-\end{figure}
+%\begin{figure}[ht]
+%  \centerline{\includegraphics[height=7cm]{qcl.pdf}}
+%  \vspace{-15pt}
+%  \caption{{\scriptsize QCL mapping: We start by looking at a single genetic marker and dividing our populaiton into two groups.
+%  We start by choosing a phenotype (red), and use its expression to detect the red module (high correlation in gray genotype). 
+%  We see that something underlying our current marker in the gray genotype regulates the expression of red (but not blue)}}
+%  \vspace{-20pt}
+%  \label{fig:qcl}
+%\end{figure}
 
-\begin{figure}[ht]
-  \centerline{\includegraphics[height=6cm]{qcl_n.pdf}}
-  \vspace{-15pt}
-  \caption{{\scriptsize Reconstructed pathway location from gene expression data: Insight into the underlying (hidden) regulatory network 
-  can be obtained when we look at the amount of expression showing the same switch. Depending on the amount of blue expressions 
-  co-affected we can guestimate the location of the red expression inside the pathway}}
-  \vspace{-20pt}
-  \label{fig:qcl_n}
-\end{figure}
+%\begin{figure}[ht]
+%  \centerline{\includegraphics[height=6cm]{qcl_n.pdf}}
+%  \vspace{-15pt}
+%  \caption{{\scriptsize Reconstructed pathway location from gene expression data: Insight into the underlying (hidden) regulatory network 
+%  can be obtained when we look at the amount of expression showing the same switch. Depending on the amount of blue expressions 
+%  co-affected we can guestimate the location of the red expression inside the pathway}}
+%  \vspace{-20pt}
+%  \label{fig:qcl_n}
+%\end{figure}
 
 \begin{figure}[ht]
   \centering

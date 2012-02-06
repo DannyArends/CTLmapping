@@ -1,1 +1,7 @@
 .git$
+D/mapqcl.exe
+D/mapqcl.obj
+D/array.lib
+D/input.lib
+D/qcl.lib
+D/stats.lib
