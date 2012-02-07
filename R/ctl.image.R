@@ -1,32 +1,32 @@
 #
-# qcl.image.R
+# ctl.image.R
 #
 # copyright (c) 2010 Danny Arends and Ritsert C. Jansen
 # last modified Jan, 2012
 # first written Nov, 2010
 # 
-# Image plot routines for QCL analysis
+# Image plot routines for CTL analysis
 #
 
-image.QCLobject <- function(x, against = c("markers","phenotypes"), onlySignificant = FALSE, significance = 0.05, do.grid=TRUE, grid.col = "black", verbose = FALSE, ...){
+image.CTLobject <- function(x, against = c("markers","phenotypes"), onlySignificant = FALSE, significance = 0.05, do.grid=TRUE, grid.col = "black", verbose = FALSE, ...){
   colorrange <- c("white",gray.colors(10)[10:1])
   mymatrix <- NULL
   mynames <- NULL
   for(p in 1:length(x)){
-    if(verbose) cat("Processing:",p,"from QCL to LOD\n")
-    lod <- QCLtoLODvector(x[[p]], against)
+    if(verbose) cat("Processing:",p,"from CTL to LOD\n")
+    lod <- CTLtoLODvector(x[[p]], against)
     if(onlySignificant){
       if(max(lod) > getPermuteThresholds(x[[p]])[1]){
         mymatrix <- rbind(mymatrix,lod)
-        mynames <- c(mynames,attr(x[[p]]$qcl,"name"))  
+        mynames <- c(mynames,attr(x[[p]]$ctl,"name"))  
       }
     }else{
       mymatrix <- rbind(mymatrix,lod)
-      mynames <- c(mynames,attr(x[[p]]$qcl,"name"))
+      mynames <- c(mynames,attr(x[[p]]$ctl,"name"))
     }
   }
   rownames(mymatrix) <- mynames
-  mainlabel <- paste("QCL phenotypes vs",against[1],"at P-value <",significance)
+  mainlabel <- paste("CTL phenotypes vs",against[1],"at P-value <",significance)
   internal.image(mymatrix, colorrange, mainlabel,do.grid, grid.col)
 }
 
@@ -51,16 +51,16 @@ QTLimage <- function(x, onlySignificant = FALSE, significance = 0.05, do.grid=TR
   mymatrix <- NULL
   mynames <- NULL
   for(p in 1:length(x)){
-    if(verbose) cat("Processing QTL",p,"from QCLobject\n")
+    if(verbose) cat("Processing QTL",p,"from CTLobject\n")
     lod <- x[[p]]$qtl
     if(onlySignificant){
-      if(max(QCLtoLODvector(x[[p]], "markers")) > -log10(significance)){
+      if(max(CTLtoLODvector(x[[p]], "markers")) > -log10(significance)){
         mymatrix <- rbind(mymatrix,lod)
-        mynames <- c(mynames,attr(x[[p]]$qcl,"name"))  
+        mynames <- c(mynames,attr(x[[p]]$ctl,"name"))  
       }
     }else{
       mymatrix <- rbind(mymatrix,lod)
-      mynames <- c(mynames,attr(x[[p]]$qcl,"name"))
+      mynames <- c(mynames,attr(x[[p]]$ctl,"name"))
     }
   }
   rownames(mymatrix) <- mynames
@@ -72,4 +72,4 @@ QTLimage <- function(x, onlySignificant = FALSE, significance = 0.05, do.grid=TR
   internal.image(mymatrix, colorrange, mainlabel,do.grid, grid.col)
 }
 
-# end of qcl.image.R
+# end of ctl.image.R
