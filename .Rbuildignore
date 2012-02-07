@@ -1,7 +1,7 @@
 .git$
-D/mapqcl.exe
-D/mapqcl.obj
+D/mapctl.exe
+D/mapctl.obj
 D/array.lib
 D/input.lib
-D/qcl.lib
+D/ctl.lib
 D/stats.lib
