@@ -1,11 +1,11 @@
-\name{QCLscan.cross}
-\alias{QCLscan.cross}
-\title{QCLscan.cross - Scan for quantitative correlation loci (R/qtl cross object) }
+\name{CTLscan.cross}
+\alias{CTLscan.cross}
+\title{CTLscan.cross - Scan for Correlated Trait Locus (CTL) (R/qtl cross object) }
 \description{
-  Scan for Quantitative Correlation Loci (QCL) in inbred populations (using an R/qtl cross object)
+  Scan for Correlated Trait Locus (CTL) in populations (using an R/qtl cross object)
 }
 \usage{
-QCLscan.cross(cross, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=100, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles = FALSE, verbose = FALSE)
+CTLscan.cross(cross, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=100, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles = FALSE, verbose = FALSE)
 }
 
 \arguments{
@@ -27,7 +27,7 @@ TODO
 }
 }
 \value{
-QCLscan object, a list with at each index a QCL matrix (Rows: Phenotypes, 
+CTLscan object, a list with at each index a CTL matrix (Rows: Phenotypes, 
 Columns: Genetic markers) for the phenotype.
 }
 \references{ 
@@ -41,13 +41,13 @@ Columns: Genetic markers) for the phenotype.
   TODO
 }
 \examples{
-  library(qcl)
+  library(ctl)
   if(has_rqtl()){
     require(qtl)
     data(multitrait) # Arabidopsis Thaliana (R/qtl cross object)
-    qcl_result <- QCLscan.cross(multitrait)
-    qcl_result
-    plot(qcl_result[[16]])   #Plot a phenotype
+    ctl_result <- CTLscan.cross(multitrait)
+    ctl_result
+    plot(ctl_result[[16]])   #Plot a phenotype
   }
 }
 

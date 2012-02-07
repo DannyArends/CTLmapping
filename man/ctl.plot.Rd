@@ -1,20 +1,20 @@
-\name{plot.QCLobject}
-\alias{plot.QCLobject}
+\name{plot.CTLobject}
+\alias{plot.CTLobject}
 
-\title{Plot QCL curves or heatmaps}
+\title{Plot CTL curves or heatmaps}
 
 \description{
-  Plot the QCL curve or heatmaps for a genome scan (the output of \code{\link{QCLscan}}).
+  Plot the CTL curve or heatmaps for a genome scan (the output of \code{\link{CTLscan}}).
 }
 
 \usage{
-\method{plot}{QCLobject}(x, pheno.col=1:length(x), \dots)
+\method{plot}{CTLobject}(x, pheno.col=1:length(x), \dots)
 }
 
 \arguments{
-  \item{x}{ An object of class \code{"QCLobject"}, as output by \code{\link{QCLscan}}. }
+  \item{x}{ An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
   \item{pheno.col}{ Which phenotype column(s) should we plot. Defaults to creating an image of all phenotype columns }
-  \item{\dots}{ Passed to the function \code{\link{image.QCLobject}} \code{\link{plot.QCLscan}} when it is called. }
+  \item{\dots}{ Passed to the function \code{\link{image.CTLobject}} \code{\link{plot.CTLscan}} when it is called. }
 }
 
 \value{
@@ -26,15 +26,15 @@
 }
 
 \examples{
-  library(qcl)
+  library(ctl)
   data(ath.result) # Arabidopsis Thaliana dataset
   plot(ath.result)
 }
 
 \seealso{
   \itemize{
-    \item \code{\link{QCLscan}} - Scan for QCL
-    \item \code{\link{print.QCLscan}} - Print a summary of a QCLscan
+    \item \code{\link{CTLscan}} - Scan for CTL
+    \item \code{\link{print.CTLscan}} - Print a summary of a CTLscan
     \item \code{\link[graphics]{par}} - Plot parameters
     \item \code{\link[grDevices]{colors}} - Colors used in plotting
   }
