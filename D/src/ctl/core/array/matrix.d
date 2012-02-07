@@ -22,11 +22,13 @@ T[][] absmatrix(T)(T[][] i){
 }
 
 T[] unlist(T)(T[][] i){
-  T[] v = newvector!T(i.length*i[0].length);
+  T[] m;
   for(uint r=0;r<i.length;r++){
-    v[r*i.length..(r*i.length)+i[0].length] = i[r];
+    for(uint c=0;c<i[0].length;c++){
+      m ~= i[r][c];
+    }
   }
-  return v;
+  return m;
 }
 
 T[][] translate(T)(T[][] i){
