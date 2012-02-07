@@ -16,6 +16,7 @@ import ctl.core.stats.tolod;
 import ctl.core.ctl.mapping;
 import ctl.core.ctl.permutation;
 import ctl.io.csv.parse;
+import ctl.io.cmdline.parse;
 import ctl.io.csv.write;
 
 void printHelp(){
@@ -29,6 +30,7 @@ void main(string[] args){
   SysTime stime = Clock.currTime();
   writeln("mapCTL: Correlated Trait Locus (CTL) mapping in D");
   writeln("(c) 2012 written by Danny Arends in the D programming language");
+  CTLsettings settings = parseCmd(args);
   int nperms = 100;
   if(args.length > 1) nperms = to!int(args[1]);
   double[][] phenotypes = parseFile!double("test/data/phenotypes.csv");
