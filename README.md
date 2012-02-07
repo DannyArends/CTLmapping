@@ -5,9 +5,9 @@ mapping algorithm. Provided as package for the statistical language R and in
 the D 2.0 programming language.
 
 CTL mapping is a novel approach to detect genetic regulation of phenotypes in 
-recombinant inbred line populations (RIL). It is a method which complements
-classical QTL analysis, providing additional insights overlooked by the classical 
-QTL approach. 
+natural and experimental populations. It is a method which complements classical 
+QTL analysis, providing additional insights overlooked by the classical QTL 
+approach. 
 
 Algorithm
 ---------
