@@ -1,34 +1,52 @@
-R package CTL
-================
-CTL provides an implementation in R for the novel Correlated Trait Locus (CTL) mapping
-mapping methodology. CTL mapping is a novel approach to detect genetic regulation of 
-phenotypes in recombinant inbred line populations (RIL). It is a method which complements
-classical QTL analysis, providing additional insights overlooked by the classical QTL 
-approach. 
+Correlated Trait Locus (CTL) mapping
+====================================
+In this repository implementations of the novel Correlated Trait Locus (CTL) 
+mapping algorithm. Provided as package for the statistical language R and in 
+the D 2.0 programming language.
 
-Differences in correlations between traits within an inbred population are determined 
-at each genetic marker. Phenotypes are assigned to genotype groups and a single phenotype 
-is used to scan all other phenotypes for a loss in or a gain of correlation. The likelihood 
-profiles (similar to QTL profiles) of this 'loss of correlation' measurement show a very 
-high degree of overlap with classical QTL profiles, BUT additional information is easily 
-extracted from phenotype x phenotype interaction plots. With the right dataset (ideally a 
-combination of: classical phenotypes, protein abundance and gene expression) CTL shows 
-the genetic wiring of the classical phenotypes and identify key players in the genetic / 
-protein network underlying QTL and CTL.
+CTL mapping is a novel approach to detect genetic regulation of phenotypes in 
+recombinant inbred line populations (RIL). It is a method which complements
+classical QTL analysis, providing additional insights overlooked by the classical 
+QTL approach. 
 
-Installation
-------------
-Prepare your environment by following these steps:
+Algorithm
+---------
+Differences in correlations between traits within an inbred population are 
+determined at each genetic marker. Phenotypes are assigned to genotype groups 
+and a single phenotype is used to scan all other phenotypes for a loss or gain 
+of correlation. The likelihood profiles (~ QTL profiles) of this 'loss of 
+correlation' measurement shows a very high degree of overlap with classical 
+QTL profiles, BUT additional information is available from phenotype x 
+phenotype interactions. With the right dataset (ideally a combination of: 
+classical phenotypes, protein abundance and gene expression) CTL shows the 
+genetic wiring of the classical phenotypes and identify key players in the 
+genetic / protein network underlying QTL and CTL.
 
-- Download and Install the R environment from [www.r-project.org](http://www.r-project.org/ "www.r-project.org")
-
-Then install into R by using (from a terminal / command line):
+Installation of R version
+-------------------------
+Prepare your environment by download and installing the R environment from 
+[www.r-project.org](http://www.r-project.org/ "www.r-project.org"). Then 
+download CTLmapping and install into R by using (from a terminal / command 
+line):
 
     $ git clone git://github.com/DannyArends/CTLmapping.git  # Download the repository
     $ R CMD INSTALL CTLmapping                               # Install the package
 
 Optionally you can install the pre-build packages by downloading the appropriate 
 package for your operating system. 
+
+Compile the D 2.0 version
+-------------------------
+Prepare your environment by download and installing the DMD 2.0 compiler from 
+[www.d-programming-language.org](http://www.d-programming-language.org 
+"www.d-programming-language.org"). Then download CTLmapping and run 'compile.bat' 
+or 'compile.sh' from a terminal / command line:
+
+    $ git clone git://github.com/DannyArends/CTLmapping.git  # Download the repository
+    $ cd CTLmapping/D                                        # Goto the D folder
+    $ compile                                                # Compile the executable
+
+Optionally you can use a provided binary by downloading your operating system.
 
 Starting
 --------
@@ -96,4 +114,4 @@ Danny Arends
 
 Disclaimer
 ----------
-Copyright (c) 2010 Danny Arends
+Copyright (c) 2010-2012 Danny Arends
