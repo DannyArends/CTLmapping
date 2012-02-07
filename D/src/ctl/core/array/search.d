@@ -1,11 +1,11 @@
 /**********************************************************************
- * src/qcl/core/array/search.d
+ * src/ctl/core/array/search.d
  *
  * copyright (c) 2012 Danny Arends
  * last modified Feb, 2012
  * first written May, 2011
  **********************************************************************/
-module qcl.core.array.search;
+module ctl.core.array.search;
 
 import std.math;
 

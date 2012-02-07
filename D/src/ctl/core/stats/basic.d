@@ -1,11 +1,11 @@
 /**********************************************************************
- * src/qcl/core/stats/basic.d
+ * src/ctl/core/stats/basic.d
  *
  * copyright (c) 2012 Danny Arends
  * last modified Feb, 2012
  * first written May, 2011
  **********************************************************************/ 
-module qcl.core.stats.basic;
+module ctl.core.stats.basic;
  
 import std.math;
 

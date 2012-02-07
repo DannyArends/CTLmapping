@@ -1,18 +1,18 @@
 /**********************************************************************
- * src/qcl/io/csv/parse.d
+ * src/ctl/io/csv/parse.d
  *
  * copyright (c) 2012 Danny Arends
  * last modified Jan, 2012
  * first written Jan, 2012
  **********************************************************************/
-module qcl.io.csv.parse;
+module ctl.io.csv.parse;
 
 import std.stdio;
 import std.string;
 import std.file;
 import std.conv;
 
-import qcl.core.array.matrix;
+import ctl.core.array.matrix;
 
 struct D{
   string  name;

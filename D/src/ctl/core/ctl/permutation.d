@@ -1,21 +1,21 @@
 /**********************************************************************
- * src/qcl/core/qcl/singleqcl.d
+ * src/ctl/core/ctl/permute.d
  *
  * copyright (c) 2012 Danny Arends
  * last modified Jan, 2012
  * first written Jan, 2012
  **********************************************************************/
-module qcl.core.qcl.permuteqcl;
+module ctl.core.ctl.permutation;
 
 import std.stdio;
 import std.math;
 import std.datetime;
 import std.random;
 
-import qcl.core.array.ranges;
-import qcl.core.array.matrix;
-import qcl.core.qcl.singleqcl;
-import qcl.core.stats.basic;
+import ctl.core.array.ranges;
+import ctl.core.array.matrix;
+import ctl.core.ctl.mapping;
+import ctl.core.stats.basic;
 
 T[][] permute(T)(T[][] genotypes){
   T[][] newgeno = newmatrix!T(genotypes.length,genotypes[0].length);
@@ -29,13 +29,13 @@ T[][] permute(T)(T[][] genotypes){
   return newgeno;
 }
 
-double[][] permuteqcl(double[][] phenotypes, int[][] genotypes, uint phenotype = 1, uint permutations = 100, bool verbose = true){
+double[][] permutation(double[][] phenotypes, int[][] genotypes, uint phenotype = 1, uint permutations = 100, bool verbose = true){
   assert(phenotype < phenotypes.length);
   SysTime stime = Clock.currTime();
   double[][] permutationmatrix;
   if(verbose) write(" ");
   for(uint p=0; p<permutations; p++){
-    double[][] pqclm = singleqcl(phenotypes, permute!int(genotypes), phenotype, false);
+    double[][] pqclm = mapping(phenotypes, permute!int(genotypes), phenotype, false);
     permutationmatrix ~= doMatrixMax!double(pqclm);
     if(p % 3 == 0 && verbose){write("."); stdout.flush();}
   }

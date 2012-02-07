@@ -1,5 +1,5 @@
-mapQCL: QCL mapping in D
-========================
+mapCTL: Correlated Trait Locus (CTL) mapping in D
+=================================================
 
 Installation
 ------------
@@ -9,7 +9,7 @@ Prepare your environment by following these steps:
 - Clone the repository
 
 ```
-    git clone https://DannyArends@github.com/DannyArends/QCL.git
+    git clone https://DannyArends@github.com/DannyArends/QCLmapping.git
     cd QCL/D
     compile
 ```

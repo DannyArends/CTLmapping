@@ -1,16 +1,16 @@
 /**********************************************************************
- * src/qcl/core/qcl/utils.d
+ * src/ctl/core/ctl/utils.d
  *
  * copyright (c) 2012 Danny Arends
  * last modified Jan, 2012
  * first written Jan, 2012
  **********************************************************************/
-module qcl.core.qcl.utils;
+module ctl.core.ctl.utils;
 
 import std.stdio;
 
-import qcl.core.array.matrix;
-import qcl.core.stats.correlation;
+import ctl.core.array.matrix;
+import ctl.core.stats.correlation;
 
 uint[] which(int[] marker,int type = 0){
   uint[] indices;

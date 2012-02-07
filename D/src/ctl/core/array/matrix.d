@@ -1,11 +1,11 @@
 /**********************************************************************
- * src/qcl/core/array/matrix.d
+ * src/ctl/core/array/matrix.d
  *
  * copyright (c) 2012 Danny Arends
  * last modified Feb, 2012
  * first written May, 2011
  **********************************************************************/
-module qcl.core.array.matrix;
+module ctl.core.array.matrix;
 
 import std.stdio;
 import std.conv;
