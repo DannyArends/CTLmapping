@@ -22,13 +22,11 @@ T[][] absmatrix(T)(T[][] i){
 }
 
 T[] unlist(T)(T[][] i){
-  T[] m;
+  T[] v = newvector!T(i.length*i[0].length);
   for(uint r=0;r<i.length;r++){
-    for(uint c=0;c<i[0].length;c++){
-      m ~= i[r][c];
-    }
+    v[r*i.length..(r*i.length)+i[0].length] = i[r];
   }
-  return m;
+  return v;
 }
 
 T[][] translate(T)(T[][] i){
@@ -62,9 +60,9 @@ void printmatrix(T)(T[][] m) {
   }
 }
 
-T* newvector(T)(size_t dim) {
-  T* v;
-  v = cast(T*)calloc(dim, T.sizeof);
+T[] newvector(T)(size_t dim) {
+  T[] v;
+  v.length = dim;
   if(v is null){
     writeln("Not enough memory for new vector of dimension %d",(dim+1));
   }
