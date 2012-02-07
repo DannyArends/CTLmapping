@@ -1,20 +1,20 @@
 /**********************************************************************
- * src/qcl/core/qcl/singleqcl.d
+ * src/ctl/core/ctl/mapping.d
  *
  * copyright (c) 2012 Danny Arends
  * last modified Jan, 2012
  * first written Jan, 2012
  **********************************************************************/
-module qcl.core.qcl.singleqcl;
+module ctl.core.ctl.mapping;
 
 import std.stdio;
 import std.math;
 import std.datetime;
 
-import qcl.core.qcl.utils;
-import qcl.core.stats.correlation;
+import ctl.core.ctl.utils;
+import ctl.core.stats.correlation;
 
-double[][] singleqcl(double[][] phenotypes, int[][] genotypes, uint phenotype = 1, bool verbose = true){
+double[][] mapping(double[][] phenotypes, int[][] genotypes, uint phenotype = 1, bool verbose = true){
   assert(phenotype < phenotypes.length);
   SysTime stime = Clock.currTime();
   double[][] difcormatrix;

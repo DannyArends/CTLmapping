@@ -1,11 +1,11 @@
 /**********************************************************************
- * src/qcl/core/array/ranges.d
+ * src/ctl/core/array/ranges.d
  *
  * copyright (c) 2012 Danny Arends
  * last modified Feb, 2012
  * first written May, 2011
  **********************************************************************/
-module qcl.core.array.ranges;
+module ctl.core.array.ranges;
 
 import std.math;
 

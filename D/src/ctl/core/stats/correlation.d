@@ -1,11 +1,11 @@
 /**********************************************************************
- * src/qcl/core/stats/correlation.d
+ * src/ctl/core/stats/correlation.d
  *
  * copyright (c) 2012 Danny Arends
  * last modified Jan, 2012
  * first written Jan, 2012
  **********************************************************************/
-module qcl.core.stats.correlation;
+module ctl.core.stats.correlation;
 
 import std.math;
 

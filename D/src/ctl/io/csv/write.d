@@ -1,18 +1,18 @@
 /**********************************************************************
- * src/qcl/io/csv/write.d
+ * src/ctl/io/csv/write.d
  *
  * copyright (c) 2012 Danny Arends
  * last modified Jan, 2012
  * first written Jan, 2012
  **********************************************************************/
-module qcl.io.csv.write;
+module ctl.io.csv.write;
 
 import std.stdio;
 import std.string;
 import std.file;
 import std.conv;
 
-import qcl.core.array.matrix;
+import ctl.core.array.matrix;
 
 void writeFile(T)(T[][] m, string filename, bool verbose = false){
   if(exists(filename)){
