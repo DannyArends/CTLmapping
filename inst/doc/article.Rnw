@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Danny Arends
-% The qcl mapping routine
+% The ctl mapping routine
 %\VignetteIndexEntry{Article}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -48,7 +48,7 @@
 {\end{list}}
 
 
-\title{QCL: Added value of differential correlation} 
+\title{CTL: Added value of differential correlation} 
 
 
 % Place the author information here.  Please hand-code the contact
@@ -92,7 +92,7 @@ options(width=87, digits=3, scipen=4)
 @ 
 
 <<echo=FALSE,results=hide>>=
-  require(qcl)
+  require(ctl)
   set.seed(200)
   data(ath.result)
 @
@@ -102,13 +102,13 @@ options(width=87, digits=3, scipen=4)
 \DefineVerbatimEnvironment{Soutput}{Verbatim}{fontsize=\footnotesize, baselinestretch=0.75, formatcom = {\color[rgb]{0.56, 0, 0}}}
 
 \begin{sciabstract}
-  In this paper we present Quanitative Correlation Locus (QCL) mapping, a novel approach 
+  In this paper we present Quanitative Correlation Locus (CTL) mapping, a novel approach 
   to detect genetic regulation of phenotypes in recombinant inbred line populations (RIL) 
-  or SNP genotypes populations. QCL mapping allows association of phenotype correlation 
+  or SNP genotypes populations. CTL mapping allows association of phenotype correlation 
   differences to genetic markers, in almost the same way as QTL mapping associates genetic 
   markers with differences in expression.
-  We use QCL mapping to reconstruct underlying genetic architecture, and provide insight 
-  into regulation of (gene) expression. QCL information in combination with classical QTL 
+  We use CTL mapping to reconstruct underlying genetic architecture, and provide insight 
+  into regulation of (gene) expression. CTL information in combination with classical QTL 
   information leads to a more detailed insight into the genetic architecture underlying 
   complex traits. The method also provides a missing link in regulatory network reconstruction.
 \end{sciabstract}
@@ -130,7 +130,7 @@ options(width=87, digits=3, scipen=4)
   cancer tissue studies. In parallel, correlations between phenotypes are studied for various 
   reasons e.g. discovering and detecting batch effects, marker assisted breeding and causal 
   inference. The importance of identifying differences in correlation has been increasingly 
-  recognized and this led to the development of this algorithm to perform QCL analysis in 
+  recognized and this led to the development of this algorithm to perform CTL analysis in 
   experimental crosses.
 
   Using recombinant inbred lines we introduce natural variation into a population 
@@ -151,77 +151,77 @@ options(width=87, digits=3, scipen=4)
   phenotype B (downstream to A) variation of expression in phenotype A is causing 'variation' 
   for phenotype B. However B will in most cases not show variation because it's expression 
   depends (but is not dependant) on A, a phenomena generally refered to as phenotype buffering. 
-  This is what QCL mapping exploits, the hypothesis is that although B doesn't show a QTL, 
+  This is what CTL mapping exploits, the hypothesis is that although B doesn't show a QTL, 
   it will become uncorrelated when we partition phenotype B into the groups based on the genotype at 
   the QTL marker of phenotype A. 
 
-  QCL thus maps not differential co-expression but differential correlation to genetic 
+  CTL thus maps not differential co-expression but differential correlation to genetic 
   variation, i.e. to identify regions in the genome for which one genotype value leads to 
   correlated expression between a phenotype and all other phenotypes, exploiting the fact 
   that any QTL will be the result of either direct induced variation or indirect variation, 
   which will be visible as correlation differences among individuals carrying different genotypes. 
-  We merge information coming from QCL and QTL to reveal underlying genetic architecture, 
+  We merge information coming from CTL and QTL to reveal underlying genetic architecture, 
   which would remain hidden when using only classical QTL information.
 
-  We urge all QTL researchers to combine the new QCL method with existing QTL analysis to expose 
+  We urge all QTL researchers to combine the new CTL method with existing QTL analysis to expose 
   transcriptional networks involved in the regulation of complex phenotypes. For this we 
-  provide an R package with a reference implementation of the QCL algorithm.
+  provide an R package with a reference implementation of the CTL algorithm.
 \bigskip 
 
 \section*{Methodology}
 \nopagebreak
 
-\emph{\sffamily QCL mapping}\\
-  As mentioned in the introduction QCL mapping uses buffering to detect interaction partners. 
+\emph{\sffamily CTL mapping}\\
+  As mentioned in the introduction CTL mapping uses buffering to detect interaction partners. 
   When we split the population based on genotype at a QTL marker, only related phenotypes 
   will loose correlation with the gene under investigation. This allows us to not only 
   only identify its interaction partners, while not suffering from (p1) many phenotypes 
   co-localizing. Additionally it is more sensitive to detect variation 
   caused by regulatory phenotypes because variation of these regulators causes many 'downstream' 
-  phenotypes to show differential correlation with the inducing phenotype, because QCL relies on 
-  correlation changes as opposed to differences in phenotype mean QCL is unaffected by (p2).
+  phenotypes to show differential correlation with the inducing phenotype, because CTL relies on 
+  correlation changes as opposed to differences in phenotype mean CTL is unaffected by (p2).
 
 \emph{\sffamily Choosing a start/seed probe (Optional)}\\
-  Choose a phenotype to subject to QCL analysis, this can be your favourite gene, 
+  Choose a phenotype to subject to CTL analysis, this can be your favourite gene, 
   protein, metabolite or classical phenotype.
 
-\emph{\sffamily Single phenotype QCL mapping}\\
+\emph{\sffamily Single phenotype CTL mapping}\\
   Using genotype data we can split individuals at each marker in two groups (A or B).
   At each marker calculate the correlation between our phenotype and all other 
   phenotypes in groups A and B. Collect all the result vectors into two matrices A 
-  and B, and calculate the QCL matrix by taking the squared difference between matrix A 
+  and B, and calculate the CTL matrix by taking the squared difference between matrix A 
   and B.
 
 \emph{\sffamily Significance testing}\\
-  To compare to QTL mapping we need to convert the QCLscores to LOD scores. Significance 
-  of QCL were assessed by using permutations, in each round the link between genotype and 
+  To compare to QTL mapping we need to convert the CTLscores to LOD scores. Significance 
+  of CTL were assessed by using permutations, in each round the link between genotype and 
   phenotype is broken, by redistributing at random genotypes amongst individuals not 
-  allowing for duplicates. The QCL on these new individuals allows for estimation of 
-  the underlying null-distribution of QCL scores. We frequently observe QCL scores in 
-  real data which is higher than any QCL score obtained during permutation. When this 
+  allowing for duplicates. The CTL on these new individuals allows for estimation of 
+  the underlying null-distribution of CTL scores. We frequently observe CTL scores in 
+  real data which is higher than any CTL score obtained during permutation. When this 
   happens we use a generalized Pareto distribution (GPD) to estimate the extreme tail 
   of the distribution \cite{Knijnenburg:2009}, to also get likelyhood estimates for the 
   extreme scores observed. See Fig. \ref{fig:permutation_scores} showing the score 
   distribution in permuted data of 3 traits in A. Thaliana, Fig XX also shows a tail 
   estimation using the GPD method.
 
-\emph{\sffamily Creating single trait QCL profiles}\\
-  After permutation single trait QCL profiles can be obtained by transforming the QCL scores 
+\emph{\sffamily Creating single trait CTL profiles}\\
+  After permutation single trait CTL profiles can be obtained by transforming the CTL scores 
   into LOD scores. For this we use a look-up table of scores obtained during permutation, we 
-  assess the likelyhood and take the $-log10(P.value)$ of every QCL score see Fig. 
-  \ref{fig:singletraitLOD}. This is done 1) to compare QTL profiles with summarized QCL profiles 
+  assess the likelyhood and take the $-log10(P.value)$ of every CTL score see Fig. 
+  \ref{fig:singletraitLOD}. This is done 1) to compare QTL profiles with summarized CTL profiles 
   (an example in Fig. \ref{fig:singletrait}), and 2) Show the contribution of each phenotype 
   to the total likelyhood.
 
-\emph{\sffamily Visualizing the Phenotypes x Phenotypes QCL relations}\\
-  In Fig. \ref{fig:singletraitLOD} we see the additional information obtained by QCL mapping summarized 
+\emph{\sffamily Visualizing the Phenotypes x Phenotypes CTL relations}\\
+  In Fig. \ref{fig:singletraitLOD} we see the additional information obtained by CTL mapping summarized 
   graphically.  We can also calculate the full Phenotypes x Phenotypes matrix. This shows the summed 
   evidence of all paiwise interaction between multiple phenotypes.
 
 \emph{\sffamily Visualizing the Phenotypes x Marker relations}\\
-  When plotting multiple QCL profiles as a heatmap, QCLs are seen mapping to the 
+  When plotting multiple CTL profiles as a heatmap, CTLs are seen mapping to the 
   same genetic location. At these locations, regulation is taking place. We expect 
-  to find one (or more) of the genes to show a cis-QTL, this is because a QCL can 
+  to find one (or more) of the genes to show a cis-QTL, this is because a CTL can 
   only exist if there is a QTL inducing it.
 
 \emph{\sffamily Network reconstruction}\\
@@ -231,7 +231,7 @@ options(width=87, digits=3, scipen=4)
   active and closely related interaction partners. To identify a pathway or main regulatory phenotypes 
   controlling our phenotype we need to combine this information.
 
-  We show two examples in which we reconstruct the genetic architecture using QCL mapping. 
+  We show two examples in which we reconstruct the genetic architecture using CTL mapping. 
   Both datasets are available inside the R package, as well as the code to analyse these 
   two datasets.
 
@@ -264,10 +264,10 @@ options(width=87, digits=3, scipen=4)
 \nopagebreak
 
   \subsection{Example 1. A. Thaliana}
-  QCL mapping was performed on 24 characterized metabolities measured in Arabidopsis 
-  Thaliana. A significance threshold for QCL mapping was determined for each trait 
+  CTL mapping was performed on 24 characterized metabolities measured in Arabidopsis 
+  Thaliana. A significance threshold for CTL mapping was determined for each trait 
   by using 1000 permutations, the outcomes can be seen in Fig \ref{fig:histPermAra}. 
-  We used a very stringent QCL threshold at P < 0.001 to use as 'significant' QCL 
+  We used a very stringent CTL threshold at P < 0.001 to use as 'significant' CTL 
   score for further analysis. 
   
   \emph{\sffamily Significance}\\
@@ -276,38 +276,38 @@ options(width=87, digits=3, scipen=4)
   significant for X3.Hydroxypropyl (green). But for X4.Methylsulfinylbutyl we need a 
   difference in squared correlation larger then 0.7 (yellow).
   
-  \emph{\sffamily Single trait QCL}\\
-  The 24 QCL profiles were compared to the QTL profiles previously determined. We observed 3 cases:\\
-  1) Additional QCL found, where no QTL was present as seen in the QCL profile X3.Hydroxypropyl 
+  \emph{\sffamily Single trait CTL}\\
+  The 24 CTL profiles were compared to the QTL profiles previously determined. We observed 3 cases:\\
+  1) Additional CTL found, where no QTL was present as seen in the CTL profile X3.Hydroxypropyl 
   (Fig. \ref{fig:singletraitLOD}), these are the cases in which the loss of variation in the genes 
-  underneath the QCL is not causing variation differences in the observed phenotype, but still 
+  underneath the CTL is not causing variation differences in the observed phenotype, but still 
   we're able to detect the correlation differences.\\
-  2) QCL co-localized with QTL, in this situation QCL gives a detailed view of which phenotypes 
+  2) CTL co-localized with QTL, in this situation CTL gives a detailed view of which phenotypes 
   are underneath its peek, we interpret this as variation transfered from the phenotypes underneath 
-  the QCL to the phenotype investigated.\\
-  3) QTL with no QCL, we interpret this as the source of the variation. Analysis in this way of 
-  all 24 Single trait QCL profiles combined with their QTL profiles allows us to reconstruct the 
+  the CTL to the phenotype investigated.\\
+  3) QTL with no CTL, we interpret this as the source of the variation. Analysis in this way of 
+  all 24 Single trait CTL profiles combined with their QTL profiles allows us to reconstruct the 
   source of natural variation and follow it down the network.
   
-  \emph{\sffamily QCL combined with QTL}\\
-  Plots of the results of the QCL mapping in Arabidopsis can be found in 
+  \emph{\sffamily CTL combined with QTL}\\
+  Plots of the results of the CTL mapping in Arabidopsis can be found in 
   Figure XX Phenotype to Marker interaction, which is comparable to the QTL mapping 
-  (Fig. XX). The additional information obtained by QCL mapping is shown in a heatmap 
+  (Fig. XX). The additional information obtained by CTL mapping is shown in a heatmap 
   of the Phenotype to Phenotype interaction matrix (figure XX) and the same information 
-  but now represented as an interaction network is seen in figure XX and in the QCL plot
+  but now represented as an interaction network is seen in figure XX and in the CTL plot
   
   \emph{\sffamily Reconstructed network}\\
   Using the derived data we can begin to reconstruct the network. We'll start with a metabolite 
-  which shows mappable variation changes, but no QCL colocatizing (Inducer).
+  which shows mappable variation changes, but no CTL colocatizing (Inducer).
   
   \subsection{Example 2. S. Cerevisiae}
-  QCL mapping is computationaly expensive (We need 1000+ permutations for each phenotype), 
+  CTL mapping is computationaly expensive (We need 1000+ permutations for each phenotype), 
   and for the S. Cerevisiae we pre-selected a background of 300 probes which showed the 
   highest variation, and had been previously been identified as having QTLs. Significance 
-  thresholds for QCL mapping were determined for each trait by using 1000 permutations 
+  thresholds for CTL mapping were determined for each trait by using 1000 permutations 
   ({\emph Data not shown}).
   
-  \emph{\sffamily Single trait QCL}\\
+  \emph{\sffamily Single trait CTL}\\
   
 
 \bigskip
@@ -321,12 +321,12 @@ options(width=87, digits=3, scipen=4)
   been a successful strategy when mapping Mendelian traits. 
   
   However results on complex traits have been less then satisfactory with only small 
-  amounts of heritability explained by individuals loci. QCL mapping however 'borrows' 
+  amounts of heritability explained by individuals loci. CTL mapping however 'borrows' 
   information from each phenotype in the analysis set, and enables extraction of 
   phenotype to marker to phenotype networks, the flow of variation in the network. 
-  Furthermore QCLs seem to 'transfer' from phenotype to phenotypes in a stabile 
+  Furthermore CTLs seem to 'transfer' from phenotype to phenotypes in a stabile 
   fashion, which gives greater detail and confidence when reconstructing genetic 
-  architecture. Also QCL allows us to better identify gene transcript introducing 
+  architecture. Also CTL allows us to better identify gene transcript introducing 
   variation, by their absense under QTL peeks which introduce variation, compared 
   to being present underneath QTL which are affected by upstream variation.
   
@@ -357,23 +357,23 @@ address any questions to Danny Arends, at Danny.Arends@gmail.com.
 \section*{Figures}
 
 %\begin{figure}[ht]
-%  \centerline{\includegraphics[height=7cm]{qcl.pdf}}
+%  \centerline{\includegraphics[height=7cm]{CTL.pdf}}
 %  \vspace{-15pt}
-%  \caption{{\scriptsize QCL mapping: We start by looking at a single genetic marker and dividing our populaiton into two groups.
+%  \caption{{\scriptsize CTL mapping: We start by looking at a single genetic marker and dividing our populaiton into two groups.
 %  We start by choosing a phenotype (red), and use its expression to detect the red module (high correlation in gray genotype). 
 %  We see that something underlying our current marker in the gray genotype regulates the expression of red (but not blue)}}
 %  \vspace{-20pt}
-%  \label{fig:qcl}
+%  \label{fig:CTL}
 %\end{figure}
 
 %\begin{figure}[ht]
-%  \centerline{\includegraphics[height=6cm]{qcl_n.pdf}}
+%  \centerline{\includegraphics[height=6cm]{CTL_n.pdf}}
 %  \vspace{-15pt}
 %  \caption{{\scriptsize Reconstructed pathway location from gene expression data: Insight into the underlying (hidden) regulatory network 
 %  can be obtained when we look at the amount of expression showing the same switch. Depending on the amount of blue expressions 
 %  co-affected we can guestimate the location of the red expression inside the pathway}}
 %  \vspace{-20pt}
-%  \label{fig:qcl_n}
+%  \label{fig:CTL_n}
 %\end{figure}
 
 \begin{figure}[ht]
@@ -383,7 +383,7 @@ op <- par(cex=0.5)
 hist(ath.result,c(3,2,1))
 op <- par(cex=1)
 @ 
-  \caption{{\scriptsize QCL scores obtained during permutations (A. Thaliana) additional information obtained by QCL mapping, 
+  \caption{{\scriptsize CTL scores obtained during permutations (A. Thaliana) additional information obtained by CTL mapping, 
   which can be used to reconstruct the underlying genetic architecture. }}
   \label{fig:histPermAra}
 \end{figure}
@@ -395,7 +395,7 @@ op <- par(cex=0.5)
 plot(ath.result[[1]])
 op <- par(cex=1)
 @
-  \caption{{\scriptsize QCL profile (A. Thaliana, X3.Hydroxypropyl) transformed to LOD scores compared to the QTL profile of the same phenotype, We see an 
+  \caption{{\scriptsize CTL profile (A. Thaliana, X3.Hydroxypropyl) transformed to LOD scores compared to the QTL profile of the same phenotype, We see an 
   additional significant peek for this phenotype (Between Marker 50 to 60) }}
   \label{fig:singletrait}
 \end{figure}
@@ -404,11 +404,11 @@ op <- par(cex=1)
   \centering
 <<singletraitLOD, fig=TRUE, echo=FALSE, height=6.0>>=
 op <- par(cex=0.5)
-QCLasLOD(ath.result[[1]], ath.result[[1]]$qtl)
+CTLasLOD(ath.result[[1]], ath.result[[1]]$qtl)
 op <- par(cex=1)
 @ 
-  \caption{{\scriptsize QCL profile (A. Thaliana, X3.Hydroxypropyl) transformed to LOD scores. Shown is the likelyhood contribution of each of 
-  the 24 metabolites to the QCL profile.}}
+  \caption{{\scriptsize CTL profile (A. Thaliana, X3.Hydroxypropyl) transformed to LOD scores. Shown is the likelyhood contribution of each of 
+  the 24 metabolites to the CTL profile.}}
   \label{fig:singletraitLOD}
 \end{figure}
 
@@ -438,7 +438,7 @@ QTLimage(ath.result, do.grid=TRUE, grid.col="white")
 par(mar=c(3,8,1.1,1.1))
 plot(ath.result, against="phenotypes", do.grid=TRUE, grid.col="white")
 @ 
-  \caption{{\scriptsize Phenotypes x Phenotypes matrix (A. Thaliana) additional information obtained by QCL mapping, 
+  \caption{{\scriptsize Phenotypes x Phenotypes matrix (A. Thaliana) additional information obtained by CTL mapping, 
   which can be used to reconstruct the underlying genetic architecture}}
   \label{fig:p2pmatrix}
 \end{figure}

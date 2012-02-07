@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Danny Arends
-% The qcl mapping routine
+% The ctl mapping routine
 %\VignetteIndexEntry{Manual}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -46,7 +46,7 @@ set.seed(61777369)
 
 \begin{center}
 \vspace*{1in}
-\textbf{\Large QCL mapping in R }
+\textbf{\Large CTL mapping in R }
  
 \bigskip \bigskip 
 \bigskip \bigskip 
@@ -65,7 +65,7 @@ XX Okt 2011}
 \bigskip \bigskip
 
 \textbf{\sffamily Abstract}: Introduction into quanitative correlation 
-locus (QCL) mapping using the R package qcl
+locus (CTL) mapping using the R package CTL
 \vfill
 
 \noindent \emph{email}: \verb|Danny.Arends@Gmail.com|
@@ -83,33 +83,33 @@ Loading your data
 
 \bigskip
 
-\textbf{\sffamily QCLscan and QCLscan.network}
+\textbf{\sffamily CTLscan and CTLscan.network}
 \nopagebreak
 
-Explains how to map QCL using the QCLscan and QCLscan.network functions.
+Explains how to map CTL using the CTLscan and CTLscan.network functions.
 
 \bigskip
-\textbf{\sffamily Significance using QCLpermute}
+\textbf{\sffamily Significance using CTLpermute}
 \nopagebreak
 
-Explains how to determine QCL significance using the QCLpermute function.
+Explains how to determine CTL significance using the CTLpermute function.
 
 \bigskip
-\textbf{\sffamily Advanced plots and QCL networks}
+\textbf{\sffamily Advanced plots and CTL networks}
 \nopagebreak
 
 Some more advanced topics
 
 \newpage
 {\small
-\noindent \textbf{\sffamily Package qcl function overview} \\
+\noindent \textbf{\sffamily Package CTL function overview} \\
 \noindent \begin{tabular}{ll} 
 \hspace*{25mm} & \hspace*{103mm} \\ \hline
-QCLscan & Genome wide scan for QCL \\
-QCLscan.network & Scan for QCL using start gene(s) \\
-QCLpermute & Significance thresholds for QCL by permutation \\
-plot.QCL & Plot QCL profiles at increasing cut-offs \\
-image.QCL & Image a multiple phenotype scan \\
+CTLscan & Genome wide scan for CTL \\
+CTLscan.network & Scan for CTL using start gene(s) \\
+CTLpermute & Significance thresholds for CTL by permutation \\
+plot & Plot CTL profiles at increasing cut-offs \\
+image & Image a multiple phenotype scan \\
 \hline
 \end{tabular}
 }
