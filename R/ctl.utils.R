@@ -1,8 +1,8 @@
 #
-# qcl.utils.R
+# ctl.utils.R
 #
 # copyright (c) 2010 Danny Arends and Ritsert C. Jansen
-# last modified Jan, 2012
+# last modified Feb, 2012
 # first written nov, 2010
 # 
 # check.genotypes, getRVM, lodscorestoscanone, getCorrelatedPhenotypes, gcLoop
@@ -34,7 +34,7 @@ getRVM <- function(n.perms, n.rows){
 
 #Change any list of lodscores into a scanone object (only pre-req: length(lodscores)==sum(nmar(cross))
 lodscorestoscanone <- function(cross,lodscores,traitnames = NULL){
-  if(get(".has_rqtl", envir = .QclEnv)){
+  if(has_rqtl()){
     require(qtl)
     mymap <- qtl::pull.map(cross)
     n <- unlist(lapply(FUN=names,mymap))
@@ -82,4 +82,4 @@ gcLoop <- function(verbose = FALSE){
   }
 }
 
-# end of qcl.utils.R
+# end of ctl.utils.R

@@ -1,4 +1,4 @@
-library(qcl)
+library(ctl)
 
 if(has_rqtl()){
   require(qtl)
@@ -6,11 +6,11 @@ if(has_rqtl()){
   cross <- read.cross("csvr",file="brem_cross.csvr",geno=c("AA","AB"))
   cross <- convert2riself(cross)
 
-  QCL <- QCLscan.cross(cross,1, verbose=T)
-  image(QCL)
-  plot(QCL)
+  CTL <- CTLscan.cross(cross,1, verbose=T)
+  image(CTL)
+  plot(CTL)
 
-  nodes <- QCLnetwork(QCL,0.55)
+  nodes <- CTLnetwork(CTL,0.55)
 
   write.nodeAttributeFile(nodes,probeannot)
   genes <- nodesToGenes(nodes,probeannot)

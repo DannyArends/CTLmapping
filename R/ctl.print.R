@@ -1,30 +1,30 @@
 #
-# qcl.print.R
+# ctl.print.R
 #
 # copyright (c) 2010-2011 Danny Arends and Ritsert C. Jansen
 # last modified Jan, 2012
 # first written Oct, 2011
 # 
-# Print routines for QCL analysis
+# Print routines for CTL analysis
 #
 
-print.QCLscan <- function(x, ...){
-  cat("QCLscan summary",attr(x$qcl,"name"),"\n\n")
-  cat("- Number of background phenotypes",dim(x$qcl)[1],"\n")
-  cat("- Number of markers",dim(x$qcl)[2],"\n")
-  cat("- Number of permutations",length(unlist(x$p))/dim(x$qcl)[2],"\n")
+print.CTLscan <- function(x, ...){
+  cat("CTLscan summary",attr(x$ctl,"name"),"\n\n")
+  cat("- Number of background phenotypes",dim(x$ctl)[1],"\n")
+  cat("- Number of markers",dim(x$ctl)[2],"\n")
+  cat("- Number of permutations",length(unlist(x$p))/dim(x$ctl)[2],"\n")
   getPermuteThresholds(x,..., verbose = TRUE)
 }
 
 getPermuteThresholds <-function(x, significance = c(.05,.01,.001), ..., verbose = FALSE){
-  if(any(class(x)=="QCLscan")){
-    n <- dim(x$qcl)[2]
+  if(any(class(x)=="CTLscan")){
+    n <- dim(x$ctl)[2]
     x <- x$p
-    if(!any(class(x)=="QCLpermute")) stop("No permutations found in the QCLscan object")
+    if(!any(class(x)=="CTLpermute")) stop("No permutations found in the CTLscan object")
   }else{
     n <- 1
-    if(!any(class(x)=="QCLpermute")){
-      stop("No QCLscan object")
+    if(!any(class(x)=="CTLpermute")){
+      stop("No CTLscan object")
     }
   }
   sorted <- sort(unlist(x))
@@ -47,8 +47,8 @@ getPermuteThresholds <-function(x, significance = c(.05,.01,.001), ..., verbose 
   values
 }
 
-print.QCLpermute <- function(x, ...){
+print.CTLpermute <- function(x, ...){
   getPermuteThresholds(x, ..., verbose=TRUE)
 }
 
-# end of qcl.print.R
+# end of ctl.print.R

@@ -1,50 +1,50 @@
 #
-# qcl.statistics.R
+# ctl.statistics.R
 #
 # copyright (c) 2010 Danny Arends, Bruno Tesson and Ritsert C. Jansen
 # last modified Jan, 2012
 # first written Nov, 2011
 # 
-# R functions to do transform QCL mapping scores to Pvalues and LOD
+# R functions to do transform CTL mapping scores to Pvalues and LOD
 # Example data C. Elegans and available at request ( Danny.Arends@gmail.com )
 #
 
-QCLtoP <- function(QCLscan, onlySignificant = TRUE, verbose = TRUE){
-  if(missing(QCLscan)) stop("argument 'QCLscan' is missing, with no default")
-  permvalues <- sort(unlist(QCLscan$p))
+CTLtoP <- function(CTLscan, onlySignificant = TRUE, verbose = TRUE){
+  if(missing(CTLscan)) stop("argument 'CTLscan' is missing, with no default")
+  permvalues <- sort(unlist(CTLscan$p))
   l <- length(permvalues)
   if(onlySignificant){
-    mysignificant <- as.numeric(which(apply(abs(QCLscan$qcl),1,max) > getPermuteThresholds(QCLscan$p)[1]))
+    mysignificant <- as.numeric(which(apply(abs(CTLscan$ctl),1,max) > getPermuteThresholds(CTLscan$p)[1]))
     if(length(mysignificant) > 1){
-      scaled <- abs(QCLscan$qcl[mysignificant, ])
-      rnames <- rownames(QCLscan$qcl)[mysignificant]
+      scaled <- abs(CTLscan$ctl[mysignificant, ])
+      rnames <- rownames(CTLscan$ctl)[mysignificant]
     }else{
-      scaled <- abs(QCLscan$qcl)
-      rnames <- rownames(QCLscan$qcl)
+      scaled <- abs(CTLscan$ctl)
+      rnames <- rownames(CTLscan$ctl)
     }
   }else{
-    scaled <- abs(QCLscan$qcl)
-    rnames <- rownames(QCLscan$qcl)
+    scaled <- abs(CTLscan$ctl)
+    rnames <- rownames(CTLscan$ctl)
   }
-  result <- apply(scaled, 2, function(x){QCLtoPvalue.internal(x, permvalues, l)})
+  result <- apply(scaled, 2, function(x){CTLtoPvalue.internal(x, permvalues, l)})
   rownames(result) <- rnames
   result
 }
 
-QCLscoretoPvalue <- function(QCLscore, QCLpermute){
-  if(missing(QCLscore)) stop("argument 'QCLscore' is missing, with no default")
-  if(missing(QCLpermute)) stop("argument 'QCLpermute' is missing, with no default")
-  permvalues <- sort(unlist(QCLpermute))
+CTLscoretoPvalue <- function(CTLscore, CTLpermute){
+  if(missing(CTLscore)) stop("argument 'CTLscore' is missing, with no default")
+  if(missing(CTLpermute)) stop("argument 'CTLpermute' is missing, with no default")
+  permvalues <- sort(unlist(CTLpermute))
   l <- length(permvalues)
-  QCLtoPvalue.internal(QCLscore, permvalues, l)
+  CTLtoPvalue.internal(CTLscore, permvalues, l)
 }
 
 #Determine a P-value based on the relative position of the score within the permutations
 #Out of range values are tested using a GPD to estimate a P-value
-QCLtoPvalue.internal <- function(QCLscore, permvalues, l){
+CTLtoPvalue.internal <- function(CTLscore, permvalues, l){
   res <- NULL
   warn <- TRUE
-  for(y in QCLscore){
+  for(y in CTLscore){
     if(!is.na(which(permvalues > y)&&1)){
       index_l <- min(which(permvalues > y))
     }else{
@@ -104,31 +104,31 @@ extrapolateBeyondRange <- function(permvalues, value = 0.6){
   as.numeric(dens(value))
 }
 
-toLod <- function(QCLscan, onlySignificant = TRUE, verbose = FALSE){
+toLod <- function(CTLscan, onlySignificant = TRUE, verbose = FALSE){
   ss <- proc.time()
-  pmatrix <- QCLtoP(QCLscan, onlySignificant, verbose)
+  pmatrix <- CTLtoP(CTLscan, onlySignificant, verbose)
   ee <- proc.time()
   if(verbose) cat("  - toLOD took",as.numeric(ee[3]-ss[3]),"seconds\n")
   -log10(pmatrix)
 }
 
-QCLtoLODvector <- function(QCLscan, against = c("markers","phenotypes")){
-  if(!is.null(QCLscan$l)){
-    if(against[1]=="markers")return(apply(QCLscan$l,2,sum))
-    if(against[1]=="phenotypes")return(apply(QCLscan$l,1,max))
+CTLtoLODvector <- function(CTLscan, against = c("markers","phenotypes")){
+  if(!is.null(CTLscan$l)){
+    if(against[1]=="markers")return(apply(CTLscan$l,2,sum))
+    if(against[1]=="phenotypes")return(apply(CTLscan$l,1,max))
   }else{
-    if(against[1]=="markers")return(apply(abs(QCLscan$qcl),2,sum))
-    if(against[1]=="phenotypes")return(apply(abs(QCLscan$qcl),1,max))  
+    if(against[1]=="markers")return(apply(abs(CTLscan$ctl),2,sum))
+    if(against[1]=="phenotypes")return(apply(abs(CTLscan$ctl),1,max))  
   }
 }
 
-QCLscantoScanone <- function(cross, QCLscan){
+CTLscantoScanone <- function(cross, CTLscan){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
-  if(missing(QCLscan)) stop("argument 'QCLscan' is missing, with no default")
+  if(missing(CTLscan)) stop("argument 'CTLscan' is missing, with no default")
   
-  scores <- QCLtoLODvector(QCLscan)
+  scores <- CTLtoLODvector(CTLscan)
   scores[which(!is.finite(scores))] <- NA
   lodscorestoscanone(cross, scores)
 }
 
-# end of qcl.statistics.R
+# end of ctl.statistics.R
