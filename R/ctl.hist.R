@@ -18,7 +18,7 @@ hist.CTLobject <- function(x, pheno.col=1, ...){
     hist(sorted, breaks=seq(0,1.0,0.01), add=TRUE, col=pheno, ...)
     namez <- c(namez,attr(x[[pheno]]$ctl,"name"))
   }
-  legend("topright", namez, col=pheno.col,lwd=6)
+  legend("topright", legend=namez, col=pheno.col,lwd=6)
 }
 
 # end of ctl.hist.R
