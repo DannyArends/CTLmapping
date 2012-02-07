@@ -35,8 +35,8 @@ double[][] permutation(double[][] phenotypes, int[][] genotypes, uint phenotype 
   double[][] permutationmatrix;
   if(verbose) write(" ");
   for(uint p=0; p<permutations; p++){
-    double[][] pqclm = mapping(phenotypes, permute!int(genotypes), phenotype, false);
-    permutationmatrix ~= doMatrixMax!double(pqclm);
+    double[][] perm_m = mapping(phenotypes, permute!int(genotypes), phenotype, false);
+    permutationmatrix ~= doMatrixMax!double(perm_m);
     if(p % 3 == 0 && verbose){write("."); stdout.flush();}
   }
   if(verbose) writeln("\n - Permutations: ",(Clock.currTime()-stime).total!"seconds"(),"secs");

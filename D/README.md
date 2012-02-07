@@ -9,8 +9,8 @@ Prepare your environment by following these steps:
 - Clone the repository
 
 ```
-    git clone https://DannyArends@github.com/DannyArends/QCLmapping.git
-    cd QCL/D
+    git clone https://DannyArends@github.com/DannyArends/CTLmapping.git
+    cd CTLmapping/D
     compile
 ```
 

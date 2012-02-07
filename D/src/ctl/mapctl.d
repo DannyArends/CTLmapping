@@ -21,7 +21,7 @@ import ctl.io.csv.write;
 void printHelp(){
   writeln("Documentation: http://www.dannyarends.nl/CTL/index.html");
   writeln("Usage:");
-  writeln("mapQCL [permutations]\n");
+  writeln("mapCTL [permutations]\n");
   writeln(" [permutations] Number of permutations");
 }
 
@@ -42,5 +42,5 @@ void main(string[] args){
     double[][] lod   = tolod(score, perms);
     writeFile(translate(lod),  "test/output/lodscores"~to!string(p)~".txt");
   }
-  writeln("\nmapQCL finished analysis took: ",(Clock.currTime()-stime).total!"seconds"()," seconds");
+  writeln("\nmapCTL finished analysis took: ",(Clock.currTime()-stime).total!"seconds"()," seconds");
 }
