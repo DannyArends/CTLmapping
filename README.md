@@ -58,7 +58,7 @@ Load the library in the R interface by the following command (in R):
 ```
 
 Examples
-========
+--------
 Scan your data
 
 ```R
@@ -96,7 +96,7 @@ Reconstruct the network and write two sif files. One sif file contains the full 
 holds the edge summary network.
 
 ```R
-    $ > CTLnetwork(ctl_result)
+    CTLnetwork(ctl_result)
 ```
 
 We can use Cytoscape to visualize the created network (available from [www.cytoscape.org](http://www.cytoscape.org// "www.cytoscape.org") )
