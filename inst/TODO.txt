@@ -1,7 +1,7 @@
-"To do" list for QCL
+"To do" list for CTL
 ----------------------------------------------------------------------
 This file is intended to contain a list of many of the additions and
-revisions that are planned for the QCL package.  
+revisions that are planned for the CTL package.  
 
 If you any additions or revisions to suggest, please send an email to
 Danny Arends, <Danny.Arends@Gmail.com>.
@@ -9,16 +9,16 @@ Danny Arends, <Danny.Arends@Gmail.com>.
  
 SHORT TERM:
  - Additional plots
- - QCL result analysis
+ - CTL result analysis
    - getPhenotypeCluster
    - getAssociatedPhenotypes
- - Combine QCL and QTL information
+ - Combine CTL and QTL information
  - Add additional network
  - Batch and QTL correction
 
 MEDIUM TERM:
- - Write manual on QCL
- - Write QCL article
+ - Write manual on CTL
+ - Write CTL article
  - Publish the article
  - Integrate snow code
  - Add initial environment code
@@ -27,6 +27,6 @@ MEDIUM TERM:
  - Get it on CRAN
 
 LONG TERM:
- - Multi conditional QCL mapping
+ - Multi conditional CTL mapping
  - Add D as correlation engine
- - Javascript QCL network engine
+ - Javascript CTL network engine
