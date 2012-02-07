@@ -1,17 +1,18 @@
-\name{QCLscan}
-\alias{QCLscan}
-\title{QCLscan - Scan for quantitative correlation loci }
+\name{CTLpermute}
+\alias{CTLpermute}
+\alias{permuteCTL}
+\title{CTLpermute - Permutation routine for CTL mapping }
 \description{
-  Scan for Quantitative Correlation Loci (QCL) in inbred populations
+  Permutation routine for CTL mapping
 }
 \usage{
-QCLscan(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), method = c("pearson", "kendall", "spearman"), n.perm=0, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles = FALSE, verbose = FALSE)
+CTLpermute(genotypes, phenotypes, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=10, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles = FALSE, verbose=FALSE, \dots)
 }
 
 \arguments{
   \item{genotypes}{ Matrix of genotypes (individuals x markers) }
   \item{phenotypes}{ Matrix of phenotypes (individuals x phenotypes) }
-  \item{pheno.col}{ Which phenotype column(s) should we analyse. Defaults to analyse all phenotype columns }
+  \item{pheno.col}{ Which phenotype column should we use in permutation analysis }
   \item{method}{ Character string indicating which correlation coefficient is to be computed. One of "pearson" (default), "kendall", or "spearman". }
   \item{n.perm}{ Number of permutations }
   \item{n.cores}{ Number of CPU cores to use during the analysis }
@@ -19,15 +20,17 @@ QCLscan(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), method = c("pears
   \item{directory}{ Directory in which to save the output }
   \item{saveFiles}{ Save the permjutation matrices to HDD }
   \item{verbose}{ Be verbose }
+  \item{\dots}{ Passed to the underlying \code{\link{CTLscan}} function }
 }
 \details{
-TODO
+Permutation is one of the fundamental approach to determine probability when nothing is known about the underlying NULL-ditribution
 \itemize{
   \item NOTE: Main bottleneck of the algorithm is the RAM available to the system
 }
 }
 \value{
-QCL object, a list with at each index a $qclscan, $permutations, $lodmatrix
+CTLpermute object, a list holding CTLscan objects ontained at each permutation. To view significance thresholds use 
+the \code{\link{print.CTLpermute}} function.
 }
 \references{ 
   TODO
@@ -40,13 +43,10 @@ QCL object, a list with at each index a $qclscan, $permutations, $lodmatrix
   TODO
 }
 \examples{
-  library(qcl)
+  library(ctl)
   data(ath.metabolites) # Arabidopsis Thaliana dataset
-  qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes, 1:3, n.perm=20)
-  qcl_result
-  plot(qcl_result)   #Plot a phenotype
-  image(qcl_result, against="markers")     #pxm matrix
-  image(qcl_result, against="phenotypes")  #pxp matrix
+  ctl_perms <- CTLpermute(ath.metab$genotypes, ath.metab$phenotypes,1)
+  ctl_perms
 }
 
 \keyword{methods}

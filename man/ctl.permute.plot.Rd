@@ -1,18 +1,18 @@
-\name{plot.QCLpermute}
-\alias{plot.QCLpermute}
+\name{plot.CTLpermute}
+\alias{plot.CTLpermute}
 
 \title{Differential correlation versus Likelihood curves}
 
 \description{
-  Differential correlation versus Likelihood curves (the output of \code{\link{QCLpermute}}).
+  Differential correlation versus Likelihood curves (the output of \code{\link{CTLpermute}}).
 }
 
 \usage{
-\method{plot}{QCLpermute}(x, type="s", \dots)
+\method{plot}{CTLpermute}(x, type="s", \dots)
 }
 
 \arguments{
-  \item{x}{ An object of class \code{"QCLpermute"}, as output by \code{\link{QCLpermute}}. }
+  \item{x}{ An object of class \code{"CTLpermute"}, as output by \code{\link{CTLpermute}}. }
   \item{type}{ What type of plot should be drawn. for possible options see \code{\link[graphics]{plot}}. }
   \item{\dots}{ Passed to the function \code{\link[graphics]{plot}} when it is called. }
 }
@@ -25,15 +25,15 @@
 }
 
 \examples{
-  library(qcl)
+  library(ctl)
   data(ath.result) # Arabidopsis Thaliana dataset
   plot(ath.result[[1]]$p)
 }
 
 \seealso{
   \itemize{
-    \item \code{\link{QCLscan}} - Scan for QCL
-    \item \code{\link{print.QCLscan}} - Print a summary of a QCLscan
+    \item \code{\link{CTLscan}} - Scan for CTL
+    \item \code{\link{print.CTLscan}} - Print a summary of a CTLscan
     \item \code{\link[graphics]{par}} - Plot parameters
     \item \code{\link[grDevices]{colors}} - Colors used in plotting
   }

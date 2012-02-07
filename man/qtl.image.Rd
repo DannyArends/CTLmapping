@@ -4,7 +4,7 @@
 \title{Plot QTL curves}
 
 \description{
-  Plots the QTL heatmap of a genome wide QTL scan (part of the output of \code{\link{QCLscan}}).
+  Plots the QTL heatmap of a genome wide QTL scan (part of the output of \code{\link{CTLscan}}).
 }
 
 \usage{
@@ -12,7 +12,7 @@ QTLimage(x, onlySignificant = FALSE, significance = 0.05, do.grid=TRUE, grid.col
 }
 
 \arguments{
-  \item{x}{ An object of class \code{"QCLobject"}, as output by \code{\link{QCLscan}}. }
+  \item{x}{ An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
   \item{onlySignificant}{ Add only the significant QTL profiles to the image. }
   \item{significance}{ Minimum significance level for QTL profiles to be added. }
   \item{do.grid}{ Adds a grid to the plot. }
@@ -29,16 +29,16 @@ QTLimage(x, onlySignificant = FALSE, significance = 0.05, do.grid=TRUE, grid.col
 }
 
 \examples{
-  library(qcl)
+  library(ctl)
   data(ath.metabolites) # Arabidopsis Thaliana dataset
-  qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes)
-  QTLimage(qcl_result)
+  ctl_result <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes)
+  QTLimage(ctl_result)
 }
 
 \seealso{
   \itemize{
-    \item \code{\link{QCLscan}} - Scan for QCL
-    \item \code{\link{print.QCLscan}} - Print a summary of a QCLscan
+    \item \code{\link{CTLscan}} - Scan for CTL
+    \item \code{\link{print.CTLscan}} - Print a summary of a CTLscan
     \item \code{\link[graphics]{par}} - Plot parameters
     \item \code{\link[grDevices]{colors}} - Colors used in plotting
   }

@@ -1,13 +1,13 @@
-\name{qcl-package}
-\alias{qcl}
-\alias{QCL}
+\name{ctl-package}
+\alias{ctl}
+\alias{CTL}
 \docType{package}
 \title{
-  QCL - QCL mapping in experimental crosses
+  CTL - CTL mapping in experimental crosses
 }
 \description{
   Analysis of experimental crosses to identify genetic markers 
-  associated with correlation changes in quantitative trait (QCL)
+  associated with correlation changes in quantitative trait (CTL)
   The additional correlation information obtained can be combined 
   with QTL information to perform de novo reconstruction of 
   interaction networks.
@@ -18,12 +18,12 @@
   The R package is a basic iomplementation and it includes the 
   following core functionality:
   \itemize{
-    \item \code{\link{QCLscan}} - Scan for QCL
-    \item \code{\link{QCLpermute}} - Permutation routine for QCL mapping
-    \item \code{\link{QCLnetwork}} - Create a QCL network from a \code{\link{QCLscan}}
-    \item \code{\link{QCLprofiles}} - Extract QCL interaction profiles 
-    \item \code{\link{image.QCLobject}} - Heatmap overview of a QCLscan
-    \item \code{\link{plot.QCLscan}} - Plot the QCL curve for a single trait
+    \item \code{\link{CTLscan}} - Scan for CTL
+    \item \code{\link{CTLpermute}} - Permutation routine for CTL mapping
+    \item \code{\link{CTLnetwork}} - Create a CTL network from a \code{\link{CTLscan}}
+    \item \code{\link{CTLprofiles}} - Extract CTL interaction profiles 
+    \item \code{\link{image.CTLobject}} - Heatmap overview of a CTLscan
+    \item \code{\link{plot.CTLscan}} - Plot the CTL curve for a single trait
   }
   
   Also provide are demos
@@ -32,8 +32,8 @@
   More detailed information and/or examples are given per function as needed.
   Some additional functionality:
   \itemize{
-    \item \code{\link{QCLscan.cross}} - Use an R/qtl cross object with \code{\link{QCLscan}}
-    \item \code{\link{QCLpermute.cross}} - Use an R/qtl cross object with \code{\link{QCLpermute}}
+    \item \code{\link{CTLscan.cross}} - Use an R/qtl cross object with \code{\link{CTLscan}}
+    \item \code{\link{CTLpermute.cross}} - Use an R/qtl cross object with \code{\link{CTLpermute}}
   }
 }
 \author{ 
@@ -50,7 +50,7 @@
 
 \seealso{
   \itemize{
-    \item \code{\link{QCLscan}} - Scan for QCL
-    \item \code{\link{QCLpermute}} - Permutation routine for QCL mapping
+    \item \code{\link{CTLscan}} - Scan for CTL
+    \item \code{\link{CTLpermute}} - Permutation routine for CTL mapping
   }
 }

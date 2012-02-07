@@ -1,11 +1,11 @@
-\name{QCLmapping}
-\alias{QCLmapping}
-\title{QCLmapping - Scan for quantitative correlation loci }
+\name{CTLmapping}
+\alias{CTLmapping}
+\title{CTLmapping - Scan for correlated trait loci (CTL) }
 \description{
-  Scan for quantitative correlation loci
+  Scan for correlated trait loci (CTL)
 }
 \usage{
-QCLmapping(genotypes, phenotypes, pheno.col = 1, method = c("pearson", "kendall", "spearman"), genotype.values=c(1,2), verbose = FALSE)
+CTLmapping(genotypes, phenotypes, pheno.col = 1, method = c("pearson", "kendall", "spearman"), genotype.values=c(1,2), verbose = FALSE)
 }
 
 \arguments{
@@ -23,7 +23,7 @@ TODO
 }
 }
 \value{
-QCLscan object, a list with at each index a QCL matrix (Rows: Phenotypes, 
+CTLscan object, a list with at each index a CTL matrix (Rows: Phenotypes, 
 Columns: Genetic markers) for the phenotype.
 }
 \references{ 
@@ -37,11 +37,11 @@ Columns: Genetic markers) for the phenotype.
   TODO
 }
 \examples{
-  library(qcl)
+  library(ctl)
   data(ath.metabolites) # Arabidopsis Thaliana dataset
-  qcl_result <- QCLmapping(ath.metab$genotypes, ath.metab$phenotypes)
-  qcl_result
-  plot(qcl_result)   #Plot a phenotype
+  ctl_result <- CTLmapping(ath.metab$genotypes, ath.metab$phenotypes)
+  ctl_result
+  plot(ctl_result)   #Plot a phenotype
 }
 
 \keyword{methods}

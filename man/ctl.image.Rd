@@ -1,21 +1,21 @@
-\name{image.QCLobject}
-\alias{image.QCLobject}
+\name{image.CTLobject}
+\alias{image.CTLobject}
 
-\title{Plot genome-wide QCL on multiple traits}
+\title{Plot genome-wide CTL on multiple traits}
 
 \description{
-  Plot the QCLs for genome-wide QCL on multiple traits (the output of \code{\link{QCLscan}}).
+  Plot the CTL for genome-wide CTL on multiple traits (the output of \code{\link{CTLscan}}).
 }
 
 \usage{
-\method{image}{QCLobject}(x, against = c("markers","phenotypes"), onlySignificant = FALSE, significance = 0.05, do.grid=TRUE, grid.col = "black", verbose = FALSE, \dots)
+\method{image}{CTLobject}(x, against = c("markers","phenotypes"), onlySignificant = FALSE, significance = 0.05, do.grid=TRUE, grid.col = "black", verbose = FALSE, \dots)
 }
 
 \arguments{
-  \item{x}{ An object of class \code{"QCLscan"}, as output by \code{\link{QCLscan}}. }
+  \item{x}{ An object of class \code{"CTLscan"}, as output by \code{\link{CTLscan}}. }
   \item{against}{ Which interaction matrice to image, the phenotype*marker or the phenotype*phenotypes, 
-  this parameter is passed to the \code{\link{QCLprofiles}} function. }
-  \item{onlySignificant}{ Plot only the significant contributions to the QCL profile. }
+  this parameter is passed to the \code{\link{CTLprofiles}} function. }
+  \item{onlySignificant}{ Plot only the significant contributions to the CTL profile. }
   \item{significance}{ Significance threshold for setting a genomewide FDR. }
   \item{do.grid}{ Draw grid lines. }
   \item{grid.col}{ Colors used to draw the grid. }
@@ -28,11 +28,11 @@
 }
 
 \value{
-  For a detailed description, see \code{\link{QCLprofiles}}
+  For a detailed description, see \code{\link{CTLprofiles}}
 }
 
 \examples{
-  library(qcl)
+  library(ctl)
   data(ath.result)       # Arabidopsis Thaliana dataset
   #Phenotype to phenotype matrix
   p2p_matrix <- image(ath.result, against="phenotypes")
@@ -42,9 +42,9 @@
 
 \seealso{
   \itemize{
-    \item \code{\link{QCLscan}} - Scan for QCL
-    \item \code{\link{QCLprofiles}} - Extract QCL interaction profiles
-    \item \code{\link{print.QCLscan}} - Print a summary of a QCLscan
+    \item \code{\link{CTLscan}} - Scan for CTL
+    \item \code{\link{CTLprofiles}} - Extract CTL interaction profiles
+    \item \code{\link{print.CTLscan}} - Print a summary of a CTLscan
     \item \code{\link[graphics]{par}} - Plot parameters
     \item \code{\link[grDevices]{colors}} - Colors used in plotting
   }

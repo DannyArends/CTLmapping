@@ -1,26 +1,26 @@
-\name{QCLprofiles}
-\alias{QCLprofiles}
-\title{QCLprofiles - Extract QCL interaction profiles }
+\name{CTLprofiles}
+\alias{CTLprofiles}
+\title{CTLprofiles - Extract CTL interaction profiles }
 
 \description{
-  Extract the QCL interaction profiles: phenotype x marker (p2m matrix) 
-  and phenotype x phenotype (p2p matrix) from a \code{\link{QCLscan}}.
+  Extract the CTL interaction profiles: phenotype x marker (p2m matrix) 
+  and phenotype x phenotype (p2p matrix) from a \code{\link{CTLscan}}.
 }
 
 \usage{
-  QCLprofiles(QCLobject, against = c("markers","phenotypes"), significance = 0.05, verbose=FALSE, warn=TRUE)
+  CTLprofiles(CTLobject, against = c("markers","phenotypes"), significance = 0.05, verbose=FALSE, warn=TRUE)
 }
 
 \arguments{
-  \item{QCLobject}{ An object of class \code{"QCLobject"}, as output by \code{\link{QCLscan}}. }
-  \item{against}{ Plot the QCL against either: markers or phenotypes. }
+  \item{CTLobject}{ An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
+  \item{against}{ Plot the CTL against either: markers or phenotypes. }
   \item{significance}{ Significance threshold for setting a genomewide FDR. }
   \item{verbose}{ Be verbose. }
   \item{warn}{ Warn when there are not enough permutations. }
 }
 
 \details{
-  QCL thresholds can be obtained using the \code{\link{QCLpermute}}  
+  CTL thresholds can be obtained using the \code{\link{CTLpermute}}  
   
   These matrices can be combined with QTL information to perform de novo 
   reconstruction of interaction networks.
@@ -47,11 +47,11 @@
   TODO
 }
 \examples{
-  library(qcl)
+  library(ctl)
   data(ath.metabolites) # Arabidopsis Thaliana dataset
-  qcl_result <- QCLscan(ath.metab$genotypes, ath.metab$phenotypes,1:3,n.perm=10)
-  p2m_matrix <- QCLprofiles(qcl_result, against="markers")
-  p2p_matrix <- QCLprofiles(qcl_result, against="phenotypes")
+  ctl_result <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes,1:3,n.perm=10)
+  p2m_matrix <- CTLprofiles(ctl_result, against="markers")
+  p2p_matrix <- CTLprofiles(ctl_result, against="phenotypes")
 }
 
 \keyword{methods}
