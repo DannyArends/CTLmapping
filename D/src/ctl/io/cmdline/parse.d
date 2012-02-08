@@ -27,9 +27,21 @@ struct CTLsettings{
   void load(){
     opt.booleans ~= S!bool("--help"         ,"Show the help file", false);
     opt.booleans ~= S!bool("--verbose"      ,"Verbose mode", true);
+    opt.booleans ~= S!bool("--overwrite"    ,"Overwrite previous output files", true);
     opt.integers ~= S!uint("--nperms"       ,"Number of permutations", 100);
     opt.strings  ~= S!string("--phenotypes" ,"File containing phenotypes", "test/data/phenotypes.csv");
-    opt.strings  ~= S!string("--genotypes"  ,"File containing genotypes", "test/data/genotypes.csv");  
+    opt.strings  ~= S!string("--genotypes"  ,"File containing genotypes", "test/data/genotypes.csv");
+    opt.strings  ~= S!string("--format"     ,"File format", "csv");
+  }
+  
+  bool displayHelp(){
+    if(getBool("--help")){
+      foreach(S!bool s; opt.booleans){ writeln("  " ~ s.name[0] ~ "[" ~ s.name[1..3] ~"]" ~ s.name[3..$] ~ " - " ~ s.description); }
+      foreach(S!uint s; opt.integers){ writeln("  " ~ s.name[0] ~ "[" ~ s.name[1..3] ~"]" ~ s.name[3..$] ~ " - " ~ s.description); }
+      foreach(S!string s; opt.strings){ writeln("  " ~ s.name[0] ~ "[" ~ s.name[1..3] ~"]" ~ s.name[3..$] ~ " - " ~ s.description); }
+      return true;
+    }
+    return false;
   }
   
   uint getInt(string name){

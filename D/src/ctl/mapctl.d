@@ -33,15 +33,17 @@ void main(string[] args){
   CTLsettings settings   = parseCmd(args);
   double[][]  phenotypes = parseFile!double(settings.getString("--phenotypes"));
   int[][]     genotypes  = parseFile!int(settings.getString("--genotypes"));
-  bool        verbose    = settings.getBool("--verbose");
-  if(verbose) writefln("%s geno- and %s phenotypes on (%s/%s) individuals\n", genotypes.length, phenotypes.length, genotypes[0].length, phenotypes[0].length);
-  assert(genotypes[0].length == phenotypes[0].length);
-  for(uint p=0; p < phenotypes.length; p++){
-    if(verbose) writeln("-Phenotype ",p);
-    double[][] score = mapping(phenotypes,  genotypes, p, verbose);
-    double[][] perms = permutation(phenotypes, genotypes, p, settings.getInt("--nperms"), verbose);
-    double[][] lod   = tolod(score, perms, verbose);
-    writeFile(translate(lod),  "test/output/lodscores"~to!string(p)~".txt");
+  if(!settings.displayHelp()){
+    bool        verbose    = settings.getBool("--verbose");
+    if(verbose) writefln("%s geno- and %s phenotypes on (%s/%s) individuals\n", genotypes.length, phenotypes.length, genotypes[0].length, phenotypes[0].length);
+    assert(genotypes[0].length == phenotypes[0].length);
+    for(uint p=0; p < phenotypes.length; p++){
+      if(verbose) writeln("-Phenotype ",p);
+      double[][] score = mapping(phenotypes,  genotypes, p, verbose);
+      double[][] perms = permutation(phenotypes, genotypes, p, settings.getInt("--nperms"), verbose);
+      double[][] lod   = tolod(score, perms, verbose);
+      writeFile(translate(lod),  "test/output/lodscores"~to!string(p)~".txt",settings.getBool("--overwrite"),verbose);
+    }
+    writeln("\nmapCTL finished analysis took: ",(Clock.currTime()-stime).total!"seconds"()," seconds");
   }
-  writeln("\nmapCTL finished analysis took: ",(Clock.currTime()-stime).total!"seconds"()," seconds");
 }
