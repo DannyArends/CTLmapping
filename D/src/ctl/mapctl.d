@@ -30,18 +30,17 @@ void main(string[] args){
   SysTime stime = Clock.currTime();
   writeln("mapCTL: Correlated Trait Locus (CTL) mapping in D");
   writeln("(c) 2012 written by Danny Arends in the D programming language");
-  CTLsettings settings = parseCmd(args);
-  int nperms = 100;
-  if(args.length > 1) nperms = to!int(args[1]);
-  double[][] phenotypes = parseFile!double("test/data/phenotypes.csv");
-  int[][] genotypes = parseFile!int("test/data/genotypes.csv");
-  writefln("%s geno- and %s phenotypes on (%s/%s) individuals\n", genotypes.length, phenotypes.length, genotypes[0].length, phenotypes[0].length);
+  CTLsettings settings   = parseCmd(args);
+  double[][]  phenotypes = parseFile!double(settings.getString("--phenotypes"));
+  int[][]     genotypes  = parseFile!int(settings.getString("--genotypes"));
+  bool        verbose    = settings.getBool("--verbose");
+  if(verbose) writefln("%s geno- and %s phenotypes on (%s/%s) individuals\n", genotypes.length, phenotypes.length, genotypes[0].length, phenotypes[0].length);
   assert(genotypes[0].length == phenotypes[0].length);
   for(uint p=0; p < phenotypes.length; p++){
-    writeln("-Phenotype ",p);
-    double[][] score = mapping(phenotypes,  genotypes, p);
-    double[][] perms = permutation(phenotypes, genotypes, p, nperms);
-    double[][] lod   = tolod(score, perms);
+    if(verbose) writeln("-Phenotype ",p);
+    double[][] score = mapping(phenotypes,  genotypes, p, verbose);
+    double[][] perms = permutation(phenotypes, genotypes, p, settings.getInt("--nperms"), verbose);
+    double[][] lod   = tolod(score, perms, verbose);
     writeFile(translate(lod),  "test/output/lodscores"~to!string(p)~".txt");
   }
   writeln("\nmapCTL finished analysis took: ",(Clock.currTime()-stime).total!"seconds"()," seconds");
