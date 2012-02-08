@@ -27,7 +27,7 @@ struct CTLsettings{
   void load(){
     opt.booleans ~= S!bool("--help"         ,"Show the help file", false);
     opt.booleans ~= S!bool("--verbose"      ,"Verbose mode", true);
-    opt.booleans ~= S!bool("--overwrite"    ,"Overwrite previous output files", true);
+    opt.booleans ~= S!bool("--overwrite"    ,"Overwrite previous output files", false);
     opt.integers ~= S!uint("--nperms"       ,"Number of permutations", 100);
     opt.strings  ~= S!string("--phenotypes" ,"File containing phenotypes", "test/data/phenotypes.csv");
     opt.strings  ~= S!string("--genotypes"  ,"File containing genotypes", "test/data/genotypes.csv");
