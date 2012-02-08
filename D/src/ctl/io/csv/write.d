@@ -20,7 +20,7 @@ void writeFile(T)(T[][] m, string filename, bool overwrite = false, bool verbose
       writefln(" - Overwriting file %s",filename);
       remove(filename);
     }else{
-      writefln(" - File already exists %s",filename);
+      writefln(" - WARNING: File already exists %s, results not saved",filename);
       return;
     }
   }
