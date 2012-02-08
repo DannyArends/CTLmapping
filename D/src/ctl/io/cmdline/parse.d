@@ -25,13 +25,43 @@ struct Scontainer{
 
 struct CTLsettings{
   void load(){
-    settings.booleans ~= S!bool("--help","Shows the help file", false);
-    settings.booleans ~= S!bool("--verbose","Verbose mode", true);
-    settings.integers ~= S!uint("--nperms","Number of permutations", 100);
-    settings.strings  ~= S!string("--pheno","Input filename", "phenotypes.csv");
-    settings.strings  ~= S!string("--geno","Input filename", "genotypes.csv");  
+    opt.booleans ~= S!bool("--help"         ,"Show the help file", false);
+    opt.booleans ~= S!bool("--verbose"      ,"Verbose mode", true);
+    opt.integers ~= S!uint("--nperms"       ,"Number of permutations", 100);
+    opt.strings  ~= S!string("--phenotypes" ,"File containing phenotypes", "test/data/phenotypes.csv");
+    opt.strings  ~= S!string("--genotypes"  ,"File containing genotypes", "test/data/genotypes.csv");  
   }
-  Scontainer settings;
+  
+  uint getInt(string name){
+    foreach(int cnt, S!uint s; opt.integers){
+      if(name==s.name){
+        return s.value;
+      }
+    }
+    writeln(" - ERROR: Unknown parameter requested: ",name);
+    return -1;
+  }
+  
+  bool getBool(string name){
+    foreach(int cnt, S!bool s; opt.booleans){
+      if(name==s.name){
+        return s.value;
+      }
+    }
+    writeln(" - ERROR: Unknown parameter requested: ",name);
+    return false;
+  }
+  
+  string getString(string name){
+    foreach(int cnt, S!string s; opt.strings){
+      if(name==s.name){
+        return s.value;
+      }
+    }
+    writeln(" - ERROR: Unknown parameter requested: ",name);
+    return "";
+  }
+  Scontainer opt;
 }
 
 CTLsettings parseCmd(string[] args){
@@ -40,25 +70,36 @@ CTLsettings parseCmd(string[] args){
   if(args.length > 1){
     foreach(string arg; args[1..$]){
       bool known = false;
-      if(arg.indexOf("=") > 1){
-        foreach(int cnt, S!string s; settings.settings.strings){
-          if(arg[1]==s.name[2]){
-            known = true;
-            writeln(s.description);
+      int isloc = arg.indexOf("=");
+      if(isloc > 1){
+        if(arg.length >= 4){  // -p=a -g=t.txt <- minimum of 4
+          foreach(int cnt, S!string s; settings.opt.strings){
+            if(arg[1]==s.name[2]){
+              try{
+              settings.opt.strings[cnt].value = arg[(isloc+1)..$];
+              known = true;
+              writeln(" - CMD line: ", s.description, " set to ", settings.opt.strings[cnt].value);
+              }catch(Throwable e){ }
+            }
           }
-        }
-        foreach(int cnt, S!uint s; settings.settings.integers){
-          if(arg[1]==s.name[2]){
-            known = true;
-            writeln(s.description);
+          foreach(int cnt, S!uint s; settings.opt.integers){
+            if(arg[1]==s.name[2]){
+              try{
+              settings.opt.integers[cnt].value = to!int(arg[(isloc+1)..$]);
+              known = true;
+              writeln(" - CMD line: ", s.description, " set to ", settings.opt.integers[cnt].value);
+              }catch(Throwable e){ }
+            }
           }
         }
       }else{ // Boolean perhaps ?
-        foreach(int cnt, S!bool s; settings.settings.booleans){
-          if(arg[1]==s.name[2]){
-            known = true;
-            writeln(s.description);
-            settings.settings.booleans[cnt].value = !settings.settings.booleans[cnt].value;
+        if(arg.length == 2){ // -v -h <- exactly two long
+          foreach(int cnt, S!bool s; settings.opt.booleans){
+            if(arg[1]==s.name[2]){
+              known = true;
+              writeln(" - CMD line: " ~ s.description);
+              settings.opt.booleans[cnt].value = !settings.opt.booleans[cnt].value;
+            }
           }
         }
       }
