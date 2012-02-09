@@ -23,7 +23,7 @@ double[][] tolod(double[][] scores, double[][] permutations, bool verbose = true
   permlist.sort;
   for(uint r=0;r<scores.length;r++){
     for(uint c=0;c<scores[0].length;c++){
-      uint index = getIndex(permlist,abs(scores[r][c]));
+      auto index = getIndex(permlist,abs(scores[r][c]));
       double estimate = 1.0;
       if(index < permlist.length){
         estimate -= (to!double(index)/to!double(permlist.length));
