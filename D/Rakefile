@@ -15,36 +15,48 @@
 
 require 'rake/clean'
 
+
+def windows?
+  return RUBY_PLATFORM =~ /(:?mswin|mingw)/
+end
+
+LIB_EXT = 
+  if windows?
+    'lib'
+  else
+    'a'
+  end
+
 array_dfiles = Dir.glob("./src/ctl/core/array/*.d")
 stats_dfiles = Dir.glob("./src/ctl/core/stats/*.d")
 input_dfiles = Dir.glob("./src/ctl/io/*.d") + Dir.glob("./src/ctl/io/csv/*.d")+ Dir.glob("./src/ctl/io/cmdline/*.d")
 ctl_dfiles = Dir.glob("./src/ctl/core/ctl/*.d")
 
 #Unix files
-CLEAN.include('*.lib','*.o','*.dep','*.deps')
+CLEAN.include('*.a','*.o','*.dep','*.deps')
 #Win32 files
-CLEAN.include('*.lib','*.obj','*.exe','*.map')
+CLEAN.include('*.#{LIB_EXT}','*.obj','*.exe','*.map')
 
 TESTS = [ :mapctl ]
 
 task "array" => array_dfiles do
-  sh "dmd -lib -O -ofarray.lib #{array_dfiles.join(' ')}"
+  sh "dmd -lib -O -ofarray.#{LIB_EXT} #{array_dfiles.join(' ')}"
 end
 
 task "stats" => stats_dfiles do
-  sh "dmd -lib -O -ofstats.lib #{stats_dfiles.join(' ')} -Isrc/"
+  sh "dmd -lib -O -ofstats.#{LIB_EXT} #{stats_dfiles.join(' ')} -Isrc/"
 end
 
 task "input" => input_dfiles do
-  sh "dmd -lib -O -ofinput.lib #{input_dfiles.join(' ')} -Isrc/"
+  sh "dmd -lib -O -ofinput.#{LIB_EXT} #{input_dfiles.join(' ')} -Isrc/"
 end
 
 task "ctl" => ctl_dfiles do
-  sh "dmd -lib -O -ofctl.lib #{ctl_dfiles.join(' ')} -Isrc/"
+  sh "dmd -lib -O -ofctl.#{LIB_EXT} #{ctl_dfiles.join(' ')} -Isrc/"
 end
 
 file "mapctl" => ["ctl","input","stats","array"] do
-  sh "dmd -O src/ctl/mapctl.d array.lib stats.lib input.lib ctl.lib -Isrc/"
+  sh "dmd -O src/ctl/mapctl.d array.#{LIB_EXT} stats.#{LIB_EXT} input.#{LIB_EXT} ctl.#{LIB_EXT} -Isrc/"
 end
 
 
