@@ -20,6 +20,11 @@ def windows?
   return RUBY_PLATFORM =~ /(:?mswin|mingw)/
 end
 
+if ENV['QTLHD']==nil
+  puts "Please set the %QTLHD% env variable"
+  exit
+end
+  
 LIB_EXT = 
   if windows?
     'lib'
@@ -27,9 +32,12 @@ LIB_EXT =
     'a'
   end
 
+input_lib_arg = ""
+
 array_dfiles = Dir.glob("./src/ctl/core/array/*.d")
 stats_dfiles = Dir.glob("./src/ctl/core/stats/*.d")
 input_dfiles = Dir.glob("./src/ctl/io/*.d") + Dir.glob("./src/ctl/io/csv/*.d")+ Dir.glob("./src/ctl/io/cmdline/*.d")
+qtab_dfiles  = Dir.glob(ENV['QTLHD'] + "/qtl/core/*.d") + ["%QTLHD%/qtl/plugins/qtab/read_qtab.d"] + ["src/ctl/io/qtab/wrapper.d"]
 ctl_dfiles = Dir.glob("./src/ctl/core/ctl/*.d")
 
 #Unix files
@@ -48,24 +56,27 @@ task "stats" => stats_dfiles do
 end
 
 task "input" => input_dfiles do
-  sh "dmd -lib -O -ofinput.#{LIB_EXT} #{input_dfiles.join(' ')} -Isrc/"
+  sh "dmd -lib -O -ofinput.#{LIB_EXT} #{input_dfiles.join(' ')} #{input_lib_arg} -Isrc/"
 end
 
 task "ctl" => ctl_dfiles do
   sh "dmd -lib -O -ofctl.#{LIB_EXT} #{ctl_dfiles.join(' ')} -Isrc/"
 end
 
+task "qtablib" => ctl_dfiles do
+  input_lib_arg = "qtab.lib -I%QTLHD%/ -version=QTAB"
+  sh "dmd -lib -O -ofqtab.#{LIB_EXT} #{qtab_dfiles.join(' ')} -Isrc/"
+end
+
 file "mapctl" => ["ctl","input","stats","array"] do
   sh "dmd -O src/ctl/mapctl.d stats.#{LIB_EXT} array.#{LIB_EXT} ctl.#{LIB_EXT} input.#{LIB_EXT} -Isrc/"
 end
 
-
-
 desc "Default build and tests"
 task :default => [:build]
 
-desc "Build default binaries"
-task :build => TESTS
+desc "Build mapctl"
+task :build => [:mapctl]
 
-
-
+desc "Build mapctl with qtab support"
+task :qtab => ["ctl","qtablib","input","stats","array","mapctl"]
