@@ -15,7 +15,7 @@ import ctl.core.stats.basic;
 import ctl.core.stats.tolod;
 import ctl.core.ctl.mapping;
 import ctl.core.ctl.permutation;
-import ctl.io.csv.parse;
+import ctl.io.reader;
 import ctl.io.cmdline.parse;
 import ctl.io.csv.write;
 
@@ -31,8 +31,9 @@ void main(string[] args){
   writeln("mapCTL: Correlated Trait Locus (CTL) mapping in D");
   writeln("(c) 2012 written by Danny Arends in the D programming language");
   CTLsettings settings   = parseCmd(args);
-  double[][]  phenotypes = parseFile!double(settings.getString("--phenotypes"));
-  int[][]     genotypes  = parseFile!int(settings.getString("--genotypes"));
+  Reader r = initialize(settings);
+  double[][]  phenotypes = r.loadphenotypes(settings.getString("--phenotypes"));
+  int[][]     genotypes  = r.loadgenotypes(settings.getString("--genotypes"));
   if(!settings.displayHelp()){
     bool        verbose    = settings.getBool("--verbose");
     if(verbose) writefln("%s geno- and %s phenotypes on (%s/%s) individuals\n", genotypes.length, phenotypes.length, genotypes[0].length, phenotypes[0].length);
