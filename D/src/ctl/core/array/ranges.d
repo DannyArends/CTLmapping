@@ -17,7 +17,7 @@ pure uint[] dorange(int start, uint length){
   return array;
 }
 
-pure T[] doarray(T)(int length,T value){
+pure T[] doarray(T)(int length, T value){
   T array[];
   for(int i = 0; i < (length-1); i++){
    array ~= value;
