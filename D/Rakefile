@@ -56,7 +56,7 @@ task "ctl" => ctl_dfiles do
 end
 
 file "mapctl" => ["ctl","input","stats","array"] do
-  sh "dmd -O src/ctl/mapctl.d array.#{LIB_EXT} stats.#{LIB_EXT} input.#{LIB_EXT} ctl.#{LIB_EXT} -Isrc/"
+  sh "dmd -O src/ctl/mapctl.d stats.#{LIB_EXT} array.#{LIB_EXT} ctl.#{LIB_EXT} input.#{LIB_EXT} -Isrc/"
 end
 
 
