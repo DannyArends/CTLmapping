@@ -21,8 +21,13 @@ def windows?
 end
 
 if ENV['QTLHD']==nil
-  puts "Please set the %QTLHD% env variable"
-  exit
+  puts ""
+  puts "Set the %QTLHD% environment variable to enable qtab format"
+  puts " -e.g. set QTLHD=c:/github/qtlHD/src/D"
+  puts ""
+  hasQTAB = false
+else
+  hasQTAB = true
 end
   
 LIB_EXT = 
@@ -37,7 +42,9 @@ input_lib_arg = ""
 array_dfiles = Dir.glob("./src/ctl/core/array/*.d")
 stats_dfiles = Dir.glob("./src/ctl/core/stats/*.d")
 input_dfiles = Dir.glob("./src/ctl/io/*.d") + Dir.glob("./src/ctl/io/csv/*.d")+ Dir.glob("./src/ctl/io/cmdline/*.d")
-qtab_dfiles  = Dir.glob(ENV['QTLHD'] + "/qtl/core/*.d") + ["%QTLHD%/qtl/plugins/qtab/read_qtab.d"] + ["src/ctl/io/qtab/wrapper.d"]
+if hasQTAB
+  qtab_dfiles  = Dir.glob(ENV['QTLHD'] + "/qtl/core/*.d") + ["%QTLHD%/qtl/plugins/qtab/read_qtab.d"] + ["src/ctl/io/qtab/wrapper.d"]
+end
 ctl_dfiles = Dir.glob("./src/ctl/core/ctl/*.d")
 
 #Unix files
@@ -78,5 +85,7 @@ task :default => [:build]
 desc "Build mapctl"
 task :build => [:mapctl]
 
-desc "Build mapctl with qtab support"
-task :qtab => ["ctl","qtablib","input","stats","array","mapctl"]
+if hasQTAB
+  desc "Build mapctl with qtab support"
+  task :qtab => ["ctl","qtablib","input","stats","array","mapctl"]
+end
