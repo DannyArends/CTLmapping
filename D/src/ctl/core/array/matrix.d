@@ -42,14 +42,17 @@ T[][] translate(T)(T[][] i){
   return m;
 }
 
-T[][] newmatrix(T)(size_t rows, size_t cols) {
+T[][] newmatrix(T)(size_t rows, size_t cols, T value = 0) {
   T[][] m;
   m.length=rows;
   if(m is null){
     writeln("Not enough memory for new matrix");
   }
-  for(size_t i=0; i<rows; i++) {
+  for(size_t i=0; i<rows; i++){
     m[i].length= cols;
+    for(size_t j=0; j<cols; j++){
+      m[i][j] = cast(T)value;
+    }
   }
   return m;
 }
@@ -63,13 +66,15 @@ void printmatrix(T)(T[][] m) {
   }
 }
 
-T[] newvector(T)(size_t dim) {
+T[] newvector(T)(size_t dim, T value = 0) {
   T[] v;
-  v.length = dim;
+  v.reserve(dim);
   if(v is null){
     writeln("Not enough memory for new vector of dimension %d",(dim+1));
   }
-  v.reserve(dim); // one or the other may be superfluous
+  for(int e=0; e<dim; e++){
+    v[e] = cast(T)value;
+  }
   return v;
 }
 
