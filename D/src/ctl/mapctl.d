@@ -13,7 +13,7 @@ import std.datetime;
 import ctl.core.array.matrix;
 import ctl.core.stats.basic;
 import ctl.core.stats.tolod;
-import ctl.core.stats.qtl;
+import ctl.core.analysis;
 import ctl.core.ctl.mapping;
 import ctl.core.ctl.permutation;
 import ctl.io.reader;
@@ -40,8 +40,9 @@ void main(string[] args){
     if(verbose) writefln("%s geno- and %s phenotypes on (%s/%s) individuals\n", genotypes.length, phenotypes.length, genotypes[0].length, phenotypes[0].length);
     assert(genotypes[0].length == phenotypes[0].length);
     //Start by mapping all QTL
-    double[][] qtls  = mapqtl(genotypes, phenotypes, [], verbose);
-    writeFile(qtls,  "test/output/qtls.txt",settings.getBool("--overwrite"),verbose);
+    Analysis a = getanalysis(settings);
+    double[][] result  = a.analyse(genotypes, phenotypes, [], verbose);
+    writeFile(result,  "test/output/qtls.txt",settings.getBool("--overwrite"),verbose);
     //Do the CTL
     for(uint p=0; p < phenotypes.length; p++){
       if(verbose) writeln("-Phenotype ",p);
