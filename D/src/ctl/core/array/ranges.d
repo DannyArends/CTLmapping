@@ -11,6 +11,7 @@ import std.math;
 
 pure uint[] dorange(int start, uint length){
   uint array[];
+  array.reserve(length-1);
   for(uint i = 0; i < (length-1); i++){
     array ~= start+i;
   }
@@ -19,6 +20,7 @@ pure uint[] dorange(int start, uint length){
 
 pure T[] doarray(T)(int length,T value){
   T array[];
+  array.reserve(length-1);
   for(int i = 0; i < (length-1); i++){
    array ~= value;
   }

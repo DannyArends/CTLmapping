@@ -33,6 +33,7 @@ double[][] permutation(double[][] phenotypes, int[][] genotypes, uint phenotype 
   assert(phenotype < phenotypes.length);
   SysTime stime = Clock.currTime();
   double[][] permutationmatrix;
+  permutationmatrix.reserve(permutations.length);
   if(verbose) write(" ");
   for(uint p=0; p<permutations; p++){
     double[][] perm_m = mapping(phenotypes, permute!int(genotypes), phenotype, false);

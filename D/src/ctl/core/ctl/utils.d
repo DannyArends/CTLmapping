@@ -14,6 +14,7 @@ import ctl.core.stats.correlation;
 
 uint[] which(int[] marker,int type = 0){
   uint[] indices;
+  indices.reserve(marker.length);
   for(uint i=0; i < marker.length; i++){
     if(marker[i] == type) indices ~= i; 
   }
@@ -22,6 +23,7 @@ uint[] which(int[] marker,int type = 0){
 
 double[] get(double[] phenotype, uint[] r){
   double[] ph;
+  ph.reserve(r.length);
   foreach(uint e;r){
     ph ~= phenotype[e];
   }
