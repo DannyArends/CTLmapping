@@ -78,5 +78,5 @@ task :build => [:mapctl]
 
 if hasQTAB
   desc "Build mapctl with qtab support"
-  task :qtab => ["ctl","qtablib","input","stats","array","mapctl"]
+  task :qtab => ["qtablib","mapctl"]
 end
