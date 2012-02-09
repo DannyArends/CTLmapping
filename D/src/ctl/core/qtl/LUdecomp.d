@@ -1,11 +1,11 @@
 /**********************************************************************
- * src/ctl/core/stats/LUdecomp.d
+ * src/ctl/core/qtl/LUdecomp.d
  *
  * copyright (c) 2012 Danny Arends
  * last modified Jan, 2012
  * first written Jan, 2012
  **********************************************************************/
-module ctl.core.stats.LUdecomp;
+module ctl.core.qtl.LUdecomp;
  
 import std.stdio;
 import std.math;

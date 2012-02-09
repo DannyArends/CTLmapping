@@ -1,17 +1,17 @@
 /**********************************************************************
- * src/ctl/core/stats/utils.d
+ * src/ctl/core/qtl/utils.d
  *
  * copyright (c) 2012 Danny Arends
- * last modified Jan, 2012
+ * last modified Feb, 2012
  * first written Jan, 2012
  **********************************************************************/
-module ctl.core.stats.utils;
+module ctl.core.qtl.utils;
 
 import std.stdio;
 import std.math;
 import ctl.core.array.matrix;
-import ctl.core.stats.nrc;
-import ctl.core.stats.LUdecomp;
+import ctl.core.qtl.nrc;
+import ctl.core.qtl.LUdecomp;
 
 double Lnormal(double residual, double variance){
   return exp(-pow(residual/sqrt(variance),2.0)/2.0 - log(sqrt(2.0*acos(-1.0)*variance)));

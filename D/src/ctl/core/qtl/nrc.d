@@ -1,11 +1,11 @@
 /**********************************************************************
- * src/ctl/core/stats/nrc.d
+ * src/ctl/core/qtl/nrc.d
  *
  * copyright (c) 2012 Danny Arends
  * last modified Jan, 2012
  * first written Jan, 2012
  **********************************************************************/
-module ctl.core.stats.nrc;
+module ctl.core.qtl.nrc;
 
 import std.stdio;
 import std.math;

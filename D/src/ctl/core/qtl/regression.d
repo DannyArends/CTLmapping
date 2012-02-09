@@ -1,17 +1,17 @@
 /**********************************************************************
- * src/ctl/core/stats/regression.d
+ * src/ctl/core/qtl/regression.d
  *
  * copyright (c) 2012 Danny Arends
  * last modified Jan, 2012
  * first written Jan, 2012
  **********************************************************************/
-module ctl.core.stats.regression;
+module ctl.core.qtl.regression;
 
 import std.stdio;
 import std.math;
 import ctl.core.array.matrix;
 import ctl.core.array.ranges;
-import ctl.core.stats.utils;
+import ctl.core.qtl.utils;
 
 double multipleregression(double[][] designmatrix, double[] y, double[] weight, int[] nullmodellayout, bool verbose = true){
   if (designmatrix.length != weight.length){ writeln("No weights for individuals found",designmatrix.length,weight.length); return 0.0; }
