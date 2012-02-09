@@ -82,7 +82,7 @@ CTLsettings parseCmd(string[] args){
   if(args.length > 1){
     foreach(string arg; args[1..$]){
       bool known = false;
-      int isloc = arg.indexOf("=");
+      auto isloc = arg.indexOf("=");
       if(isloc > 1){
         if(arg.length >= 4){  // -p=a -g=t.txt <- minimum of 4
           foreach(int cnt, S!string s; settings.opt.strings){

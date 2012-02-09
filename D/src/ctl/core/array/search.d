@@ -9,8 +9,8 @@ module ctl.core.array.search;
 
 import std.math;
 
-pure uint getIndex(T)(T[] haystack, T needle){
-  foreach(uint cnt, T s; haystack){
+pure auto getIndex(T)(T[] haystack, T needle){
+  foreach(ulong cnt, T s; haystack){
     if(s>=needle) return cnt;
   }
   return haystack.length;
