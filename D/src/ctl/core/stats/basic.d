@@ -19,6 +19,7 @@ pure T doMean(T)(T[] data){
 
 T[] doMatrixMax(T)(T[][] d){
   T[] m;
+  m.reserve(d.length);
   for(int x=0;x<d.length;x++){ 
     m ~= doMax!T(d[x]);
   }

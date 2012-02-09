@@ -23,6 +23,7 @@ T[][] absmatrix(T)(T[][] i){
 
 T[] unlist(T)(T[][] i){
   T[] m;
+  m.reserve(i.length * i[0].length);
   for(uint r=0;r<i.length;r++){
     for(uint c=0;c<i[0].length;c++){
       m ~= i[r][c];
@@ -68,11 +69,13 @@ T[] newvector(T)(size_t dim) {
   if(v is null){
     writeln("Not enough memory for new vector of dimension %d",(dim+1));
   }
+  v.reserve(dim); // one or the other may be superfluous
   return v;
 }
 
 T[] stringvectortotype(T)(string[] entities){
   T[] rowleveldata;
+  rowleveldata.reserve(entities.length);
   for(auto e=0;e < entities.length; e++){
     try{
       rowleveldata ~= to!T(entities[e]);
