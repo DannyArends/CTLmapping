@@ -15,12 +15,31 @@
 
 require 'rake/clean'
 
-ctl_dfiles = Dir.glob("./src/ctl/**/*.d") 
+array_dfiles = Dir.glob("./src/ctl/core/array/*.d")
+stats_dfiles = Dir.glob("./src/ctl/core/stats/*.d")
+input_dfiles = Dir.glob("./src/ctl/io/*.d") + Dir.glob("./src/ctl/io/csv/*.d")+ Dir.glob("./src/ctl/io/cmdline/*.d")
+ctl_dfiles = Dir.glob("./src/ctl/core/ctl/*.d")
 
 TESTS = [ :mapctl ]
 
-file "mapctl" => ctl_dfiles do
-  sh "dmd -ofmapctl #{ctl_dfiles.join(' ')}"
+task "array" => array_dfiles do
+  sh "dmd -lib -O -ofarray.lib #{array_dfiles.join(' ')}"
+end
+
+task "stats" => stats_dfiles do
+  sh "dmd -lib -O -ofstats.lib #{stats_dfiles.join(' ')} -Isrc/"
+end
+
+task "input" => input_dfiles do
+  sh "dmd -lib -O -ofinput.lib #{input_dfiles.join(' ')} -Isrc/"
+end
+
+task "ctl" => ctl_dfiles do
+  sh "dmd -lib -O -ofctl.lib #{ctl_dfiles.join(' ')} -Isrc/"
+end
+
+file "mapctl" => ["ctl","input","stats","array"] do
+  sh "dmd -O src/ctl/mapctl.d array.lib stats.lib input.lib ctl.lib -Isrc/"
 end
 
 
