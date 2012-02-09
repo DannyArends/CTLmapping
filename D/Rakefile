@@ -1,0 +1,35 @@
+#! /usr/bin/rake
+#
+# Rake file for building binaries, libraries and unit tests. 
+#
+# Examples:
+#
+#   rake                 # default build and test
+#   rake -T              # list all defined rake tasks
+#   rake clean
+#   rake build          
+#   rake run
+#   rake test
+#   rake DEBUG=TRUE target
+#   etc. etc. (see rake -T).
+
+require 'rake/clean'
+
+ctl_dfiles = Dir.glob("./src/ctl/**/*.d") 
+
+TESTS = [ :mapctl ]
+
+file "mapctl" => ctl_dfiles do
+  sh "dmd -ofmapctl #{ctl_dfiles.join(' ')}"
+end
+
+
+
+desc "Default build and tests"
+task :default => [:build]
+
+desc "Build default binaries"
+task :build => TESTS
+
+
+
