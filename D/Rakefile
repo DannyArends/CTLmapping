@@ -6,18 +6,14 @@
 #
 #   rake                 # default build and test
 #   rake -T              # list all defined rake tasks
-#   rake clean
-#   rake build          
-#   rake run
-#   rake test
-#   rake DEBUG=TRUE target
+#   rake clean           # clean
+#   rake qtab            # custom target
 #   etc. etc. (see rake -T).
 
 require 'rake/clean'
 
-
-def windows?
-  return RUBY_PLATFORM =~ /(:?mswin|mingw)/
+def windows? 
+  return RUBY_PLATFORM =~ /(:?mswin|mingw)/ 
 end
 
 if ENV['QTLHD']==nil
@@ -30,22 +26,17 @@ else
   hasQTAB = true
 end
   
-LIB_EXT = 
-  if windows?
-    'lib'
-  else
-    'a'
-  end
+LIB_EXT = if(windows?) then 'lib' else 'a' end
 
 input_lib_arg = ""
 
 array_dfiles = Dir.glob("./src/ctl/core/array/*.d")
 stats_dfiles = Dir.glob("./src/ctl/core/stats/*.d")
 input_dfiles = Dir.glob("./src/ctl/io/*.d") + Dir.glob("./src/ctl/io/csv/*.d")+ Dir.glob("./src/ctl/io/cmdline/*.d")
+ctl_dfiles = Dir.glob("./src/ctl/core/ctl/*.d")
 if hasQTAB
   qtab_dfiles  = Dir.glob(ENV['QTLHD'] + "/qtl/core/*.d") + ["%QTLHD%/qtl/plugins/qtab/read_qtab.d"] + ["src/ctl/io/qtab/wrapper.d"]
 end
-ctl_dfiles = Dir.glob("./src/ctl/core/ctl/*.d")
 
 #Unix files
 CLEAN.include('*.a','*.o','*.dep','*.deps')
