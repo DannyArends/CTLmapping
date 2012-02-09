@@ -2,42 +2,74 @@
 \usepackage{subfigure}
 \usepackage{amsmath}
 
+\usepackage{color,soul}  % for markup
+\setul{1ex}{0.8ex}
+\definecolor{orange}{rgb}{1,0.5,0}
+\newcommand{\marked}[1]{\hl{#1}}
+\newcommand{\comment}[1]{\hl{\bf FIXME! #1}}
+
 \copyrightyear{2012}
 \pubyear{2012}
 
 \begin{document}
 \firstpage{1}
 \title[CTLmapping]{CTL mapping - The added value from segregating correlation}
+
 \author[Arends \emph{et al.}]{
   Danny Arends\,$^{1,\footnote{to whom correspondence should be addressed}}$,
+  Pjotr Prins\,$^{1,2}$
   and Ritsert C. Jansen\,$^{1}$
 }
 \address{
-  $^{1}$Groningen Bio-informatics Centre, University of Groningen, Groningen, The Netherlands.
+  $^{1}$Groningen \hl{Bio-informatics} Centre, University of Groningen, Groningen, The Netherlands.
+  $^{2}$Laboratory of Nematology, Wageningen University, The Netherlands.
 }
 \history{Received on XXXXX; revised on XXXXX; accepted on XXXXX}
 \editor{Associate Editor: XXXXX}
 \maketitle
-\begin{abstract}
-  \section{Motivation:}
-  Here we present Correlated Traits Locus (CTL) mapping, a novel approach 
-  to detect genetic regulation of traits in natural and inbred populations. 
-  CTL mapping allows association of trait correlation differences to genetic 
-  markers, in almost the same way as QTL mapping associates genetic  markers with differences in expression.
-  
-  We use CTL mapping to reconstruct underlying genetic architecture, and provide insight 
-  into regulation of (gene) expression. CTL information in combination with classical QTL 
-  information leads to a more detailed insight into the genetic architecture underlying 
-  complex traits. CTL mapping provides a missing link in regulatory network reconstruction.
 
-  \section{Results:}
+\comment{Title is too cute, and looks too much like an earlier paper;
+also should be more descriptive}
+
+\comment{3x Groningen in address. And does that dash belong there?}
+
+\begin{abstract}
+  \section{Summary:}
+  
+  % Summary moet 1 of 2 zinnen zijn! Zoiets beter?
+ 
+  Mapping of correlated traits loci (CTL) to the genome potentially
+  allows the detection of genetic regulation of traits by tracking
+  correlation differences at genetic marker locations. CTL can be
+  combined with quantitative trait loci (QTL) in regulatory network
+  reconstruction.
+  
+  %  , in almost the same way as QTL mapping associates genetic
+  %  markers with differences in expression.  <- als je dit zegt is
+  %  het niet zo nieuw meer ;)
+  
+  % We use CTL mapping to reconstruct underlying genetic architecture, and provide insight 
+  % into regulation of (gene) expression. CTL information in combination with classical QTL 
+  % information leads to a more detailed insight into the genetic architecture underlying 
+  % complex traits. CTL mapping 
+
+  \section{Availability:}
+
   The software is available under the terms of GNU General Public License, version 3
   (\href{http://www.r-project.org/Licenses/GPL-3}{www.r-project.org/Licenses/GPL-3}).
   \section{Availability:}
   Software, documentation and source code are available at request.
   \section{Contact:} 
-  \href{Danny.Arends@Gmail.com}{Danny.Arends@Gmail.com}
+  \href{Danny.Arends\hl{@Gmail.com}}{Danny.Arends@\hl{Gmail.com}}
 \end{abstract}
+
+\comment{Use university E-mail}
+
+\comment{License: BSD license is preferred these days}
+
+\comment{Availability: Bioinformatics Journal wants open source software only,
+availability should reflect that - i.e. a github.org repo. They won't
+like your option ;)}
 
 \section{Introduction}
   Genetical genomics experiments have shown that gene expression variation can be mapped to 
@@ -88,7 +120,10 @@
   \vspace{-0.7cm}
   \caption[Plots]{
   {\emph {\bf a}}: Example CTL + QTL profiles. Seen are the QTL profile on top of the CTL profile. 
-  The first peak is a CTL, we don't observe a QTL for this location. The second peak is a QTL peek, with no underlying CTL. 
+  The first peak is a CTL, we don't observe a QTL for this location.
+  The second peak is a QTL peek, with no underlying CTL. \hl{You
+  should explain P1,P2 and P3 in the caption too! A figure should be
+  read on its own} 
   {\emph {\bf b}}: Traits x Traits interaction matrix (TxT matrix). Information obtained using CTL mapping, 
   showing for each trait the significance of the difference in correlation to all other traits. This 
   matrix can be transformed into .sif file to generate a network image. 
@@ -114,7 +149,7 @@
   There are 162 recombinant inbred lines genotyped at 117 markers on 5 chromosomes. Additional 
   details about the experimental settings are available in the original paper \cite{Keurentjes:2006,AlonsoBlanco:1998}
 \vspace{-0.6cm}
-\section{Results}
+\section{FEATURES}
   CTL mapping was performed and a per trait CTL thresholds of $P < 0.001$ was 
   determined by using 15,000 permutations.
   When combining CTL and QTL information, we observe:\\
@@ -135,7 +170,7 @@
   composed of 2 parts which seem connected only by a just significant CTL from X3.Benzoyloxypropyl to 
   Quercetin.deoxyhexosyl.dihexoside.
 
-\section{Conclusion \& Discussion}
+\section{Conclusion}
   Microarray experiments have identified genes differentially expressed between various 
   conditions, or groups of genes coexpressed across samples. Genetical genomics screens 
   are carried out to map differential expression to genetic variation. Screening 
