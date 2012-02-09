@@ -10,7 +10,7 @@ module ctl.core.array.search;
 import std.math;
 
 pure auto getIndex(T)(T[] haystack, T needle){
-  foreach(ulong cnt, T s; haystack){
+  foreach(size_t cnt, T s; haystack){
     if(s>=needle) return cnt;
   }
   return haystack.length;
