@@ -20,6 +20,11 @@ stats_dfiles = Dir.glob("./src/ctl/core/stats/*.d")
 input_dfiles = Dir.glob("./src/ctl/io/*.d") + Dir.glob("./src/ctl/io/csv/*.d")+ Dir.glob("./src/ctl/io/cmdline/*.d")
 ctl_dfiles = Dir.glob("./src/ctl/core/ctl/*.d")
 
+#Unix files
+CLEAN.include('*.lib','*.o','*.dep','*.deps')
+#Win32 files
+CLEAN.include('*.lib','*.obj','*.exe','*.map')
+
 TESTS = [ :mapctl ]
 
 task "array" => array_dfiles do
