@@ -19,7 +19,9 @@ import qtl.core.primitives;
 
 class QTABreader : Reader{
   double[][] loadphenotypes(string filename = "phenotype.qtab"){
+    writeln("Starting with qtab phenotypes");
     auto res = read_phenotype_qtab!(Phenotype!double)(filename);
+    writeln("Done with qtab phenotypes");
     Phenotype!double[][] pheno = res[0];
     double[][] phenotypes = newmatrix!double(pheno.length,pheno[0].length);
     for(size_t x=0;x< pheno.length;x++){
