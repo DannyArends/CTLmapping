@@ -73,7 +73,7 @@ task "qtllib" => qtl_dfiles do
   stats_lib_arg = "qtl.#{LIB_EXT} -version=QTL"
 end
 
-task "qtablib" => qtab_dfiles do
+task "qtablib" do
   input_lib_arg = "qtab.#{LIB_EXT} -I%QTLHD%/ -version=QTAB"
   sh "dmd -lib -O -ofqtab.#{LIB_EXT} #{qtab_dfiles.join(' ')} -Isrc/"
 end
