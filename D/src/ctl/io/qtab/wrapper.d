@@ -35,9 +35,11 @@ class QTABreader : Reader{
   int[][] loadgenotypes(string filename = "genotype"){
     string symbol_fn   = filename ~ "_symbols.qtab";
     string genotype_fn = filename ~ "_genotypes.qtab";
-    
+    writeln("Starting with qtab genotypes");
     auto symbols = read_genotype_symbol_qtab(File(symbol_fn,"r"));
+    writeln("Doen with qtab genotypes symbols");
     auto ret = read_genotype_qtab(File(genotype_fn,"r"), symbols);
+    writeln("Doen with qtab genotypes");
     auto individuals = ret[0];
     auto genotype_matrix = ret[1];
     
