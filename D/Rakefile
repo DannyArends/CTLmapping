@@ -22,7 +22,7 @@ if ENV['QTLHD']==nil and not File.directory?(qtlhd)
   puts "Compiling without qtab support!"
   puts ""
   puts "Check out the qtlHD directory, or"
-  puts "set the %QTLHD% environment variable to enable qtab format"
+  puts "set the QTLHD environment variable to enable qtab format"
   puts " -e.g. set QTLHD=c:/github/qtlHD/src/D"
   puts ""
   hasQTAB = false
@@ -83,7 +83,7 @@ task "qtllib" => qtl_dfiles do
 end
 
 task "qtablib" do
-  input_lib_arg = "qtab.#{LIB_EXT} -I%QTLHD%/ -version=QTAB"
+  input_lib_arg = "qtab.#{LIB_EXT} -I#{qtlhd} -version=QTAB"
   sh "dmd -lib -O -ofqtab.#{LIB_EXT} #{qtab_dfiles.join(' ')} -Isrc/"
 end
 
@@ -106,9 +106,12 @@ task :build => [:mapctl]
 desc "Build mapctl with qtl support"
 task :qtl => ["qtllib","mapctl"]
 
-if hasQTAB
-  desc "Build mapctl with qtab support"
-  task :qtab => ["qtablib","mapctl"]
+desc "Build mapctl with qtab support"
+task :qtab => ["qtablib","mapctl"]
+
+desc "Test mapqtl with qtab support"
+task :test_qtab => [ :qtab ] do
+  sh "./mapctl -f=qtab  -p=test/data/multi_phenotypes.qtab -g=test/data/multi_genotypes.qtab"
 end
 
 
