@@ -33,8 +33,8 @@ class QTABreader : Reader{
   }
     
   int[][] loadgenotypes(string filename = "genotype"){
-    string symbol_fn   = filename ~ "_symbol.qtab";
-    string genotype_fn = filename ~ ".qtab";
+    string symbol_fn   = filename ~ "_symbols.qtab";
+    string genotype_fn = filename ~ "_genotypes.qtab";
     
     auto symbols = read_genotype_symbol_qtab(File(symbol_fn,"r"));
     auto ret = read_genotype_qtab(File(genotype_fn,"r"), symbols);
