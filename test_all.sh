@@ -2,5 +2,5 @@
 
 cd D
 rake clean
-rake test
+rake test_all
 cd ../..

@@ -92,7 +92,7 @@ file "mapctl" => ["ctl","input","stats","array"] do
 end
 
 desc "Test mapctl"
-task :test_all => [ :mapctl ] do 
+task :test_all => [ "test/output", :mapctl ] do 
   print "Testing mapctl\n"
   sh "./mapctl -nperms=5"
 end
@@ -110,8 +110,8 @@ desc "Build mapctl with qtab support"
 task :qtab => ["qtablib","mapctl"]
 
 desc "Test mapqtl with qtab support"
-task :test_qtab => [ :qtab ] do
-  sh "./mapctl -f=qtab  -p=test/data/multi_phenotypes.qtab -g=test/data/multi"
+task :test_qtab => [ "test/output", :qtab ] do
+  sh "./mapctl -f=qtab  -p=test/data/multi_phenotypes.qtab -g=test/data/multi_genotypes.qtab"
 end
 
 
