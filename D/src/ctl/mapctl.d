@@ -38,7 +38,7 @@ void main(string[] args){
   if(!settings.displayHelp()){
     bool        verbose    = settings.getBool("--verbose");
     if(verbose) writefln("%s geno- and %s phenotypes on (%s/%s) individuals\n", genotypes.length, phenotypes.length, genotypes[0].length, phenotypes[0].length);
-    assert(genotypes[0].length == phenotypes[0].length);
+    assert(genotypes[0].length == phenotypes[0].length, to!string(genotypes[0].length) ~ "," ~ to!string(phenotypes[0].length));
     //Start by mapping all QTL
     Analysis a = getanalysis(settings);
     double[][] result  = a.analyse(genotypes, phenotypes, [], verbose);
