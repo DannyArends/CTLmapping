@@ -16,15 +16,20 @@ def windows?
   return RUBY_PLATFORM =~ /(:?mswin|mingw)/ 
 end
 
-if ENV['QTLHD']==nil
+qtlhd="../../qtlHD/src/D"
+
+if ENV['QTLHD']==nil and not File.directory?(qtlhd)
   puts ""
-  puts "Set the %QTLHD% environment variable to enable qtab format"
+  puts "Check out the qtlHD directory, or"
+  puts "set the %QTLHD% environment variable to enable qtab format"
   puts " -e.g. set QTLHD=c:/github/qtlHD/src/D"
   puts ""
   hasQTAB = false
 else
+  qtlhd = ENV['QTLHD'] if ENV['QTLHD']
   hasQTAB = true
 end
+p qtlhd
   
 LIB_EXT = if(windows?) then 'lib' else 'a' end
 
@@ -38,7 +43,7 @@ qtl_dfiles = Dir.glob("./src/ctl/core/qtl/*.d")
 input_dfiles = Dir.glob("./src/ctl/io/*.d") + Dir.glob("./src/ctl/io/csv/*.d")+ Dir.glob("./src/ctl/io/cmdline/*.d")
 ctl_dfiles = Dir.glob("./src/ctl/core/ctl/*.d")
 if hasQTAB
-  qtab_dfiles  = Dir.glob(ENV['QTLHD'] + "/qtl/core/*.d") + ["%QTLHD%/qtl/plugins/qtab/read_qtab.d"] + ["src/ctl/io/qtab/wrapper.d"]
+  qtab_dfiles  = Dir.glob(qtlhd + "/qtl/core/*.d") + ["#{qtlhd}/qtl/plugins/qtab/read_qtab.d"] + ["src/ctl/io/qtab/wrapper.d"]
 end
 
 #Unix files
@@ -47,6 +52,8 @@ CLEAN.include('*.a','*.o','*.dep','*.deps')
 CLEAN.include('*.#{LIB_EXT}','*.obj','*.exe','*.map')
 
 TESTS = [ :mapctl ]
+
+directory "test/output"
 
 task "array" => array_dfiles do
   sh "dmd -lib -O -ofarray.#{LIB_EXT} #{array_dfiles.join(' ')}"
@@ -82,8 +89,14 @@ file "mapctl" => ["ctl","input","stats","array"] do
   sh "dmd -O src/ctl/mapctl.d #{used_libs.join(' ')} -Isrc/"
 end
 
+desc "Test mapctl"
+task :test_all => [ :mapctl ] do 
+  print "Testing mapctl\n"
+  sh "./mapctl -nperms=5"
+end
+
 desc "Default build and tests"
-task :default => [:build]
+task :default => [:build, :test]
 
 desc "Build mapctl"
 task :build => [:mapctl]
@@ -95,3 +108,5 @@ if hasQTAB
   desc "Build mapctl with qtab support"
   task :qtab => ["qtablib","mapctl"]
 end
+
+
