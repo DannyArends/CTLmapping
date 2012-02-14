@@ -19,6 +19,7 @@ end
 qtlhd="../../qtlHD/src/D"
 
 if ENV['QTLHD']==nil and not File.directory?(qtlhd)
+  puts "Compiling without qtab support!"
   puts ""
   puts "Check out the qtlHD directory, or"
   puts "set the %QTLHD% environment variable to enable qtab format"
@@ -26,12 +27,13 @@ if ENV['QTLHD']==nil and not File.directory?(qtlhd)
   puts ""
   hasQTAB = false
 else
+  puts "Compiling with qtab support!"
   qtlhd = ENV['QTLHD'] if ENV['QTLHD']
   hasQTAB = true
 end
-p qtlhd
   
-LIB_EXT = if(windows?) then 'lib' else 'a' end
+LIB_PREFIX = if(windows?) then '' else 'lib' end
+LIB_EXT    = if(windows?) then 'lib' else 'a' end
 
 input_lib_arg = ""
 stats_lib_arg = ""
@@ -45,6 +47,7 @@ ctl_dfiles = Dir.glob("./src/ctl/core/ctl/*.d")
 if hasQTAB
   qtab_dfiles  = Dir.glob(qtlhd + "/qtl/core/*.d") + ["#{qtlhd}/qtl/plugins/qtab/read_qtab.d"] + ["src/ctl/io/qtab/wrapper.d"]
 end
+p qtab_dfiles
 
 #Unix files
 CLEAN.include('*.a','*.o','*.dep','*.deps')
