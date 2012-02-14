@@ -47,7 +47,6 @@ ctl_dfiles = Dir.glob("./src/ctl/core/ctl/*.d")
 if hasQTAB
   qtab_dfiles  = Dir.glob(qtlhd + "/qtl/core/*.d") + ["#{qtlhd}/qtl/plugins/qtab/read_qtab.d"] + ["src/ctl/io/qtab/wrapper.d"]
 end
-p qtab_dfiles
 
 #Unix files
 CLEAN.include('*.a','*.o','*.dep','*.deps')
