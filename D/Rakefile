@@ -44,6 +44,7 @@ stats_dfiles = Dir.glob("./src/ctl/core/*.d") + Dir.glob("./src/ctl/core/stats/*
 qtl_dfiles = Dir.glob("./src/ctl/core/qtl/*.d")
 input_dfiles = Dir.glob("./src/ctl/io/*.d") + Dir.glob("./src/ctl/io/csv/*.d")+ Dir.glob("./src/ctl/io/cmdline/*.d")
 ctl_dfiles = Dir.glob("./src/ctl/core/ctl/*.d")
+qtab_dfiles = []
 if hasQTAB
   qtab_dfiles  = Dir.glob(qtlhd + "/qtl/core/*.d") + ["#{qtlhd}/qtl/plugins/qtab/read_qtab.d"] + ["src/ctl/io/qtab/wrapper.d"]
 end
@@ -58,14 +59,13 @@ TESTS = [ :mapctl ]
 
 directory "test/output"
 
-task "array" => array_dfiles do
+
+file "array.#{LIB_EXT}" => array_dfiles do
   sh "dmd -lib -O -ofarray.#{LIB_EXT} #{array_dfiles.join(' ')}"
-  used_libs += ["array.#{LIB_EXT}"]
 end
 
-task "stats" => stats_dfiles do
+file "stats.#{LIB_EXT}" => stats_dfiles do
   sh "dmd -lib -O -ofstats.#{LIB_EXT} #{stats_dfiles.join(' ')} -Isrc/"
-  used_libs += ["stats.#{LIB_EXT}"]
 end
 
 task "input" => input_dfiles do
@@ -83,13 +83,12 @@ task "qtllib" => qtl_dfiles do
   stats_lib_arg = "qtl.#{LIB_EXT} -version=QTL"
 end
 
-task "qtablib" do
+file "qtab.#{LIB_EXT}" => qtab_dfiles do
   input_lib_arg = "qtab.#{LIB_EXT} -I#{qtlhd} -version=QTAB"
-  sh "dmd -lib -O -ofqtab.#{LIB_EXT} #{qtab_dfiles.join(' ')} -Isrc/"
 end
 
-file "mapctl" => ["ctl","input","stats","array"] do
-  sh "dmd -O src/ctl/mapctl.d #{used_libs.join(' ')} -Isrc/"
+file "mapctl" => ["ctl","input","stats.#{LIB_EXT}","array.#{LIB_EXT}","qtab.#{LIB_EXT}"] do
+  sh "dmd -O src/ctl/mapctl.d #{used_libs.join(' ')} stats.#{LIB_EXT} array.#{LIB_EXT} qtab.#{LIB_EXT} -Isrc/"
 end
 
 desc "Test mapctl"
@@ -108,10 +107,10 @@ desc "Build mapctl with qtl support"
 task :qtl => ["qtllib","mapctl"]
 
 desc "Build mapctl with qtab support"
-task :qtab => ["qtablib","mapctl"]
+task :qtab => ["qtab.#{LIB_EXT}","mapctl"] 
 
 desc "Test mapqtl with qtab support"
-task :test_qtab => [ "test/output", :qtab ] do
+task :test_qtab => [ "test/output", :qtab ]  do
   sh "./mapctl -f=qtab  -p=test/data/multi_phenotypes.qtab -g=test/data/multi"
 end
 

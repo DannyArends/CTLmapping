@@ -8,6 +8,7 @@
 module ctl.io.qtab.wrapper;
 
 import std.stdio;
+import std.conv;
 
 import ctl.core.array.matrix;
 import ctl.io.reader;
@@ -36,8 +37,12 @@ class QTABreader : Reader{
     string symbol_fn   = filename ~ "_symbols.qtab";  // FIXME: file name conventions are funny
     string genotype_fn = filename ~ "_genotypes.qtab";
     writeln("Starting with qtab genotypes");
+    writeln("Reading " ~ symbol_fn);
+    writeln("@ " ~ symbol_fn);
     auto symbols = read_genotype_symbol_qtab(File(symbol_fn,"r"));
+    // assert(to!string(symbols.decode("A")) == "[(0,0)]");
     writeln("Done with qtab genotypes symbols");
+    writeln("Reading " ~ genotype_fn);
     auto ret = read_genotype_qtab(File(genotype_fn,"r"), symbols);
     writeln("Done with qtab genotypes");
     auto individuals = ret[0];
