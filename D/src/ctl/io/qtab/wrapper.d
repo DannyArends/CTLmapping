@@ -40,7 +40,6 @@ class QTABreader : Reader{
     string genotype_fn = filename ~ "_genotypes.qtab";
     writeln("Starting with qtab genotypes");
     writeln("Reading " ~ symbol_fn);
-    writeln("@ " ~ symbol_fn);
     auto symbols = read_genotype_symbol_qtab(File(symbol_fn,"r"));
     // assert(to!string(symbols.decode("A")) == "[(0,0)]");
     writeln("Done with qtab genotypes symbols");
