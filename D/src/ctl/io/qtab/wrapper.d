@@ -7,6 +7,8 @@
  **********************************************************************/
 module ctl.io.qtab.wrapper;
 
+version(QTAB) {
+
 import std.stdio;
 import std.conv;
 
@@ -63,4 +65,6 @@ class QTABreader : Reader{
     return genotypes;
   }
 }
+
+} // version(QTAB)
 
