@@ -32,7 +32,7 @@ class QTABreader : Reader{
         phenotypes[x][y] = pheno[x][y].value;
       }
     }
-    return phenotypes;
+    return translate(phenotypes);
   }
     
   int[][] loadgenotypes(string filename = "genotype"){
@@ -50,7 +50,6 @@ class QTABreader : Reader{
     auto genotype_matrix = ret[1];
     
     int[][] genotypes = newmatrix!int(genotype_matrix.length,genotype_matrix[0].length);
-    
     for(size_t x=0;x< genotype_matrix.length;x++){
       for(size_t y=0;y< genotype_matrix[0].length;y++){
       if(genotype_matrix[x][y] == symbols.decode("A")){
@@ -61,7 +60,7 @@ class QTABreader : Reader{
       }
       }
     }
-    return genotypes;
+    return translate(genotypes);
   }
 }
 
