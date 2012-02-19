@@ -116,7 +116,5 @@ task :qtab => ["qtab.#{LIB_EXT}","mapctl"]
 
 desc "Test mapqtl with qtab support"
 task :test_qtab => [ "test/output", :qtab ]  do
-  sh "./mapctl -f=qtab  -p=test/data/multi_phenotypes.qtab -g=test/data/multi"
+  sh "./mapctl -f=qtab  -p=test/data/multi_phenotypes.qtab -g=test/data/multi -o"
 end
-
-

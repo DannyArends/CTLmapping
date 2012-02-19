@@ -29,7 +29,7 @@ class QTABreader : Reader{
     double[][] phenotypes = newmatrix!double(pheno.length,pheno[0].length);
     for(size_t x=0;x< pheno.length;x++){
       for(size_t y=0;y< pheno[0].length;y++){
-        phenotypes[x][y] = pheno[x][y].value;
+        if(pheno[x][y].value != double.max) phenotypes[x][y] = pheno[x][y].value;
       }
     }
     return translate(phenotypes);
