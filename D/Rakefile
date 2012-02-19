@@ -33,7 +33,11 @@ else
 end
   
 LIB_PREFIX = if(windows?) then '' else 'lib' end
-LIB_EXT    = if(windows?) then 'lib' else 'a' end
+if(windows?) then 
+  LIB_EXT = 'lib' 
+else 
+  LIB_EXT = 'a' 
+end
 
 input_lib_arg = ""
 compile_args  = "-O"
@@ -52,7 +56,7 @@ if hasQTAB
 end
 
 if windows?
-  CLEAN.include('*.#{LIB_EXT}','*.obj','*.exe','*.map','mapctl.exe')
+  CLEAN.include("*.#{LIB_EXT}",'*.obj','*.exe','*.map','mapctl.exe')
 else
   CLEAN.include('*.a','*.o','*.dep','*.deps','mapctl')
 end
@@ -60,7 +64,6 @@ end
 TESTS = [ :mapctl ]
 
 directory "test/output"
-
 
 file "array.#{LIB_EXT}" => array_dfiles do
   sh "dmd -lib #{compile_args} -ofarray.#{LIB_EXT} #{array_dfiles.join(' ')}"
@@ -82,7 +85,7 @@ end
 
 task "qtllib" => qtl_dfiles do
   sh "dmd -lib #{compile_args} -ofqtl.#{LIB_EXT} #{qtl_dfiles.join(' ')} -Isrc/"
-  stats_lib_arg = "qtl.#{LIB_EXT} -version=QTL"
+  compile_args += " qtl.#{LIB_EXT} -version=QTL"
 end
 
 file "qtab.#{LIB_EXT}" => qtab_dfiles do
