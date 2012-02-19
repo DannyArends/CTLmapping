@@ -56,7 +56,7 @@ if hasQTAB
 end
 
 if windows?
-  CLEAN.include("*.#{LIB_EXT}",'*.obj','*.exe','*.map','mapctl.exe')
+  CLEAN.include("*.#{LIB_EXT}",'./test/output/*.txt','*.obj','*.exe','*.map','mapctl.exe')
 else
   CLEAN.include('*.a','*.o','*.dep','*.deps','mapctl')
 end
