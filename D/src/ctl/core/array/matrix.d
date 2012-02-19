@@ -73,7 +73,7 @@ T[] newvector(T)(size_t dim, T value = 0) {
     writeln("Not enough memory for new vector of dimension %d",(dim+1));
   }
   for(int e=0; e<dim; e++){
-    v[e] = cast(T)value;
+    v ~= cast(T)value;
   }
   return v;
 }
