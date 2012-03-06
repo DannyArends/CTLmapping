@@ -35,6 +35,8 @@
 
 %qtl.scan.R
 \alias{QTLscan}
+\alias{create.matrix}
+\alias{map.fast}
 \alias{QTLscan.cross}
 
 %ctl.print.R
