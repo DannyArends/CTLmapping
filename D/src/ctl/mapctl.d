@@ -13,6 +13,7 @@ import std.datetime;
 import ctl.core.array.matrix;
 import ctl.core.stats.basic;
 import ctl.core.stats.tolod;
+import ctl.core.stats.pxpmatrix;
 import ctl.core.analysis;
 import ctl.core.ctl.mapping;
 import ctl.core.ctl.permutation;
@@ -44,13 +45,16 @@ void main(string[] args){
     double[][] result  = a.analyse(genotypes, phenotypes, [], verbose);
     writeFile(result,  "test/output/qtls.txt",settings.getBool("--overwrite"),verbose);
     //Do the CTL
+    double[][][] ctlmmatrix;
     for(uint p=0; p < phenotypes.length; p++){
       if(verbose) writeln("-Phenotype ",p);
       double[][] score = mapping(phenotypes,  genotypes, p, verbose);
       double[][] perms = permutation(phenotypes, genotypes, p, settings.getInt("--nperms"), verbose);
-      double[][] lod   = tolod(score, perms, verbose);
-      writeFile(translate(lod),  "test/output/lodscores"~to!string(p)~".txt",settings.getBool("--overwrite"),verbose);
+      ctlmmatrix  ~= tolod(score, perms, verbose);
+      writeFile(translate(ctlmmatrix[p]),  "test/output/lodscores"~to!string(p)~".txt",settings.getBool("--overwrite"),verbose);
     }
+    double[][] pxpmatrix = topxpmatrix(ctlmmatrix);
+    writeFile(pxpmatrix,  "test/output/pxpmatrix.txt",settings.getBool("--overwrite"),verbose);    
     writeln("\nmapCTL finished analysis took: ",(Clock.currTime()-stime).total!"seconds"()," seconds");
   }
 }

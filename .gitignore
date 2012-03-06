@@ -8,6 +8,7 @@
 *.a
 *.pdf
 *.png
+Rctl.Rcheck/
 *.ppt
 old/
 data/

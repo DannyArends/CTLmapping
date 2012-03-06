@@ -7,7 +7,10 @@
  **********************************************************************/
 module ctl.io.qtab.wrapper;
 
+version(QTAB) {
+
 import std.stdio;
+import std.conv;
 
 import ctl.core.array.matrix;
 import ctl.io.reader;
@@ -26,25 +29,27 @@ class QTABreader : Reader{
     double[][] phenotypes = newmatrix!double(pheno.length,pheno[0].length);
     for(size_t x=0;x< pheno.length;x++){
       for(size_t y=0;y< pheno[0].length;y++){
-        phenotypes[x][y] = pheno[x][y].value;
+        if(pheno[x][y].value != double.max) phenotypes[x][y] = pheno[x][y].value;
       }
     }
-    return phenotypes;
+    return translate(phenotypes);
   }
     
   int[][] loadgenotypes(string filename = "genotype"){
-    string symbol_fn   = filename ~ "_symbols.qtab";
+    string symbol_fn   = filename ~ "_symbols.qtab";  // FIXME: file name conventions are funny
     string genotype_fn = filename ~ "_genotypes.qtab";
     writeln("Starting with qtab genotypes");
+    writeln("Reading " ~ symbol_fn);
     auto symbols = read_genotype_symbol_qtab(File(symbol_fn,"r"));
-    writeln("Doen with qtab genotypes symbols");
+    // assert(to!string(symbols.decode("A")) == "[(0,0)]");
+    writeln("Done with qtab genotypes symbols");
+    writeln("Reading " ~ genotype_fn);
     auto ret = read_genotype_qtab(File(genotype_fn,"r"), symbols);
-    writeln("Doen with qtab genotypes");
+    writeln("Done with qtab genotypes");
     auto individuals = ret[0];
     auto genotype_matrix = ret[1];
     
     int[][] genotypes = newmatrix!int(genotype_matrix.length,genotype_matrix[0].length);
-    
     for(size_t x=0;x< genotype_matrix.length;x++){
       for(size_t y=0;y< genotype_matrix[0].length;y++){
       if(genotype_matrix[x][y] == symbols.decode("A")){
@@ -55,7 +60,9 @@ class QTABreader : Reader{
       }
       }
     }
-    return genotypes;
+    return translate(genotypes);
   }
 }
+
+} // version(QTAB)
 

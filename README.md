@@ -30,7 +30,7 @@ download CTLmapping and install into R by using (from a terminal / command
 line):
 
     $ git clone git://github.com/DannyArends/CTLmapping.git  # Download the repository
-    $ R CMD INSTALL CTLmapping                               # Install the package
+    $ R CMD INSTALL CTLmapping/Rctl                          # Install the package
 
 Optionally you can install the pre-build packages by downloading the appropriate 
 package for your operating system. 

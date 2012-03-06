@@ -14,16 +14,11 @@ import ctl.io.cmdline.parse;
 import ctl.core.array.matrix;
 
 Analysis getanalysis(CTLsettings settings){
-  switch(settings.getString("--analysis")){
 version(QTL){
-    case "qtab":
-     return new QTL();
-    break;
-}
-    default:
-    break;
-  }
+  return new SingleQTL();
+}else{
   return new NullAnalysis();
+}
 }
 
 abstract class Analysis{

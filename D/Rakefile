@@ -33,9 +33,14 @@ else
 end
   
 LIB_PREFIX = if(windows?) then '' else 'lib' end
-LIB_EXT    = if(windows?) then 'lib' else 'a' end
+if(windows?) then 
+  LIB_EXT = 'lib' 
+else 
+  LIB_EXT = 'a' 
+end
 
 input_lib_arg = ""
+compile_args  = "-O"
 stats_lib_arg = ""
 used_libs = []
 
@@ -44,51 +49,51 @@ stats_dfiles = Dir.glob("./src/ctl/core/*.d") + Dir.glob("./src/ctl/core/stats/*
 qtl_dfiles = Dir.glob("./src/ctl/core/qtl/*.d")
 input_dfiles = Dir.glob("./src/ctl/io/*.d") + Dir.glob("./src/ctl/io/csv/*.d")+ Dir.glob("./src/ctl/io/cmdline/*.d")
 ctl_dfiles = Dir.glob("./src/ctl/core/ctl/*.d")
+qtab_dfiles = []
 if hasQTAB
   qtab_dfiles  = Dir.glob(qtlhd + "/qtl/core/*.d") + ["#{qtlhd}/qtl/plugins/qtab/read_qtab.d"] + ["src/ctl/io/qtab/wrapper.d"]
+  compile_args += " -I#{qtlhd} -version=QTAB"
 end
 
-#Unix files
-CLEAN.include('*.a','*.o','*.dep','*.deps')
-#Win32 files
-CLEAN.include('*.#{LIB_EXT}','*.obj','*.exe','*.map')
+if windows?
+  CLEAN.include("*.#{LIB_EXT}",'./test/output/*.txt','*.obj','*.exe','*.map','mapctl.exe')
+else
+  CLEAN.include('*.a','*.o','*.dep','*.deps','mapctl')
+end
 
 TESTS = [ :mapctl ]
 
 directory "test/output"
 
-task "array" => array_dfiles do
-  sh "dmd -lib -O -ofarray.#{LIB_EXT} #{array_dfiles.join(' ')}"
-  used_libs += ["array.#{LIB_EXT}"]
+file "array.#{LIB_EXT}" => array_dfiles do
+  sh "dmd -lib #{compile_args} -ofarray.#{LIB_EXT} #{array_dfiles.join(' ')}"
 end
 
-task "stats" => stats_dfiles do
-  sh "dmd -lib -O -ofstats.#{LIB_EXT} #{stats_dfiles.join(' ')} -Isrc/"
-  used_libs += ["stats.#{LIB_EXT}"]
+file "stats.#{LIB_EXT}" => stats_dfiles do
+  sh "dmd -lib #{compile_args} -ofstats.#{LIB_EXT} #{stats_dfiles.join(' ')} -Isrc/"
 end
 
 task "input" => input_dfiles do
-  sh "dmd -lib -O -ofinput.#{LIB_EXT} #{input_dfiles.join(' ')} #{input_lib_arg} -Isrc/"
+  sh "dmd -lib #{compile_args} -ofinput.#{LIB_EXT} #{input_dfiles.join(' ')} #{input_lib_arg} -Isrc/"
   used_libs += ["input.#{LIB_EXT}"]
 end
 
 task "ctl" => ctl_dfiles do
-  sh "dmd -lib -O -ofctl.#{LIB_EXT} #{ctl_dfiles.join(' ')} -Isrc/"
+  sh "dmd -lib #{compile_args} -ofctl.#{LIB_EXT} #{ctl_dfiles.join(' ')} -Isrc/"
   used_libs += ["ctl.#{LIB_EXT}"]
 end
 
 task "qtllib" => qtl_dfiles do
-  sh "dmd -lib -O -ofqtl.#{LIB_EXT} #{qtl_dfiles.join(' ')} -Isrc/"
-  stats_lib_arg = "qtl.#{LIB_EXT} -version=QTL"
+  sh "dmd -lib #{compile_args} -ofqtl.#{LIB_EXT} #{qtl_dfiles.join(' ')} -Isrc/"
+  compile_args += " qtl.#{LIB_EXT} -version=QTL"
 end
 
-task "qtablib" do
-  input_lib_arg = "qtab.#{LIB_EXT} -I#{qtlhd} -version=QTAB"
-  sh "dmd -lib -O -ofqtab.#{LIB_EXT} #{qtab_dfiles.join(' ')} -Isrc/"
+file "qtab.#{LIB_EXT}" => qtab_dfiles do
+  sh "dmd -lib #{compile_args} -ofqtab.#{LIB_EXT} #{qtab_dfiles.join(' ')} -Isrc/"
 end
 
-file "mapctl" => ["ctl","input","stats","array"] do
-  sh "dmd -O src/ctl/mapctl.d #{used_libs.join(' ')} -Isrc/"
+file "mapctl" => ["ctl","input","stats.#{LIB_EXT}","array.#{LIB_EXT}","qtab.#{LIB_EXT}"] do
+  sh "dmd #{compile_args} src/ctl/mapctl.d #{used_libs.join(' ')} stats.#{LIB_EXT} array.#{LIB_EXT} qtab.#{LIB_EXT} -Isrc/"
 end
 
 desc "Test mapctl"
@@ -107,11 +112,9 @@ desc "Build mapctl with qtl support"
 task :qtl => ["qtllib","mapctl"]
 
 desc "Build mapctl with qtab support"
-task :qtab => ["qtablib","mapctl"]
+task :qtab => ["qtab.#{LIB_EXT}","mapctl"] 
 
 desc "Test mapqtl with qtab support"
-task :test_qtab => [ "test/output", :qtab ] do
-  sh "./mapctl -f=qtab  -p=test/data/multi_phenotypes.qtab -g=test/data/multi"
+task :test_qtab => [ "test/output", :qtab ]  do
+  sh "./mapctl -f=qtab  -p=test/data/multi_phenotypes.qtab -g=test/data/multi -o"
 end
-
-
