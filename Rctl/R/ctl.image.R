@@ -48,22 +48,7 @@ internal.image <- function(mymatrix, colorrange, mainlabel, do.grid, grid.col){
 
 QTLimage <- function(x, onlySignificant = FALSE, significance = 0.05, do.grid=TRUE, grid.col = "black", verbose = FALSE, ...){
   colorrange <- c("white",gray.colors(10)[10:1])
-  mymatrix <- NULL
-  mynames <- NULL
-  for(p in 1:length(x)){
-    if(verbose) cat("Processing QTL",p,"from CTLobject\n")
-    lod <- x[[p]]$qtl
-    if(onlySignificant){
-      if(max(CTLtoLODvector(x[[p]], "markers")) > -log10(significance)){
-        mymatrix <- rbind(mymatrix,lod)
-        mynames <- c(mynames,attr(x[[p]]$ctl,"name"))  
-      }
-    }else{
-      mymatrix <- rbind(mymatrix,lod)
-      mynames <- c(mynames,attr(x[[p]]$ctl,"name"))
-    }
-  }
-  rownames(mymatrix) <- mynames
+  mymatrix <- lod <- x[[1]]$qtl
   if(onlySignificant){
     mainlabel <- paste("QTL heatmap at P-value <", significance)
   }else{

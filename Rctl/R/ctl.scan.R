@@ -24,7 +24,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), metho
     results[[idx]]$ctl <- CTLmapping(genotypes, phenotypes, p, method=method, genotype.values, verbose)
     
     cat("Stage 2: Scanning QTL\n")
-    results[[idx]]$qtl <- QTLscan(genotypes, phenotypes, p, verbose)
+    results[[idx]]$qtl <- QTLscan(genotypes, phenotypes, verbose=verbose)$qtl
     
     if(n.perm > 0){
       cat("Stage 3: Permutation\n")
