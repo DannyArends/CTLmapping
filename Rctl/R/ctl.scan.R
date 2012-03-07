@@ -19,22 +19,21 @@ CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), metho
 
   results <- vector("list",length(pheno.col))
   idx <- 1
+  cat("Stage 0: Scanning QTL\n")
+  attr(results,"qtl") <- QTLscan(genotypes, phenotypes, verbose=verbose)$qtl
   for(p in pheno.col){
     cat("Stage 1: Scanning CTL\n")
     results[[idx]]$ctl <- CTLmapping(genotypes, phenotypes, p, method=method, genotype.values, verbose)
-    
-    cat("Stage 2: Scanning QTL\n")
-    results[[idx]]$qtl <- QTLscan(genotypes, phenotypes, verbose=verbose)$qtl
-    
+    results[[idx]]$qtl <- attr(results,"qtl")[p, ]
     if(n.perm > 0){
-      cat("Stage 3: Permutation\n")
+      cat("Stage 1.1: Permutation\n")
       results[[idx]]$p <- CTLpermute(genotypes, phenotypes, p, method=method, n.perm, n.cores, genotype.values, directory, saveFiles, verbose)
       
-      if(verbose)cat("Stage 4: Transformation into LOD\n")
+      if(verbose)cat("Stage 1.2: Transformation into LOD\n")
       results[[idx]]$l <- toLod(results[[idx]], FALSE, FALSE)
     }else{
-      cat("Stage 3: Skipping permutation\n")
-      if(verbose)cat("Stage 4: Skipping transformation into LOD\n")
+      cat("Stage 1.1: Skipping permutation\n")
+      if(verbose)cat("Stage 1.2: Skipping transformation into LOD\n")
     }
     class(results[[idx]]) <- c(class(results[[idx]]),"CTLscan")
     idx <- idx + 1

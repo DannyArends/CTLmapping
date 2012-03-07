@@ -48,7 +48,7 @@ internal.image <- function(mymatrix, colorrange, mainlabel, do.grid, grid.col){
 
 QTLimage <- function(x, onlySignificant = FALSE, significance = 0.05, do.grid=TRUE, grid.col = "black", verbose = FALSE, ...){
   colorrange <- c("white",gray.colors(10)[10:1])
-  mymatrix <- lod <- x[[1]]$qtl
+  mymatrix <- attr(x,"qtl")
   if(onlySignificant){
     mainlabel <- paste("QTL heatmap at P-value <", significance)
   }else{
