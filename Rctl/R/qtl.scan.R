@@ -17,17 +17,28 @@ create.matrix <- function(models, what="qtl", phenonames, genonames, do.log=TRUE
   res
 }
 
+#-- clean.phenotypes function to prepare phenotypes for QTL mapping--#
+clean.phenotypes <- function(phenotypes, verbose = TRUE){
+  phenotypes <- as.matrix(apply(phenotypes,2,as.numeric))
+  torem <- which(apply(apply(phenotypes,2,is.na),2,sum)==nrow(phenotypes))
+  if(!is.na(torem&&1)){
+    if(verbose) warning("Filling ",length(torem)," phenotypes (",paste(torem,collapse=","),") that are NA with 1s\n")
+    for(x in torem){ phenotypes[,x] <- rep(1,nrow(phenotypes)) }
+  }
+  phenotypes
+}
+
 #-- QTLscan main function --#
-map.fast <- function(marker, phenotypes, conditions, verbose = FALSE){
+map.fast <- function(marker, phenotypes, conditions = NULL, verbose = FALSE){
   st  <- proc.time()
   res <- NULL
   if(is.null(conditions)){
-    models  <- aov(as.matrix(phenotypes) ~ marker)
+    models  <- aov(phenotypes ~ marker)
     modelinfo <- summary(models)
     res$qtl <- unlist(lapply(modelinfo,"[",1,5),use.names=T)
     res$eff <- unlist(models$coefficients[2,])
   }else{
-    models  <- aov(as.matrix(phenotypes) ~ conditions + marker + conditions:marker)
+    models  <- aov(phenotypes ~ conditions + marker + conditions:marker)
     modelinfo <- summary(models)
     res$env <- unlist(lapply(modelinfo,"[",1,5),use.names=T)
     res$qtl <- unlist(lapply(modelinfo,"[",2,5),use.names=T)
@@ -43,7 +54,8 @@ QTLscan <- function(genotypes, phenotypes, conditions=NULL, n.core=2, verbose = 
   if(missing(genotypes)) stop("genotypes are missing")
   if(missing(phenotypes)) stop("phenotypes are missing")
   st  <- proc.time()
-  if("snow" %in% rownames(installed.packages())){
+  phenotypes <- clean.phenotypes(phenotypes)
+  if("snow" %in% rownames(installed.packages()) && n.core > 1){
     require("snow")
     cl <- snow::makeCluster(n.core)
     models <- snow::parApply(cl, genotypes, 2, "map.fast", phenotypes, conditions)
