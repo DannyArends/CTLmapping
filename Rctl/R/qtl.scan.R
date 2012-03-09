@@ -25,6 +25,7 @@ clean.phenotypes <- function(phenotypes, verbose = TRUE){
     if(verbose) warning("Filling ",length(torem)," phenotypes (",paste(torem,collapse=","),") that are NA with 1s\n")
     for(x in torem){ phenotypes[,x] <- rep(1,nrow(phenotypes)) }
   }
+  if(is.null(colnames(phenotypes))) colnames(phenotypes) <- paste("Pheno",1:ncol(phenotypes),sep="")
   phenotypes
 }
 
