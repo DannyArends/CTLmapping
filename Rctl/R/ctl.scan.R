@@ -30,7 +30,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), metho
       results[[idx]]$p <- CTLpermute(genotypes, phenotypes, p, method=method, n.perm, n.cores, genotype.values, directory, saveFiles, verbose)
       
       if(verbose)cat("Stage 1.2: Transformation into LOD\n")
-      results[[idx]]$l <- toLod(results[[idx]], FALSE, FALSE)
+      results[[idx]]$l <- toLod(results[[idx]], FALSE, verbose)
     }else{
       cat("Stage 1.1: Skipping permutation\n")
       if(verbose)cat("Stage 1.2: Skipping transformation into LOD\n")
@@ -75,7 +75,9 @@ CTLscan.cross <- function(cross, pheno.col, method = c("pearson", "kendall", "sp
     phenotypes <- apply(qtl::pull.pheno(cross),2,as.numeric)
     if(missing(pheno.col)) pheno.col <- 1:ncol(phenotypes)
     genotypes <- qtl::pull.geno(cross)
-    CTLscan(genotypes, phenotypes, pheno.col, method, n.perm, n.cores, directory, saveFiles, verbose)
+    CTLscan(genotypes = genotypes, phenotypes =  phenotypes, pheno.col = pheno.col, 
+            method=method, n.perm=n.perm, n.cores=n.cores,genotype.values=genotype.values, 
+            directory=directory, saveFiles=saveFiles, verbose=verbose)
   }else{
     warning(.has_rqtl_warnmsg)
   }

@@ -26,7 +26,8 @@ CTLtoP <- function(CTLscan, onlySignificant = TRUE, verbose = TRUE){
     scaled <- abs(CTLscan$ctl)
     rnames <- rownames(CTLscan$ctl)
   }
-  result <- apply(scaled, 2, function(x){CTLtoPvalue.internal(x, permvalues, l)})
+  pvalues <- unlist(lapply(1:length(permvalues),function(x){1-x/length(permvalues)}))
+  result <- apply(scaled, 2, function(x){CTLtoPvalue.internal(x, permvalues, pvalues, l, permvalues[.1*l])})
   rownames(result) <- rnames
   result
 }
@@ -41,43 +42,20 @@ CTLscoretoPvalue <- function(CTLscore, CTLpermute){
 
 #Determine a P-value based on the relative position of the score within the permutations
 #Out of range values are tested using a GPD to estimate a P-value
-CTLtoPvalue.internal <- function(CTLscore, permvalues, l){
-  res <- NULL
-  warn <- TRUE
-  for(y in CTLscore){
-    if(!is.na(which(permvalues > y)&&1)){
-      index_l <- min(which(permvalues > y))
+CTLtoPvalue.internal <- function(CTLscore, permvalues, pvalues, l = length(permvalues), cv = 0){
+  res <- unlist(lapply(CTLscore, function(y){
+    if(y < cv){
+      return(pvalues[1])
     }else{
-      index_l <- Inf
-    }
-    if(!is.na(which(permvalues < y)&&1)){
-      index_r <- max(which(permvalues < y))
-    }else{
-      index_r <- Inf
-    }
-    if(!is.finite(index_l)){
+      icx <- min(which(permvalues > y))
+      if(is.finite(icx)) return(pvalues[min(icx)])
       tryCatch(estimate <- extrapolateBeyondRange(permvalues, y),  error = function(e) {estimate <<- 1})
       if(estimate > 1-((l-1)/l)){
-        estimate <- 1-((l-1)/l)
+        return(1-((l-1)/l))
       }
-      res <- c(res,estimate)
-      if(warn){
-        cat("  - [Warning] Scores out of permutation range, please do more permutations\n")
-        warn <- FALSE  
-      }
+      return(estimate)
     }
-    if(!is.finite(index_r)){
-     estimate <- (1-(index_l/l))
-      if(estimate==0){
-        res <- c(res,1)
-      }else{
-        res <- c(res,estimate)
-      }
-    }
-    if(is.finite(index_l) && is.finite(index_r)){
-      res <- c(res,1-(index_r/l))
-    }
-  }
+    }))
   res
 }
 
@@ -104,7 +82,7 @@ extrapolateBeyondRange <- function(permvalues, value = 0.6){
   as.numeric(dens(value))
 }
 
-toLod <- function(CTLscan, onlySignificant = TRUE, verbose = FALSE){
+toLod <- function(CTLscan, onlySignificant = TRUE, verbose = TRUE){
   ss <- proc.time()
   pmatrix <- CTLtoP(CTLscan, onlySignificant, verbose)
   ee <- proc.time()
