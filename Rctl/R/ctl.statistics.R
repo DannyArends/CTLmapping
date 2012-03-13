@@ -26,7 +26,7 @@ CTLtoP <- function(CTLscan, onlySignificant = TRUE, verbose = TRUE){
     scaled <- abs(CTLscan$ctl)
     rnames <- rownames(CTLscan$ctl)
   }
-  pvalues <- unlist(lapply(1:length(permvalues),function(x){1-x/length(permvalues)}))
+  pvalues <- unlist(lapply(1:length(permvalues),function(x){1-(x-1)/length(permvalues)}))
   result <- apply(scaled, 2, function(x){CTLtoPvalue.internal(x, permvalues, pvalues, l, permvalues[.1*l])})
   rownames(result) <- rnames
   result
@@ -36,8 +36,9 @@ CTLscoretoPvalue <- function(CTLscore, CTLpermute){
   if(missing(CTLscore)) stop("argument 'CTLscore' is missing, with no default")
   if(missing(CTLpermute)) stop("argument 'CTLpermute' is missing, with no default")
   permvalues <- sort(unlist(CTLpermute))
+  pvalues <- unlist(lapply(1:length(permvalues),function(x){1-(x-1)/length(permvalues)}))
   l <- length(permvalues)
-  CTLtoPvalue.internal(CTLscore, permvalues, l)
+  CTLtoPvalue.internal(CTLscore, permvalues, pvalues, l)
 }
 
 #Determine a P-value based on the relative position of the score within the permutations
@@ -47,13 +48,22 @@ CTLtoPvalue.internal <- function(CTLscore, permvalues, pvalues, l = length(permv
     if(y < cv){
       return(pvalues[1])
     }else{
-      icx <- min(which(permvalues > y))
-      if(is.finite(icx)) return(pvalues[min(icx)])
-      tryCatch(estimate <- extrapolateBeyondRange(permvalues, y),  error = function(e) {estimate <<- 1})
-      if(estimate > 1-((l-1)/l)){
-        return(1-((l-1)/l))
+      myrange <- which(permvalues > y)
+      icx <- Inf
+      if(length(myrange) > 0) icx <- min(myrange)
+      if(is.finite(icx)){
+        if(pvalues[min(icx)]==0) stop("P value of 0.0 at: pvalues[min(icx)]")
+        return(pvalues[min(icx)])
+      }else{
+        tryCatch(estimate <- extrapolateBeyondRange(permvalues, y),  error = function(e) {estimate <<- 1})
+        best_p <- pvalues[length(pvalues)]
+        if(estimate > best_p){
+          if(best_p == 0) stop("P value of 0.0 at: 1-((l-1)/l)")
+          return(best_p)
+        }
+        if(estimate==0) stop("P value of 0.0 at: GPD estimation")
+        return(estimate)
       }
-      return(estimate)
     }
     }))
   res

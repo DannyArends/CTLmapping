@@ -9,31 +9,31 @@
 #
 
 #-- CTLscan main function --#
-CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), method = c("pearson", "kendall", "spearman"), n.perm=0, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles = FALSE, verbose = FALSE){
+CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), method = c("pearson", "kendall", "spearman"), n.perm=100, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles = FALSE, verbose = FALSE){
   if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   
-  cat("Stage 0: Checking data\n")
+  cat("Stage 0.0: Checking data\n")
   toremove <- check.genotypes(genotypes, genotype.values, verbose)
   if(!is.null(toremove)) genotypes <- genotypes[,-toremove]
 
   results <- vector("list",length(pheno.col))
   idx <- 1
-  cat("Stage 0: Scanning QTL\n")
+  cat("Stage 0.1: Scanning QTL\n")
   attr(results,"qtl") <- QTLscan(genotypes, phenotypes, verbose=verbose)$qtl
   for(p in pheno.col){
-    cat("Stage 1: Scanning CTL\n")
+    cat("Stage ",idx,".0: Scanning CTL\n",sep="")
     results[[idx]]$ctl <- CTLmapping(genotypes, phenotypes, p, method=method, genotype.values, verbose)
     results[[idx]]$qtl <- attr(results,"qtl")[p, ]
     if(n.perm > 0){
-      cat("Stage 1.1: Permutation\n")
+      cat("Stage ",idx,".1: Permutation\n",sep="")
       results[[idx]]$p <- CTLpermute(genotypes, phenotypes, p, method=method, n.perm, n.cores, genotype.values, directory, saveFiles, verbose)
       
-      if(verbose)cat("Stage 1.2: Transformation into LOD\n")
+      if(verbose)cat("Stage ",idx,".2: Transformation into LOD\n",sep="")
       results[[idx]]$l <- toLod(results[[idx]], FALSE, verbose)
     }else{
-      cat("Stage 1.1: Skipping permutation\n")
-      if(verbose)cat("Stage 1.2: Skipping transformation into LOD\n")
+      cat("Stage ",idx,".1: Skipping permutation\n",sep="")
+      if(verbose)cat("Stage ",idx,".2: Skipping transformation into LOD\n",sep="")
     }
     class(results[[idx]]) <- c(class(results[[idx]]),"CTLscan")
     idx <- idx + 1

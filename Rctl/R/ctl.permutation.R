@@ -19,12 +19,12 @@ CTLpermuteMC <- function(genotypes, phenotypes, pheno.col, method = c("pearson",
   cl <- snow::makeCluster(rep("localhost",n.cores))
   for(p in pheno.col){
     ss <- proc.time()
-    cat("  - Starting multi core permutation for phenotype",p,"\n")
+    if(verbose) cat("  - Starting multi core permutation for phenotype",p,"\n")
     rvm <- getRVM(n.perm,nrow(genotypes))
     CTLperm[[idx]] <- unlist(snow::parLapply(cl,as.list(1:n.perm),get("CTLpermute.internal"), genotypes, phenotypes, p, method, rvm, genotype.values, directory, saveFiles, verbose,...))
     idx <- idx+1
     el <- proc.time()
-    cat("  -",n.perm,"permutations took:",as.numeric(el[3]-ss[3]),"seconds.\n")
+    if(verbose) cat("  -",n.perm,"permutations took:",as.numeric(el[3]-ss[3]),"seconds.\n")
   }
   class(CTLperm) <- c(class(CTLperm),"CTLpermute")
   snow::stopCluster(cl)
@@ -47,7 +47,7 @@ CTLpermute.internal <- function(perm, genotypes, phenotypes, pheno.col, method =
 CTLpermute <- function(genotypes, phenotypes, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=10, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles = FALSE, verbose=FALSE, ...){
   if(has_snow() && n.cores > 1){
     require(snow)
-    cat("  - SNOW found using",n.cores,"processors for calculation\n")
+    if(verbose) cat("  - SNOW found using",n.cores,"processors for calculation\n")
     CTLpermuteMC(genotypes, phenotypes, pheno.col, method, n.perm, n.cores, genotype.values, directory, saveFiles, verbose)
   }else{
     if(!file.exists(directory)) dir.create(directory)
@@ -56,14 +56,14 @@ CTLpermute <- function(genotypes, phenotypes, pheno.col, method = c("pearson", "
     idx <- 1
     for(p in pheno.col){
       ss <- proc.time()
-      cat("  - Starting permutation for phenotype",p,"\n")
+      if(verbose) cat("  - Starting permutation for phenotype",p,"\n")
       #Generate random numbers from a single thread, so we don't run into concurrency issues
       rvm <- getRVM(n.perm,nrow(genotypes))
       for(x in 1:n.perm){
         CTLperm[[idx]] <- c(CTLperm[[idx]],CTLpermute.internal(x,genotypes,phenotypes,p,method,rvm,genotype.values,directory,saveFiles,verbose))
       }
       el <- proc.time()
-      cat("  -",n.perm,"permutations took:",as.numeric(el[3]-ss[3]),"seconds.\n")
+      if(verbose) cat("  -",n.perm,"permutations took:",as.numeric(el[3]-ss[3]),"seconds.\n")
       idx <- idx+1
     }
     class(CTLperm) <- c(class(CTLperm),"CTLpermute")
