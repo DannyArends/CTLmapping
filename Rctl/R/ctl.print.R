@@ -33,14 +33,14 @@ getPermuteThresholds <-function(x, significance = c(.05,.01,.001), ..., verbose 
   valnames <- NULL
   for(x in significance){
     if(1/(x/n) < length(sorted)){
-    v <- sorted[l*((1-x)/n)]
-    values <- c(values,v)
-    valnames <- c(valnames,paste(x*100,"%"))
-    if(verbose) cat(x*100,"%\t",v,"\n")
+      v <- sorted[l*(1-(x/n))]
+      values <- c(values,v)
+      valnames <- c(valnames,paste(x*100,"%"))
+      if(verbose) cat(x*100,"%\t",v,"\n")
     }else{
-    values <- c(values,NaN)
-    valnames <- c(valnames,paste(x*100,"%"))
-    if(verbose) cat(x*100,"%\t",NaN,"\n")
+      values <- c(values,NaN)
+      valnames <- c(valnames,paste(x*100,"%"))
+      if(verbose) cat(x*100,"%\t",NaN,"\n")
     }
   }
   names(values) <- valnames
