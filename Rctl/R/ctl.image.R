@@ -13,21 +13,34 @@ image.CTLobject <- function(x, against = c("markers","phenotypes"), onlySignific
   mymatrix <- NULL
   mynames <- NULL
   for(p in 1:length(x)){
-    if(verbose) cat("Processing:",p,"from CTL to LOD\n")
-    lod <- CTLtoLODvector(x[[p]], against)
     if(onlySignificant){
-      if(max(lod) > getPermuteThresholds(x[[p]])[1]){
-        mymatrix <- rbind(mymatrix,lod)
+      maxes <- apply(abs(x[[p]]$ctl),1,max)
+      if(max(maxes) > getPermuteThresholds(x[[p]], significance)[1]){
+        mymatrix <- rbind(mymatrix,apply(x[[p]]$l,2,sum))
         mynames <- c(mynames,attr(x[[p]]$ctl,"name"))  
       }
     }else{
-      mymatrix <- rbind(mymatrix,lod)
+      mymatrix <- rbind(mymatrix,apply(x[[p]]$l,2,sum))
       mynames <- c(mynames,attr(x[[p]]$ctl,"name"))
     }
   }
   rownames(mymatrix) <- mynames
   mainlabel <- paste("CTL phenotypes vs",against[1],"at P-value <",significance)
   internal.image(mymatrix, colorrange, mainlabel,do.grid, grid.col)
+}
+
+qtlimage <- function(CTLscan, do.grid = TRUE, grid.col = "black", verbose = FALSE){
+  colorrange <- c("white",gray.colors(10)[10:1])
+  mymatrix <- NULL
+  mynames <- NULL
+  for(num in 1:length(CTLscan)){ 
+    mymatrix <- rbind(mymatrix,as.numeric(unlist(CTLscan[[num]]$qtl))) 
+    mynames <- c(mynames,attr(CTLscan[[num]]$ctl,"name"))  
+  }
+  rownames(mymatrix) <- mynames
+  colnames(mymatrix) <- names(CTLscan[[1]]$qtl)
+  internal.image(mymatrix, colorrange, "QTLs", do.grid, grid.col)
+  invisible(mymatrix)
 }
 
 internal.image <- function(mymatrix, colorrange, mainlabel, do.grid, grid.col){
