@@ -37,7 +37,7 @@ CTLnetwork <- function(CTLscan, ctl.threshold=0.45, verbose = FALSE){
   if(!is.null(edge_count)){
     cat("",file="edge_summary.sif")
     for(x in 1:nrow(edge_count)){
-      cat(edge_count[x,1],"\t",round(as.numeric(edge_count[x,2]),d=1),"\t",edge_count[x,3],"\n",file="edge_summary.sif",append=TRUE,sep="")
+      cat(edge_count[x,1],"\t",round(as.numeric(edge_count[x,2]),digits=1),"\t",edge_count[x,3],"\n",file="edge_summary.sif",append=TRUE,sep="")
     }
     cat("Wrote",nrow(edge_count),"unique edges to edge_summary.sif\n")
   }

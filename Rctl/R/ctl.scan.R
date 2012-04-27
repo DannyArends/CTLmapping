@@ -50,8 +50,10 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, method = c("pearson
   results <- NULL
   ctlprofile <- apply(genotypes,2, 
     function(geno){
-      cor1 <- cor(phenotypes[geno==genotype.values[1],pheno.col],phenotypes[geno==genotype.values[1],],use="pair",method=method[1])
-      cor2 <- cor(phenotypes[geno==genotype.values[2],pheno.col],phenotypes[geno==genotype.values[2],],use="pair",method=method[1])
+      geno1 <- which(geno==genotype.values[1])
+      geno2 <- which(geno==genotype.values[2])
+      cor1 <- cor(phenotypes[geno1,pheno.col],phenotypes[geno1,],use="pair",method=method[1])
+      cor2 <- cor(phenotypes[geno2,pheno.col],phenotypes[geno2,],use="pair",method=method[1])
       #sign(cor1)*(cor1^2)-sign(cor2)*(cor2^2)
       (cor1 - cor2)^2
     }

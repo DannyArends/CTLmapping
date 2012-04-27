@@ -29,6 +29,7 @@ CTLasLOD <- function(CTLscan, QTLscores, main, do.legend=TRUE){
 }
 
 plot.CTLobject <- function(x, pheno.col=1:length(x), ...){
+  if(missing(x)) stop("argument 'x' is missing, with no default")
   if(length(x) == 1){
     return(plot.CTLscan(x[[1]],...))
   }
@@ -36,6 +37,34 @@ plot.CTLobject <- function(x, pheno.col=1:length(x), ...){
     return(plot.CTLscan(x[[pheno.col]],...))
   }
   return(image.CTLobject(x,...))
+}
+
+plotExpression <- function(genotypes, phenotypes, traits=c("X3.Hydroxypropyl", "X3.Methylthiopropyl"), markers=1, method = c("pearson", "kendall", "spearman"), do.plot = TRUE, verbose = FALSE){
+  if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
+  if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
+  if(length(traits) != 2) stop("argument 'traits' needs to be of length 2")
+  
+  ids <- c(which(colnames(phenotypes)==traits[1]),which(colnames(phenotypes)==traits[2]))
+  result <- NULL
+  
+  for(m in markers){
+    if(do.plot && length(markers)==1) plot(x=phenotypes[,ids[1]],y=phenotypes[,ids[2]],col=genotypes[,m],pch=20,xlab=traits[1],ylab=traits[2])
+    idx1 <- which(genotypes[,m]==1)
+    idx2 <- which(genotypes[,m]==2)
+    a   <- cor(phenotypes[idx1,ids[1]],phenotypes[idx1,ids[2]],use="pair",method = method[1])
+    b   <- cor(phenotypes[idx2,ids[2]],phenotypes[idx2,ids[1]],use="pair",method = method[1])
+    ctl <- (a - b)^2
+    if(verbose) cat("Correlation: ",a,"\t",b,"\tCTL: ",ctl,"\n")
+    result <- rbind(result, c(a,b,ctl))
+  }
+  
+  if(length(markers)>1 && do.plot){
+    plot(x=c(0,length(markers)),y=c(-1,1),main=paste("CTL ",traits[2]),ylab="Correlation",xlab="Marker",t='n')
+    points(result[,1],col="green",t='l')
+    points(result[,2],col="red",t='l')
+    points(result[,3],col="black",t='l',lwd=2)
+  }
+  return(result)
 }
 
 plot.CTLscan2 <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance = 0.05, do.legend=TRUE, ...){
@@ -125,7 +154,7 @@ plot.CTLscan <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance 
 }
 
 plot.CTLpermute <- function(x, type="s", ...){
-  if(missing(x)) stop("argument 'x' which expects a 'CTLpermute' object is missing, with no default")
+  if(missing(x)) stop("argument 'x' is missing, with no default")
   plot(seq(0,0.9,0.01),CTLscoretoPvalue(seq(0,0.9,0.01),x),main="CTL to P.value",xlab="CTL",ylab="Pvalue", type=type,...)
   significant <- print.CTLpermute(x)
   mycolors <- c("red","orange","green")

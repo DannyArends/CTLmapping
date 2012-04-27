@@ -23,8 +23,8 @@ has_rqtl <- function(){ get(".has_rqtl", envir = .CtlEnv) }
   packageStartupMessage("- Loading package ctl\n", appendLF = FALSE)
   .has_snow <- FALSE
   .has_rqtl <- FALSE
-  .has_snow  <- ("snow" %in% installed.packages(lib.loc=lib)[,1])
-  .has_rqtl  <- ("qtl" %in% installed.packages(lib.loc=lib)[,1])
+  .has_snow  <- !is.na(tryCatch(find.package("snow", lib.loc = lib),error = function(e){NA}))
+  .has_rqtl  <- !is.na(tryCatch(find.package("qtl", lib.loc = lib),error = function(e){NA}))
   assign(".has_snow",  .has_snow,  envir = .CtlEnv)
   assign(".has_rqtl",  .has_rqtl,  envir = .CtlEnv)
   if(!get(".has_snow", envir = .CtlEnv)){

@@ -5,7 +5,7 @@
   Scan for Correlated Trait Locus (CTL) in populations
 }
 \usage{
-CTLscan(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), method = c("pearson", "kendall", "spearman"), n.perm=0, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles = FALSE, verbose = FALSE)
+CTLscan(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), method = c("pearson", "kendall", "spearman"), n.perm=100, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles = FALSE, verbose = FALSE)
 }
 
 \arguments{
@@ -42,7 +42,7 @@ CTL object, a list with at each index a $ctlscan, $permutations, $lodmatrix
 \examples{
   library(ctl)
   data(ath.metabolites) # Arabidopsis Thaliana dataset
-  ctl_result <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, 1:3, n.perm=20)
+  ctl_result <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, 1:5, n.perm=30, method="spearman")
   ctl_result
   plot(ctl_result)   #Plot a phenotype
   image(ctl_result, against="markers")     #pxm matrix
