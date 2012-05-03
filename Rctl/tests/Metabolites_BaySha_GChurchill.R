@@ -24,7 +24,7 @@ map_info[1:10,1:3]
 
 library(ctl)
 
-ctl <- CTLscan(genotypes, metabolites, genotype.values=c("A","B"), n.perm = 5)
+ctl <- CTLscan(genotypes, metabolites, pheno.col=1:3, genotype.values=c("A","B"), n.perm = 5)
 
 #Create comparison QTL / CTL heatmaps
 png("Comparison_QTL_CTL.png",width=2000,height=1000)
@@ -46,7 +46,7 @@ image(x=1:nrow(metabolites),y=1:nrow(metabolites),cor_individuals ,breaks=seq(-1
 dev.off()
 
 png("Hist_CorIndividuals.png",width=2000,height=1000)
-  hist(cor_metabolites, breaks=seq(-1,1,0.1), col="red",freq=TRUE)
-  hist(cor_individuals ,breaks=seq(-1,1,0.1), add=TRUE,col="blue",freq=TRUE)
+  hist(cor_metabolites, breaks=seq(-1,1,0.1), col="red",freq=FALSE)
+  hist(cor_individuals ,breaks=seq(-1,1,0.1), add=TRUE,col="blue",freq=FALSE)
 dev.off()
 
