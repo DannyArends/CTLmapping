@@ -19,8 +19,10 @@ CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), metho
   results <- vector("list",length(pheno.col))
   attr(results,"qtl") <- QTLscan(genotypes, phenotypes, verbose=verbose)$qtl
   cat("Stage 0.2: Cleaning data for CTL mapping\n")
-  if(!is.null(toremove)) genotypes <- genotypes[,-toremove]
-
+  if(!is.null(toremove)){
+   warning(paste("Removing",length(toremove),"/",ncol(genotypes),"genotype markers")) 
+   genotypes <- genotypes[,-toremove]
+  }
   idx <- 1
   for(p in pheno.col){
     cat("Stage ",idx,".0: Mapping Correlated Traits Loci - CTL\n",sep="")
