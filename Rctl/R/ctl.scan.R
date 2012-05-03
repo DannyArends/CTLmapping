@@ -9,28 +9,36 @@
 #
 
 #-- CTLscan main function --#
-CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), method = c("pearson", "kendall", "spearman"), n.perm=100, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles = FALSE, verbose = FALSE){
+CTLscan <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1:ncol(phenotypes), have.qtl, method = c("pearson", "kendall", "spearman"), conditions = NULL, n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE){
   if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   
   cat("Stage 0.0: Checking data\n")
-  toremove <- check.genotypes(genotypes, genotype.values, verbose)
-  cat("Stage 0.1: Mapping Trait - Marker associations (QTL)\n")
+  toremove <- check.genotypes(genotypes, geno.enc, verbose)
   results <- vector("list",length(pheno.col))
-  attr(results,"qtl") <- QTLscan(genotypes, phenotypes, verbose=verbose)$qtl
-  cat("Stage 0.2: Cleaning data for CTL mapping\n")
+  stage <- 1
+  if(missing(have.qtl)){
+    cat("Stage 0.1: Mapping Trait - Marker associations (QTL)\n")
+    attr(results,"qtl") <- QTLscan(genotypes, phenotypes, conditions, verbose=verbose)$qtl
+    stage <- 2
+  }else{
+    if(ncol(have.qtl) != ncol(genotypes)) cat("[SEVERE] argument 'have.qtl' should be of size:",ncol(phenotypes),ncol(genotypes))
+    if(nrow(have.qtl) != ncol(phenotypes)) cat("[SEVERE] argument 'have.qtl' should be of size:",ncol(phenotypes),ncol(genotypes))
+    attr(results,"qtl") <- have.qtl
+  }
   if(!is.null(toremove)){
-   warning(paste("Removing",length(toremove),"/",ncol(genotypes),"genotype markers")) 
-   genotypes <- genotypes[,-toremove]
+    cat("Stage 0.",stage,": Cleaning genotype data for mapping\n",sep="")
+    warning(paste("Removing",length(toremove),"/",ncol(genotypes),"genotype markers")) 
+    genotypes <- genotypes[,-toremove]
   }
   idx <- 1
   for(p in pheno.col){
-    cat("Stage ",idx,".0: Mapping Correlated Traits Loci - CTL\n",sep="")
-    results[[idx]]$ctl <- CTLmapping(genotypes, phenotypes, p, method=method, genotype.values, verbose)
+    cat("Stage ",idx,".0: Mapping Correlated Traits Loci (CTL)\n",sep="")
+    results[[idx]]$ctl <- CTLmapping(genotypes, phenotypes, geno.enc=geno.enc, p, method=method, verbose)
     results[[idx]]$qtl <- attr(results,"qtl")[p, ]
     if(n.perm > 0){
       cat("Stage ",idx,".1: Permutation\n",sep="")
-      results[[idx]]$p <- CTLpermute(genotypes, phenotypes, p, method=method, n.perm, n.cores, genotype.values, directory, saveFiles, verbose)
+      results[[idx]]$p <- CTLpermute(genotypes, phenotypes, geno.enc=geno.enc, p, method=method, n.perm, n.cores, directory, saveFiles, verbose)
       
       if(verbose)cat("Stage ",idx,".2: Transformation into LOD\n",sep="")
       results[[idx]]$l <- toLod(results[[idx]], FALSE, verbose)
@@ -45,7 +53,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), metho
   results
 }
 
-CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, method = c("pearson", "kendall", "spearman"), genotype.values=c(1,2), verbose = FALSE){
+CTLmapping <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1, method = c("pearson", "kendall", "spearman"), verbose = FALSE){
   if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   if(length(pheno.col)!=1) stop("CTLmapping can only scan 1 phenotype at once, use CTLscan for multiple phenotypes")
@@ -53,8 +61,8 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, method = c("pearson
   results <- NULL
   ctlprofile <- apply(genotypes,2, 
     function(geno){
-      geno1 <- which(geno==genotype.values[1])
-      geno2 <- which(geno==genotype.values[2])
+      geno1 <- which(geno==geno.enc[1])
+      geno2 <- which(geno==geno.enc[2])
       cor1 <- cor(phenotypes[geno1,pheno.col],phenotypes[geno1,],use="pair",method=method[1])
       cor2 <- cor(phenotypes[geno2,pheno.col],phenotypes[geno2,],use="pair",method=method[1])
       #sign(cor1)*(cor1^2)-sign(cor2)*(cor2^2)
@@ -74,15 +82,15 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, method = c("pearson
 }
 
 #-- R/qtl interface --#
-CTLscan.cross <- function(cross, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=100, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles = FALSE, verbose = FALSE){
+CTLscan.cross <- function(cross, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=100, n.cores=2, geno.enc=c(1,2), directory="permutations", saveFiles = FALSE, verbose = FALSE){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
   if(has_rqtl()){
     require(qtl)
     phenotypes <- apply(qtl::pull.pheno(cross),2,as.numeric)
     if(missing(pheno.col)) pheno.col <- 1:ncol(phenotypes)
     genotypes <- qtl::pull.geno(cross)
-    CTLscan(genotypes = genotypes, phenotypes =  phenotypes, pheno.col = pheno.col, 
-            method=method, n.perm=n.perm, n.cores=n.cores,genotype.values=genotype.values, 
+    CTLscan(genotypes = genotypes, phenotypes =  phenotypes, geno.enc=geno.enc, 
+            pheno.col = pheno.col, method=method, n.perm=n.perm, n.cores=n.cores, 
             directory=directory, saveFiles=saveFiles, verbose=verbose)
   }else{
     warning(.has_rqtl_warnmsg)
