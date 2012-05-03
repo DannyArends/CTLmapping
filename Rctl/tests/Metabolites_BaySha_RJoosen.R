@@ -1,4 +1,4 @@
-#Analysis script for the Arabidopsis Bay x Sha Matabolites
+#Analysis script for the Arabidopsis Bay x Sha Metabolites
 # Paper senior author: RJoosen 2012, Published in: Plant physiology
 #
 # (C) 2012 Danny Arends - GBIC - University of Groningen
