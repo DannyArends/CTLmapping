@@ -15,14 +15,15 @@ CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), metho
   
   cat("Stage 0.0: Checking data\n")
   toremove <- check.genotypes(genotypes, genotype.values, verbose)
+  cat("Stage 0.1: Mapping QTL\n")
+  results <- vector("list",length(pheno.col))
+  attr(results,"qtl") <- QTLscan(genotypes, phenotypes, verbose=verbose)$qtl
+  cat("Stage 0.2: Cleaning data for CTL mapping\n")
   if(!is.null(toremove)) genotypes <- genotypes[,-toremove]
 
-  results <- vector("list",length(pheno.col))
   idx <- 1
-  cat("Stage 0.1: Scanning QTL\n")
-  attr(results,"qtl") <- QTLscan(genotypes, phenotypes, verbose=verbose)$qtl
   for(p in pheno.col){
-    cat("Stage ",idx,".0: Scanning CTL\n",sep="")
+    cat("Stage ",idx,".0: Mapping CTL\n",sep="")
     results[[idx]]$ctl <- CTLmapping(genotypes, phenotypes, p, method=method, genotype.values, verbose)
     results[[idx]]$qtl <- attr(results,"qtl")[p, ]
     if(n.perm > 0){

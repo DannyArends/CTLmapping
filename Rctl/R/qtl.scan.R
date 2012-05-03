@@ -10,7 +10,8 @@
 
 #Recreate a matrix from the per marker modeling results
 create.matrix <- function(models, what="qtl", phenonames, genonames, do.log=TRUE){
-  res <- matrix(unlist((lapply(models,"[",what))),length(phenonames),length(genonames))
+  qtldata <- lapply(models,"[",what)
+  res <- matrix(unlist(qtldata),length(phenonames),length(genonames))
   rownames(res) <- phenonames
   colnames(res) <- genonames
   if(do.log) res <- -log10(res)
@@ -64,6 +65,7 @@ QTLscan <- function(genotypes, phenotypes, conditions=NULL, n.core=2, verbose = 
   }else{
     models <- apply(genotypes, 2, "map.fast", phenotypes, conditions)  
   }
+  cat("Stage 0.1: Done with QTL mapping\n")
   res <- NULL
   res$qtl <- create.matrix(models, "qtl", colnames(phenotypes), colnames(genotypes))
   res$eff <- create.matrix(models, "eff", colnames(phenotypes), colnames(genotypes), FALSE)
