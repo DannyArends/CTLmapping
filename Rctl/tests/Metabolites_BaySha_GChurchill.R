@@ -48,15 +48,17 @@ ctls <- CTLscan(genotypes, metabolites, pheno.col=1:10, genotype.values=c("A","B
 
 #Create comparison QTL / CTL heatmaps using QTLimage() and image.CTLscan()
 png("Comparison_QTL_CTL.png",width=2000,height=1000)
-  op <- par(mfrow=c(1,2)); QTLimage(ctls); image(ctls);
+  op <- par(mfrow=c(1,2)); op <- par(cex=1.8);
+  QTLimage(ctls); image(ctls);
 dev.off()
 
 #Plot the individual CTL plot.CTLobject()
 for(ctl in ctls){
   png(paste("CTL_",name(ctl),".png",sep=""),width=2000,height=1000); 
     op <- par(mfrow=c(1,2))
+    op <- par(cex=1.8)
     plot(ctl)
-    image(1:ncol(ctl$ctl),1:nrow(ctl$ctl),t(ctl$ctl),breaks=seq(-2,2.1,0.1),col=redblue,ylab="Metabolites",xlab="Markers")
+    image(1:ncol(ctl$ctl),1:nrow(ctl$ctl),t(ctl$l),col=gray.colors(10)[10:1],ylab="Metabolites",xlab="Markers",main="Phenotype @ Marker x Phenotype matrix")
     abline(v=(get.chredges+.5),col="white");box()
   dev.off()
 }
