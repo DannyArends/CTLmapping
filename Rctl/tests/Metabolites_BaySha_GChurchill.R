@@ -92,7 +92,7 @@ png("Cor_Individuals.png",width=1000,height=600)
   image(x=1:nrow(metabolites),y=1:nrow(metabolites),cor_individuals ,breaks=seq(-1,1.05,0.05),col=redblue)
 dev.off()
 
-png("Hist_CorIndividuals.png",width=1000,height=600)
+png("Cor_Histogram.png",width=1000,height=600)
   hist(cor_metabolites, breaks=seq(-1,1,0.1), col=rgb(1,0,0,0.5),freq=FALSE)
   hist(cor_individuals ,breaks=seq(-1,1,0.1), add=TRUE,col=rgb(0,0,1,0.5),freq=FALSE)
 dev.off()
