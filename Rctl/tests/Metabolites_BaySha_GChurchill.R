@@ -23,22 +23,27 @@ metabolites[1:5,1:10]
 genotypes[1:5,1:10]
 map_info[1:10,1:3]
 
+#Load the library and scan the data
 library(ctl)
+ctls <- CTLscan(genotypes, metabolites, pheno.col=1:3, genotype.values=c("A","B"), n.perm = 100)
 
-ctls <- CTLscan(genotypes, metabolites, pheno.col=1:3, genotype.values=c("A","B"), n.perm = 5)
-
-#Create comparison QTL / CTL heatmaps
+#Create comparison QTL / CTL heatmaps using QTLimage() and image.CTLscan()
 png("Comparison_QTL_CTL.png",width=2000,height=1000)
   op <- par(mfrow=c(1,2)); QTLimage(ctls); image(ctls);
 dev.off()
 
-name <- function(ctl){ return(attr(ctl$ctl,"name")); }
+#Helper function to get a CTLobject's name
+name <- function(CTLobject){ return(attr(CTLobject$ctl,"name")); }
+#Helper function to remove the Diagonal from a matrix
+remove.diag <- function(x){ return(x*lower.tri(x) + x*upper.tri(x)); }
 
-#Plot the individual CTLs
+#Plot the individual CTL plot.CTLobject()
 for(ctl in ctls){
   png(paste("CTL_",name(ctl),".png",sep=""),width=2000,height=1000); plot(ctl); dev.off()
 }
 
+#QC - Section 
+#Create the two correlation matrices
 cor_metabolites <- cor(metabolites,use='pair')
 rownames(cor_metabolites) <- colnames(metabolites)
 colnames(cor_metabolites) <- colnames(metabolites)
@@ -47,7 +52,6 @@ rownames(cor_individuals) <- rownames(metabolites)
 colnames(cor_individuals) <- rownames(metabolites)
 
 redblue <- c(rgb(abs(seq(-1,0.11,0.1)),0,0), rgb(0,0,seq(0.11,1,0.1)))
-
 
 png("Cor_Metabolites.png",width=2000,height=1000)
   image(x=1:ncol(metabolites),y=1:ncol(metabolites),cor_metabolites ,breaks=seq(-1,1,0.095),col=redblue)
@@ -62,8 +66,7 @@ png("Hist_CorIndividuals.png",width=1000,height=600)
   hist(cor_individuals ,breaks=seq(-1,1,0.1), add=TRUE,col=rgb(0,0,1,0.5),freq=FALSE)
 dev.off()
 
-remove.diag <- function(x){ return(x*lower.tri(x) + x*upper.tri(x)); }
-
+#Helper function to get the top-correlated metabolites
 top.correlated <- function(x){
   ret <- t(apply(remove.diag(x),1,function(r){
     id <- which.max(abs(r))
