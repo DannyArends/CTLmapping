@@ -1,7 +1,15 @@
-#setwd("C:/github/CTLmapping/Rctl/tests")
+#Analysis script for the Arabidopsis Bay x Sha Matabolites
+# Paper senior author: Gary Churchill 2012, Published in: Plos
+#
+# (C) 2012 Danny Arends - GBIC - University of Groningen
+#
+# Start by either: Setwd("C:/github/CTLmapping/Rctl/tests")
+# Files are distributed with the Rctl package in Rctl/tests
+
 metabolites <- read.table("Metabolites_BaySha_GChurchill.txt",sep="\t",row.names=1,header=TRUE)
 genotypes   <- read.table("Genotypes_BaySha.txt",row.names=1,header=TRUE)
-#Create A map from the first 3 lines
+
+#Create the genetic map from the first 3 lines og the genotypes file
 map_info <- apply(t(genotypes[1:3,]),2,as.numeric)
 rownames(map_info) <- colnames(genotypes)
 
@@ -23,27 +31,46 @@ metabolites[1:5,1:10]
 genotypes[1:5,1:10]
 map_info[1:10,1:3]
 
+#Helper functions: 
+# - Get a CTLobject's name
+# - Remove the diagonal from a matrix
+# - Chromosome edge locations
+# - Color range for plots (Red-Black-Blue)
+name <- function(CTLobject){ return(attr(CTLobject$ctl,"name")); }
+remove.diag <- function(x){ return(x*lower.tri(x) + x*upper.tri(x)); }
+get.chredges <- unlist(lapply(unique(map_info[,1]),function(x){max(which(map_info[,1]==x));}))
+up <- abs(seq(-2,-0,0.1))/2 ; dw <- seq(0.1,2,0.1)/2
+redblue <- c(rgb(up,0,0), rgb(0,0,dw))
+
 #Load the library and scan the data
 library(ctl)
-ctls <- CTLscan(genotypes, metabolites, pheno.col=1:3, genotype.values=c("A","B"), n.perm = 100)
+ctls <- CTLscan(genotypes, metabolites, pheno.col=1:10, genotype.values=c("A","B"), n.perm = 25)
 
 #Create comparison QTL / CTL heatmaps using QTLimage() and image.CTLscan()
 png("Comparison_QTL_CTL.png",width=2000,height=1000)
   op <- par(mfrow=c(1,2)); QTLimage(ctls); image(ctls);
 dev.off()
 
-#Helper function to get a CTLobject's name
-name <- function(CTLobject){ return(attr(CTLobject$ctl,"name")); }
-#Helper function to remove the Diagonal from a matrix
-remove.diag <- function(x){ return(x*lower.tri(x) + x*upper.tri(x)); }
-
 #Plot the individual CTL plot.CTLobject()
 for(ctl in ctls){
-  png(paste("CTL_",name(ctl),".png",sep=""),width=2000,height=1000); plot(ctl); dev.off()
+  png(paste("CTL_",name(ctl),".png",sep=""),width=2000,height=1000); 
+    op <- par(mfrow=c(1,2))
+    plot(ctl)
+    image(1:ncol(ctl$ctl),1:nrow(ctl$ctl),t(ctl$ctl),breaks=seq(-2,2.1,0.1),col=redblue,ylab="Metabolites",xlab="Markers")
+    abline(v=(get.chredges+.5),col="white");box()
+  dev.off()
 }
 
-#QC - Section 
-#Create the two correlation matrices
+### Section: Input data quality control ###
+
+png("Genetic_map.png",width=2000,height=1000)
+  image(1:ncol(genotypes),1:ncol(genotypes),cor(genotypes=="A"),
+        main="Genetic map",xlab="Markers",ylab="Markers",col=gray.colors(75))
+  abline(h=(get.chredges+.5),col="white")
+  abline(v=(get.chredges+.5),col="white"); box()
+dev.off()
+
+#Create the Two correlation matrices
 cor_metabolites <- cor(metabolites,use='pair')
 rownames(cor_metabolites) <- colnames(metabolites)
 colnames(cor_metabolites) <- colnames(metabolites)
@@ -51,14 +78,16 @@ cor_individuals <- cor(t(metabolites),use='pair')
 rownames(cor_individuals) <- rownames(metabolites)
 colnames(cor_individuals) <- rownames(metabolites)
 
-redblue <- c(rgb(abs(seq(-1,0.11,0.1)),0,0), rgb(0,0,seq(0.11,1,0.1)))
+#Create a range of colors
 
 png("Cor_Metabolites.png",width=2000,height=1000)
-  image(x=1:ncol(metabolites),y=1:ncol(metabolites),cor_metabolites ,breaks=seq(-1,1,0.095),col=redblue)
+  image(x=1:ncol(metabolites),y=1:ncol(metabolites),cor_metabolites ,breaks=seq(-1,1.05,0.05),col=redblue)
+  abline(h=(1:ncol(metabolites)+.5),col="white",lwd=0.1)
+  abline(v=(1:ncol(metabolites)+.5),col="white",lwd=0.1); box()  
 dev.off()
 
 png("Cor_Individuals.png",width=1000,height=600)
-  image(x=1:nrow(metabolites),y=1:nrow(metabolites),cor_individuals ,breaks=seq(-1,1,0.095),col=redblue)
+  image(x=1:nrow(metabolites),y=1:nrow(metabolites),cor_individuals ,breaks=seq(-1,1.05,0.05),col=redblue)
 dev.off()
 
 png("Hist_CorIndividuals.png",width=1000,height=600)
