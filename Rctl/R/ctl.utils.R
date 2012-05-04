@@ -7,13 +7,14 @@
 # 
 # check.genotypes, getRVM, lodscorestoscanone, getCorrelatedPhenotypes, gcLoop
 
-check.genotypes <- function(genotypes, genotype.values=c(1,2), verbose=FALSE){
+check.genotypes <- function(genotypes, geno.enc=c(1,2), verbose=FALSE){
   if(verbose) cat(" - Genotypes: individuals=",nrow(genotypes),", markers=",ncol(genotypes),"\n",sep="")
-  if(length(genotype.values)!=2) stop("argument 'genotype.values' length is incorrect, provide two genotype.values")
+  if(length(geno.enc)!=2) stop("argument 'geno.enc' length is incorrect, provide two genotype.values")
+  
   toremove <- NULL
   idx <- 1
   checks <- apply(genotypes,2,function(geno){
-    if(length(which(geno==genotype.values[1])) == 0 | length(which(geno==genotype.values[2])) == 0){
+    if(length(which(geno==geno.enc[1])) == 0 | length(which(geno==geno.enc[2])) == 0){
       if(verbose) cat("Severe: Empty group, removing marker",idx,"\n")
       toremove <<- c(idx,toremove)
     }

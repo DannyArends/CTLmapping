@@ -72,11 +72,16 @@ CTLpermute <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col, method
 }
 
 #-- R/qtl interface --#
-CTLpermute.cross <- function(cross, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=10, n.cores=2, geno.enc=c(1,2), directory="permutations", saveFiles = FALSE, verbose=FALSE, ...){
+CTLpermute.cross <- function(cross, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=10, n.cores=2, directory="permutations", saveFiles = FALSE, verbose=FALSE, ...){
   if(missing(cross)) stop("cross is missing")
   if(missing(pheno.col)) stop("pheno.col missing")
   if(has_rqtl()){
     require(qtl)
+    
+    geno.enc <- NULL
+    if(any(class(cross)=="bc") || any(class(cross)=="riself") || any(class(cross)=="risib")) geno.enc <- c(1,2)
+    if(is.null(geno.enc)) stop("Class of the cross needs to be either: riself,risib or bc")
+    
     phenotypes <- apply(qtl::pull.pheno(cross),2,as.numeric)
     genotypes <- qtl::pull.geno(cross)
     CTLpermute(genotypes, phenotypes, geno.enc=geno.enc, pheno.col=pheno.col, method=method, n.perm=n.perm, n.cores=n.cores, directory=directory, saveFiles = saveFiles, verbose=verbose,...)

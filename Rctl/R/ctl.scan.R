@@ -82,10 +82,15 @@ CTLmapping <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1, me
 }
 
 #-- R/qtl interface --#
-CTLscan.cross <- function(cross, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=100, n.cores=2, geno.enc=c(1,2), directory="permutations", saveFiles = FALSE, verbose = FALSE){
+CTLscan.cross <- function(cross, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
   if(has_rqtl()){
     require(qtl)
+
+    geno.enc <- NULL
+    if(any(class(cross)=="bc") || any(class(cross)=="riself") || any(class(cross)=="risib")) geno.enc <- c(1,2)
+    if(is.null(geno.enc)) stop("Class of the cross needs to be either: riself,risib or bc")
+
     phenotypes <- apply(qtl::pull.pheno(cross),2,as.numeric)
     if(missing(pheno.col)) pheno.col <- 1:ncol(phenotypes)
     genotypes <- qtl::pull.geno(cross)
