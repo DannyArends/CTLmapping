@@ -40,3 +40,17 @@ png("Comparison_QTL_CTL.png",width=2000,height=1000)
   op <- par(mfrow=c(1,2)); op <- par(cex=1.8);
   QTLimage(ctls); image(ctls);
 dev.off()
+
+#Plot the individual CTL plot.CTLobject()
+for(ctl in ctls){
+  png(paste("CTL_",name(ctl),".png",sep=""),width=2000,height=1000); 
+    op <- par(mfrow=c(1,2))
+    op <- par(cex=1.8)
+    plot(ctl,cex.legend=0.7)
+    cnt<-1;add_col <- apply(matrix(0,ncol(ctl$ctl),nrow(ctl$ctl)),2,function(x){x <- rep(cnt,length(x));cnt <<- cnt+1;return(x)})
+    image(1:ncol(ctl$ctl), 1:nrow(ctl$ctl),add_col, col=topo.colors(nrow(ctl$ctl),alpha=0.8),ylab="Metabolites",xlab="Markers",main="Phenotype @ Marker x Phenotype matrix")
+    image(1:ncol(ctl$ctl), 1:nrow(ctl$ctl),t(ctl$l),col=c(rgb(up,up,up,up)), add=TRUE)
+    abline(v=(get.chredges+.5),col="white");box()
+    abline(h=(1:nrow(ctl$ctl)+.5),col="white");box()
+  dev.off()
+}
