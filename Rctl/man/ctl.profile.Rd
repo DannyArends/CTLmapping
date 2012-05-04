@@ -40,7 +40,7 @@
 \examples{
   library(ctl)
   data(ath.metabolites) # Arabidopsis Thaliana dataset
-  ctl_result <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes,1:3,n.perm=10)
+  ctl_result <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, pheno.col=1:3, n.perm=10)
   p2m_matrix <- CTLprofile(ctl_result)
 }
 

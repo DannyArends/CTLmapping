@@ -8,7 +8,8 @@
 }
 
 \usage{
-\method{image}{CTLobject}(x, against = c("markers","phenotypes"), onlySignificant = FALSE, significance = 0.05, do.grid=TRUE, grid.col = "black", verbose = FALSE, \dots)
+\method{image}{CTLobject}(x, against = c("markers","phenotypes"), onlySignificant = FALSE, significance = 0.05, 
+      col=c("white",gray.colors(10)[10:1]), do.grid=TRUE, grid.col = "black", verbose = FALSE, add=FALSE, \dots)
 }
 
 \arguments{
@@ -17,9 +18,11 @@
   this parameter is passed to the \code{\link{CTLprofiles}} function. }
   \item{onlySignificant}{ Plot only the significant contributions to the CTL profile. }
   \item{significance}{ Significance threshold for setting a genomewide FDR. }
+  \item{col}{ Color-range used in plotting. }
   \item{do.grid}{ Draw grid lines. }
   \item{grid.col}{ Colors used to draw the grid. }
   \item{verbose}{ Be verbose. }
+  \item{add}{ Add this plot to a previously opened plot window. }
   \item{\dots}{ Passed to the function \code{\link[graphics]{image}} when it is called. }
 }
 

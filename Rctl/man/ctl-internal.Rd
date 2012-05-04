@@ -32,10 +32,12 @@
 
 %ctl.image.R
 \alias{internal.image}
+\alias{qtlimage}
 
 %qtl.scan.R
 \alias{QTLscan}
 \alias{create.matrix}
+\alias{clean.phenotypes}
 \alias{map.fast}
 \alias{QTLscan.cross}
 
@@ -48,6 +50,7 @@
 
 %ctl.plot.R
 \alias{plot.CTLscan2}
+\alias{plotExpression}
 
 
 \title{Internal CTL functions}

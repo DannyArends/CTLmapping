@@ -5,20 +5,24 @@
   Scan for Correlated Trait Locus (CTL) in populations
 }
 \usage{
-CTLscan(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), method = c("pearson", "kendall", "spearman"), n.perm=100, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles = FALSE, verbose = FALSE)
+CTLscan(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1:ncol(phenotypes), have.qtl, method = c("pearson", "kendall", "spearman"), conditions = NULL, 
+        n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE)
 }
 
 \arguments{
-  \item{genotypes}{ Matrix of genotypes (individuals x markers) }
-  \item{phenotypes}{ Matrix of phenotypes (individuals x phenotypes) }
-  \item{pheno.col}{ Which phenotype column(s) should we analyse. Defaults to analyse all phenotype columns }
+  \item{genotypes}{ Matrix of genotypes. (individuals x markers) }
+  \item{phenotypes}{ Matrix of phenotypes. (individuals x phenotypes) }
+  \item{geno.enc}{ Specifying the encoding of the genotype matrix. }
+  \item{pheno.col}{ Which phenotype column(s) should we analyse. Defaults to analyse all phenotype columns. }
+  \item{have.qtl}{ When QTL results are already calculated supply them using the have.qtl parameter. }
   \item{method}{ Character string indicating which correlation coefficient is to be computed. One of "pearson" (default), "kendall", or "spearman". }
-  \item{n.perm}{ Number of permutations }
-  \item{n.cores}{ Number of CPU cores to use during the analysis }
-  \item{genotype.values}{ Two values specifying the encoding of the genotype matrix }
-  \item{directory}{ Directory in which to save the output }
-  \item{saveFiles}{ Save the permjutation matrices to HDD }
-  \item{verbose}{ Be verbose }
+  \item{conditions}{ A vector of experimental conditions applied during the experiment. These conditions will be used as covariates in the QTL modeling step
+                     (NOT used when parameter have.qtl is supplied). }
+  \item{n.perm}{ Number of permutations to perform. }
+  \item{n.cores}{ Number of CPU cores to use during the analysis. }
+  \item{directory}{ Directory in which to save the output. }
+  \item{saveFiles}{ Save the permutation matrices to HDD. }
+  \item{verbose}{ Be verbose. }
 }
 \details{
 TODO
@@ -42,7 +46,7 @@ CTL object, a list with at each index a $ctlscan, $permutations, $lodmatrix
 \examples{
   library(ctl)
   data(ath.metabolites) # Arabidopsis Thaliana dataset
-  ctl_result <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, 1:5, n.perm=30, method="spearman")
+  ctl_result <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, pheno.col=1:5, method="spearman", n.perm=30)
   ctl_result
   plot(ctl_result)   #Plot a phenotype
   image(ctl_result, against="markers")     #pxm matrix

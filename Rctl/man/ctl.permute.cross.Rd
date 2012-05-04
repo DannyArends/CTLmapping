@@ -5,7 +5,7 @@
   Permutation routine for CTL mapping (using an R/qtl cross object)
 }
 \usage{
-CTLpermute.cross(cross, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=10, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles=FALSE, verbose=FALSE, \dots)
+CTLpermute.cross(cross, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=10, n.cores=2, directory="permutations", saveFiles=FALSE, verbose=FALSE, \dots)
 }
 
 \arguments{
@@ -15,7 +15,6 @@ CTLpermute.cross(cross, pheno.col, method = c("pearson", "kendall", "spearman"),
   \item{method}{ Character string indicating which correlation coefficient is to be computed. One of "pearson" (default), "kendall", or "spearman". }
   \item{n.perm}{ Number of permutations }
   \item{n.cores}{ Number of CPU cores to use during the analysis }
-  \item{genotype.values}{ Two values specifying the encoding of the genotype matrix }
   \item{directory}{ Directory in which to save the output }
   \item{saveFiles}{ Save the permjutation matrices to HDD }
   \item{verbose}{ Be verbose }

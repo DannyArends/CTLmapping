@@ -5,16 +5,16 @@
   Scan for correlated trait loci (CTL)
 }
 \usage{
-CTLmapping(genotypes, phenotypes, pheno.col = 1, method = c("pearson", "kendall", "spearman"), genotype.values=c(1,2), verbose = FALSE)
+CTLmapping(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1, method = c("pearson", "kendall", "spearman"), verbose = FALSE)
 }
 
 \arguments{
-  \item{genotypes}{ Matrix of genotypes (individuals x markers) }
-  \item{phenotypes}{ Matrix of phenotypes (individuals x phenotypes) }
-  \item{pheno.col}{ Which phenotype column should we analyse }
+  \item{genotypes}{ Matrix of genotypes. (individuals x markers) }
+  \item{phenotypes}{ Matrix of phenotypes. (individuals x phenotypes) }
+  \item{geno.enc}{ Specifying the encoding of the genotype matrix. }
+  \item{pheno.col}{ Which phenotype column should we analyse. NOTE: CTLmapping is limited to a single trait, for multiple traits use \code{\link{CTLscan}}). }
   \item{method}{ Character string indicating which correlation coefficient is to be computed. One of "pearson" (default), "kendall", or "spearman". }
-  \item{genotype.values}{ Two values specifying the encoding of the genotype matrix }
-  \item{verbose}{ Be verbose }
+  \item{verbose}{ Be verbose. }
 }
 \details{
 TODO

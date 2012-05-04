@@ -6,17 +6,17 @@
   Permutation routine for CTL mapping
 }
 \usage{
-CTLpermute(genotypes, phenotypes, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=10, n.cores=2, genotype.values=c(1,2), directory="permutations", saveFiles = FALSE, verbose=FALSE, \dots)
+CTLpermute(genotypes, phenotypes, geno.enc=c(1,2), pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=10, n.cores=2, directory="permutations", saveFiles = FALSE, verbose=FALSE, \dots)
 }
 
 \arguments{
   \item{genotypes}{ Matrix of genotypes (individuals x markers) }
   \item{phenotypes}{ Matrix of phenotypes (individuals x phenotypes) }
+  \item{geno.enc}{ Specifying the encoding of the genotype matrix. }
   \item{pheno.col}{ Which phenotype column should we use in permutation analysis }
   \item{method}{ Character string indicating which correlation coefficient is to be computed. One of "pearson" (default), "kendall", or "spearman". }
   \item{n.perm}{ Number of permutations }
   \item{n.cores}{ Number of CPU cores to use during the analysis }
-  \item{genotype.values}{ Two values specifying the encoding of the genotype matrix }
   \item{directory}{ Directory in which to save the output }
   \item{saveFiles}{ Save the permjutation matrices to HDD }
   \item{verbose}{ Be verbose }
@@ -45,7 +45,7 @@ the \code{\link{print.CTLpermute}} function.
 \examples{
   library(ctl)
   data(ath.metabolites) # Arabidopsis Thaliana dataset
-  ctl_perms <- CTLpermute(ath.metab$genotypes, ath.metab$phenotypes,1)
+  ctl_perms <- CTLpermute(ath.metab$genotypes, ath.metab$phenotypes, pheno.col = 1)
   ctl_perms
 }
 
