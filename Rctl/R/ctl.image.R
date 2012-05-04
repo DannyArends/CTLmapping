@@ -8,8 +8,8 @@
 # Image plot routines for CTL analysis
 #
 
-image.CTLobject <- function(x, against = c("markers","phenotypes"), onlySignificant = FALSE, significance = 0.05, do.grid=TRUE, grid.col = "black", verbose = FALSE, ...){
-  colorrange <- c("white",gray.colors(10)[10:1])
+image.CTLobject <- function(x, against = c("markers","phenotypes"), onlySignificant = FALSE, significance = 0.05, col=c("white",gray.colors(10)[10:1]), do.grid=TRUE, grid.col = "black", verbose = FALSE, add=FALSE, ...){
+  colorrange <- col
   mymatrix <- NULL
   mynames <- NULL
   for(p in 1:length(x)){
@@ -43,11 +43,11 @@ qtlimage <- function(CTLscan, do.grid = TRUE, grid.col = "black", verbose = FALS
   invisible(mymatrix)
 }
 
-internal.image <- function(mymatrix, colorrange, mainlabel, do.grid, grid.col){
+internal.image <- function(mymatrix, colorrange, mainlabel, do.grid, grid.col, add=FALSE){
   if(!is.null(mymatrix)){ 
     image(1:ncol(mymatrix),1:nrow(mymatrix),t(mymatrix), main=mainlabel, yaxt="n", 
           xaxt="n", ylab="", xlab="",col=c("white",gray.colors(4)[4:1]), cex.main=0.7, 
-          breaks = c(0,2,4,8,10,100))
+          breaks = c(0,2,4,8,10,100),add=add)
     axis(2,rownames(mymatrix),at=1:nrow(mymatrix),las=2,cex.axis=0.5)
     axis(1,colnames(mymatrix),at=1:ncol(mymatrix),las=2,cex.axis=0.5)
     if(do.grid){

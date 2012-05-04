@@ -109,7 +109,7 @@ plot.CTLscan2 <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance
   invisible(CTLmatrix)
 }
 
-plot.CTLscan <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance = 0.05, do.legend=TRUE, ...){
+plot.CTLscan <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance = 0.05, do.legend=TRUE, cex.legend=1.0, ...){
   if(missing(x)) stop("argument 'x' is missing, with no default")
   if(!is.null(x$p) && !is.nan(getPermuteThresholds(x,significance)[1])){
     mysign <- as.numeric(which(apply(abs(x$ctl),1,max) > getPermuteThresholds(x,significance)[1]))
@@ -142,10 +142,10 @@ plot.CTLscan <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance 
   if(!is.null(x$l)){
     n <- dim(x$ctl)[2]
     abline(h=-log10(c(0.05/n,0.01/n,0.001/n)),col=c("red","orange","green"),lty=2)
-    legend("topright",as.character(paste("CTL-FDR:",c(0.05,0.01,0.001),"%")),col=c("red","orange","green"),lty=rep(2,3),lwd=1,cex=0.7)
+    legend("topright",as.character(paste("CTL-FDR:",c(0.05,0.01,0.001),"%")),col=c("red","orange","green"),lty=rep(2,3),lwd=1,cex=cex.legend)
   }
   if(do.legend){
-    legend("topleft",rownames(x$ctl)[mysign],col=mycolors,lwd=1,cex=0.7)
+    legend("topleft",rownames(x$ctl)[mysign],col=mycolors,lwd=1,cex=cex.legend)
   }
   points(summarized,type='l',lwd=1)
   points(as.numeric(x$qtl),type='l',lwd=2,col="red")
