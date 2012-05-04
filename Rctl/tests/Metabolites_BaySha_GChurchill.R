@@ -35,7 +35,7 @@ map_info[1:10,1:3]
 library(ctl)
 source("Helper_Functions.r")
 source("Basic_QC.R",local=TRUE,echo=TRUE)
-ctls <- CTLscan(genotypes, metabolites, geno.enc=c("A","B"), pheno.col=1:10, n.perm = 200)
+ctls <- CTLscan(genotypes, metabolites, geno.enc=c("A","B"), n.perm = 1250)
 
 #Create comparison QTL / CTL heatmaps using QTLimage() and image.CTLscan()
 png("Comparison_QTL_CTL.png",width=2000,height=1000)
