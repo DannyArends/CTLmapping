@@ -33,7 +33,7 @@ source("Basic_QC.R",local=TRUE,echo=TRUE)
 
 #QTLscan because we need to deal with the 4 environments
 qtls <- QTLscan(genotypes, metabolites, metabolites[,"Environment"])
-ctls <- CTLscan(genotypes, metabolites, geno.enc=c("A","B"), pheno.col=1:2, have.qtl=qtls$qtl, n.perm = 250)
+ctls <- CTLscan(genotypes, metabolites, geno.enc=c("A","B"), pheno.col=1:10, have.qtl=qtls$qtl, n.perm = 250)
 
 #Create comparison QTL / CTL heatmaps using QTLimage() and image.CTLscan()
 png("Comparison_QTL_CTL.png",width=2000,height=1000)
@@ -41,9 +41,11 @@ png("Comparison_QTL_CTL.png",width=2000,height=1000)
   QTLimage(ctls); image(ctls);
 dev.off()
 
+dir.create("img")
+
 #Plot the individual CTL plot.CTLobject()
 for(ctl in ctls){
-  png(paste("CTL_",name(ctl),".png",sep=""),width=2000,height=1000); 
+  png(paste("img/CTL_Metabolites_RJ_",name(ctl),".png",sep=""),width=2000,height=1000); 
     op <- par(mfrow=c(1,2))
     op <- par(cex=1.8)
     plot(ctl,cex.legend=0.7)
