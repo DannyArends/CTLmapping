@@ -1,0 +1,9 @@
+MT3	3-Methylthiopropyl-glucosinolate
+Allyl	Allyl-glucosinolate
+OHP3	3-Hydroxypropyl-glucosinolate
+MT4	4-Methylthiobutyl-glucosinolate
+MSO4	4-Methylsulphinybutyl-glucosinolate
+But-3-enyl	3-Butenyl-glucosinolate
+MT7	7-Methylthio-heptyl-glucosinolate
+MT8	8-Methylthio-octyl-glucosinolate
+MSO8	8-Methysulphinyl-octyl-glucosinolate
