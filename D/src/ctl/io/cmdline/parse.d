@@ -82,11 +82,13 @@ CTLsettings parseCmd(string[] args){
   uint nperms = 100;
   string phenotype_filename = "test/data/phenotypes.csv";
   string genotype_filename = "test/data/genotypes.csv";
+  string output = "./";
   string file_format = "csv";
 
   getopt(args, "help|h", &help
              , "verbose|v", &verbose
-             , "overwrite|o", &overwrite
+             , "output|o", &output
+             , "overwrite", &overwrite
              , "nperms|n", &nperms
              , "phenotypes|p", &phenotype_filename
              , "genotypes|g", &genotype_filename
@@ -94,6 +96,7 @@ CTLsettings parseCmd(string[] args){
 
   opt.booleans ~= S!bool("--help"         ,"Show the help file", help);
   opt.booleans ~= S!bool("--verbose"      ,"Verbose mode", verbose);
+  opt.strings  ~= S!string("--output"     ,"Path to write output to (DEFAULT: ./)", output);
   opt.booleans ~= S!bool("--overwrite"    ,"Overwrite previous output files", overwrite);
   opt.integers ~= S!uint("--nperms"       ,"Number of permutations", nperms);
   opt.strings  ~= S!string("--phenotypes" ,"File containing phenotypes", phenotype_filename);
