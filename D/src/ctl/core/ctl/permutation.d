@@ -2,7 +2,7 @@
  * src/ctl/core/ctl/permute.d
  *
  * copyright (c) 2012 Danny Arends
- * last modified Jan, 2012
+ * last modified May, 2012
  * first written Jan, 2012
  **********************************************************************/
 module ctl.core.ctl.permutation;
@@ -40,6 +40,7 @@ double[][] permutation(double[][] phenotypes, int[][] genotypes, uint phenotype 
     permutationmatrix ~= doMatrixMax!double(perm_m);
     if(p % 3 == 0 && verbose){write("."); stdout.flush();}
   }
-  if(verbose) writeln("\n - Permutations: ",(Clock.currTime()-stime).total!"seconds"(),"secs");
+  if(verbose) writeln("\n - Permutations took: ",(Clock.currTime()-stime).total!"seconds"()," seconds");
   return permutationmatrix;
 }
+

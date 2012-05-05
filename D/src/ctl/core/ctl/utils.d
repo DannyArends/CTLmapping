@@ -2,7 +2,7 @@
  * src/ctl/core/ctl/utils.d
  *
  * copyright (c) 2012 Danny Arends
- * last modified Jan, 2012
+ * last modified May, 2012
  * first written Jan, 2012
  **********************************************************************/
 module ctl.core.ctl.utils;
@@ -34,3 +34,4 @@ double mysign(double v){
   if(v >=0) return 1.0;
   return -1.0;
 }
+

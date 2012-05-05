@@ -2,7 +2,7 @@
  * src/ctl/core/ctl/mapping.d
  *
  * copyright (c) 2012 Danny Arends
- * last modified Jan, 2012
+ * last modified May, 2012
  * first written Jan, 2012
  **********************************************************************/
 module ctl.core.ctl.mapping;
@@ -30,6 +30,7 @@ double[][] mapping(double[][] phenotypes, int[][] genotypes, uint phenotype = 1,
       difcormatrix[m][p] = ((mysign(cor_aa)*pow(cor_aa,2)) - (mysign(cor_bb)*pow(cor_bb,2)));
     }
   }
-  if(verbose) writeln(" - Differential correlations: ",(Clock.currTime()-stime).total!"msecs"()," msecs");
+  if(verbose) writeln(" - CTL mapping took: ",(Clock.currTime()-stime).total!"msecs"()," msecs");
   return difcormatrix;
 }
+
