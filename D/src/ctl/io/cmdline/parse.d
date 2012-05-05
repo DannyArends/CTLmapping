@@ -24,14 +24,8 @@ struct Scontainer{
 }
 
 struct CTLsettings{
-  void load(){
-    opt.booleans ~= S!bool("--help"         ,"Show the help file", false);
-    opt.booleans ~= S!bool("--verbose"      ,"Verbose mode", true);
-    opt.booleans ~= S!bool("--overwrite"    ,"Overwrite previous output files", false);
-    opt.integers ~= S!uint("--nperms"       ,"Number of permutations", 100);
-    opt.strings  ~= S!string("--phenotypes" ,"File containing phenotypes", "test/data/phenotypes.csv");
-    opt.strings  ~= S!string("--genotypes"  ,"File containing genotypes", "test/data/genotypes.csv");
-    opt.strings  ~= S!string("--format"     ,"File format", "csv");
+  void load(Scontainer opt){
+    this.opt = opt;
   }
   
   bool displayHelp(){
@@ -76,47 +70,36 @@ struct CTLsettings{
   Scontainer opt;
 }
 
+import std.getopt;
+
 CTLsettings parseCmd(string[] args){
   CTLsettings settings;
-  settings.load();
-  if(args.length > 1){
-    foreach(string arg; args[1..$]){
-      bool known = false;
-      auto isloc = arg.indexOf("=");
-      if(isloc > 1){
-        if(arg.length >= 4){  // -p=a -g=t.txt <- minimum of 4
-          foreach(int cnt, S!string s; settings.opt.strings){
-            if(arg[1]==s.name[2]){
-              try{
-              settings.opt.strings[cnt].value = arg[(isloc+1)..$];
-              known = true;
-              writeln(" - CMD line: ", s.description, " set to ", settings.opt.strings[cnt].value);
-              }catch(Throwable e){ }
-            }
-          }
-          foreach(int cnt, S!uint s; settings.opt.integers){
-            if(arg[1]==s.name[2]){
-              try{
-              settings.opt.integers[cnt].value = to!int(arg[(isloc+1)..$]);
-              known = true;
-              writeln(" - CMD line: ", s.description, " set to ", settings.opt.integers[cnt].value);
-              }catch(Throwable e){ }
-            }
-          }
-        }
-      }else{ // Boolean perhaps ?
-        if(arg.length == 2){ // -v -h <- exactly two long
-          foreach(int cnt, S!bool s; settings.opt.booleans){
-            if(arg[1]==s.name[2]){
-              known = true;
-              writeln(" - CMD line: " ~ s.description);
-              settings.opt.booleans[cnt].value = !settings.opt.booleans[cnt].value;
-            }
-          }
-        }
-      }
-      if(!known) writeln("Unknown argument: ",arg);
-    }
-  }
-  return settings;  
+  Scontainer opt;
+
+  bool help = false;
+  bool verbose = false;
+  bool overwrite = false;
+  uint nperms = 100;
+  string phenotype_filename = "test/data/phenotypes.csv";
+  string genotype_filename = "test/data/genotypes.csv";
+  string file_format = "csv";
+
+  getopt(args, "help|h", &help
+             , "verbose|v", &verbose
+             , "overwrite|o", &overwrite
+             , "nperms|n", &nperms
+             , "phenotypes|p", &phenotype_filename
+             , "genotypes|g", &genotype_filename
+             , "format|f", &file_format);
+
+  opt.booleans ~= S!bool("--help"         ,"Show the help file", help);
+  opt.booleans ~= S!bool("--verbose"      ,"Verbose mode", verbose);
+  opt.booleans ~= S!bool("--overwrite"    ,"Overwrite previous output files", overwrite);
+  opt.integers ~= S!uint("--nperms"       ,"Number of permutations", nperms);
+  opt.strings  ~= S!string("--phenotypes" ,"File containing phenotypes", phenotype_filename);
+  opt.strings  ~= S!string("--genotypes"  ,"File containing genotypes", genotype_filename);
+  opt.strings  ~= S!string("--format"     ,"File format", file_format);
+  settings.load(opt);
+  return settings;
 }
+

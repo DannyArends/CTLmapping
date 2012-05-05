@@ -2,7 +2,7 @@
  * src/ctl/mapctl.d
  *
  * copyright (c) 2012 Danny Arends
- * last modified Feb, 2012
+ * last modified May, 2012
  * first written May, 2011
  **********************************************************************/ 
 import std.stdio;
@@ -37,24 +37,32 @@ void main(string[] args){
   double[][]  phenotypes = r.loadphenotypes(settings.getString("--phenotypes"));
   int[][]     genotypes  = r.loadgenotypes(settings.getString("--genotypes"));
   if(!settings.displayHelp()){
-    bool        verbose    = settings.getBool("--verbose");
-    if(verbose) writefln("%s geno- and %s phenotypes on (%s/%s) individuals\n", genotypes.length, phenotypes.length, genotypes[0].length, phenotypes[0].length);
-    assert(genotypes[0].length == phenotypes[0].length, to!string(genotypes[0].length) ~ "," ~ to!string(phenotypes[0].length));
+    bool verbose = settings.getBool("--verbose");
+    bool overwrite = settings.getBool("--overwrite");
+
+    if(overwrite) writeln("[overwrite] Overwriting files in on");
+    if(verbose){
+      writefln("[verbose] on");
+      writefln("[info] %s geno- and %s phenotypes", genotypes.length, phenotypes.length);
+      writefln("[info] Measurements on %s and %s individuals\n", genotypes[0].length, phenotypes[0].length);
+    }
+    assert(genotypes[0].length == phenotypes[0].length, "mismatch between individuals");
     //Start by mapping all QTL
     Analysis a = getanalysis(settings);
     double[][] result  = a.analyse(genotypes, phenotypes, [], verbose);
-    writeFile(result,  "test/output/qtls.txt",settings.getBool("--overwrite"),verbose);
+    writeFile(result,  "test/output/qtls.txt", overwrite, verbose);
     //Do the CTL
     double[][][] ctlmmatrix;
     for(uint p=0; p < phenotypes.length; p++){
-      if(verbose) writeln("-Phenotype ",p);
+      if(verbose) write("-Phenotype ",p);
       double[][] score = mapping(phenotypes,  genotypes, p, verbose);
       double[][] perms = permutation(phenotypes, genotypes, p, settings.getInt("--nperms"), verbose);
       ctlmmatrix  ~= tolod(score, perms, verbose);
-      writeFile(translate(ctlmmatrix[p]),  "test/output/lodscores"~to!string(p)~".txt",settings.getBool("--overwrite"),verbose);
+      writeFile(translate(ctlmmatrix[p]),  "test/output/lodscores"~to!string(p)~".txt", overwrite, verbose);
     }
     double[][] pxpmatrix = topxpmatrix(ctlmmatrix);
-    writeFile(pxpmatrix,  "test/output/pxpmatrix.txt",settings.getBool("--overwrite"),verbose);    
+    writeFile(pxpmatrix,  "test/output/pxpmatrix.txt", overwrite, verbose);    
     writeln("\nmapCTL finished analysis took: ",(Clock.currTime()-stime).total!"seconds"()," seconds");
   }
 }
+
