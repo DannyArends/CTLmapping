@@ -33,8 +33,7 @@ map_info[1:10,1:3]
 
 #Load the library and scan the data
 library(ctl)
-source("Helper_Functions.r")
-source("Basic_QC.R",local=TRUE,echo=TRUE)
+basic.qc(genotypes, metabolites, map_info)
 ctls <- CTLscan(genotypes, metabolites, geno.enc=c("A","B"), n.perm = 1250)
 
 #Create comparison QTL / CTL heatmaps using QTLimage() and image.CTLscan()
@@ -47,7 +46,7 @@ dir.create("img")
 
 #Plot the individual CTL plot.CTLobject()
 for(ctl in ctls){
-  png(paste("img/CTL_Metabolites_GC_",name(ctl),".png",sep=""),width=2000,height=1000); 
+  png(paste("img/CTL_Metabolites_GC_", ctl.name(ctl),".png",sep=""),width=2000,height=1000); 
     op <- par(mfrow=c(1,2))
     op <- par(cex=1.8)
     plot(ctl,cex.legend=0.4)
@@ -58,3 +57,4 @@ for(ctl in ctls){
     abline(h=(1:nrow(ctl$ctl)+.5),col="white");box()
   dev.off()
 }
+

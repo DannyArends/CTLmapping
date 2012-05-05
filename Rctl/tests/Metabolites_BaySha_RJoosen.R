@@ -28,8 +28,7 @@ map_info[1:10,1:3]
 
 #Load the library and scan the data
 library(ctl)
-source("Helper_Functions.R")
-source("Basic_QC.R",local=TRUE,echo=TRUE)
+basic.qc(genotypes, metabolites, map_info)
 
 #QTLscan because we need to deal with the 4 environments
 qtls <- QTLscan(genotypes, metabolites, metabolites[,"Environment"])
@@ -45,7 +44,7 @@ dir.create("img")
 
 #Plot the individual CTL plot.CTLobject()
 for(ctl in ctls){
-  png(paste("img/CTL_Metabolites_RJ_",name(ctl),".png",sep=""),width=2000,height=1000); 
+  png(paste("img/CTL_Metabolites_RJ_",ctl.name(ctl),".png",sep=""),width=2000,height=1000); 
     op <- par(mfrow=c(1,2))
     op <- par(cex=1.8)
     plot(ctl,cex.legend=0.7)
