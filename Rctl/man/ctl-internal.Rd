@@ -52,6 +52,14 @@
 \alias{plot.CTLscan2}
 \alias{plotExpression}
 
+%helper.functions.R
+\alias{ctl.name}
+\alias{remove.diag}
+\alias{get.chr.edges}
+\alias{up}
+\alias{dw}
+\alias{redblue}
+\alias{top.correlated}
 
 \title{Internal CTL functions}
 

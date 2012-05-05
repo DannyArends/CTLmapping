@@ -8,12 +8,13 @@
 }
 
 \usage{
-basic.qc(genotypes, phenotypes)
+basic.qc(genotypes, phenotypes, map_info)
 }
 
 \arguments{
   \item{genotypes}{ Matrix of genotypes. (individuals x markers) }
   \item{phenotypes}{ Matrix of phenotypes. (individuals x phenotypes) }
+  \item{map_info}{ Matrix of genetic map information }
 }
 
 \details{
