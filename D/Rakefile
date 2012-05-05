@@ -100,7 +100,8 @@ desc "Test mapctl"
 task :test_all => [ "test/output", :mapctl ] do 
   print "Testing mapctl\n"
   sh "./mapctl --help"
-  sh "./mapctl --nperms=5 -v -o"
+  sh "./mapctl -h -v"
+  sh "./mapctl --nperms=5 -o=test/output/hyper"
 end
 
 desc "Default build and tests"
@@ -116,8 +117,8 @@ desc "Build mapctl with qtab support"
 task :qtab => ["qtab.#{LIB_EXT}","mapctl"] 
 
 desc "Test mapqtl with qtab support"
-task :test_qtab => [ "test/output", :qtab ]  do
+task :test_qtab => [ "test/output/multi", :qtab ]  do
   sh "./mapctl --help"
-  sh "./mapctl --format=qtab  -p=test/data/multi_phenotypes.qtab -g=test/data/multi overwrite"
+  sh "./mapctl --format=qtab  -p=test/data/multi_phenotypes.qtab -g=test/data/multi --overwrite -o=test/output/multi"
 end
 
