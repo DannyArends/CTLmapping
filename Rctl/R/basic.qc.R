@@ -1,5 +1,5 @@
 #
-# ctl.print.R
+# basic.qc.R
 #
 # copyright (c) 2010-2011 Danny Arends and Ritsert C. Jansen
 # last modified May, 2012
