@@ -21,8 +21,11 @@ tests/tmp_kegg
 *.attributes
 *.sif
 *.aux
+*.eps
+*.Rdata
 *.bbl
 *.blg
 *.tex
+node_attributes.txt
 *.log
 inst/doc/permutations/*
