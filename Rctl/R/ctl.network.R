@@ -8,40 +8,92 @@
 # Network routines for CTL analysis
 #
 
-CTLnetwork <- function(CTLscan, ctl.threshold=0.45, verbose = FALSE){
-  cat("",file="network.sif")
+write.marker.annotation <- function(CTLscan,chr.edges){
+  chr   <- 1
+  namez <- colnames(attr(CTLscan,"qtl"))
+  cat("", file="node_attributes.txt")
+  #Connections between genetic markers
+  for(m1 in 1:(length(namez)-1)){
+    if(!missing(chr.edges)){
+      cat(paste(namez[m1],"\tCHR",chr,"\n",sep=""),file="node_attributes.txt",append=TRUE)
+      if((((2*m1+1)/2) %in% chr.edges)){
+        chr <- chr + 1
+      }
+    }
+  }
+  #Annotate the last marker on the last chromosome
+  if(!missing(chr.edges)) cat(paste(namez[length(namez)],"\tCHR",chr,"\n",sep=""),file="node_attributes.txt",append=TRUE)
+  if(!missing(chr.edges)) cat("Wrote annotation for",length(namez),"markers on",chr,"chromosomes\n")
+}
+
+QTLnetwork <- function(CTLscan, lod.cutoff = 5, chr.edges, filename){
+  idx   <- 1
+  edges <- 0
+  chr   <- 1
+  write.marker.annotation(CTLscan, chr.edges)
+  if(missing(filename)){
+    filename <- "network_qtl.sif"
+    cat("",file=filename)
+  }
+  namez <- colnames(attr(CTLscan,"qtl"))
+  #Connections between genetic markers
+  for(m1 in 1:(length(namez)-1)){
+    if(missing(chr.edges)){
+      cat(paste(namez[m1],"\tCHR\t",namez[m1+1],"\t",1,"\n",sep=""),file=filename,append=TRUE)
+    }else{
+      if(!(((2*m1+1)/2) %in% chr.edges)){
+        cat(paste(namez[m1],"\tCHR",chr,"\t",namez[m1+1],"\t",1,"\n",sep=""),file=filename,append=TRUE)
+      }else{
+        chr <- chr + 1
+      }
+    }
+  }
+  for(x in apply(attr(CTLscan,"qtl"),1,function(x){which(x > lod.cutoff)})){
+    for(marker in names(x)){
+      cat(paste(name(CTLscan[[idx]]),"\tQTL\t",marker,"\t",round(attr(CTLscan,"qtl")[idx,marker],digits=1),"\n",sep=""),file=filename,append=TRUE)
+      edges <- edges+1
+    }
+    idx <- idx + 1
+  }
+  cat("Wrote",edges,"edges to",filename,"\n")
+}
+
+CTLnetwork <- function(CTLscan, lod.cutoff = 5, chr.edges, add.qtl = TRUE, verbose = FALSE){
+  cat("",file="network_full.sif")
+  cat("",file="network_summary.sif")
   cnt <- 0
-  edge_count <- NULL
-  node_names <- NULL
+  edge_p_count <- NULL
+  edge_m_count <- NULL
   for(CTL in CTLscan){
     for(x in 1:ncol(CTL$ctl)){
       if(is.null(CTL$p)) stop("No permutations found, need permutations to determine likelihood\n")
-      for(id in which(abs(CTL$ctl[,x]) > getPermuteThresholds(CTL)[1])){
-        edge_name <- paste(attr(CTL$ctl,"name"),"CTL",colnames(CTL$ctl)[x],sep="\t")
-        if(edge_name %in% edge_count[,1]){
-          edgeid <- which(edge_count[,1] %in% edge_name)
+      for(id in which(abs(CTL$l[,x]) > lod.cutoff)){
+        edge_name <- paste(attr(CTL$ctl,"name"),"CTL",rownames(CTL$ctl)[x],sep="\t")
+        if(edge_name %in% edge_p_count[,1]){
+          edgeid <- which(edge_p_count[,1] %in% edge_name)
           if(verbose) cat("Duplicate edge",edgeid,":", edge_name,"\n")
-          edge_count[edgeid,2] <- as.numeric(edge_count[edgeid,2])+abs(CTL$l[id,x])
-          edge_count[edgeid,3] <- as.numeric(edge_count[edgeid,3])+1
+          edge_p_count[edgeid,2] <- as.numeric(edge_p_count[edgeid,2])+abs(CTL$l[id,x])
+          edge_p_count[edgeid,3] <- as.numeric(edge_p_count[edgeid,3])+1
         }else{
-          edge_count <- rbind(edge_count,c(edge_name, CTL$l[id,x], 1))
+          edge_p_count <- rbind(edge_p_count,c(edge_name, CTL$l[id,x], 1))
         }
-        node_names <- c(node_names,attr(CTL$ctl,"name"),rownames(CTL$ctl)[id])
-        cat(attr(CTL$ctl,"name"),"CTL",rownames(CTL$ctl)[id],CTL$ctl[id,x],colnames(CTL$ctl)[x],"\n",file="network.sif",append=TRUE)
+        cat(attr(CTL$ctl,"name"),"CTL",rownames(CTL$ctl)[id],CTL$l[id,x],colnames(CTL$ctl)[x],"\n",file="network_full.sif",append=TRUE)
         cnt <- cnt+1
       }
     }
     if(verbose)cat("Analysed phenotype:",attr(CTL,"name"),"\n")
   }
-  cat("Wrote",cnt,"edges to network.sif\n")
-  if(!is.null(edge_count)){
-    cat("",file="edge_summary.sif")
-    for(x in 1:nrow(edge_count)){
-      cat(edge_count[x,1],"\t",round(as.numeric(edge_count[x,2]),digits=1),"\t",edge_count[x,3],"\n",file="edge_summary.sif",append=TRUE,sep="")
+  cat("Wrote",cnt,"CTL edges to network_full.sif\n")
+  if(!is.null(edge_p_count)){
+    
+    for(x in 1:nrow(edge_p_count)){
+      cat(edge_p_count[x,1],"\t",round(as.numeric(edge_p_count[x,2]),digits=1),"\t",edge_p_count[x,3],"\n",file="network_summary.sif",append=TRUE,sep="")
     }
-    cat("Wrote",nrow(edge_count),"unique edges to edge_summary.sif\n")
+    cat("Wrote",nrow(edge_p_count),"CTL edges to network_summary.sif\n")
   }
-  invisible(unique(node_names))
+  if(add.qtl) QTLnetwork(CTLscan, lod.cutoff, chr.edges, "network_full.sif")
+  if(add.qtl) QTLnetwork(CTLscan, lod.cutoff, chr.edges, "network_summary.sif")
+  invisible(unique(edge_p_count))
 }
 
 nodesToGenes <- function(nodenames, spotAnnotation){
