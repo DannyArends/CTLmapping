@@ -5,12 +5,14 @@
   Create a file containing the interaction network from a genome-wide CTLscan of multiple traits.
 }
 \usage{
-CTLnetwork(CTLscan, ctl.threshold=0.45, verbose = FALSE)
+CTLnetwork(CTLobject, lod.threshold=5, chr.edges, add.qtl = TRUE, verbose = FALSE)
 }
 
 \arguments{
-  \item{CTLscan}{ An object of class \code{"CTLscan"}, as output by \code{\link{CTLscan}}. }
-  \item{ctl.threshold}{ Threshold at which an CTL is considered significant. (See \code{\link{CTLpermute}}) }
+  \item{CTLobject}{ An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
+  \item{lod.threshold}{ LOD score above which a CTL is included. (See \code{\link{CTLpermute}}) }
+  \item{chr.edges}{ LOD score above which a CTL is included. (See \code{\link{CTLpermute}}) }
+  \item{add.qtl}{ Should QTL lines be added to the generated sif. }
   \item{verbose}{ Be verbose }
 }
 \details{

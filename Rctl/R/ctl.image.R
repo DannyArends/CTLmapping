@@ -8,23 +8,9 @@
 # Image plot routines for CTL analysis
 #
 
-image.CTLobject <- function(x, against = c("markers","phenotypes"), onlySignificant = FALSE, significance = 0.05, col=c("white",gray.colors(10)[10:1]), do.grid=TRUE, grid.col = "black", verbose = FALSE, add=FALSE, ...){
+image.CTLobject <- function(x, against = c("markers","phenotypes"), significance = 0.05, col=whiteblack, do.grid=TRUE, grid.col = "black", verbose = FALSE, add=FALSE, ...){
   colorrange <- col
-  mymatrix <- NULL
-  mynames <- NULL
-  for(p in 1:length(x)){
-    if(onlySignificant){
-      maxes <- apply(abs(x[[p]]$ctl),1,max)
-      if(max(maxes) > getPermuteThresholds(x[[p]], significance)[1]){
-        mymatrix <- rbind(mymatrix,apply(x[[p]]$l,2,sum))
-        mynames <- c(mynames,attr(x[[p]]$ctl,"name"))  
-      }
-    }else{
-      mymatrix <- rbind(mymatrix,apply(x[[p]]$l,2,sum))
-      mynames <- c(mynames,attr(x[[p]]$ctl,"name"))
-    }
-  }
-  rownames(mymatrix) <- mynames
+  mymatrix <- CTLprofiles(x, against, significance)
   mainlabel <- paste("CTL phenotypes vs",against[1],"at P-value <",significance)
   internal.image(mymatrix, colorrange, mainlabel,do.grid, grid.col)
 }
@@ -59,14 +45,10 @@ internal.image <- function(mymatrix, colorrange, mainlabel, do.grid, grid.col, a
   invisible(mymatrix)
 }
 
-QTLimage <- function(x, onlySignificant = FALSE, significance = 0.05, do.grid=TRUE, grid.col = "black", verbose = FALSE, ...){
+QTLimage <- function(x, do.grid=TRUE, grid.col = "black", verbose = FALSE, ...){
   colorrange <- c("white",gray.colors(10)[10:1])
   mymatrix <- attr(x,"qtl")
-  if(onlySignificant){
-    mainlabel <- paste("QTL heatmap at P-value <", significance)
-  }else{
-    mainlabel <- paste("QTL heatmap")
-  }
+  mainlabel <- paste("QTL heatmap")
   internal.image(mymatrix, colorrange, mainlabel,do.grid, grid.col)
 }
 

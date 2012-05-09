@@ -8,13 +8,11 @@
 }
 
 \usage{
-QTLimage(x, onlySignificant = FALSE, significance = 0.05, do.grid=TRUE, grid.col = "black", verbose = FALSE, \dots)
+QTLimage(x, do.grid=TRUE, grid.col = "black", verbose = FALSE, \dots)
 }
 
 \arguments{
   \item{x}{ An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
-  \item{onlySignificant}{ Add only the significant QTL profiles to the image. }
-  \item{significance}{ Minimum significance level for QTL profiles to be added. }
   \item{do.grid}{ Adds a grid to the plot. }
   \item{grid.col}{ Color of the grid lines. }
   \item{verbose}{ Be verbose. }

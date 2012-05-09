@@ -8,15 +8,14 @@
 }
 
 \usage{
-\method{image}{CTLobject}(x, against = c("markers","phenotypes"), onlySignificant = FALSE, significance = 0.05, 
-      col=c("white",gray.colors(10)[10:1]), do.grid=TRUE, grid.col = "black", verbose = FALSE, add=FALSE, \dots)
+\method{image}{CTLobject}(x, against = c("markers","phenotypes"), significance = 0.05, 
+      col=whiteblack, do.grid=TRUE, grid.col = "black", verbose = FALSE, add=FALSE, \dots)
 }
 
 \arguments{
   \item{x}{ An object of class \code{"CTLscan"}, as output by \code{\link{CTLscan}}. }
   \item{against}{ Which interaction matrice to image, the phenotype*marker or the phenotype*phenotypes, 
   this parameter is passed to the \code{\link{CTLprofiles}} function. }
-  \item{onlySignificant}{ Plot only the significant contributions to the CTL profile. }
   \item{significance}{ Significance threshold for setting a genomewide FDR. }
   \item{col}{ Color-range used in plotting. }
   \item{do.grid}{ Draw grid lines. }

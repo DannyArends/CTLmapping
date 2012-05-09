@@ -26,16 +26,16 @@ write.marker.attributes <- function(QTLscan, chr.edges){
   if(!missing(chr.edges)) cat("Wrote attributes for",length(namez),"markers on",chr,"chromosomes\n")
 }
 
-QTLnetwork <- function(CTLscan, lod.cutoff = 5, chr.edges, filename){
+QTLnetwork <- function(CTLobject, lod.threshold = 5, chr.edges, filename){
   idx   <- 1
   edges <- 0
   chr   <- 1
-  write.marker.attributes(attr(CTLscan,"qtl"), chr.edges)
+  write.marker.attributes(attr(CTLobject,"qtl"), chr.edges)
   if(missing(filename)){
     filename <- "network_qtl.sif"
     cat("",file=filename)
   }
-  namez <- colnames(attr(CTLscan,"qtl"))
+  namez <- colnames(attr(CTLobject,"qtl"))
   #Connections between genetic markers
   for(m1 in 1:(length(namez)-1)){
     if(missing(chr.edges)){
@@ -48,9 +48,9 @@ QTLnetwork <- function(CTLscan, lod.cutoff = 5, chr.edges, filename){
       }
     }
   }
-  for(x in apply(attr(CTLscan,"qtl"),1,function(x){which(x > lod.cutoff)})){
+  for(x in apply(attr(CTLobject,"qtl"),1,function(x){which(x > lod.threshold)})){
     for(marker in names(x)){
-      cat(paste(ctl.name(CTLscan[[idx]]),"\tQTL\t",marker,"\t",round(attr(CTLscan,"qtl")[idx,marker],digits=1),"\n",sep=""),file=filename,append=TRUE)
+      cat(paste(ctl.name(CTLobject[[idx]]),"\tQTL\t",marker,"\t",round(attr(CTLobject,"qtl")[idx,marker],digits=1),"\n",sep=""),file=filename,append=TRUE)
       edges <- edges+1
     }
     idx <- idx + 1
@@ -58,17 +58,17 @@ QTLnetwork <- function(CTLscan, lod.cutoff = 5, chr.edges, filename){
   cat("Wrote",edges,"edges to",filename,"\n")
 }
 
-CTLnetwork <- function(CTLscan, lod.cutoff = 5, chr.edges, add.qtl = TRUE, verbose = FALSE){
+CTLnetwork <- function(CTLobject, lod.threshold = 5, chr.edges, add.qtl = TRUE, verbose = FALSE){
   cat("",file="network_full.sif")
   cat("",file="network_summary.sif")
   cnt <- 0
   edge_p_count <- NULL
   edge_m_count <- NULL
-  for(CTL in CTLscan){
+  for(CTL in CTLobject){
     for(x in 1:ncol(CTL$ctl)){
       if(is.null(CTL$p)) stop("No permutations found, need permutations to determine likelihood\n")
-      for(id in which(abs(CTL$l[,x]) > lod.cutoff)){
-        edge_name <- paste(ctl.name(CTL),"CTL",ctl.names(CTLscan)[x],sep="\t")
+      for(id in which(abs(CTL$l[,x]) > lod.threshold)){
+        edge_name <- paste(ctl.name(CTL),"CTL",ctl.names(CTLobject)[x],sep="\t")
         if(edge_name %in% edge_p_count[,1]){
           edgeid <- which(edge_p_count[,1] %in% edge_name)
           if(verbose) cat("Duplicate edge",edgeid,":", edge_name,"\n")
@@ -91,8 +91,8 @@ CTLnetwork <- function(CTLscan, lod.cutoff = 5, chr.edges, add.qtl = TRUE, verbo
     }
     cat("Wrote",nrow(edge_p_count),"CTL edges to network_summary.sif\n")
   }
-  if(add.qtl) QTLnetwork(CTLscan, lod.cutoff, chr.edges, "network_full.sif")
-  if(add.qtl) QTLnetwork(CTLscan, lod.cutoff, chr.edges, "network_summary.sif")
+  if(add.qtl) QTLnetwork(CTLobject, lod.threshold, chr.edges, "network_full.sif")
+  if(add.qtl) QTLnetwork(CTLobject, lod.threshold, chr.edges, "network_summary.sif")
   invisible(unique(edge_p_count))
 }
 

@@ -56,6 +56,7 @@
 
 %helper.functions.R
 \alias{ctl.name}
+\alias{ctl.names}
 \alias{ctl.ctlmatrix}
 \alias{ctl.lodmatrix}
 \alias{remove.diag}
@@ -63,6 +64,7 @@
 \alias{up}
 \alias{dw}
 \alias{redblue}
+\alias{whiteblack}
 \alias{top.correlated}
 
 \title{Internal CTL functions}
