@@ -23,8 +23,11 @@ TODO
 }
 }
 \value{
-CTLscan object, a list with at each index a CTL matrix (Rows: Phenotypes, 
-Columns: Genetic markers) for the phenotype.
+CTLscan, a list of:\\
+  $ctls - Matrix of differential correlation scores for each trait at each marker \\
+  $qtl  - Vector of QTL lodscores for each marker \\
+  $p    - Vector of maximums per marker obtained during permutations \\
+  $l    - Matrix of LOD scores for CTL likelihood
 }
 \references{ 
   TODO

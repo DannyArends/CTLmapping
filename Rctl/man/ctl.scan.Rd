@@ -31,7 +31,7 @@ TODO
 }
 }
 \value{
-CTLobject, a list with at each index:\\
+CTLobject, a list with at each index a CTLscan object:\\
   $ctls - Matrix of differential correlation scores for each trait at each marker \\
   $qtl  - Vector of QTL lodscores for each marker \\
   $p    - Vector of maximums per marker obtained during permutations \\
