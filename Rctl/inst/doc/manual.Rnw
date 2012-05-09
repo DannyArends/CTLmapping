@@ -82,15 +82,15 @@ some always $sneak$ in.\\
 Enjoy this tutorial, and good luck hunting that heritability.\\
 Danny Arends\\
 \\
-PS. Use a text-editor\\
-PPS. Use a repository/backup system
+PS. Use a good text editor\\
+PPS. Use a repository / backup system
 
 \bigskip
 
 \textbf{\sffamily Background \& Methodology}
 \nopagebreak
 
-Some introduction on the methodology, skip this chapter first (Do come back later) if you 
+Some introduction on the methodology, skip this chapter first (DO come back later) if you 
 have a dataset and just want to use the software.
 
 \bigskip 
@@ -122,11 +122,10 @@ detected differential correlation to LOD score matrices.
 As an example we show the code to scan the multitrait dataset provided in R/qtl:
 
 <<echo=TRUE,eval=FALSE>>=
-require(qtl)        #load the R/qtl package
-data(multitrait)    #load the dataset
-ctls <- CTLscan.cross(multitrait, pheno.col=1:2)
+require(qtl)        #Loads the R/qtl package
+data(multitrait)    #Loads the dataset
+multitrait          #Print basic dataset information
 @
-
 
 \bigskip
 
@@ -134,6 +133,16 @@ ctls <- CTLscan.cross(multitrait, pheno.col=1:2)
 \nopagebreak
 
 Explains how to map CTL using the CTLscan and CTLscan.network functions.
+<<echo=TRUE,eval=FALSE>>=
+require(ctl)        #Loads the R/ctl package
+data(ath.metab)
+geno <- ath.metab$genotypes #Short name
+traits <- ath.metab$phenotypes #Short name
+
+#Scan all phenotypes for CTLs, using the default options
+#NOTE: Could take some time
+ctls <- CTLscan(geno,traits)
+@
 
 \emph{CTLscan options}
 The genotype matrix and the $geno.enc$ param, the phenotype matrix, the important $n.perms$ param, 
@@ -157,7 +166,7 @@ param and are also passed to the internal QTL mapping algorithm.
 #Specify that individuals 1:81 were in condition A / e.g. treatment
 #Specify that individuals 82:162 were in condition B / e.g. control
 conditions <- c(rep(1,81),rep(2,81))
-ctls <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, conditions=)
+ctls <- CTLscan(geno, traits, conditions=conditions)
 @
 
 
