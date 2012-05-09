@@ -84,4 +84,3 @@ void main(string[] args){
     writefln("Continue by starting R and loading the results:\n library(ctl)\n ctls <- load.ctl(\"%s\", \"%s\", \"%s\")\n plot(ctls)",input_g, input_p,output);
   }
 }
-

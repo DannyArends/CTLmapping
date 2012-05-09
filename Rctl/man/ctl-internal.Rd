@@ -1,7 +1,9 @@
 \name{ctl-internal}
 
 %ctl.network.R
-\alias{write.nodeAttributeFile}
+\alias{write.node.attributes}
+\alias{write.marker.attributes}
+\alias{QTLnetwork}
 \alias{KEGG.pathway.parser}
 \alias{nodesToGenes}
 
@@ -54,6 +56,8 @@
 
 %helper.functions.R
 \alias{ctl.name}
+\alias{ctl.ctlmatrix}
+\alias{ctl.lodmatrix}
 \alias{remove.diag}
 \alias{get.chr.edges}
 \alias{up}

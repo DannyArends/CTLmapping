@@ -33,7 +33,7 @@ read.dctl(geno.file="genotypes.csv", pheno.file="phenotypes.csv", results="outpu
 
 \examples{
   setwd("E:/github/Rpackages/CTLmapping/D/")
-  ctl_res <- read.ctl("test/data/genotypes.csv", "test/data/phenotypes.csv", "output/")
+  ctl_res <- read.dctl("test/data/genotypes.csv", "test/data/phenotypes.csv", "output/")
   image(ctl_res)
 }
 

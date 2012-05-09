@@ -8,9 +8,9 @@
 # Network routines for CTL analysis
 #
 
-write.marker.annotation <- function(CTLscan,chr.edges){
+write.marker.attributes <- function(QTLscan, chr.edges){
   chr   <- 1
-  namez <- colnames(attr(CTLscan,"qtl"))
+  namez <- colnames(QTLscan)
   cat("", file="node_attributes.txt")
   #Connections between genetic markers
   for(m1 in 1:(length(namez)-1)){
@@ -23,14 +23,14 @@ write.marker.annotation <- function(CTLscan,chr.edges){
   }
   #Annotate the last marker on the last chromosome
   if(!missing(chr.edges)) cat(paste(namez[length(namez)],"\tCHR",chr,"\n",sep=""),file="node_attributes.txt",append=TRUE)
-  if(!missing(chr.edges)) cat("Wrote annotation for",length(namez),"markers on",chr,"chromosomes\n")
+  if(!missing(chr.edges)) cat("Wrote attributes for",length(namez),"markers on",chr,"chromosomes\n")
 }
 
 QTLnetwork <- function(CTLscan, lod.cutoff = 5, chr.edges, filename){
   idx   <- 1
   edges <- 0
   chr   <- 1
-  write.marker.annotation(CTLscan, chr.edges)
+  write.marker.attributes(attr(CTLscan,"qtl"), chr.edges)
   if(missing(filename)){
     filename <- "network_qtl.sif"
     cat("",file=filename)
@@ -50,7 +50,7 @@ QTLnetwork <- function(CTLscan, lod.cutoff = 5, chr.edges, filename){
   }
   for(x in apply(attr(CTLscan,"qtl"),1,function(x){which(x > lod.cutoff)})){
     for(marker in names(x)){
-      cat(paste(name(CTLscan[[idx]]),"\tQTL\t",marker,"\t",round(attr(CTLscan,"qtl")[idx,marker],digits=1),"\n",sep=""),file=filename,append=TRUE)
+      cat(paste(ctl.name(CTLscan[[idx]]),"\tQTL\t",marker,"\t",round(attr(CTLscan,"qtl")[idx,marker],digits=1),"\n",sep=""),file=filename,append=TRUE)
       edges <- edges+1
     }
     idx <- idx + 1
@@ -68,7 +68,7 @@ CTLnetwork <- function(CTLscan, lod.cutoff = 5, chr.edges, add.qtl = TRUE, verbo
     for(x in 1:ncol(CTL$ctl)){
       if(is.null(CTL$p)) stop("No permutations found, need permutations to determine likelihood\n")
       for(id in which(abs(CTL$l[,x]) > lod.cutoff)){
-        edge_name <- paste(attr(CTL$ctl,"name"),"CTL",rownames(CTL$ctl)[x],sep="\t")
+        edge_name <- paste(ctl.name(CTL),"CTL",ctl.names(CTLscan)[x],sep="\t")
         if(edge_name %in% edge_p_count[,1]){
           edgeid <- which(edge_p_count[,1] %in% edge_name)
           if(verbose) cat("Duplicate edge",edgeid,":", edge_name,"\n")
@@ -77,7 +77,7 @@ CTLnetwork <- function(CTLscan, lod.cutoff = 5, chr.edges, add.qtl = TRUE, verbo
         }else{
           edge_p_count <- rbind(edge_p_count,c(edge_name, CTL$l[id,x], 1))
         }
-        cat(attr(CTL$ctl,"name"),"CTL",rownames(CTL$ctl)[id],CTL$l[id,x],colnames(CTL$ctl)[x],"\n",file="network_full.sif",append=TRUE)
+        cat(ctl.name(CTL),"CTL",rownames(CTL$ctl)[id],CTL$l[id,x],colnames(CTL$ctl)[x],"\n",file="network_full.sif",append=TRUE)
         cnt <- cnt+1
       }
     }
@@ -117,7 +117,7 @@ nodesToGenes <- function(nodenames, spotAnnotation){
 }
 
 #Maps probeannot$SPOT_ID to the nodenames
-write.nodeAttributeFile <- function(nodenames, spotAnnotation){
+write.node.attributes <- function(nodenames, spotAnnotation){
   if(missing(nodenames)) stop("No names  to get annotation for supplied")
   if(missing(spotAnnotation)) stop("No annotation file supplied")
   cnt <- 0
