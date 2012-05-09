@@ -64,8 +64,8 @@ XX Okt 2011}
 
 \bigskip \bigskip
 
-\textbf{\sffamily Abstract}: Introduction into quanitative correlation 
-locus (CTL) mapping using the R package CTL
+\textbf{\sffamily Abstract}: Introduction into quanitative correlation locus (CTL) mapping using 
+the R package 'ctl'
 \vfill
 
 \noindent \emph{email}: \verb|Danny.Arends@Gmail.com|
@@ -79,7 +79,34 @@ Some introduction text
 \textbf{\sffamily Format and load your data}
 \nopagebreak
 
-Loading your data
+\emph{Loading your Excel / CSV data}
+Use the example excel file and simply replace the example data by your own then: 
+  $$File->Save As->TODO$$
+
+After you have stored the data as plain text open the files in a text editor (NOT WORD, for 
+windows Notepad++ is a good option) and check to see if your data is stored correctly, if 
+not reformat your data in both the genotype.csv and the phenotype.csv files to match the 
+following:
+
+<<echo=TRUE,eval=FALSE>>=
+setwd("<PATH_TO_DATA>")
+genotypes <- read.csv("genotypes.csv",row.names=1,col.names=TRUE)
+phenotypes <- read.csv("phenotypes.csv",row.names=1,col.names=TRUE)
+ctls <- CTLscan(genotypes, phenotypes)
+@
+
+\emph{Use an R/qtl formatted dataset}
+Provided is the main interface functions to R/qtl: $CTLscan.cross()$ this functions accepts and 
+R/qtl formatted cross object as input and will scan CTL, perform permutations and transform the
+detected differential correlation to LOD score matrices.
+As an example we show the code to scan the multitrait dataset provided in R/qtl:
+
+<<echo=TRUE,eval=FALSE>>=
+require(qtl)        #load the R/qtl package
+data(multitrait)    #load the dataset
+ctls <- CTLscan.cross(multitrait, pheno.col=1:2)
+@
+
 
 \bigskip
 
@@ -88,11 +115,31 @@ Loading your data
 
 Explains how to map CTL using the CTLscan and CTLscan.network functions.
 
-\bigskip
-\textbf{\sffamily Significance using CTLpermute}
-\nopagebreak
+\emph{CTLscan options}
+The genotype matrix and the $geno.enc$ param, the phenotype matrix, the important $n.perms$ param, 
+which should be set to as many as possible, especially when publishing any results, but for a quick 
+scan 100 is ussualy sufficient.
 
-Explains how to determine CTL significance using the CTLpermute function.
+When experimental setups are more complex a user can supply QTL results via the $have.qtl$ option. 
+
+<<echo=TRUE,eval=FALSE>>=
+require(qtl)        #load the R/qtl package
+data(multitrait)    #load the dataset
+qtls <- scanone(multitrait, pheno.col=1:24)[,-c(1,2)]
+ctls <- CTLscan.cross(multitrait, pheno.col=1:2, have.qtl=qtls)
+@
+
+, when no qtls are supplied the internal QTL mapping routine is used, which can deal with just a 
+single condition per individual. An environmental condition can be specified by the $conditions$ 
+param and are also passed to the internal QTL mapping algorithm.
+
+<<echo=TRUE,eval=FALSE>>=
+#Specify that individuals 1:81 were in condition A / e.g. treatment
+#Specify that individuals 82:162 were in condition B / e.g. control
+conditions <- c(rep(1,81),rep(2,81))
+ctls <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, conditions=)
+@
+
 
 \bigskip
 \textbf{\sffamily Advanced plots and CTL networks}
@@ -100,14 +147,27 @@ Explains how to determine CTL significance using the CTLpermute function.
 
 Some more advanced topics
 
+\bigskip
+\textbf{\sffamily Big data and Dctl}
+\nopagebreak
+
+Explains how to use the D version to map big datsets
+
+\bigskip
+\textbf{\sffamily Significance using CTLpermute}
+\nopagebreak
+
+Explains how to determine CTL significance using the CTLpermute function.
+
+
 \newpage
 {\small
 \noindent \textbf{\sffamily Package CTL function overview} \\
 \noindent \begin{tabular}{ll} 
 \hspace*{25mm} & \hspace*{103mm} \\ \hline
-CTLscan & Genome wide scan for CTL \\
-CTLscan.network & Scan for CTL using start gene(s) \\
-CTLpermute & Significance thresholds for CTL by permutation \\
+CTLscan & Main function for Genome wide scan for Correlated Trait Loci \\
+CTLscan.network & Scan only a subset of traits for CTL using start gene(s) \\
+CTLpermute & Significance thresholds for CTL by permutation\\
 plot & Plot CTL profiles at increasing cut-offs \\
 image & Image a multiple phenotype scan \\
 \hline
