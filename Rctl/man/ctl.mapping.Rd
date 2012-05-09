@@ -23,11 +23,13 @@ TODO
 }
 }
 \value{
-CTLscan, a list of:\\
-  $ctls - Matrix of differential correlation scores for each trait at each marker \\
-  $qtl  - Vector of QTL lodscores for each marker \\
-  $p    - Vector of maximums per marker obtained during permutations \\
-  $l    - Matrix of LOD scores for CTL likelihood
+CTLscan, a list of:
+\itemize{
+  \item $ctls - Matrix of differential correlation scores for each trait at each marker
+  \item $qtl  - Vector of QTL lodscores for each marker
+  \item $p    - Vector of maximums per marker obtained during permutations
+  \item $l    - Matrix of LOD scores for CTL likelihood
+}
 }
 \references{ 
   TODO
