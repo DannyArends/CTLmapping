@@ -14,7 +14,6 @@ import std.datetime;
 import ctl.core.array.matrix;
 import ctl.core.stats.basic;
 import ctl.core.stats.tolod;
-import ctl.core.stats.pxpmatrix;
 import ctl.core.analysis;
 import ctl.core.ctl.mapping;
 import ctl.core.ctl.permutation;
@@ -31,6 +30,7 @@ void main(string[] args){
   bool verbose    = settings.getBool("--verbose");
   bool overwrite  = settings.getBool("--overwrite");
   string output   = settings.getString("--output");
+  if(output[($-1)]=='/') output = output[0..($-1)];
   string input_p  = settings.getString("--phenotypes");
   string input_g  = settings.getString("--genotypes");
 
@@ -49,26 +49,39 @@ void main(string[] args){
     }
 
     assert(genotypes[0].length == phenotypes[0].length, "mismatch between individuals");
-    //Start by mapping all QTL
-    Analysis a = getanalysis(settings);
-    double[][] result  = a.analyse(genotypes, phenotypes, [], verbose);
     //We need an output path default to ./ ??
     if(!exists(output)) mkdirRecurse(output);
-    writeFile(result, output ~ "/qtls.txt", overwrite, verbose);
+
+    //Start by mapping all QTL
+    if(needanalysis(output ~ "/qtls.txt",overwrite)){
+      Analysis a = getanalysis(settings);
+      double[][] result  = a.analyse(genotypes, phenotypes, [], verbose);
+      writeFile(result, output ~ "/qtls.txt", overwrite, verbose);
+    }else{ writeln("\n[SKIP] QTL mapping"); }
     //Do the CTL
     double[][][] ctlmmatrix;
     for(uint p=0; p < phenotypes.length; p++){
       if(verbose) write("-Phenotype ",p);
-      double[][] score = mapping(phenotypes,  genotypes, p, verbose);
-      writeFile(translate(score),  output ~ "/ctl"~to!string(p)~".txt", overwrite, verbose);
-      double[][] perms = permutation(phenotypes, genotypes, p, settings.getInt("--nperms"), verbose);
-      writeFile(translate(perms),  output ~ "/perms"~to!string(p)~".txt", overwrite, verbose);
-      ctlmmatrix  ~= tolod(score, perms, verbose);
-      writeFile(translate(ctlmmatrix[p]),  output ~ "/lodscores"~to!string(p)~".txt", overwrite, verbose);
+      double[][] score;
+      double[][] perms;
+      
+      if(needanalysis(output ~ "/ctl"~to!string(p)~".txt",overwrite)){
+        score = mapping(phenotypes,  genotypes, p, verbose);
+        writeFile(translate(score),  output ~ "/ctl"~to!string(p)~".txt", overwrite, verbose);
+      }else{ writeln("\n[SKIP] CTL mapping"); }
+      
+      if(needanalysis(output ~ "/perms"~to!string(p)~".txt",overwrite)){
+        perms = permutation(phenotypes, genotypes, p, settings.getInt("--nperms"), verbose);
+        writeFile(translate(perms),  output ~ "/perms"~to!string(p)~".txt", overwrite, verbose);
+      }else{ writeln("\n[SKIP] Permutations"); }
+      
+      if(needanalysis(output ~ "/lodscores"~to!string(p)~".txt",overwrite)){
+        ctlmmatrix  ~= tolod(score, perms, verbose);
+        writeFile(translate(ctlmmatrix[p]),  output ~ "/lodscores"~to!string(p)~".txt", overwrite, verbose);
+      }else{ writeln("\n[SKIP] LOD transformation"); }
     }
-    double[][] pxpmatrix = topxpmatrix(ctlmmatrix);
-    writeFile(pxpmatrix, output ~ "pxpmatrix.txt", overwrite, verbose);
     writeln("\nmapCTL finished analysis took: ",(Clock.currTime()-stime).total!"seconds"()," seconds");
+    writefln("Continue by starting R and loading the results:\n library(ctl)\n ctls <- load.ctl(\"%s\", \"%s\", \"%s\")\n plot(ctls)",input_g, input_p,output);
   }
 }
 

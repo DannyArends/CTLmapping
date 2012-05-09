@@ -1,5 +1,5 @@
 #
-# read.ctl.R
+# read.dctl.R
 #
 # copyright (c) 2010 Danny Arends and Ritsert C. Jansen
 # last modified May, 2012
@@ -9,11 +9,17 @@
 # Example data C. Elegans and available at request ( Danny.Arends@gmail.com )
 #
 
-read.ctl <- function(geno.file="genotypes.csv",pheno.file="phenotypes.csv",results="output/", verbose = TRUE){
+read.dctl <- function(geno.file="genotypes.csv",pheno.file="phenotypes.csv",results="output/", verbose = TRUE){
   qtls.file <- paste(results,"qtls.txt",sep="")
   genotypes <- read.table(geno.file,row.names=1)
   phenotypes <- read.table(pheno.file,row.names=1)
-  qtls <- read.table(qtls.file)
+  if(file.exists(qtls.file)){
+    qtls <- read.table(qtls.file)
+  }else{
+    cat("[CTL] Output contains no QTL\n")
+    genotypes <- genotypes[,(ncol(genotypes)-ncol(phenotypes)+1):ncol(genotypes)]
+    qtls <- QTLscan(t(genotypes), t(phenotypes), verbose=verbose)$qtl  
+  }
   cat("[CTL] Files loaded\n")
   rownames(qtls) <- rownames(phenotypes)
   colnames(qtls) <- rownames(genotypes)
@@ -28,8 +34,8 @@ read.ctl <- function(geno.file="genotypes.csv",pheno.file="phenotypes.csv",resul
     l <-   read.table(paste(results,"lodscores",(idx-1),".txt",sep=""))
     rownames(ctl) <- rownames(phenotypes)
     colnames(ctl) <- rownames(genotypes)
-    rownames(l) <- rownames(phenotypes)
-    colnames(l) <- rownames(genotypes)
+    rownames(l)   <- rownames(phenotypes)
+    colnames(l)   <- rownames(genotypes)
     ctl_res[[idx]] <- list(4,mode="list")
     ctl_res[[idx]][[1]] <- ctl
     attr(ctl_res[[idx]][[1]],"name") <- rownames(phenotypes)[idx]
@@ -45,11 +51,4 @@ read.ctl <- function(geno.file="genotypes.csv",pheno.file="phenotypes.csv",resul
   cat("[CTL] CTL object loaded\n")
   class(ctl_res) <- c(class(ctl_res),"CTLobject")
   return(ctl_res)
-}
-
-
-test.read.ctl <- function(){
-  setwd("E:/github/Rpackages/CTLmapping/D/")
-  ctl_res <- read.ctl("test/data/genotypes.csv", "test/data/phenotypes.csv","output/")
-  image(ctl_res)
 }

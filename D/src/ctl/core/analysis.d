@@ -7,11 +7,18 @@
  **********************************************************************/
 module ctl.core.analysis;
 
+import std.file;
 version(QTL){
   import ctl.core.qtl.qtl;
 }
 import ctl.io.cmdline.parse;
 import ctl.core.array.matrix;
+
+bool needanalysis(string filename, bool overwrite = false){
+  if(!exists(filename)) return true;
+  if(overwrite) return true;
+  return false;
+}
 
 Analysis getanalysis(CTLsettings settings){
 version(QTL){
