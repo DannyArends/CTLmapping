@@ -16,7 +16,12 @@ CTLnetwork(CTLobject, lod.threshold=5, chr.edges, add.qtl = TRUE, verbose = FALS
   \item{verbose}{ Be verbose }
 }
 \details{
-TODO
+Output 2 sif network files, and a node attributes file:
+\itemize{
+  \item network_full.sif    - Shows all the significant CTL connections between traits
+  \item network_summary.sif - Shows only a single summarized CTL connection between any 2 traits
+  \item node_attributes.txt - Attributes of the genetic marker nodes to color chromosomes
+}
 }
 \value{
  Vector of phenotype names inside the network
