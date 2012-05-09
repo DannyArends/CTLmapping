@@ -36,7 +36,7 @@
 
 \examples{
   library(ctl)
-  data(ath.result)       # Arabidopsis Thaliana dataset
+  data(ath.result)       # Arabidopsis Thaliana results
   #Phenotype to phenotype matrix
   p2p_matrix <- image(ath.result, against="phenotypes")
   #Phenotype to marker matrix
