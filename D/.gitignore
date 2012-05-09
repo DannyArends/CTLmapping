@@ -20,4 +20,5 @@
 *.map
 *.dll
 test/out*
+output/
 mapctl

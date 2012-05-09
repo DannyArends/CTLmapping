@@ -60,7 +60,9 @@ void main(string[] args){
     for(uint p=0; p < phenotypes.length; p++){
       if(verbose) write("-Phenotype ",p);
       double[][] score = mapping(phenotypes,  genotypes, p, verbose);
+      writeFile(translate(score),  output ~ "/ctl"~to!string(p)~".txt", overwrite, verbose);
       double[][] perms = permutation(phenotypes, genotypes, p, settings.getInt("--nperms"), verbose);
+      writeFile(translate(perms),  output ~ "/perms"~to!string(p)~".txt", overwrite, verbose);
       ctlmmatrix  ~= tolod(score, perms, verbose);
       writeFile(translate(ctlmmatrix[p]),  output ~ "/lodscores"~to!string(p)~".txt", overwrite, verbose);
     }
