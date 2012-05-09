@@ -1,6 +1,8 @@
 *~
 *.obj
 *.Rout
+*.dvi
+*.Rhistory
 *.dll
 *.exe
 *.map

@@ -64,22 +64,41 @@ XX Okt 2011}
 
 \bigskip \bigskip
 
-\textbf{\sffamily Abstract}: Introduction into quanitative correlation locus (CTL) mapping using 
-the R package 'ctl'
+\textbf{\sffamily Abstract}: Correlated Trait Loci (CTL) mapping using the R package 'ctl'
 \vfill
 
 \noindent \emph{email}: \verb|Danny.Arends@Gmail.com|
 \newpage
 
-\textbf{\sffamily Introduction}
-Some introduction text
+\textbf{\sffamily Some words in advance}
+\nopagebreak
+
+Welcome reader to this tutorial, you'll be thrown into the world of network reconstruction 
+using differential correlations. This methodology CTL mapping is not the easiest but the 
+results can be of great help unraveling trait to trait interactions in all types of 
+eukaryotes. In this tutorial I'll try to use as few difficult concepts as possible. But
+some always $sneak$ in.\\
+\\
+Enjoy this tutorial, and good luck hunting that heritability.\\
+Danny Arends\\
+\\
+PS. Use a text-editor\\
+PPS. Use a repository/backup system
+
+\bigskip
+
+\textbf{\sffamily Background \& Methodology}
+\nopagebreak
+
+Some introduction on the methodology, skip this chapter first (Do come back later) if you 
+have a dataset and just want to use the software.
 
 \bigskip 
 
 \textbf{\sffamily Format and load your data}
 \nopagebreak
 
-\emph{Loading your Excel / CSV data}
+\emph{Loading your Excel / CSV data}\\
 Use the example excel file and simply replace the example data by your own then: 
   $$File->Save As->TODO$$
 
@@ -91,11 +110,12 @@ following:
 <<echo=TRUE,eval=FALSE>>=
 setwd("<PATH_TO_DATA>")
 genotypes <- read.csv("genotypes.csv",row.names=1,col.names=TRUE)
-phenotypes <- read.csv("phenotypes.csv",row.names=1,col.names=TRUE)
-ctls <- CTLscan(genotypes, phenotypes)
+traits <- read.csv("traits.csv",row.names=1,col.names=TRUE)
+genotypes[1:5,1:10] #Show the first 5 individuals, 10 markers
+traits[1:5,1:10] #Show the first 5 individuals, 10 traits
 @
 
-\emph{Use an R/qtl formatted dataset}
+\emph{Use an R/qtl formatted dataset}\\
 Provided is the main interface functions to R/qtl: $CTLscan.cross()$ this functions accepts and 
 R/qtl formatted cross object as input and will scan CTL, perform permutations and transform the
 detected differential correlation to LOD score matrices.
