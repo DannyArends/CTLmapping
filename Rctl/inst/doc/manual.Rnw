@@ -64,7 +64,13 @@ XX Okt 2011}
 
 \bigskip \bigskip
 
-\textbf{\sffamily Abstract}: Correlated Trait Loci (CTL) mapping using the R package 'ctl'
+\textbf{\sffamily Abstract}: Tutorial for the Correlated Trait Loci (CTL) mapping to reconstruct
+genetic regulatory networks using the R package 'ctl' and the mapctl commandline tool. This 
+tutorial is targetted at people with a basic understanding of genetics and would like to analyse
+there inbred cross or natural population. Main focus will be explaining the functionality of the 
+software, and a how-to on loading datasets via Excel, tab delimited files (.csv) and R/qtl. In 
+the methodology and background only a short introduction in CTL mapping theory is given.
+
 \vfill
 \noindent \verb|Software:      http://www.mapctl.org/download.html|\\
 \noindent \verb|Manual:        http://www.mapctl.org/manual.html|\\
@@ -210,14 +216,34 @@ and which (if set incorrectly) could seriously reduce mapping power. Also you mi
 your own/previous QTL results.
 
 \emph{CTLscan options}\\
-The genotype matrix and the $geno.enc$ parameter, the phenotype matrix, the important $n.perms$ 
-parameter, which should be set to as many as possible, especially when publishing any results, 
-but for a quick scan 100 is ussualy sufficient:
+The genotype matrix and the $geno.enc$ parameter, if data is of a different encoding then the 
+standard 1 / 2 it can be specified by using the $geno.enc$ parameter.
+
+<<echo=TRUE,eval=FALSE>>=
+#Load a dataset with "AA" and "AB" genotypes
+ctls <- CTLscan(geno,traits,geno.enc=c("AA","AB"))
+@
+
+The important $n.perms$ parameter, which should be set to as many as possible, especially 
+when publishing any results, but for a quick the default of 100 is sufficient:
 <<echo=TRUE,eval=FALSE>>=
 ctls_quick_scan      <- CTLscan(geno,traits,n.perm=100)
 ctls_for_publication <- CTLscan(geno,traits,n.perm=15000)
 @
 
+CTLs could be condition dependant just like QTL, so if one has multiple conditions or 
+treatments. we need to accomodate that in the underlying models. 
+{\color{red} \emph{\bf{ \\\\NOTE: Current version doesn't handle conditions (only the QTL are compensated). \\\\}}} 
+If no QTLs are supplied the internal QTL mapping routine is used, which can deal with just a single condition per 
+individual. An environmental condition can be specified by the $conditions$ parameter:
+
+<<echo=TRUE,eval=FALSE>>=
+#Specify that individuals 1:51 were in condition A / e.g. treatment A
+#Specify that individuals 52:100 were in condition B / e.g. treatment B 
+#Specify that individuals 101:162 were in condition C / e.g. control
+conditions <- c(rep(1,51),rep(2,49),rep(2,62))
+ctls <- CTLscan(geno, traits, conditions=conditions)
+@
 
 When experimental setups are more complex a user can supply QTL results via the $have.qtl$ option.
 An example is shown below in which we use QTL results obtained by using single marker mapping via 
@@ -235,22 +261,9 @@ up a genetic model underlying the QTL and locus to locus interactions:
 
 <<echo=TRUE,eval=FALSE>>=
 cofactors <- mqmautocofactors(multitrait, 30)
-mqm_qtls  <- mqmscanone(multitrait, cofactors=cofactors, pheno.col=1:24)[,-c(1,2)]
+mqm_qtls  <- mqmscan(multitrait, cofactors=cofactors, pheno.col=1:24)[,-c(1,2)]
 ctls_mqm  <- CTLscan.cross(multitrait, pheno.col=1:2, have.qtl=qtls)
 @
-
-CTLs can be condition dependant just like QTL, so if one has multiple conditions or treatments. we 
-need to acomodate that in the underlying models. If no QTLs are supplied the internal QTL mapping 
-routine is used, which can deal with just a single condition per individual. An environmental 
-condition can be specified by the $conditions$ parameter:
-
-<<echo=TRUE,eval=FALSE>>=
-#Specify that individuals 1:81 were in condition A / e.g. treatment
-#Specify that individuals 82:162 were in condition B / e.g. control
-conditions <- c(rep(1,81),rep(2,81))
-ctls <- CTLscan(geno, traits, conditions=conditions)
-@
-
 
 \bigskip
 \textbf{\sffamily RESULTS - Plots and CTL networks}
