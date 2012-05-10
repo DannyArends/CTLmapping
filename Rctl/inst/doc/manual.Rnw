@@ -56,8 +56,8 @@ set.seed(61777369)
 \bigskip \bigskip
 
 {\color{blue} \tt \bfseries University of Groningen \\
-Groningen Bioinformatics centre \& GCC \\
-revision \# 1 \\[24pt]
+Groningen Bioinformatics Centre \& GCC \\
+Revision \# 1 \\[24pt]
 XX Okt 2011}
 
 \end{center}
@@ -66,8 +66,10 @@ XX Okt 2011}
 
 \textbf{\sffamily Abstract}: Correlated Trait Loci (CTL) mapping using the R package 'ctl'
 \vfill
-
-\noindent \emph{email}: \verb|Danny.Arends@Gmail.com|
+\noindent \verb|Software:      http://www.mapctl.org/download.html|\\
+\noindent \verb|Manual:        http://www.mapctl.org/manual.html|\\
+\noindent \verb|Source-code:   http://www.github.com/DannyArends/ctl|\\
+\noindent \verb|E-mail:        Danny.Arends@Gmail.com|
 \newpage
 
 \textbf{\sffamily Some words in advance}
@@ -93,7 +95,7 @@ PPS. Use a repository / backup system
 Some introduction on the methodology, skip this chapter first (DO come back later) if you 
 have a dataset and just want to use the software.
 
-\newpage 
+\bigskip
 
 \textbf{\sffamily Format and load your data}
 \nopagebreak
@@ -105,9 +107,9 @@ Use the example excel file and simply replace the example data by your own then:
 After you have stored the data as plain text open the files in a text editor (NOT WORD, for 
 windows Notepad++ is a good option) and check to see if your data is stored correctly, if 
 not reformat your data in both the genotype.csv and the phenotype.csv files to match the 
-format below. {\color{red} \emph{\bf{NOTE: Individuals must match between the genotype and 
-the phenotype file...}}} The phenotypes.csv file containing the genotype matrix is stored 
-individuals x genetic marker:
+format below.
+{\color{red} \emph{\bf{ \\\\NOTE: Individual order must match between the genotype and the phenotype file... \\\\}}} 
+The phenotypes.csv file containing the genotype matrix is stored individuals x genetic marker:
 
 \begin{tabular}{lrrrrr}
       & Marker1 & Marker2 & Marker3 & ... & MarkerN \\
@@ -143,19 +145,23 @@ traits[1:5,1:10]       #Show the first 5 individuals, 10 traits
 Provided is the main interface functions to R/qtl: $CTLscan.cross()$ this functions accepts and 
 R/qtl formatted cross object as input and will scan CTL, perform permutations and transform the
 detected differential correlation to LOD score matrices.
-As an example we show the code to scan the multitrait dataset provided in R/qtl:
+As an example we show the code to load the internal multitrait dataset provided in R/qtl, load
+your own by using the $read.cross()$ function:
 
 <<echo=TRUE,eval=FALSE>>=
 require(qtl)        #Loads the R/qtl package
 data(multitrait)    #Loads the dataset
 multitrait          #Print basic dataset information
+?read.cross         #List of formats supported by R/qtl
 @
 
 \emph{Adding genetic map information}\\
 This step is optional, but plots and generated networks look much nicer when chromosome locations
 of genetic markers are supplied. The 'mapinfo' object is matrix with 3 columns: "Chr" - the 
 chromosome number, "cM" - the location of the marker in centiMorgans and the 3rd column "Mbp" - The 
-location of the marker in Mega basepairs. The structure of the $mapinfo.csv$ file:
+location of the marker in Mega basepairs.
+{\color{red} \emph{\bf{ \\\\NOTE: Marker order must match with the genotype file... \\\\}}} 
+The structure of the $mapinfo.csv$ file:
 
 \begin{tabular}{lrrr}
       & Chr    & cM     & Mbp \\
@@ -170,7 +176,7 @@ We load the genetic map data into R by using the following command:
 
 <<echo=TRUE,eval=FALSE>>=
 mapinfo <- read.csv("mapinfo.csv",row.names=1,col.names=TRUE)
-traits[1:5,1:3]     #Show the first 5 marker records
+mapinfo[1:5,1:3]     #Show the first 5 marker records
 @
 Finally... after all this we can start scanning QTL and CTL...
 \bigskip
@@ -178,23 +184,24 @@ Finally... after all this we can start scanning QTL and CTL...
 \textbf{\sffamily Scanning for CTL / $CTLscan$}
 \nopagebreak
 
-We start explaining how to map CTL using the basic options of the $CTLscan$ function. This function 
-scan CTL and produces an output "CTLobject".
+We start explaining how to map CTL using the basic options of the $CTLscan$ function. 
+This function scan CTL and produces an output "CTLobject".
 <<echo=TRUE,eval=FALSE>>=
 require(ctl)                     #Loads the R/ctl package
 data(ath.metab)                  #Loads the example dataset
-geno <- ath.metab$genotypes      #Short name
+geno   <- ath.metab$genotypes    #Short name
 traits <- ath.metab$phenotypes   #Short name
 
 #Scan all phenotypes for CTLs, using the default options (Could take some time)
-ctls <- CTLscan(geno,traits)
+ctls   <- CTLscan(geno,traits)
 @
-If you have loaded an R/qtl "cross" object, use the $CTLscan.cross$ interface, this will automagically 
-extract the cross, check if the type of "cross" is supported, and deal with the $geno.enc$ parameter:
+If you have loaded an R/qtl "cross" object, use the $CTLscan.cross$ interface, this will 
+automagically extract the cross, check if the type of "cross" is supported, and deal 
+with the $geno.enc$ parameter:
 <<echo=TRUE,eval=FALSE>>=
 library(qtl)
 data(multitrait)
-ctls <- CTLscan.cross(multitrait)
+ctls   <- CTLscan.cross(multitrait)
 @
 
 Now you might feel tempted to just dive into the results, But... first lets take a look at some 
@@ -205,7 +212,12 @@ your own/previous QTL results.
 \emph{CTLscan options}\\
 The genotype matrix and the $geno.enc$ parameter, the phenotype matrix, the important $n.perms$ 
 parameter, which should be set to as many as possible, especially when publishing any results, 
-but for a quick scan 100 is ussualy sufficient.
+but for a quick scan 100 is ussualy sufficient:
+<<echo=TRUE,eval=FALSE>>=
+ctls_quick_scan      <- CTLscan(geno,traits,n.perm=100)
+ctls_for_publication <- CTLscan(geno,traits,n.perm=15000)
+@
+
 
 When experimental setups are more complex a user can supply QTL results via the $have.qtl$ option.
 An example is shown below in which we use QTL results obtained by using single marker mapping via 
@@ -269,19 +281,51 @@ function on individual CTLscans and shows a colorful and detailed view of the
 plot(ctls[[1]])
 @
 
+\emph{CTLnetwork and cytoscape}\\
+The CTLnetwork function outputs CTL and (optional) QTL data from the CTLobject into a network 
+format, if mapinfo is available it is used. The network format is relatively easy and can also
+be parsed by many other programs. As an example we use cytoscape, but first lets generate some 
+network input files:
+
+<<echo=TRUE,eval=FALSE>>=
+ctl_network <- CTLnetwork(ctls, lod.threshold = 5, mapinfo)
+@
+
+The CTL edges in the network\_full.sif file are annotated as:
+
+\begin{tabular}{lrrrrr}
+Trait & CTL & Trait & LOD Score\\
+\end{tabular}
+
+The CTL edges in the network\_summary.sif file look like this:
+
+\begin{tabular}{lrrrrr}
+Trait & CTL & Trait & avgLOD Score & sumLOD Score & nTraits\\
+\end{tabular}
+
+Additional QTLs are added to both files in the folowing structure:
+
+\begin{tabular}{lrrr}
+Trait & QTL & Marker & LOD Score\\
+\end{tabular}
+
+This allows the first additional infromation column (Nr 4) to act as an distance measurement, 
+the closer two traits or two markers are together in the network the stronger a detected QTL 
+or a CTL.
+
 \bigskip
 \textbf{\sffamily Big data and Dctl}
 \nopagebreak
 
 Big datsets require special care, R isn't the best platform to deal with large scale genomics data 
 from micro- or tilling arrays (Just to mention RNAseq and full DNA strand sequencing). Thus we also
-provide a commandline version of out CTL mapping tool: mapctl.exe, for more information on all the 
-command line parameters can be found at http://www.mapctl.org/mapctl.html
+provide a commandline version of our CTL mapping routine: mapctl.exe, for more information on all 
+the command line parameters can be found at http://www.mapctl.org/mapctl.html
 The mapctl commandline tool uses the same input files as the R version, and supports qtab the new 
-genotype and phenotype encoding scheme used by qtlHD.
-It provides only scanning and permutation features, the output is analyzed in R as outlined above. 
-To load the results from a mapctl scan into R by specifying the input files and the output directory 
-created by the tool using:
+genotype and phenotype encoding scheme used by qtlHD. It provides only QTL and CTL scanning and 
+permutation features, the output is analyzed in R as outlined above. To load the results from a 
+mapctl scan into R by specifying the input files and the output directory created by the tool 
+using:
 
 <<echo=TRUE,eval=FALSE>>=
 ctls <- read.dctl("genotypes.csv","phenotypes.csv",results="<PATH>/output/")
@@ -292,6 +336,10 @@ ctls <- read.dctl("genotypes.csv","phenotypes.csv",results="<PATH>/output/")
 \nopagebreak
 
 Explains how to determine CTL significance using the CTLpermute function.
+
+\bigskip
+\textbf{\sffamily Some famous last words}
+\nopagebreak
 
 
 \newpage
