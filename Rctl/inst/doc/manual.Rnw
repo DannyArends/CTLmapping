@@ -68,10 +68,10 @@ XX Okt 2011}
 reconstruct genetic regulatory networks using the R package 'ctl' and the mapctl commandline 
 tool. 
 This tutorial is targetted at people with a basic understanding of genetics and would like to 
-analyse there inbred cross or natural population. Main focus will be explaining the functionality 
-of the software, and a how-to on loading datasets via Excel, tab delimited files (.csv) and 
-R/qtl. In the methodology and background only a short introduction in CTL mapping theory is 
-given.
+analyse there inbred cross (RIL, DH, BC) or any population using SNP markers. Main focus will 
+be explaining the functionality of the software, and a how-to on using datasets currently in 
+Excel, tab delimited files (.csv) or use $read.cross$ from R/qtl. In the methodology and 
+background only a short introduction in CTL mapping theory is given.
 
 \vfill
 \noindent \verb|Software:      http://www.mapctl.org/download.html|\\
