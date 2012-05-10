@@ -64,12 +64,14 @@ XX Okt 2011}
 
 \bigskip \bigskip
 
-\textbf{\sffamily Abstract}: Tutorial for the Correlated Trait Loci (CTL) mapping to reconstruct
-genetic regulatory networks using the R package 'ctl' and the mapctl commandline tool. This 
-tutorial is targetted at people with a basic understanding of genetics and would like to analyse
-there inbred cross or natural population. Main focus will be explaining the functionality of the 
-software, and a how-to on loading datasets via Excel, tab delimited files (.csv) and R/qtl. In 
-the methodology and background only a short introduction in CTL mapping theory is given.
+\textbf{\sffamily Abstract}: Tutorial for the Correlated Trait Loci (CTL) mapping package to 
+reconstruct genetic regulatory networks using the R package 'ctl' and the mapctl commandline 
+tool. 
+This tutorial is targetted at people with a basic understanding of genetics and would like to 
+analyse there inbred cross or natural population. Main focus will be explaining the functionality 
+of the software, and a how-to on loading datasets via Excel, tab delimited files (.csv) and 
+R/qtl. In the methodology and background only a short introduction in CTL mapping theory is 
+given.
 
 \vfill
 \noindent \verb|Software:      http://www.mapctl.org/download.html|\\
