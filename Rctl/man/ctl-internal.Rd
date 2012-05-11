@@ -47,20 +47,11 @@
 \alias{getPermuteThresholds}
 \alias{print.CTLpermute}
 
-%correlations.R
-\alias{matrix_correlation}
-
 %ctl.plot.R
 \alias{plot.CTLscan2}
 \alias{plotExpression}
 
 %helper.functions.R
-\alias{ctl.name}
-\alias{ctl.names}
-\alias{ctl.ctlmatrix}
-\alias{ctl.qtlmatrix}
-\alias{ctl.lodmatrix}
-\alias{ctl.qtlprofile}
 \alias{remove.diag}
 \alias{get.chr.edges}
 \alias{up}

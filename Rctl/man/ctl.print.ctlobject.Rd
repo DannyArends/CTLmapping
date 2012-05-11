@@ -1,18 +1,18 @@
-\name{print.CTLscan}
-\alias{print.CTLscan}
+\name{print.CTLobject}
+\alias{print.CTLobject}
 
-\title{Print the results of a CTL genome scans}
+\title{Print the results of a CTL genome scan}
 
 \description{
-  Print the results of a \code{\link{CTLscan}}
+  Print the results of a multiple phenotype CTL genome scan produced by \code{\link{CTLscan}}.
 }
 
 \usage{
-\method{print}{CTLscan}(x, \dots)
+\method{print}{CTLobject}(x, \dots)
 }
 
 \arguments{
- \item{x}{ An object output by the function \code{\link{CTLscan}}.}
+ \item{x}{ An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
  \item{\dots}{ Ignored.} 
 }
 
