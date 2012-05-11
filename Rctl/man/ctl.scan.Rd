@@ -51,12 +51,12 @@ CTLobject, a list with at each index a CTLscan object:
 }
 \examples{
   library(ctl)
-  data(ath.metabolites) # Arabidopsis Thaliana dataset
-  ctl_result <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, pheno.col=1:5, method="spearman", n.perm=30)
+  data(ath.metabolites)                    # Arabidopsis Thaliana dataset
+  ctl_result <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, pheno.col=1:5, n.perm=30)
   ctl_result
-  plot(ctl_result)   #Plot a phenotype
-  image(ctl_result, against="markers")     #pxm matrix
-  image(ctl_result, against="phenotypes")  #pxp matrix
+  plot(ctl_result,3)                       # Plot the third phenotype
+  image(ctl_result, against="markers")     # PxM matrix
+  image(ctl_result, against="phenotypes")  # PxP matrix
 }
 
 \keyword{methods}

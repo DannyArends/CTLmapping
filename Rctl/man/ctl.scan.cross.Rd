@@ -43,10 +43,9 @@ Columns: Genetic markers) for the phenotype.
   library(ctl)
   if(has_rqtl()){
     require(qtl)
-    data(multitrait) # Arabidopsis Thaliana (R/qtl cross object)
-    ctl_result <- CTLscan.cross(multitrait)
-    ctl_result
-    plot(ctl_result[[16]])   #Plot a phenotype
+    data(multitrait)      # Arabidopsis Thaliana (R/qtl cross object)
+    ctls <- CTLscan.cross(multitrait, pheno.col=1:5, n.perm=30)
+    plot(ctls,3)          # Plot the third phenotype
   }
 }
 

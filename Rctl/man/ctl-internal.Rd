@@ -58,7 +58,9 @@
 \alias{ctl.name}
 \alias{ctl.names}
 \alias{ctl.ctlmatrix}
+\alias{ctl.qtlmatrix}
 \alias{ctl.lodmatrix}
+\alias{ctl.qtlprofile}
 \alias{remove.diag}
 \alias{get.chr.edges}
 \alias{up}
