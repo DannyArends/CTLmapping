@@ -370,8 +370,4 @@ image & Image a multiple phenotype scan \\
 \end{tabular}
 }
 
-\newpage
-\bibliography{scibib}
-\bibliographystyle{Science}
-
 \end{document}
