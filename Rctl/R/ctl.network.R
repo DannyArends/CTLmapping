@@ -25,7 +25,7 @@ write.marker.attributes <- function(QTLscan, mapinfo){
     }
     #Annotate the last marker on the last chromosome
     cat(paste(markernames[length(markernames)],"\tCHR",chr,"\n",sep=""),file="node_attributes.txt",append=TRUE)
-    cat("Wrote attributes for",length(namez),"markers on",chr,"chromosomes\n")
+    cat("Wrote attributes for",length(markernames),"markers on",chr,"chromosomes\n")
   }else{
     cat("[WARNING] No nodeattributes.txt produced, Please supply a mapinfo file\n")
   }
@@ -33,24 +33,28 @@ write.marker.attributes <- function(QTLscan, mapinfo){
 
 QTLnetwork <- function(CTLobject, mapinfo, lod.threshold = 5, filename){
   if(missing(CTLobject)) stop("argument 'CTLobject' is missing, with no default")
-  if(missing(filename))  cat("[WARNING] Using default filename:","network_qtl.sif","\n")
+  if(!missing(mapinfo)){
+    chr.edges   <- get.chr.edges(mapinfo)+.5
+    write.marker.attributes(qtls, mapinfo)
+  }
+  if(missing(filename)){ 
+    filename <- "network_qtl.sif" 
+    cat("[WARNING] Using default filename:",filename,"\n")
+  }
   idx         <- 1
   edges       <- 0
   ncons       <- 0
   chr         <- 1
-  chr.edges   <- get.chr.edges(mapinfo)+.5
   qtls        <- ctl.qtlmatrix(CTLobject)
   markernames <- colnames(qtls)
   traitnames  <- rownames(qtls)
 
-  write.marker.attributes(qtls, mapinfo)
-
-  if(missing(filename)) filename <- "network_qtl.sif"
+  if(missing(filename)) 
   cat("",file=filename)
   #Print the CHR interconnections between genetic markers
   
   for(m1 in 1:(length(markernames)-1)){
-    if(missing(chr.edges)){
+    if(missing(mapinfo)){
       cat(paste(markernames[m1],"\tCHR\t",markernames[m1+1],"\t",1,"\n",sep=""),file=filename,append=TRUE)
       ncons <- ncons+1
     }else{
