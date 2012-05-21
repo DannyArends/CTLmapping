@@ -1,5 +1,5 @@
 Correlated Trait Locus (CTL) mapping
-====================================
+------------------------------------
 In this repository implementations of the novel Correlated Trait Locus (CTL) 
 mapping algorithm. Provided as package for the statistical language R and in 
 the D 2.0 programming language.
