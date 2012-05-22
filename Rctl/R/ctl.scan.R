@@ -90,9 +90,10 @@ CTLscan.cross <- function(cross, pheno.col, have.qtl, method = c("pearson", "ken
     geno.enc <- NULL
     if(any(class(cross)=="bc") || any(class(cross)=="riself") || any(class(cross)=="risib")) geno.enc <- c(1,2)
     if(is.null(geno.enc)) stop("Class of the cross needs to be either: riself,risib or bc")
-    phenotypes <- apply(qtl::pull.pheno(cross),2,as.numeric)
-    rqtl_c <- which(colnames(pull.pheno(cross)) %in% c("sex","pgm"))
-    if(length(rqtl_c) > 0) phenotypes <- phenotypes[,-rqtl_c]
+    rqtl_pheno <- qtl::pull.pheno(cross)
+    rqtl_c <- which(colnames(rqtl_pheno) %in% c("sex","pgm")) #R/qtl adds additional columns sex and pgm
+    if(length(rqtl_c) > 0) rqtl_pheno <- rqtl_pheno[,-rqtl_c]
+    phenotypes <- apply(rqtl_pheno,2,as.numeric)         #R/qtl phenotypes are a data.frame (Need matrix)
     if(missing(pheno.col)) pheno.col <- 1:ncol(phenotypes)
     genotypes <- qtl::pull.geno(cross)
     CTLscan(genotypes = genotypes, phenotypes =  phenotypes, geno.enc=geno.enc, 
