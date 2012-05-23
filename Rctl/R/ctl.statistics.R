@@ -45,7 +45,7 @@ CTLscoretoPvalue <- function(CTLscore, CTLpermute){
 #Out of range values are tested using a GPD to estimate a P-value
 CTLtoPvalue.internal <- function(CTLscore, permvalues, pvalues, l = length(permvalues), cv = 0){
   res <- unlist(lapply(CTLscore, function(y){
-    if(is.na(y)) return(NA)
+    if(is.na(y)) return(1)
     if(y < cv){
       return(pvalues[1])
     }else{
