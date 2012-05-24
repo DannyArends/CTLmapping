@@ -9,4 +9,3 @@ citEntry(entry="article",
          pages = "XXX-XXX",
          textVersion = paste("Arends et al. (2012) Correlated Trait Loci (CTL) mapping. Nucl. Acids Res. XX:XXX-XXX")
          )
-

@@ -19,11 +19,11 @@ CTLscan <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1:ncol(p
   stage <- 1
   if(missing(have.qtl)){
     cat("Stage 0.1: Mapping Trait - Marker associations (QTL)\n")
-    attr(results,"qtl") <- QTLscan(genotypes, phenotypes, conditions, verbose=verbose)$qtl
+    attr(results,"qtl") <- QTLscan(genotypes, phenotypes, pheno.col, conditions, verbose=verbose)$qtl
     stage <- 2
   }else{
-    if(ncol(have.qtl) != ncol(genotypes)) cat("[SEVERE] argument 'have.qtl' should be of size:",ncol(phenotypes)," ",ncol(genotypes),"\n")
-    if(nrow(have.qtl) != ncol(phenotypes)) cat("[SEVERE] argument 'have.qtl' should be of size:",ncol(phenotypes)," ",ncol(genotypes),"\n")
+    if(ncol(have.qtl) != ncol(genotypes))   cat("[SEVERE] argument 'have.qtl' should be of size:",length(pheno.col)," ",ncol(genotypes),"\n")
+    if(nrow(have.qtl) != length(pheno.col)) cat("[SEVERE] argument 'have.qtl' should be of size:",length(pheno.col)," ",ncol(genotypes),"\n")
     attr(results,"qtl") <- have.qtl
   }
   if(!is.null(toremove)){
