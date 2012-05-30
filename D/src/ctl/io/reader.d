@@ -1,9 +1,11 @@
-/**********************************************************************
- * src/ctl/io/reader.d
+/******************************************************************//**
+ * \file ctl/io/reader.d
+ * \brief Reader interface to support multiple file formats
  *
- * copyright (c) 2012 Danny Arends
- * last modified Jan, 2012
- * first written Jan, 2012
+ * <i>Copyright (c) 2012</i>GBIC - Danny Arends<br>
+ * Last modified May, 2012<br>
+ * First written Jan, 2012<br>
+ * Written in the D Programming Language (http://www.digitalmars.com/d)
  **********************************************************************/
 module ctl.io.reader;
 

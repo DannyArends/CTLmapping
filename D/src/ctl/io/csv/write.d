@@ -7,22 +7,14 @@
  **********************************************************************/
 module ctl.io.csv.write;
 
-import std.stdio;
-import std.string;
-import std.file;
-import std.conv;
-
-import ctl.core.array.matrix;
+import std.stdio, std.string, std.file, std.conv;
+import ctl.core.array.matrix, ctl.io.terminal;
 
 void writeFile(T)(T[][] m, string filename, bool overwrite = false, bool verbose = false){
   if(exists(filename)){
     if(overwrite){
-      writefln(" - Overwriting file %s",filename);
       remove(filename);
-    }else{
-      writefln(" - WARNING: File already exists %s, results not saved",filename);
-      return;
-    }
+    }else{ return; }
   }
   try{
     auto fp = new File(filename,"wb");

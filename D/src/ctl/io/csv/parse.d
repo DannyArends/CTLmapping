@@ -7,13 +7,8 @@
  **********************************************************************/
 module ctl.io.csv.parse;
 
-import std.stdio;
-import std.string;
-import std.file;
-import std.conv;
-
-import ctl.io.reader;
-import ctl.core.array.matrix;
+import std.stdio, std.string, std.file, std.conv;
+import ctl.io.reader, ctl.io.terminal, ctl.core.array.matrix;
 
 class CSVreader : Reader{
   double[][] loadphenotypes(string filename = "phenotypes.csv"){
@@ -39,11 +34,11 @@ struct D{
   }
 }
 
-T[][] parseFile(T)(string filename, bool verbose = false){
+T[][] parseFile(T)(string filename, bool verbose = false ,bool hasRowHeader= true){
   T[][] data;
   D[]   descr;
   if(!exists(filename) || !isFile(filename)){
-    writefln("No such file %s",filename);
+    ERR("No such file %s",filename);
   }else{
     try{
       auto fp = new File(filename,"rb");
@@ -51,16 +46,18 @@ T[][] parseFile(T)(string filename, bool verbose = false){
       while(fp.readln(buffer)){
         buffer = chomp(buffer);
         string[] splitted = buffer.split("\t");
-        if(splitted.length > 3){
-          descr ~= D(splitted[0..2]);
-          data ~= stringvectortotype!T(splitted[3..$]);
+        if(hasRowHeader){
+          if(splitted.length > 3){
+            descr ~= D(splitted[0..2]);
+            data ~= stringvectortotype!T(splitted[3..$]);
+          }
+        }else{
+          data ~= stringvectortotype!T(splitted[0..$]);        
         }
       }
       fp.close();
-      if(verbose) writefln("Parsed %s imports from file: %s",data.length, filename);
-    }catch(Throwable e){
-      writefln("File %s read exception: %s", filename,e);
-    }
+      if(verbose) MSG("Parsed %s imports from file: %s",data.length, filename);
+    }catch(Throwable e){ ERR("File %s read exception", filename); }
   }
   return data;
 }

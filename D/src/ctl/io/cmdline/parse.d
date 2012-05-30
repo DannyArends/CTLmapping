@@ -1,15 +1,15 @@
-/**********************************************************************
- * src/ctl/io/cmdline/parse.d
+/******************************************************************//**
+ * \file ctl/io/cmdline/parse.d
+ * \brief Functions to parse the commandline
  *
- * copyright (c) 2012 Danny Arends
- * last modified Jan, 2012
- * first written Jan, 2012
+ * <i>Copyright (c) 2012</i>GBIC - Danny Arends<br>
+ * Last modified May, 2012<br>
+ * First written May, 2011<br>
+ * Written in the D Programming Language (http://www.digitalmars.com/d)
  **********************************************************************/
 module ctl.io.cmdline.parse;
 
-import std.stdio;
-import std.string;
-import std.conv;
+import std.stdio, std.string, std.conv;
 
 struct S(T){
   string name;
@@ -77,7 +77,7 @@ CTLsettings parseCmd(string[] args){
   Scontainer opt;
 
   bool help = false;
-  bool verbose = false;
+  bool verbose = true;
   bool overwrite = false;
   uint nperms = 100;
   string phenotype_filename = "test/data/phenotypes.csv";
