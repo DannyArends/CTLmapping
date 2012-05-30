@@ -12,9 +12,7 @@
 
 require 'rake/clean'
 
-def windows? 
-  return RUBY_PLATFORM =~ /(:?mswin|mingw)/ 
-end
+def windows?; return RUBY_PLATFORM =~ /(:?mswin|mingw)/ ; end
 
 qtlhd="../../qtlHD/src/D"
 
@@ -33,15 +31,12 @@ else
 end
   
 LIB_PREFIX = if(windows?) then '' else 'lib' end
-if(windows?) then 
-  LIB_EXT = 'lib' 
-else 
-  LIB_EXT = 'a' 
-end
+if(windows?) then LIB_EXT = 'lib' ; else LIB_EXT = 'a' ; end
 
 input_lib_arg = ""
 compile_args  = "-O"
 stats_lib_arg = ""
+mapctl_deps = ["ctl","input","stats.#{LIB_EXT}","array.#{LIB_EXT}"]
 used_libs = []
 
 array_dfiles = Dir.glob("./src/ctl/core/array/*.d")
@@ -50,15 +45,17 @@ qtl_dfiles = Dir.glob("./src/ctl/core/qtl/*.d")
 input_dfiles = Dir.glob("./src/ctl/io/*.d") + Dir.glob("./src/ctl/io/csv/*.d")+ Dir.glob("./src/ctl/io/cmdline/*.d")
 ctl_dfiles = Dir.glob("./src/ctl/core/ctl/*.d")
 qtab_dfiles = []
+
 if hasQTAB
   qtab_dfiles  = Dir.glob(qtlhd + "/qtl/core/*.d") + ["#{qtlhd}/qtl/plugins/qtab/read_qtab.d"] + ["src/ctl/io/qtab/wrapper.d"]
   compile_args += " -I#{qtlhd} -version=QTAB"
+  mapctl_deps += "qtab.#{LIB_EXT}"
 end
 
 if windows?
-  CLEAN.include("*.#{LIB_EXT}",'./test/output/*.txt','*.obj','*.exe','*.map','mapctl.exe')
+  CLEAN.include("*.#{LIB_EXT}","qtls.txt","lods*.txt","perms*.txt","ctl*.txt","",'./test/output/*.txt','*.obj','*.exe','*.map','mapctl.exe')
 else
-  CLEAN.include('*.a','*.o','*.dep','*.deps','mapctl')
+  CLEAN.include('*.a','*.o',"qtls.txt","lods*.txt","perms*.txt","ctl*.txt",'*.dep','*.deps','mapctl')
 end
 
 TESTS = [ :mapctl ]
@@ -86,14 +83,16 @@ end
 task "qtllib" => qtl_dfiles do
   sh "dmd -lib #{compile_args} -ofqtl.#{LIB_EXT} #{qtl_dfiles.join(' ')} -Isrc/"
   compile_args += " qtl.#{LIB_EXT} -version=QTL"
+  used_libs += ["qtl.#{LIB_EXT}"]
 end
 
 file "qtab.#{LIB_EXT}" => qtab_dfiles do
   sh "dmd -lib #{compile_args} -ofqtab.#{LIB_EXT} #{qtab_dfiles.join(' ')} -Isrc/"
+  used_libs += ["qtab.#{LIB_EXT}"]
 end
 
-file "mapctl" => ["ctl","input","stats.#{LIB_EXT}","array.#{LIB_EXT}","qtab.#{LIB_EXT}"] do
-  sh "dmd #{compile_args} src/ctl/mapctl.d #{used_libs.join(' ')} stats.#{LIB_EXT} array.#{LIB_EXT} qtab.#{LIB_EXT} -Isrc/"
+file "mapctl" => mapctl_deps do
+  sh "dmd #{compile_args} src/ctl/mapctl.d #{used_libs.join(' ')} stats.#{LIB_EXT} array.#{LIB_EXT} -Isrc/"
 end
 
 desc "Test mapctl"
