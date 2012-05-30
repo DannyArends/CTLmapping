@@ -7,18 +7,14 @@
  **********************************************************************/
 module ctl.core.qtl.qtl;
 
-import std.stdio;
-import std.math;
-import std.datetime;
-
-import ctl.core.array.matrix;
-import ctl.core.array.ranges;
-import ctl.core.qtl.utils;
-import ctl.core.qtl.regression;
-import ctl.core.analysis;
+import std.stdio, std.math, std.datetime;
+import ctl.core.array.matrix, ctl.core.array.ranges;
+import ctl.core.qtl.utils, ctl.core.qtl.regression;
+import ctl.core.analysis, ctl.io.terminal;
 
 class SingleQTL : Analysis{
   double[][] analyse(int[][] genotypes, double[][] phenotypes, int[] geno_cov = [], bool verbose = true){
+    if(verbose) MSG("Starting QTL mapping");
     SysTime stime = Clock.currTime();
     double[][] lodmatrix = newmatrix!double(phenotypes.length, genotypes.length);
     if(verbose) write(" ");
@@ -31,7 +27,8 @@ class SingleQTL : Analysis{
       if(verbose) write(".");
       stdout.flush();
     }
-    if(verbose) writeln("\n - Mapped QTL: ",(Clock.currTime()-stime).total!"msecs"() / 1000.0," seconds");
+    if(verbose) writeln();
+    if(verbose) MSG("QTL mapping done (%s secs)",(Clock.currTime()-stime).total!"seconds"());
     return lodmatrix;
   }
 }

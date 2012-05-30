@@ -7,14 +7,9 @@
  **********************************************************************/
 module ctl.core.ctl.permutation;
 
-import std.stdio;
-import std.math;
-import std.datetime;
-import std.random;
-
-import ctl.core.array.ranges;
-import ctl.core.array.matrix;
-import ctl.core.ctl.mapping;
+import std.stdio, std.math, std.datetime, std.random;
+import ctl.core.array.ranges, ctl.io.terminal;
+import ctl.core.array.matrix, ctl.core.ctl.mapping;
 import ctl.core.stats.basic;
 
 T[][] permute(T)(T[][] genotypes){
@@ -40,7 +35,8 @@ double[][] permutation(double[][] phenotypes, int[][] genotypes, uint phenotype 
     permutationmatrix ~= doMatrixMax!double(perm_m);
     if(p % 3 == 0 && verbose){write("."); stdout.flush();}
   }
-  if(verbose) writeln("\n - Permutations took: ",(Clock.currTime()-stime).total!"seconds"()," seconds");
+  if(verbose) writeln();
+  if(verbose) MSG("Permutations took: (%s secs)", (Clock.currTime()-stime).total!"seconds"());
   return permutationmatrix;
 }
 

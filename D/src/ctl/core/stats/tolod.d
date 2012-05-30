@@ -7,14 +7,8 @@
  **********************************************************************/ 
 module ctl.core.stats.tolod;
  
-import std.stdio;
-import std.math;
-import std.conv;
-import std.array;
-import std.datetime;
-
-import ctl.core.array.matrix;
-import ctl.core.array.search;
+import std.stdio, std.math, std.conv, std.array, std.datetime;
+import ctl.io.terminal, ctl.core.array.matrix, ctl.core.array.search;
 
 double[][] tolod(double[][] scores, double[][] permutations, bool verbose = true){
   SysTime stime = Clock.currTime();
@@ -33,7 +27,7 @@ double[][] tolod(double[][] scores, double[][] permutations, bool verbose = true
       m[r][c] = abs(log10(estimate));
     }
   }
-  if(verbose) writeln(" - LOD transformation: ",(Clock.currTime()-stime).total!"msecs"()," msecs");  
+  if(verbose) MSG("LOD transformation: (%s msecs)",(Clock.currTime()-stime).total!"msecs"());  
   return m;
 }
 

@@ -7,11 +7,8 @@
  **********************************************************************/
 module ctl.core.ctl.mapping;
 
-import std.stdio;
-import std.math;
-import std.datetime;
-
-import ctl.core.array.matrix;
+import std.stdio, std.math, std.datetime;
+import ctl.core.array.matrix, ctl.io.terminal;
 import ctl.core.ctl.utils;
 import ctl.core.stats.correlation;
 
@@ -30,7 +27,6 @@ double[][] mapping(double[][] phenotypes, int[][] genotypes, uint phenotype = 1,
       difcormatrix[m][p] = ((mysign(cor_aa)*pow(cor_aa,2)) - (mysign(cor_bb)*pow(cor_bb,2)));
     }
   }
-  if(verbose) writeln(" - CTL mapping took: ",(Clock.currTime()-stime).total!"msecs"()," msecs");
+  if(verbose) MSG("CTL mapping took: (%s msecs)",(Clock.currTime()-stime).total!"msecs"());
   return difcormatrix;
 }
-
