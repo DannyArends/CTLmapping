@@ -1,17 +1,16 @@
-/**********************************************************************
- * src/ctl/core/qtl/utils.d
+/******************************************************************//**
+ * \file ctl/core/qtl/utils.d
+ * \brief Utility functions for QTL mapping
  *
- * copyright (c) 2012 Danny Arends
- * last modified Feb, 2012
- * first written Jan, 2012
+ * <i>Copyright (c) 2012</i>GBIC - Danny Arends<br>
+ * Last modified May, 2012<br>
+ * First written Jan, 2012<br>
+ * Written in the D Programming Language (http://www.digitalmars.com/d)
  **********************************************************************/
 module ctl.core.qtl.utils;
 
-import std.stdio;
-import std.math;
-import ctl.core.array.matrix;
-import ctl.core.qtl.nrc;
-import ctl.core.qtl.LUdecomp;
+import std.stdio, std.math;
+import ctl.core.array.matrix, ctl.core.qtl.nrc, ctl.core.qtl.LUdecomp;
 
 double Lnormal(double residual, double variance){
   return exp(-pow(residual/sqrt(variance),2.0)/2.0 - log(sqrt(2.0*acos(-1.0)*variance)));
@@ -24,8 +23,8 @@ struct FITTED{
 
 FITTED calculateloglikelihood(uint nsamples, double[] residual, double[] w, double variance, bool verbose = true){
   FITTED f;
-  f.Fy   = newvector!double(nsamples);
-  double[] indL = newvector!double(nsamples);
+  f.Fy   = newvector!double(nsamples, 0.0);
+  double[] indL = newvector!double(nsamples, 0.0);
 
   for (uint i=0; i<nsamples; i++){
     f.Fy[i]  = Lnormal(residual[i],variance);
@@ -43,8 +42,8 @@ struct STATS{
 
 STATS calculatestatistics(uint nvariables, uint nsamples, double[][] xt, double[] xtwy, double[] y, double[] w, bool verbose = true){
   STATS s;
-  s.fit      = newvector!double(nsamples);
-  s.residual = newvector!double(nsamples);
+  s.fit      = newvector!double(nsamples, 0.0);
+  s.residual = newvector!double(nsamples, 0.0);
 
   for(uint i=0; i<nsamples; i++){
     s.fit[i]      = 0.0;
@@ -62,9 +61,9 @@ STATS calculatestatistics(uint nvariables, uint nsamples, double[][] xt, double[
 double[] calculateparameters(uint nvariables, uint nsamples, double[][] xt, double[] w, double[] y, bool verbose = true){
   int d=0;
   double xtwj;
-  double[][] XtWX = newmatrix!double(nvariables, nvariables);
-  double[]   XtWY = newvector!double(nvariables);
-  int[]      indx = newvector!int(nvariables);
+  double[][] XtWX = newmatrix!double(nvariables, nvariables, 0.0);
+  double[]   XtWY = newvector!double(nvariables, 0.0);
+  int[]      indx = newvector!int(nvariables, 0);
   if(verbose) writefln(" - Calculating XtWX and XtWY");
   for(uint i=0; i<nsamples; i++){
     for(uint j=0; j<nvariables; j++){

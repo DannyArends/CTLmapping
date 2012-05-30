@@ -17,7 +17,7 @@ import ctl.core.stats.correlation;
 double[][] mapping(double[][] phenotypes, int[][] genotypes, uint phenotype = 1, bool verbose = true){
   assert(phenotype < phenotypes.length);
   SysTime stime = Clock.currTime();
-  double[][] difcormatrix = newmatrix!double(genotypes.length,phenotypes.length);
+  double[][] difcormatrix = newmatrix!double(genotypes.length, phenotypes.length, 0);
   for(uint m=0; m<genotypes.length; m++){
     uint[] ind_aa  = which(genotypes[m],0);
     uint[] ind_bb  = which(genotypes[m],1);

@@ -36,7 +36,7 @@ abstract class Analysis{
 
 class NullAnalysis : Analysis{
   override double[][] analyse(int[][] genotypes, double[][] phenotypes, int[] geno_cov = [], bool verbose = true){
-    double[][] m = newmatrix!double(1,1);
+    double[][] m = newmatrix!double(1,1,0);
     return m;
   }
 }

@@ -12,7 +12,7 @@ module ctl.core.array.matrix;
 import std.stdio, std.conv, std.math;
 
 T[][] absmatrix(T)(T[][] i){
-  T[][] m = newmatrix!T(i.length,i[0].length);
+  T[][] m = newmatrix!T(i.length, i[0].length);
   for(size_t r=0;r<i.length;r++){
     for(size_t c=0;c<i[0].length;c++){
       m[r][c] = abs(i[r][c]);
@@ -22,12 +22,8 @@ T[][] absmatrix(T)(T[][] i){
 }
 
 T[] unlist(T)(T[][] i){
-  T[] m = newvector!T(i[0].length * i.length);
-  for(size_t r=0;r<i.length;r++){
-    for(size_t c=0;c<i[0].length;c++){
-      m ~= i[r][c];
-    }
-  }
+  T[] m;
+  for(size_t r=0;r<i.length;r++){ m ~= i[r]; }
   return m;
 }
 
@@ -41,17 +37,11 @@ T[][] translate(T)(T[][] i){
   return m;
 }
 
-T[][] newmatrix(T)(size_t rows, size_t cols, T value = 0) {
+T[][] newmatrix(T)(size_t rows, size_t cols, T value = T.init){
   T[][] m;
-  m.length=rows;
-  if(m is null){
-    writeln("Not enough memory for new matrix");
-  }
-  for(size_t i=0; i<rows; i++){
-    m[i].length= cols;
-    for(size_t j=0; j<cols; j++){
-      m[i][j] = cast(T)value;
-    }
+  m.length = rows;
+  for(size_t i = 0; i < rows; i++){
+    m[i] = newvector!T(cols,value);
   }
   return m;
 }
@@ -65,9 +55,10 @@ void printmatrix(T)(T[][] m, string sep = " ") {
   }
 }
 
-T[] newvector(T)(size_t dim, T value = 0) {
+T[] newvector(T)(size_t dim, T value = T.init) {
   T[] v;
-  for(int e=0; e<dim; e++){ v ~= cast(T)value; }
+  v.length = dim;
+  for(int e=0; e<dim; e++){ v[e] = value; }
   return v;
 }
 

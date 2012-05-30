@@ -36,7 +36,7 @@ if(windows?) then LIB_EXT = 'lib' ; else LIB_EXT = 'a' ; end
 input_lib_arg = ""
 compile_args  = "-O -w -inline"
 stats_lib_arg = ""
-mapctl_deps = ["qtllib","ctl","input","stats.#{LIB_EXT}","array.#{LIB_EXT}"]
+mapctl_deps = ["qtllib","ctl","input","stats","array"]
 used_libs = []
 
 array_dfiles = Dir.glob("./src/ctl/core/array/*.d")
@@ -62,11 +62,11 @@ TESTS = [ :mapctl ]
 
 directory "test/output"
 
-file "array.#{LIB_EXT}" => array_dfiles do
+file "array" => array_dfiles do
   sh "dmd -lib #{compile_args} -ofarray.#{LIB_EXT} #{array_dfiles.join(' ')}"
 end
 
-file "stats.#{LIB_EXT}" => stats_dfiles do
+file "stats" => stats_dfiles do
   sh "dmd -lib #{compile_args} -ofstats.#{LIB_EXT} #{stats_dfiles.join(' ')} -Isrc/"
 end
 

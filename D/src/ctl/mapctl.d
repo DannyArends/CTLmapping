@@ -45,16 +45,17 @@ void main(string[] args){
     //We need an output path default to ./ ??
     if(!exists(output)) mkdirRecurse(output);
 
+    double[][] qtllod, ctllod, score, perms;
+
     //Start by mapping all QTL
     if(needanalysis(output ~ "/qtls.txt",overwrite)){
       Analysis analysis = getanalysis(settings);
-      double[][] result = analysis.analyse(genotypes, phenotypes, [], verbose);
-      writeFile(result, output ~ "/qtls.txt", overwrite, verbose);
+      qtllod = analysis.analyse(genotypes, phenotypes, [], verbose);
+      writeFile(qtllod, output ~ "/qtls.txt", overwrite, verbose);
     }else{ WARN("Skipped QTL mapping"); }
 
     for(size_t p=0; p < phenotypes.length; p++){ //Main CTL mapping loop
       if(verbose) MSG("- Phenotype %s -",p);
-      double[][] ctllod, score, perms;
       string fn_ctl  = output ~ "/ctl"~to!string(p)~".txt";
       string fn_perm = output ~ "/perms"~to!string(p)~".txt";
       string fn_lods = output ~ "/lodscores"~to!string(p)~".txt";
@@ -62,14 +63,14 @@ void main(string[] args){
       if(needanalysis(fn_ctl,overwrite)){
         score = mapping(phenotypes,  genotypes, p, false);
         writeFile(translate(score),  fn_ctl, overwrite, verbose);
-      }else{ 
+      }else{ //Reload the scores
         score = parseFile!double(fn_ctl, false, false);
         MSG("Skipped CTL mapping, file %s exists", fn_ctl); }
 
       if(needanalysis(fn_perm,overwrite)){
         perms = permutation(phenotypes, genotypes, p, settings.getInt("--nperms"), verbose);
         writeFile(translate(perms), fn_perm, overwrite, verbose);
-      }else{
+      }else{ //Reload the permutations
         perms = parseFile!double(fn_ctl, false, false);
         MSG("Skipped permutations, file %s exists", fn_perm); }
 
