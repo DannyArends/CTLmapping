@@ -13,7 +13,7 @@ import std.math;
 
 pure T doMean(T)(T[] data){
   T mean = 0;
-  for(uint i = 0; i < (data.length-1); i++){
+  for(size_t i = 0; i < data.length; i++){
     mean += (data[i] - mean) / (i + 1);
   }
   return mean;
@@ -45,7 +45,7 @@ pure int doSum(T)(T[] values ...){
 pure real doSumOfSquares(T)(T[] data){
   T mean = doMean(data);
   real sumofsquares = 0;
-  for(uint i = 0; i < (data.length-1); i++){
+  for(size_t i = 0; i < data.length; i++){
     sumofsquares += pow((data[i]-mean),2);
   }
   return sumofsquares;

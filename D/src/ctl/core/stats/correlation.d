@@ -1,9 +1,11 @@
-/**********************************************************************
- * src/ctl/core/stats/correlation.d
+/******************************************************************//**
+ * \file ctl/core/stats/correlation.d
+ * \brief Basic correlation implementation
  *
- * copyright (c) 2012 Danny Arends
- * last modified Jan, 2012
- * first written Jan, 2012
+ * <i>Copyright (c) 2012</i>GBIC - Danny Arends<br>
+ * Last modified May, 2012<br>
+ * First written Jan, 2012<br>
+ * Written in the D Programming Language (http://www.digitalmars.com/d)
  **********************************************************************/
 module ctl.core.stats.correlation;
 
@@ -18,7 +20,7 @@ double correlation(T)(T[] x, T[] y){
   double Yi = 0;
   double XiP2 = 0;
   double YiP2 = 0;
-  for(uint i = 0; i < x.length; i++){
+  for(size_t i = 0; i < x.length; i++){
     XiYi += x[i] * y[i];
     Xi += x[i]; 
     Yi += y[i];

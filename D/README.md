@@ -13,7 +13,7 @@ Prepare your environment by following these steps:
 ```
     git clone https://DannyArends@github.com/DannyArends/CTLmapping.git
     cd CTLmapping/D
-    compile
+    rake
     ./mapctl
 ```
 
@@ -34,10 +34,6 @@ library is build and wrapped automatically:
 
 Single marker QTL mapping is also available by supplying the 'qtl' build 
 target to rake:
-
-```
-    rake qtl
-```
 
 Commandline options
 -------------------

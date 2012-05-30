@@ -34,9 +34,9 @@ LIB_PREFIX = if(windows?) then '' else 'lib' end
 if(windows?) then LIB_EXT = 'lib' ; else LIB_EXT = 'a' ; end
 
 input_lib_arg = ""
-compile_args  = "-O"
+compile_args  = "-O -w -inline"
 stats_lib_arg = ""
-mapctl_deps = ["ctl","input","stats.#{LIB_EXT}","array.#{LIB_EXT}"]
+mapctl_deps = ["qtllib","ctl","input","stats.#{LIB_EXT}","array.#{LIB_EXT}"]
 used_libs = []
 
 array_dfiles = Dir.glob("./src/ctl/core/array/*.d")
@@ -82,7 +82,7 @@ end
 
 task "qtllib" => qtl_dfiles do
   sh "dmd -lib #{compile_args} -ofqtl.#{LIB_EXT} #{qtl_dfiles.join(' ')} -Isrc/"
-  compile_args += " qtl.#{LIB_EXT} -version=QTL"
+  compile_args += " -version=QTL"
   used_libs += ["qtl.#{LIB_EXT}"]
 end
 
@@ -108,9 +108,6 @@ task :default => [:build, :test]
 
 desc "Build mapctl"
 task :build => [:mapctl]
-
-desc "Build mapctl with qtl support"
-task :qtl => ["qtllib","mapctl"]
 
 desc "Build mapctl with qtab support"
 task :qtab => ["qtab.#{LIB_EXT}","mapctl"] 

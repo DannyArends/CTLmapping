@@ -13,17 +13,17 @@ import std.stdio;
 import ctl.core.array.matrix;
 import ctl.core.stats.correlation;
 
-uint[] which(int[] marker,int type = 0){
-  uint[] indices;
+size_t[] which(int[] marker,int type = 0){
+  size_t[] indices;
   indices.reserve(marker.length);
-  for(uint i=0; i < marker.length; i++){ if(marker[i] == type) indices ~= i; }
+  for(size_t i=0; i < marker.length; i++){ if(marker[i] == type) indices ~= i; }
   return indices;
 }
 
-double[] get(double[] phenotype, uint[] r){
+double[] get(double[] phenotype, size_t[] r){
   double[] ph;
   ph.reserve(r.length);
-  foreach(uint e;r){ ph ~= phenotype[e]; }
+  foreach(size_t e;r){ ph ~= phenotype[e]; }
   return ph;
 }
 

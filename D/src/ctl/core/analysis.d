@@ -1,9 +1,11 @@
-/**********************************************************************
- * src/ctl/core/analysis.d
+/******************************************************************//**
+ * \file ctl/core/analysis.d
+ * \brief Interface definition of a genetic analysis algorithm
  *
- * copyright (c) 2012 Danny Arends
- * last modified Jan, 2012
- * first written Jan, 2012
+ * <i>Copyright (c) 2012</i>GBIC - Danny Arends<br>
+ * Last modified May, 2012<br>
+ * First written Jan, 2012<br>
+ * Written in the D Programming Language (http://www.digitalmars.com/d)
  **********************************************************************/
 module ctl.core.analysis;
 
@@ -33,7 +35,7 @@ abstract class Analysis{
 }
 
 class NullAnalysis : Analysis{
-  double[][] analyse(int[][] genotypes, double[][] phenotypes, int[] geno_cov = [], bool verbose = true){
+  override double[][] analyse(int[][] genotypes, double[][] phenotypes, int[] geno_cov = [], bool verbose = true){
     double[][] m = newmatrix!double(1,1);
     return m;
   }

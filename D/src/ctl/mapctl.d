@@ -52,7 +52,7 @@ void main(string[] args){
       writeFile(result, output ~ "/qtls.txt", overwrite, verbose);
     }else{ WARN("Skipped QTL mapping"); }
 
-    for(uint p=0; p < phenotypes.length; p++){ //Main CTL mapping loop
+    for(size_t p=0; p < phenotypes.length; p++){ //Main CTL mapping loop
       if(verbose) MSG("- Phenotype %s -",p);
       double[][] ctllod, score, perms;
       string fn_ctl  = output ~ "/ctl"~to!string(p)~".txt";

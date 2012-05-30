@@ -17,8 +17,8 @@ double[][] tolod(double[][] scores, double[][] permutations, bool verbose = true
   double[] permlist = unlist(absmatrix(permutations));
   double[][] m = newmatrix!double(scores.length,scores[0].length);
   permlist.sort;
-  for(uint r=0;r<scores.length;r++){
-    for(uint c=0;c<scores[0].length;c++){
+  for(size_t r=0;r<scores.length;r++){
+    for(size_t c=0;c<scores[0].length;c++){
       auto index = getIndex(permlist,abs(scores[r][c]));
       double estimate = 1.0;
       if(index < permlist.length){

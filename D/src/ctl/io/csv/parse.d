@@ -13,11 +13,11 @@ import std.stdio, std.string, std.file, std.conv;
 import ctl.io.reader, ctl.io.terminal, ctl.core.array.matrix;
 
 class CSVreader : Reader{
-  double[][] loadphenotypes(string filename = "phenotypes.csv"){
+  override double[][] loadphenotypes(string filename = "phenotypes.csv"){
     return parseFile!double(filename);
   }
 
-  int[][] loadgenotypes(string filename = "genotypes.csv"){
+  override int[][] loadgenotypes(string filename = "genotypes.csv"){
     return parseFile!int(filename);
   }
 }
