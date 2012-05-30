@@ -117,7 +117,7 @@ windows Notepad++ is a good option) and check to see if your data is stored corr
 not reformat your data in both the genotype.csv and the phenotype.csv files to match the 
 format below.
 {\color{red} \emph{\bf{ \\\\NOTE: Individual order must match between the genotype and the phenotype file... \\\\}}} 
-The phenotypes.csv file containing the genotype matrix is stored individuals x genetic marker:
+The genotypes.csv file containing the genotype matrix is stored individuals x genetic marker:
 
 \begin{tabular}{lrrrrr}
       & Marker1 & Marker2 & Marker3 & ... & MarkerN \\
@@ -243,7 +243,7 @@ individual. An environmental condition can be specified by the $conditions$ para
 #Specify that individuals 1:51 were in condition A / e.g. treatment A
 #Specify that individuals 52:100 were in condition B / e.g. treatment B 
 #Specify that individuals 101:162 were in condition C / e.g. control
-conditions <- c(rep(1,51),rep(2,49),rep(2,62))
+conditions <- c(rep(1,51),rep(2,49),rep(3,62))
 ctls <- CTLscan(geno, traits, conditions=conditions)
 @
 
@@ -356,8 +356,7 @@ Explains how to determine CTL significance using the CTLpermute function.
 \textbf{\sffamily Some famous last words}
 \nopagebreak
 
-
-\newpage
+\bigskip
 {\small
 \noindent \textbf{\sffamily Package CTL function overview} \\
 \noindent \begin{tabular}{ll} 

@@ -14,7 +14,8 @@ check.genotypes <- function(genotypes, geno.enc=c(1,2), verbose=FALSE){
   toremove <- NULL
   idx <- 1
   checks <- apply(genotypes,2,function(geno){
-    if(length(which(geno==geno.enc[1])) == 0 | length(which(geno==geno.enc[2])) == 0){
+    #We need at least 3 markers of a certain genotype
+    if(length(which(geno==geno.enc[1])) <= 2 | length(which(geno==geno.enc[2])) <= 2){
       if(verbose) cat("Severe: Empty group, removing marker",idx,"\n")
       toremove <<- c(idx,toremove)
     }

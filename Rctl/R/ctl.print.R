@@ -8,12 +8,16 @@
 # Print routines for CTL analysis
 #
 
+print.CTLobject <- function(x, ...){
+  cat("CTLobject summary\n\n")
+  cat("- Number of scanned phenotypes:",length(x),"\n")
+}
+
 print.CTLscan <- function(x, ...){
   cat("CTLscan summary",attr(x$ctl,"name"),"\n\n")
   cat("- Number of background phenotypes",dim(x$ctl)[1],"\n")
   cat("- Number of markers",dim(x$ctl)[2],"\n")
   cat("- Number of permutations",length(unlist(x$p))/dim(x$ctl)[2],"\n")
-  getPermuteThresholds(x,..., verbose = TRUE)
 }
 
 getPermuteThresholds <-function(x, significance = c(.05,.01,.001), ..., verbose = FALSE){

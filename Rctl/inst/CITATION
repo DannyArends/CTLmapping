@@ -1,0 +1,11 @@
+citHeader("To cite R/ctl in publications use:")
+
+citEntry(entry="article",
+         title = "Correlated Trait Loci {CTL} mapping",
+         author = personList(person("Danny", "Arends"), person("Pjotr", "Prins"), person("Ritsert", "Jansen", "C.")),
+         journal = "Nucl. Acids Res.",
+         year = 2012,
+         volume = XX,
+         pages = "XXX-XXX",
+         textVersion = paste("Arends et al. (2012) Correlated Trait Loci (CTL) mapping. Nucl. Acids Res. XX:XXX-XXX")
+         )

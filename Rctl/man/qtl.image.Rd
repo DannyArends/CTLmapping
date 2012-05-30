@@ -27,10 +27,9 @@ QTLimage(x, do.grid=TRUE, grid.col = "black", verbose = FALSE, \dots)
 }
 
 \examples{
-  library(ctl)
-  data(ath.metabolites) # Arabidopsis Thaliana dataset
-  ctl_result <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes)
-  QTLimage(ctl_result)
+  library(ctl)          # Load CTL library
+  data(ath.result)      # Arabidopsis Thaliana results
+  QTLimage(ath.result)  # Plot only the QTLimage
 }
 
 \seealso{

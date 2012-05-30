@@ -44,9 +44,9 @@ CTLscan, a list of:
 \examples{
   library(ctl)
   data(ath.metabolites) # Arabidopsis Thaliana dataset
-  ctl_result <- CTLmapping(ath.metab$genotypes, ath.metab$phenotypes)
-  ctl_result
-  plot(ctl_result)   #Plot a phenotype
+  CTLscan1 <- CTLmapping(ath.metab$genotypes, ath.metab$phenotypes)
+  CTLscan1
+  plot(CTLscan1)        # Plot the first phenotype scan
 }
 
 \keyword{methods}

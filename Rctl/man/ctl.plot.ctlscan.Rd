@@ -31,7 +31,8 @@
 \examples{
   library(ctl)
   data(ath.result)       # Arabidopsis Thaliana dataset
-  plot(ath.result[[1]])  # First phenotype
+  CTLscan3 <- ath.result[[3]]
+  plot(CTLscan3)         # Third phenotype
 }
 
 \seealso{

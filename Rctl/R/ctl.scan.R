@@ -19,11 +19,11 @@ CTLscan <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1:ncol(p
   stage <- 1
   if(missing(have.qtl)){
     cat("Stage 0.1: Mapping Trait - Marker associations (QTL)\n")
-    attr(results,"qtl") <- QTLscan(genotypes, phenotypes, conditions, verbose=verbose)$qtl
+    attr(results,"qtl") <- QTLscan(genotypes, phenotypes, pheno.col, conditions, verbose=verbose)$qtl
     stage <- 2
   }else{
-    if(ncol(have.qtl) != ncol(genotypes)) cat("[SEVERE] argument 'have.qtl' should be of size:",ncol(phenotypes),ncol(genotypes))
-    if(nrow(have.qtl) != ncol(phenotypes)) cat("[SEVERE] argument 'have.qtl' should be of size:",ncol(phenotypes),ncol(genotypes))
+    if(ncol(have.qtl) != ncol(genotypes))   cat("[SEVERE] argument 'have.qtl' should be of size:",length(pheno.col)," ",ncol(genotypes),"\n")
+    if(nrow(have.qtl) != length(pheno.col)) cat("[SEVERE] argument 'have.qtl' should be of size:",length(pheno.col)," ",ncol(genotypes),"\n")
     attr(results,"qtl") <- have.qtl
   }
   if(!is.null(toremove)){
@@ -82,7 +82,7 @@ CTLmapping <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1, me
 }
 
 #-- R/qtl interface --#
-CTLscan.cross <- function(cross, pheno.col, method = c("pearson", "kendall", "spearman"), n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE){
+CTLscan.cross <- function(cross, pheno.col, have.qtl, method = c("pearson", "kendall", "spearman"), n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
   if(has_rqtl()){
     require(qtl)
@@ -90,12 +90,14 @@ CTLscan.cross <- function(cross, pheno.col, method = c("pearson", "kendall", "sp
     geno.enc <- NULL
     if(any(class(cross)=="bc") || any(class(cross)=="riself") || any(class(cross)=="risib")) geno.enc <- c(1,2)
     if(is.null(geno.enc)) stop("Class of the cross needs to be either: riself,risib or bc")
-
-    phenotypes <- apply(qtl::pull.pheno(cross),2,as.numeric)
+    rqtl_pheno <- qtl::pull.pheno(cross)
+    rqtl_c <- which(colnames(rqtl_pheno) %in% c("sex","pgm")) #R/qtl adds additional columns sex and pgm
+    if(length(rqtl_c) > 0) rqtl_pheno <- rqtl_pheno[,-rqtl_c]
+    phenotypes <- apply(rqtl_pheno,2,as.numeric)         #R/qtl phenotypes are a data.frame (Need matrix)
     if(missing(pheno.col)) pheno.col <- 1:ncol(phenotypes)
     genotypes <- qtl::pull.geno(cross)
     CTLscan(genotypes = genotypes, phenotypes =  phenotypes, geno.enc=geno.enc, 
-            pheno.col = pheno.col, method=method, n.perm=n.perm, n.cores=n.cores, 
+            pheno.col = pheno.col, have.qtl=have.qtl, method=method, n.perm=n.perm, n.cores=n.cores, 
             directory=directory, saveFiles=saveFiles, verbose=verbose)
   }else{
     warning(.has_rqtl_warnmsg)
