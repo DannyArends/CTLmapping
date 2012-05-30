@@ -1,9 +1,11 @@
-/**********************************************************************
- * src/ctl/io/csv/parse.d
+/******************************************************************//**
+ * \file ctl/io/csv/parse.d
+ * \brief Parse input in CSV format
  *
- * copyright (c) 2012 Danny Arends
- * last modified Jan, 2012
- * first written Jan, 2012
+ * <i>Copyright (c) 2012</i>GBIC - Danny Arends<br>
+ * Last modified May, 2012<br>
+ * First written Jan, 2012<br>
+ * Written in the D Programming Language (http://www.digitalmars.com/d)
  **********************************************************************/
 module ctl.io.csv.parse;
 
@@ -14,7 +16,7 @@ class CSVreader : Reader{
   double[][] loadphenotypes(string filename = "phenotypes.csv"){
     return parseFile!double(filename);
   }
-    
+
   int[][] loadgenotypes(string filename = "genotypes.csv"){
     return parseFile!int(filename);
   }

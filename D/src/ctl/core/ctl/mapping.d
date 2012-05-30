@@ -1,9 +1,11 @@
-/**********************************************************************
- * src/ctl/core/ctl/mapping.d
+/******************************************************************//**
+ * \file ctl/core/ctl/mapping.d
+ * \brief Map CTL for a single phenotypes
  *
- * copyright (c) 2012 Danny Arends
- * last modified May, 2012
- * first written Jan, 2012
+ * <i>Copyright (c) 2012</i>GBIC - Danny Arends<br>
+ * Last modified May, 2012<br>
+ * First written Jan, 2012<br>
+ * Written in the D Programming Language (http://www.digitalmars.com/d)
  **********************************************************************/
 module ctl.core.ctl.mapping;
 

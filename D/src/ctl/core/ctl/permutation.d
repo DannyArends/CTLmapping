@@ -1,9 +1,11 @@
-/**********************************************************************
- * src/ctl/core/ctl/permute.d
+/******************************************************************//**
+ * \file ctl/core/ctl/permutation.d
+ * \brief CTL significance thresholds by permutation
  *
- * copyright (c) 2012 Danny Arends
- * last modified May, 2012
- * first written Jan, 2012
+ * <i>Copyright (c) 2012</i>GBIC - Danny Arends<br>
+ * Last modified May, 2012<br>
+ * First written Jan, 2012<br>
+ * Written in the D Programming Language (http://www.digitalmars.com/d)
  **********************************************************************/
 module ctl.core.ctl.permutation;
 
