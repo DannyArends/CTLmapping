@@ -5,6 +5,10 @@
 *.EXE
 *~
 *.swp
+ctl*.txt
+perms*.txt
+lodsco*.txt
+qtls.txt
 *.aux
 *.bbl
 *.out
