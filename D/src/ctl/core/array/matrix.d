@@ -11,7 +11,7 @@ module ctl.core.array.matrix;
 
 import std.stdio, std.conv, std.math;
 
-T[][] absmatrix(T)(T[][] i){
+T[][] absmatrix(T)(in T[][] i){
   T[][] m = newmatrix!T(i.length, i[0].length);
   for(size_t r=0;r<i.length;r++){
     for(size_t c=0;c<i[0].length;c++){
@@ -21,13 +21,13 @@ T[][] absmatrix(T)(T[][] i){
   return m;
 }
 
-T[] unlist(T)(T[][] i){
+T[] unlist(T)(in T[][] i){
   T[] m;
   for(size_t r=0;r<i.length;r++){ m ~= i[r]; }
   return m;
 }
 
-T[][] translate(T)(T[][] i){
+T[][] translate(T)(in T[][] i){
   T[][] m = newmatrix!T(i[0].length,i.length);
   for(uint r=0;r<i.length;r++){
     for(uint c=0;c<i[0].length;c++){
