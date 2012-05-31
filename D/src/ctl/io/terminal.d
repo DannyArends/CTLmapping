@@ -94,6 +94,8 @@ template GenOutput(string name, string color, string bcolor = "Black"){
 
 mixin(GenOutput!("CTL", "Green", "Black"));
 alias wCTL MSG;
+mixin(GenOutput!("OK", "Green", "Black"));
+alias wOK OK;
 mixin(GenOutput!("ERROR", "Red", "Black"));
 alias wERROR ERR;
 mixin(GenOutput!("WARN", "Yellow", "Black"));
