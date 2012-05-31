@@ -13,7 +13,7 @@ import std.math;
 
 //D routines for correlation analysis almost as fast as the RBlas version 
 //But this allows us to write out to disk, using almost no additional RAM
-double correlation(T)(T[] x, T[] y){
+double correlation(T)(in T[] x, in T[] y){
   assert(x.length == y.length);
   double XiYi = 0;
   double Xi = 0;
