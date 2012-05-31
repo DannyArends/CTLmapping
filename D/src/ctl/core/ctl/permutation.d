@@ -14,7 +14,7 @@ import ctl.core.array.ranges, ctl.io.terminal, core.memory;
 import ctl.core.array.matrix, ctl.core.ctl.mapping;
 import ctl.core.stats.basic;
 
-T[][] permute(T)(T[][] genotypes){
+T[][] permute(T)(in T[][] genotypes){
   T[][] newgeno = newmatrix!T(genotypes.length,genotypes[0].length);
   uint cnt=0;
   foreach(e; randomCover(dorange(0, genotypes[0].length),Random(unpredictableSeed))){
@@ -26,7 +26,7 @@ T[][] permute(T)(T[][] genotypes){
   return newgeno;
 }
 
-double[][] permutation(double[][] phenotypes, int[][] genotypes, size_t phenotype = 1, uint permutations = 100, bool verbose = true){
+double[][] permutation(in double[][] phenotypes, in int[][] genotypes, size_t phenotype = 1, uint permutations = 100, bool verbose = true){
   assert(phenotype < phenotypes.length);
   SysTime stime = Clock.currTime();
   double[][] perms;
@@ -43,4 +43,3 @@ double[][] permutation(double[][] phenotypes, int[][] genotypes, size_t phenotyp
   if(verbose) MSG("Permutations took: (%s secs)", (Clock.currTime()-stime).total!"seconds"());
   return perms;
 }
-
