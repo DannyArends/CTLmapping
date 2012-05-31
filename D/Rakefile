@@ -32,6 +32,7 @@ end
   
 LIB_PREFIX = if(windows?) then '' else 'lib' end
 if(windows?) then LIB_EXT = 'lib' ; else LIB_EXT = 'a' ; end
+if(windows?) then EXE_EXT = 'exe' ; else EXE_EXT = 'bin' ; end
 
 input_lib_arg = ""
 compile_args  = "-O -w -inline"
@@ -44,6 +45,7 @@ stats_dfiles = Dir.glob("./src/ctl/core/*.d") + Dir.glob("./src/ctl/core/stats/*
 qtl_dfiles = Dir.glob("./src/ctl/core/qtl/*.d")
 input_dfiles = Dir.glob("./src/ctl/io/*.d") + Dir.glob("./src/ctl/io/csv/*.d")+ Dir.glob("./src/ctl/io/cmdline/*.d")
 ctl_dfiles = Dir.glob("./src/ctl/core/ctl/*.d")
+all_dfiles = array_dfiles + stats_dfiles + qtl_dfiles + input_dfiles + ctl_dfiles
 qtab_dfiles = []
 
 if hasQTAB
@@ -64,10 +66,12 @@ directory "test/output"
 
 file "array" => array_dfiles do
   sh "dmd -lib #{compile_args} -ofarray.#{LIB_EXT} #{array_dfiles.join(' ')}"
+  used_libs += ["array.#{LIB_EXT}"]
 end
 
 file "stats" => stats_dfiles do
   sh "dmd -lib #{compile_args} -ofstats.#{LIB_EXT} #{stats_dfiles.join(' ')} -Isrc/"
+  used_libs += ["stats.#{LIB_EXT}"]
 end
 
 task "input" => input_dfiles do
@@ -92,7 +96,7 @@ file "qtab.#{LIB_EXT}" => qtab_dfiles do
 end
 
 file "mapctl" => mapctl_deps do
-  sh "dmd #{compile_args} src/ctl/mapctl.d #{used_libs.join(' ')} stats.#{LIB_EXT} array.#{LIB_EXT} -Isrc/"
+  sh "dmd #{compile_args} src/ctl/mapctl.d #{used_libs.join(' ')} -ofmapctl.#{EXE_EXT} -Isrc/"
 end
 
 desc "Test mapctl"
@@ -101,6 +105,11 @@ task :test_all => [ "test/output", :mapctl ] do
   sh "./mapctl --help"
   sh "./mapctl -h -v"
   sh "./mapctl --nperms=5 -o=test/output/hyper"
+end
+
+desc "Run the unit tests"
+task :unittest do
+  sh "dmd -unittest #{compile_args} src/ctl/empty.d -ofunittest.#{EXE_EXT} -Isrc/ #{all_dfiles.join(' ')}"
 end
 
 desc "Default build and tests"
