@@ -14,7 +14,7 @@ require 'rake/clean'
 
 def windows?; return RUBY_PLATFORM =~ /(:?mswin|mingw)/ ; end
 
-qtlhd="../../qtlHD/src/D"
+qtlhd="../qtlHD/src/D"
 
 if ENV['QTLHD']==nil and not File.directory?(qtlhd)
   puts "Compiling without qtab support!"
@@ -36,7 +36,7 @@ if(windows?) then LIB_EXT = 'lib' ; else LIB_EXT = 'a' ; end
 input_lib_arg = ""
 compile_args  = "-O -w -inline"
 stats_lib_arg = ""
-mapctl_deps = ["qtllib","ctl","input","stats","array"]
+mapctl_deps = ['qtllib', 'ctl', 'input', 'stats', 'array']
 used_libs = []
 
 array_dfiles = Dir.glob("./src/ctl/core/array/*.d")
@@ -49,7 +49,7 @@ qtab_dfiles = []
 if hasQTAB
   qtab_dfiles  = Dir.glob(qtlhd + "/qtl/core/*.d") + ["#{qtlhd}/qtl/plugins/qtab/read_qtab.d"] + ["src/ctl/io/qtab/wrapper.d"]
   compile_args += " -I#{qtlhd} -version=QTAB"
-  mapctl_deps += "qtab.#{LIB_EXT}"
+  mapctl_deps += ["qtab.#{LIB_EXT}"]
 end
 
 if windows?

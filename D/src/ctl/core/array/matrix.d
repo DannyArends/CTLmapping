@@ -64,12 +64,12 @@ T[] newvector(T)(size_t dim, T value = T.init) {
 
 T[] stringvectortotype(T)(string[] entities){
   T[] rowleveldata;
-  rowleveldata.reserve(entities.length);
-  for(auto e=0;e < entities.length; e++){
+  rowleveldata.length = entities.length;
+  for(size_t cnt = 0;cnt < entities.length; cnt++){
     try{
-      rowleveldata ~= to!T(entities[e]);
+      rowleveldata[cnt] = to!T(entities[cnt]);
     }catch(Throwable e){
-      rowleveldata ~= to!T(0);
+      rowleveldata[cnt] = to!T(0);
     }
   }
   return rowleveldata;

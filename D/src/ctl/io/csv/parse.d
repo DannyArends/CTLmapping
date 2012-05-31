@@ -9,7 +9,7 @@
  **********************************************************************/
 module ctl.io.csv.parse;
 
-import std.stdio, std.string, std.file, std.conv;
+import std.stdio, std.string, std.file, std.conv, std.datetime;
 import ctl.io.reader, ctl.io.terminal, ctl.core.array.matrix;
 
 class CSVreader : Reader{
@@ -43,23 +43,22 @@ T[][] parseFile(T)(string filename, bool verbose = false ,bool hasRowHeader= tru
     ERR("No such file %s",filename);
   }else{
     try{
-      auto fp = new File(filename,"rb");
-      string      buffer;
-      while(fp.readln(buffer)){
-        buffer = chomp(buffer);
-        string[] splitted = buffer.split("\t");
+      SysTime stime = Clock.currTime();
+      string[] content = readText(filename).split("\n");
+      foreach(string buffer; content){
+        string[] splitted = chomp(buffer).split("\t");
+        if(splitted.length > 0){
         if(hasRowHeader){
-          if(splitted.length > 3){
-            descr ~= D(splitted[0..2]);
-            data ~= stringvectortotype!T(splitted[3..$]);
-          }
+          data ~= stringvectortotype!T(splitted[3..$]);
         }else{
           data ~= stringvectortotype!T(splitted[0..$]);        
         }
+        }
+        if((Clock.currTime()-stime).total!"seconds"() > 0 && (Clock.currTime()-stime).total!"seconds"() % 10 == 0) MSG("At: %s", data.length);
       }
-      fp.close();
       if(verbose) MSG("Parsed %s imports from file: %s",data.length, filename);
-    }catch(Throwable e){ ERR("File %s read exception", filename); }
+      MSG("Loading took: (%s msecs)",(Clock.currTime()-stime).total!"msecs"());
+    }catch(Throwable e){ ERR("File %s read exception %s", filename,e); }
   }
   return data;
 }
