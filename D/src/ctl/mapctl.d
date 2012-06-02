@@ -10,7 +10,7 @@
 import std.stdio, std.math, std.conv, std.file, std.datetime;
 import ctl.core.array.matrix;
 import ctl.core.stats.basic, ctl.core.stats.tolod;
-import ctl.core.analysis;
+import ctl.core.analysis, ctl.core.ctl.utils;
 import ctl.core.ctl.mapping, ctl.core.ctl.permutation;
 import ctl.io.reader, ctl.io.terminal;
 import ctl.io.cmdline.parse;
@@ -21,6 +21,7 @@ void main(string[] args){
   MSG("Correlated Trait Locus (CTL) mapping in D");
   MSG("(c) 2012 written by Danny Arends in the D programming language");
   CTLsettings settings   = parseCmd(args);
+  MSG("ARGS parsed");
   Reader ireader  = initialize(settings);
   bool verbose    = settings.getBool("--verbose");
   bool overwrite  = settings.getBool("--redo");
@@ -87,8 +88,14 @@ void main(string[] args){
           MSG("Skipped permutations, file %s exists", fn_perm); }
       }
       if(needanalysis(fn_lods,overwrite)){
-        ctllod = tolod2(translate(score), perms, settings.getDouble("--minlod"), verbose);
-        writeFile(ctllod, fn_lods,phenonames, overwrite, verbose);
+        double[] permlist    = doMatrixMax(absmatrix(perms));
+        MSG("Permlist: %s", permlist.length);
+        score                = translate(score);
+        permlist.sort;
+        double   cutoff      = getCutoff(permlist, settings.getDouble("--minlod"));
+        size_t[] significant = getSignificant(score, cutoff);
+        ctllod = tolod(score, permlist, significant, phenonames, verbose);
+        writeFile(ctllod, fn_lods, get(phenonames,significant), overwrite, verbose);
       }else{ MSG("Skipped LOD transformation, file %s exists", fn_lods); }
     }
     writeln();
