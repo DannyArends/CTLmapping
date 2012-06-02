@@ -70,7 +70,7 @@ file "array" => array_dfiles do
 end
 
 file "stats" => stats_dfiles do
-  sh "dmd -lib #{compile_args} -ofstats.#{LIB_EXT} #{stats_dfiles.join(' ')} -Isrc/"
+  sh "dmd -lib #{compile_args} -ofstats.#{LIB_EXT} #{stats_dfiles.join(' ')}  #{used_libs.join(' ')}  -Isrc/"
   used_libs += ["stats.#{LIB_EXT}"]
 end
 

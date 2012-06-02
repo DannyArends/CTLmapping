@@ -10,13 +10,14 @@
 module ctl.io.terminal;
 private import std.stdio;
 
-static{
-  CColor fg = CColor.White;
-  CColor bg = CColor.Black;
-}
-
 version(Windows){ 
   import std.c.windows.windows;
+
+  static{
+    CColor fg = CColor.White;
+    CColor bg = CColor.Black;
+  }
+
 
   enum CColor : ushort{ 
     Black  = 0 , DarkBlue   = 1 , DarkGreen = 2 , DarkAzure = 3 , DarkRed = 4,
@@ -47,37 +48,30 @@ version(Windows){
   }  
 
 }else version(Posix){
+
+  static{
+    CColor fg = CColor.Black;
+    CColor bg = CColor.White;
+  }
     
   enum CColor : ushort{
     Black = 30, Red  = 31, Green = 32, Yellow  = 33, Blue = 34,
     Pink  = 35, Aqua = 36, White = 37, Default = 0 }
     
-  private void setConsoleForeground(CColor color){
-    if(color == CColor.Default){
-      writef("\033[0m");
-      fg = CColor.Default;
-      setConsoleBackgroundColor(bg);
-    }else{
-      writef("\033[0;%dm", cast(int)color);
-      fg = color;
-    }
+  private void setConsoleForeground(CColor color = CColor.Black){
+    if(color != fg){ writef("\033[%dm ", cast(int)color); }
+    fg = color;
   }
 
-  void setConsoleBackground(CColor color){
-    if(color == CColor.Default){
-      writef("\033[0m");
-      bg = CColor.Default;
-      setConsoleFontColor(fg);
-    }else{
-      writef("\033[0;%dm", cast(int)color + 10);
-      bg = color;
-    }
+  void setConsoleBackground(CColor color = CColor.White){
+    if(color != fg){ writef("\033[%dm ", cast(int)color+10); }
+    bg = color;
   }  
 }
 
-void setCColor(CColor fore = CColor.White, CColor back = CColor.White.Black){
+void setCColor(CColor fore = CColor.Default, CColor back = CColor.Default){
   setConsoleForeground(fore);
-  setConsoleBackground(back);
+  if(back != CColor.Default) setConsoleBackground(back);
 }
 
 void addWhite(string name){
@@ -85,22 +79,22 @@ void addWhite(string name){
   for(size_t x=0; x < (6-name.length);x++){ write(" "); }
 }
 
-template GenOutput(string name, string color, string bcolor = "Black"){
+template GenOutput(string name, string color, string bcolor = "Default"){
   const char[] GenOutput = "void w"~ name ~ "(A...)(A a){" ~
   "setCColor(CColor."~color~",CColor."~bcolor~"); writef(\"["~name~"]\"); std.stdio.stdout.flush();" ~
   "setCColor(); addWhite(\""~name~"\"); std.stdio.stdout.flush();" ~
   "setCColor(); writefln(a);}";
 }
 
-mixin(GenOutput!("CTL", "Green", "Black"));
+mixin(GenOutput!("CTL", "Green"));
 alias wCTL MSG;
-mixin(GenOutput!("OK", "Green", "Black"));
+mixin(GenOutput!("OK", "Green"));
 alias wOK OK;
-mixin(GenOutput!("ERROR", "Red", "Black"));
+mixin(GenOutput!("ERROR", "Red"));
 alias wERROR ERR;
-mixin(GenOutput!("WARN", "Yellow", "Black"));
+mixin(GenOutput!("WARN", "Yellow"));
 alias wWARN WARN;
-mixin(GenOutput!("DEBUG", "White", "Black"));
+mixin(GenOutput!("DEBUG", "White"));
 alias wDEBUG DBG;
 
 CColor getConsoleForeground(){ return fg; }
