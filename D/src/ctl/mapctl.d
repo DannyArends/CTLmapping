@@ -97,6 +97,8 @@ void main(string[] args){
         ctllod = tolod(score, permlist, significant, phenonames, verbose);
         writeFile(ctllod, fn_lods, get(phenonames,significant), overwrite, verbose);
       }else{ MSG("Skipped LOD transformation, file %s exists", fn_lods); }
+      GC.collect();
+      GC.minimize();
     }
     writeln();
     MSG("mapCTL finished (%s seconds)",(Clock.currTime()-stime).total!"seconds"()," seconds");
