@@ -8,7 +8,7 @@
  * Written in the D Programming Language (http://www.digitalmars.com/d)
  **********************************************************************/
 import std.stdio, std.math, std.conv, std.file, std.datetime;
-import ctl.core.array.matrix;
+import ctl.core.array.matrix, core.memory;
 import ctl.core.stats.basic, ctl.core.stats.tolod;
 import ctl.core.analysis, ctl.core.ctl.utils;
 import ctl.core.ctl.mapping, ctl.core.ctl.permutation;
@@ -57,7 +57,6 @@ void main(string[] args){
       if(effects != null) writeFile(effects, output ~ "/effects.txt", null, overwrite, verbose);
     }else{ WARN("Skipped effect scan"); }
 
-    
     //Start by mapping all QTL
     if(needanalysis(output ~ "/qtls.txt",overwrite)){
       analysis = getanalysis("qtl",settings);
@@ -77,7 +76,7 @@ void main(string[] args){
       }else{ //Reload the scores
         score = parseFile!double(fn_ctl, false, false);
         MSG("Skipped CTL mapping, file %s exists", fn_ctl); }
-      if(settings.getBool("--sp") && p > 0){
+     if(settings.getBool("--sp") && p > 0){
         MSG("Reusing permutations");
       }else{
         if(needanalysis(fn_perm,overwrite)){

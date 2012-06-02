@@ -9,7 +9,7 @@
  **********************************************************************/
 module ctl.core.array.matrix;
 
-import std.stdio, std.conv, std.math;
+import std.stdio, std.conv, std.math, core.memory;
 
 T[][] absmatrix(T)(in T[][] i){
   T[][] m = newmatrix!T(i.length, i[0].length);
@@ -60,6 +60,19 @@ T[] newvector(T)(size_t dim, T value = T.init) {
   v.length = dim;
   for(int e=0; e<dim; e++){ v[e] = value; }
   return v;
+}
+
+void freevector(T)(ref T[] v) {
+  GC.removeRange(cast(void*)v);
+  GC.free(cast(void*)v);
+}
+
+void freematrix(T)(T[][] m) {
+  for(size_t i=0; i < m.length; i++) {
+    if(m[i].length > 0) freevector!T(m[i]);
+  }
+  GC.removeRange(cast(void*)m);
+  GC.free(cast(void*)m);
 }
 
 T[] stringvectortotype(T)(string[] entities){

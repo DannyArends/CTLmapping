@@ -60,14 +60,20 @@ string[] parseNames(string filename){
 
 T[][] parseFile(T)(string filename, bool verbose = false ,bool hasRowHeader= true){
   T[][] data;
-  D[]   descr;
   if(!exists(filename) || !isFile(filename)){
     ERR("No such file %s",filename);
   }else{
     try{
       SysTime stime = Clock.currTime();
-      string[] content = readText(filename).split("\n");
-      foreach(string buffer; content){
+      auto f = new File(filename,"rb");
+      uint filesize = cast(uint)getSize(filename);
+      ubyte[] inputbuffer = new ubyte[filesize];
+      f.rawRead(inputbuffer);
+      f.close();
+      string[] content = (cast(string)inputbuffer).split("\n");
+      string buffer;
+      for(size_t cnt=0; cnt < content.length;cnt++){
+        buffer = content[cnt];
         string[] splitted = chomp(buffer).split("\t");
         if(splitted.length > 0){
         if(hasRowHeader){
@@ -76,8 +82,11 @@ T[][] parseFile(T)(string filename, bool verbose = false ,bool hasRowHeader= tru
           data ~= stringvectortotype!T(splitted[0..$]);        
         }
         }
+        freevector(splitted);
         if((Clock.currTime()-stime).total!"seconds"() > 0 && (Clock.currTime()-stime).total!"seconds"() % 10 == 0) MSG("At: %s", data.length);
       }
+      freevector(content);
+      freevector(inputbuffer);
       if(verbose) MSG("Parsed %s imports from file: %s",data.length, filename);
       MSG("Loading took: (%s msecs)",(Clock.currTime()-stime).total!"msecs"());
     }catch(Throwable e){ ERR("File %s read exception %s", filename,e); }
