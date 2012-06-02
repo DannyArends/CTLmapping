@@ -23,7 +23,7 @@ void main(string[] args){
   CTLsettings settings   = parseCmd(args);
   Reader ireader  = initialize(settings);
   bool verbose    = settings.getBool("--verbose");
-  bool overwrite  = settings.getBool("--overwrite");
+  bool overwrite  = settings.getBool("--redo");
   string output   = settings.getString("--output");
   if(output[($-1)]=='/') output = output[0..($-1)];
   string input_p  = settings.getString("--phenotypes");
@@ -45,13 +45,22 @@ void main(string[] args){
     //We need an output path default to ./ ??
     if(!exists(output)) mkdirRecurse(output);
 
-    double[][] qtllod, ctllod, score, perms;
+    double[][] effects, qtllod, ctllod, score, perms;
 
+    Analysis analysis;
+    //Start by mapping all QTL
+    if(needanalysis(output ~ "/effects.txt",overwrite)){
+      analysis = getanalysis("effect",settings);
+      effects = analysis.analyse(genotypes, phenotypes, [], verbose);
+      if(effects != null) writeFile(effects, output ~ "/effects.txt", overwrite, verbose);
+    }else{ WARN("Skipped effect scan"); }
+
+    
     //Start by mapping all QTL
     if(needanalysis(output ~ "/qtls.txt",overwrite)){
-      Analysis analysis = getanalysis(settings);
+      analysis = getanalysis("qtl",settings);
       qtllod = analysis.analyse(genotypes, phenotypes, [], verbose);
-      writeFile(qtllod, output ~ "/qtls.txt", overwrite, verbose);
+      if(qtllod != null) writeFile(qtllod, output ~ "/qtls.txt", overwrite, verbose);
     }else{ WARN("Skipped QTL mapping"); }
 
     for(size_t p=0; p < phenotypes.length; p++){ //Main CTL mapping loop

@@ -86,7 +86,6 @@ end
 
 task "qtllib" => qtl_dfiles do
   sh "dmd -lib #{compile_args} -ofqtl.#{LIB_EXT} #{qtl_dfiles.join(' ')} -Isrc/"
-  compile_args += " -version=QTL"
   used_libs += ["qtl.#{LIB_EXT}"]
 end
 

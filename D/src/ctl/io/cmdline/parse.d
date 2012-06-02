@@ -77,8 +77,10 @@ CTLsettings parseCmd(string[] args){
   Scontainer opt;
 
   bool help = false;
+  bool effect = false;
+  bool qtl = false;
   bool verbose = true;
-  bool overwrite = false;
+  bool redo = false;
   uint nperms = 100;
   string phenotype_filename = "test/data/phenotypes.csv";
   string genotype_filename = "test/data/genotypes.csv";
@@ -87,8 +89,10 @@ CTLsettings parseCmd(string[] args){
 
   getopt(args, "help|h", &help
              , "verbose|v", &verbose
+             , "effect|e", &effect
+             , "qtl|q", &qtl
              , "output|o", &output
-             , "overwrite", &overwrite
+             , "redo|r", &redo
              , "nperms|n", &nperms
              , "phenotypes|p", &phenotype_filename
              , "genotypes|g", &genotype_filename
@@ -96,8 +100,10 @@ CTLsettings parseCmd(string[] args){
 
   opt.booleans ~= S!bool("--help"         ,"Show the help file", help);
   opt.booleans ~= S!bool("--verbose"      ,"Verbose mode", verbose);
+  opt.booleans ~= S!bool("--effect"       ,"Perform effect scan", effect);
+  opt.booleans ~= S!bool("--qtl"          ,"Perform QTL scan", qtl);
   opt.strings  ~= S!string("--output"     ,"Path to write output to (DEFAULT: ./)", output);
-  opt.booleans ~= S!bool("--overwrite"    ,"Overwrite previous output files", overwrite);
+  opt.booleans ~= S!bool("--redo"         ,"Overwrite previous output files", redo);
   opt.integers ~= S!uint("--nperms"       ,"Number of permutations", nperms);
   opt.strings  ~= S!string("--phenotypes" ,"File containing phenotypes", phenotype_filename);
   opt.strings  ~= S!string("--genotypes"  ,"File containing genotypes", genotype_filename);
@@ -105,4 +111,3 @@ CTLsettings parseCmd(string[] args){
   settings.load(opt);
   return settings;
 }
-
