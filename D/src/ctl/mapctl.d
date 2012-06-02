@@ -72,29 +72,33 @@ void main(string[] args){
 
       if(needanalysis(fn_ctl,overwrite)){
         score = mapping(phenotypes,  genotypes, p, true);
-        writeFile(translate(score),  fn_ctl, null, overwrite, verbose);
+        score = translate(score);
+        writeFile(score,  fn_ctl, null, overwrite, verbose);
       }else{ //Reload the scores
         score = parseFile!double(fn_ctl, false, false);
-        MSG("Skipped CTL mapping, file %s exists", fn_ctl); }
+        MSG("Skipped CTL mapping, file %s exists", fn_ctl); }  
+        
      if(settings.getBool("--sp") && p > 0){
-        MSG("Reusing permutations");
+        MSG("Reusing trait 0 permutations");
       }else{
         if(needanalysis(fn_perm,overwrite)){
           perms = permutation(phenotypes, genotypes, p, settings.getInt("--nperms"), verbose);
-          writeFile(translate(perms), fn_perm, null, overwrite, verbose);
+          writeFile(perms, fn_perm, null, overwrite, verbose);
         }else{ //Reload the permutations
-          perms = parseFile!double(fn_ctl, false, false);
+          perms = parseFile!double(fn_perm, false, false);
           MSG("Skipped permutations, file %s exists", fn_perm); }
       }
       if(needanalysis(fn_lods,overwrite)){
         double[] permlist    = doMatrixMax(absmatrix(perms));
-        MSG("Permlist: %s", permlist.length);
-        score                = translate(score);
+        MSG("Number of permutations: %s", permlist.length);
+        MSG("Number of phenotypes scored: %s", score.length);
         permlist.sort;
         double   cutoff      = getCutoff(permlist, settings.getDouble("--minlod"));
         size_t[] significant = getSignificant(score, cutoff);
         ctllod = tolod(score, permlist, significant, phenonames, verbose);
-        writeFile(ctllod, fn_lods, get(phenonames,significant), overwrite, verbose);
+        if(ctllod.length > 0){
+          writeFile(ctllod, fn_lods, get(phenonames,significant), overwrite, verbose);
+        }
       }else{ MSG("Skipped LOD transformation, file %s exists", fn_lods); }
       GC.collect();
       GC.minimize();
