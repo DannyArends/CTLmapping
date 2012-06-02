@@ -34,6 +34,7 @@ void main(string[] args){
   if(!settings.displayHelp()){
     MSG("Start loading input files (%s, %s)",  input_p, input_g);
     double[][]  phenotypes = ireader.loadphenotypes(input_p);
+    string[]    phenonames = ireader.loadphenonames(input_p);
     int[][]     genotypes  = ireader.loadgenotypes(input_g);
     if(verbose){
       MSG("Dataset: %s geno- and %s phenotypes", genotypes.length, phenotypes.length);
@@ -52,7 +53,7 @@ void main(string[] args){
     if(needanalysis(output ~ "/effects.txt",overwrite)){
       analysis = getanalysis("effect",settings);
       effects = analysis.analyse(genotypes, phenotypes, [], verbose);
-      if(effects != null) writeFile(effects, output ~ "/effects.txt", overwrite, verbose);
+      if(effects != null) writeFile(effects, output ~ "/effects.txt", null, overwrite, verbose);
     }else{ WARN("Skipped effect scan"); }
 
     
@@ -60,7 +61,7 @@ void main(string[] args){
     if(needanalysis(output ~ "/qtls.txt",overwrite)){
       analysis = getanalysis("qtl",settings);
       qtllod = analysis.analyse(genotypes, phenotypes, [], verbose);
-      if(qtllod != null) writeFile(qtllod, output ~ "/qtls.txt", overwrite, verbose);
+      if(qtllod != null) writeFile(qtllod, output ~ "/qtls.txt", null, overwrite, verbose);
     }else{ WARN("Skipped QTL mapping"); }
 
     for(size_t p=0; p < phenotypes.length; p++){ //Main CTL mapping loop
@@ -71,21 +72,23 @@ void main(string[] args){
 
       if(needanalysis(fn_ctl,overwrite)){
         score = mapping(phenotypes,  genotypes, p, false);
-        writeFile(translate(score),  fn_ctl, overwrite, verbose);
+        writeFile(translate(score),  fn_ctl, null, overwrite, verbose);
       }else{ //Reload the scores
         score = parseFile!double(fn_ctl, false, false);
         MSG("Skipped CTL mapping, file %s exists", fn_ctl); }
-
-      if(needanalysis(fn_perm,overwrite)){
-        perms = permutation(phenotypes, genotypes, p, settings.getInt("--nperms"), verbose);
-        writeFile(translate(perms), fn_perm, overwrite, verbose);
-      }else{ //Reload the permutations
-        perms = parseFile!double(fn_ctl, false, false);
-        MSG("Skipped permutations, file %s exists", fn_perm); }
-
+      if(settings.getBool("--sp") && p > 0){
+        MSG("Reusing permutations");
+      }else{
+        if(needanalysis(fn_perm,overwrite)){
+          perms = permutation(phenotypes, genotypes, p, settings.getInt("--nperms"), verbose);
+          writeFile(translate(perms), fn_perm, null, overwrite, verbose);
+        }else{ //Reload the permutations
+          perms = parseFile!double(fn_ctl, false, false);
+          MSG("Skipped permutations, file %s exists", fn_perm); }
+      }
       if(needanalysis(fn_lods,overwrite)){
-        ctllod = tolod(score, perms, verbose);
-        writeFile(translate(ctllod), fn_lods, overwrite, verbose);
+        ctllod = tolod2(translate(score), perms, verbose);
+        writeFile(ctllod, fn_lods,phenonames, overwrite, verbose);
       }else{ MSG("Skipped LOD transformation, file %s exists", fn_lods); }
     }
     writeln();

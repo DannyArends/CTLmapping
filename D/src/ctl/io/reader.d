@@ -31,5 +31,6 @@ version(QTAB){
 
 abstract class Reader{
   abstract double[][] loadphenotypes(string filename);
+  abstract string[] loadphenonames(string filename);
   abstract int[][] loadgenotypes(string filename);
 }

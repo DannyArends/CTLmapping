@@ -13,6 +13,15 @@ import std.math;
 
 pure T max(T)(T v, T v2){if(v < v2){return v2;}else{return v;}}
 
+pure T max(T)(in T[] r){
+  assert(r.length >= 0);
+  T best = T.min;
+  foreach(e; r){
+    if(e > best) best = e;
+  }
+  return best;
+}
+
 pure size_t[] dorange(int start, size_t length){
   size_t array[];
   for(size_t i = 0; i < length; i++){ array ~= start+i; }

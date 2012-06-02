@@ -16,7 +16,11 @@ class CSVreader : Reader{
   override double[][] loadphenotypes(string filename = "phenotypes.csv"){
     return parseFile!double(filename);
   }
-
+  
+  override string[] loadphenonames(string filename = "phenotypes.csv"){
+    return parseNames(filename);
+  }
+  
   override int[][] loadgenotypes(string filename = "genotypes.csv"){
     return parseFile!int(filename);
   }
@@ -35,6 +39,24 @@ struct D{
     }catch(Throwable t){ }
   }
 }
+
+string[] parseNames(string filename){
+  string[] data;
+  if(!exists(filename) || !isFile(filename)){
+    ERR("No such file %s",filename);
+  }else{
+    try{
+      SysTime stime = Clock.currTime();
+      string[] content = readText(filename).split("\n");
+      foreach(string buffer; content){
+        string[] splitted = chomp(buffer).split("\t");
+        if(splitted.length > 0){ data ~= splitted[0]; }
+      }
+    }catch(Throwable e){ ERR("File %s read exception %s", filename,e); }
+  }
+  return data;
+}
+
 
 T[][] parseFile(T)(string filename, bool verbose = false ,bool hasRowHeader= true){
   T[][] data;

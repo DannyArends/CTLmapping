@@ -9,7 +9,7 @@
  **********************************************************************/
 module ctl.core.analysis;
 
-import std.stdio, std.file, std.math, std.datetime;
+import std.stdio, std.file, std.math, std.datetime,std.conv;
 import ctl.core.qtl.qtl;
 import ctl.core.stats.basic;
 import ctl.io.cmdline.parse, ctl.io.terminal;
@@ -62,7 +62,7 @@ class EffectScan : Analysis{
         double m_bb = doMean!double(get(phenotypes[p],ind_bb));
         effects[m][p] = m_aa - m_bb;
       }
-      if((m % max!int((ngeno/20),1)) == 0 && verbose) write(".");
+      if((m % max!uint((ngeno/20),to!uint(1))) == 0 && verbose) write(".");
       stdout.flush();
     }
     writeln();

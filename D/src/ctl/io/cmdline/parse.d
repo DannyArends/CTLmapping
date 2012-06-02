@@ -20,6 +20,7 @@ struct S(T){
 struct Scontainer{
   S!bool[]   booleans;
   S!uint[]   integers;
+  S!double[] doubles;
   S!string[] strings;
 }
 
@@ -32,6 +33,7 @@ struct CTLsettings{
     if(getBool("--help")){
       foreach(S!bool s; opt.booleans){ writeln("  " ~ s.name[0] ~ "[" ~ s.name[1..3] ~"]" ~ s.name[3..$] ~ " - " ~ s.description); }
       foreach(S!uint s; opt.integers){ writeln("  " ~ s.name[0] ~ "[" ~ s.name[1..3] ~"]" ~ s.name[3..$] ~ " - " ~ s.description); }
+      foreach(S!double s; opt.doubles){ writeln("  " ~ s.name[0] ~ "[" ~ s.name[1..3] ~"]" ~ s.name[3..$] ~ " - " ~ s.description); }
       foreach(S!string s; opt.strings){ writeln("  " ~ s.name[0] ~ "[" ~ s.name[1..3] ~"]" ~ s.name[3..$] ~ " - " ~ s.description); }
       return true;
     }
@@ -40,19 +42,23 @@ struct CTLsettings{
   
   uint getInt(string name){
     foreach(int cnt, S!uint s; opt.integers){
-      if(name==s.name){
-        return s.value;
-      }
+      if(name==s.name){ return s.value; }
     }
     writeln(" - ERROR: Unknown parameter requested: ",name);
     return -1;
   }
+
+  double getDouble(string name){
+    foreach(int cnt, S!double s; opt.doubles){
+      if(name==s.name){ return s.value; }
+    }
+    writeln(" - ERROR: Unknown parameter requested: ",name);
+    return double.nan;
+  }
   
   bool getBool(string name){
     foreach(int cnt, S!bool s; opt.booleans){
-      if(name==s.name){
-        return s.value;
-      }
+      if(name==s.name){ return s.value; }
     }
     writeln(" - ERROR: Unknown parameter requested: ",name);
     return false;
@@ -60,9 +66,7 @@ struct CTLsettings{
   
   string getString(string name){
     foreach(int cnt, S!string s; opt.strings){
-      if(name==s.name){
-        return s.value;
-      }
+      if(name==s.name){ return s.value; }
     }
     writeln(" - ERROR: Unknown parameter requested: ",name);
     return "";
@@ -81,7 +85,9 @@ CTLsettings parseCmd(string[] args){
   bool qtl = false;
   bool verbose = true;
   bool redo = false;
+  bool sp = false;
   uint nperms = 100;
+  double minlod = 1.5;
   string phenotype_filename = "test/data/phenotypes.csv";
   string genotype_filename = "test/data/genotypes.csv";
   string output = "./";
@@ -91,9 +97,11 @@ CTLsettings parseCmd(string[] args){
              , "verbose|v", &verbose
              , "effect|e", &effect
              , "qtl|q", &qtl
+             , "sp|s", &sp
              , "output|o", &output
              , "redo|r", &redo
              , "nperms|n", &nperms
+             , "minlod", &minlod
              , "phenotypes|p", &phenotype_filename
              , "genotypes|g", &genotype_filename
              , "format|f", &file_format);
@@ -102,9 +110,11 @@ CTLsettings parseCmd(string[] args){
   opt.booleans ~= S!bool("--verbose"      ,"Verbose mode", verbose);
   opt.booleans ~= S!bool("--effect"       ,"Perform effect scan", effect);
   opt.booleans ~= S!bool("--qtl"          ,"Perform QTL scan", qtl);
+  opt.booleans ~= S!bool("--sp"           ,"Single permutation mode (reuse permutations of T0)", sp);
   opt.strings  ~= S!string("--output"     ,"Path to write output to (DEFAULT: ./)", output);
   opt.booleans ~= S!bool("--redo"         ,"Overwrite previous output files", redo);
   opt.integers ~= S!uint("--nperms"       ,"Number of permutations", nperms);
+  opt.doubles  ~= S!double("--minlod"     ,"Minimum LOD score", minlod);
   opt.strings  ~= S!string("--phenotypes" ,"File containing phenotypes", phenotype_filename);
   opt.strings  ~= S!string("--genotypes"  ,"File containing genotypes", genotype_filename);
   opt.strings  ~= S!string("--format"     ,"File format", file_format);

@@ -9,7 +9,7 @@
  **********************************************************************/
 module ctl.core.qtl.qtl;
 
-import std.stdio, std.math, std.datetime;
+import std.stdio, std.math, std.datetime, std.conv;
 import ctl.core.array.matrix, ctl.core.array.ranges;
 import ctl.core.qtl.utils, ctl.core.qtl.regression;
 import ctl.core.analysis, ctl.io.terminal;
@@ -27,7 +27,7 @@ class SingleQTL : Analysis{
         int[] nm = newvector!int(1, 1);
         lodmatrix[p][m] = multipleregression(createdesignmatrix(genotypes, m, geno_cov), phenotypes[p], w, nm, false);
       }
-      if((p % max!int((npheno/20),1)) == 0 && verbose) write(".");
+      if((p % max!uint((npheno/20),to!uint(1))) == 0 && verbose) write(".");
       stdout.flush();
     }
     if(verbose) writeln();

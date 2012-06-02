@@ -9,7 +9,7 @@
  **********************************************************************/
 module ctl.core.ctl.permutation;
 
-import std.stdio, std.math, std.datetime, std.random;
+import std.stdio, std.math, std.datetime, std.random, std.conv;
 import ctl.core.array.ranges, ctl.io.terminal, core.memory;
 import ctl.core.array.matrix, ctl.core.ctl.mapping;
 import ctl.core.stats.basic;
@@ -35,7 +35,7 @@ double[][] permutation(in double[][] phenotypes, in int[][] genotypes, size_t ph
   for(size_t p=0; p < permutations; p++){
     perm_t = mapping(phenotypes, permute!int(genotypes), phenotype, false);
     perms ~= doMatrixMax!double(perm_t);
-    if((p % max!int((permutations/20),1)) == 0 && verbose){write("."); stdout.flush();}
+    if((p % max!uint((permutations/20),to!uint(1))) == 0 && verbose){write("."); stdout.flush();}
     GC.collect();
     GC.minimize();
   }

@@ -10,7 +10,7 @@
 module ctl.core.stats.tolod;
  
 import std.stdio, std.math, std.conv, std.array, std.datetime;
-import ctl.io.terminal, ctl.core.array.matrix, ctl.core.array.search;
+import ctl.io.terminal, ctl.core.array.ranges, ctl.core.array.matrix, ctl.core.array.search;
 
 double[][] tolod(double[][] scores, double[][] permutations, bool verbose = true){
   SysTime stime = Clock.currTime();
@@ -32,4 +32,35 @@ double[][] tolod(double[][] scores, double[][] permutations, bool verbose = true
   if(verbose) MSG("LOD transformation: (%s msecs)",(Clock.currTime()-stime).total!"msecs"());  
   return m;
 }
+
+
+double[][] tolod2(double[][] scores, double[][] permutations, double minlod, bool verbose = true){
+  SysTime stime = Clock.currTime();
+  double[] permlist = unlist(absmatrix(permutations));
+  double[][] m = [];
+  permlist.sort;
+  double percentage = pow(10,-minlod);
+  MSG("perc -> %s",percentage);
+  double critval = permlist[to!int((1.0-percentage)*permlist.length)];
+  MSG("%s",critval);
+  for(size_t r=0;r<scores.length;r++){
+    if(max!double(scores[r]) >= critval){
+      double[] profile;
+      for(size_t c=0;c<scores.length;c++){
+        size_t index = getIndex(permlist,abs(scores[r][c]));
+        double estimate = 1.0;
+        if(index < permlist.length){
+          estimate -= (to!double(index)/to!double(permlist.length));
+        }else{ /*TODO GDP on top 10% of scores */      
+          estimate -= (to!double(permlist.length-1)/to!double(permlist.length));
+        }
+        profile ~= abs(log10(estimate));
+      }
+      m ~= profile;
+    }
+  }
+  if(verbose) MSG("LOD transformation: (%s msecs)",(Clock.currTime()-stime).total!"msecs"());  
+  return m;
+}
+
 
