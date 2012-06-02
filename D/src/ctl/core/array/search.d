@@ -7,29 +7,33 @@
  **********************************************************************/
 module ctl.core.array.search;
 
-import std.math, std.conv, std.string;
+import std.math, std.conv, std.stdio, std.string;
 
-pure size_t getIndex(T)(T[] haystack, T needle){
+pure size_t getIndex(T)(in T[] haystack, T needle){
   return searchArrayBinary!T(haystack, needle);
 }
 
-pure bool searchArray(T)(T[] haystack, T needle){
+pure bool searchArray(T)(in T[] haystack, T needle){
   foreach(T s; haystack){
     if(s==needle) return true;
   }
   return false;
 }
 
-pure size_t searchArrayBinary(T)(T[] haystack, T needle){
+pure size_t searchArrayBinary(T)(in T[] haystack, T needle){
   size_t first = 0;
-  size_t last = (haystack.length-1);
+  size_t last  = (haystack.length-1);
+  size_t mid   = (first + last) / 2;
   while(first <= last){
     if(last==first) return first;
-    size_t mid = (first + last) / 2;
+    mid = (first + last) / 2;
+    if(mid==0) return mid;
     if(needle > haystack[mid]){
       first = mid + 1;
     }else if(needle < haystack[mid]){
+
       last = mid - 1;
+      
     }else{
       return mid;
     }

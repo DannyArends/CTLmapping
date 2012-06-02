@@ -13,7 +13,7 @@ import ctl.core.array.matrix;
 import ctl.core.array.ranges;
 import ctl.core.qtl.utils;
 
-double multipleregression(double[][] designmatrix, double[] y, double[] weight, int[] nullmodellayout, bool verbose = true){
+double multipleregression(in double[][] designmatrix, in double[] y, double[] weight, in int[] nullmodellayout, bool verbose = true){
   if (designmatrix.length != weight.length){ writeln("No weights for individuals found",designmatrix.length,weight.length); return 0.0; }
   if (designmatrix.length != y.length) { writefln("No y variable for some individuals found"); return 0.0; }
   
@@ -27,7 +27,7 @@ double multipleregression(double[][] designmatrix, double[] y, double[] weight, 
   return ((model_likelihood - null_likelihood) / 4.60517);
 }
 
-FITTED likelihoodbyem(double[][] x, double[] w, double[] y, bool verbose){
+FITTED likelihoodbyem(in double[][] x, double[] w, in double[] y, bool verbose){
   uint   nvariables = cast(uint)x[0].length;
   uint   nsamples   = cast(uint)x.length;
   uint   maxemcycles = 1000;
@@ -54,11 +54,11 @@ FITTED likelihoodbyem(double[][] x, double[] w, double[] y, bool verbose){
   return f;
 }
 
-FITTED nullmodel(double[][] x, double[] w, double[] y,int[] nullmodellayout,bool verbose){
+FITTED nullmodel(in double[][] x, in double[] w, in double[] y, in int[] nullmodellayout, bool verbose = false){
   return multivariateregression(x, w, y, nullmodellayout, verbose);
 }
 
-FITTED multivariateregression(double[][] x, double[] w, double[] y, int[] nullmodellayout = [], bool verbose = false){
+FITTED multivariateregression(in double[][] x, in double[] w, in double[] y, in int[] nullmodellayout = [], bool verbose = false){
   uint nvariables = cast(uint)x[0].length;
   uint nsamples   = cast(uint)x.length;
   double[][] Xt = translate!double(x);

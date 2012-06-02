@@ -15,7 +15,7 @@ import ctl.core.qtl.utils, ctl.core.qtl.regression;
 import ctl.core.analysis, ctl.io.terminal;
 
 class SingleQTL : Analysis{
-  override double[][] analyse(int[][] genotypes, double[][] phenotypes, int[] geno_cov = [], bool verbose = true){
+  override double[][] analyse(in int[][] genotypes,in double[][] phenotypes, in int[] geno_cov = [], bool verbose = true){
     if(verbose) MSG("Starting QTL mapping");
     SysTime stime = Clock.currTime();
     double[][] lodmatrix = newmatrix!double(phenotypes.length, genotypes.length, 0);
@@ -35,7 +35,7 @@ class SingleQTL : Analysis{
     return lodmatrix;
   }
 }
-double[][] createdesignmatrix(int[][] genotypes, int marker, int[] geno_cov = [], bool intercept = true){
+double[][] createdesignmatrix(in int[][] genotypes, int marker, in int[] geno_cov = [], bool intercept = true){
   double[][] dm;
   dm.length = genotypes[0].length;
   size_t ncols = 1 + geno_cov.length + cast(size_t)intercept;

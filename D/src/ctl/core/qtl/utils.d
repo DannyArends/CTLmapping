@@ -21,7 +21,7 @@ struct FITTED{
   double[] Fy;
 }
 
-FITTED calculateloglikelihood(uint nsamples, double[] residual, double[] w, double variance, bool verbose = true){
+FITTED calculateloglikelihood(uint nsamples, in double[] residual, in double[] w, double variance, bool verbose = true){
   FITTED f;
   f.Fy   = newvector!double(nsamples, 0.0);
   double[] indL = newvector!double(nsamples, 0.0);
@@ -40,7 +40,7 @@ struct STATS{
   double[] residual;
 }
 
-STATS calculatestatistics(uint nvariables, uint nsamples, double[][] xt, double[] xtwy, double[] y, double[] w, bool verbose = true){
+STATS calculatestatistics(uint nvariables, uint nsamples, in double[][] xt, in double[] xtwy, in double[] y, in double[] w, bool verbose = true){
   STATS s;
   s.fit      = newvector!double(nsamples, 0.0);
   s.residual = newvector!double(nsamples, 0.0);
@@ -58,7 +58,7 @@ STATS calculatestatistics(uint nvariables, uint nsamples, double[][] xt, double[
   return s;
 }
 
-double[] calculateparameters(uint nvariables, uint nsamples, double[][] xt, double[] w, double[] y, bool verbose = true){
+double[] calculateparameters(uint nvariables, uint nsamples, in double[][] xt, in double[] w, in double[] y, bool verbose = true){
   int d=0;
   double xtwj;
   double[][] XtWX = newmatrix!double(nvariables, nvariables, 0.0);

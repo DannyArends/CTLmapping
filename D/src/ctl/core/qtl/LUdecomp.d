@@ -63,7 +63,7 @@ bool LUdecompose(double[][] m, int dim, int[] ndx, int *d) {
   return true;
 }
 
-void LUsolve(double[][] lu, int dim, int[] ndx, double[] b) {
+void LUsolve(in double[][] lu, int dim, in int[] ndx, double[] b) {
   int r, c;
   double sum;
   for(r=0; r<dim; r++){
@@ -79,7 +79,7 @@ void LUsolve(double[][] lu, int dim, int[] ndx, double[] b) {
   }
 }
 
-void LUinvert(double[][] lu, double[][] inv, int dim, int[] ndx){
+void LUinvert(in double[][] lu, double[][] inv, int dim, in int[] ndx){
   int r,c;
   double[] b;
   for(c=0; c<dim; c++){

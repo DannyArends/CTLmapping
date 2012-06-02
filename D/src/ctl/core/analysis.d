@@ -31,11 +31,11 @@ version(QTL){
 }
 
 abstract class Analysis{
-  double[][] analyse(int[][] genotypes, double[][] phenotypes, int[] geno_cov, bool verbose);
+  double[][] analyse(in int[][] genotypes, in double[][] phenotypes, in int[] geno_cov, bool verbose);
 }
 
 class NullAnalysis : Analysis{
-  override double[][] analyse(int[][] genotypes, double[][] phenotypes, int[] geno_cov = [], bool verbose = true){
+  override double[][] analyse(in int[][] genotypes, in double[][] phenotypes, in int[] geno_cov = [], bool verbose = true){
     double[][] m = newmatrix!double(1,1,0);
     return m;
   }
