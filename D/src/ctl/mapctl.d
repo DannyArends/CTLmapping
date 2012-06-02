@@ -71,7 +71,7 @@ void main(string[] args){
       string fn_lods = output ~ "/lodscores"~to!string(p)~".txt";
 
       if(needanalysis(fn_ctl,overwrite)){
-        score = mapping(phenotypes,  genotypes, p, false);
+        score = mapping(phenotypes,  genotypes, p, true);
         writeFile(translate(score),  fn_ctl, null, overwrite, verbose);
       }else{ //Reload the scores
         score = parseFile!double(fn_ctl, false, false);
@@ -87,7 +87,7 @@ void main(string[] args){
           MSG("Skipped permutations, file %s exists", fn_perm); }
       }
       if(needanalysis(fn_lods,overwrite)){
-        ctllod = tolod2(translate(score), perms, verbose);
+        ctllod = tolod2(translate(score), perms, settings.getDouble("--minlod"), verbose);
         writeFile(ctllod, fn_lods,phenonames, overwrite, verbose);
       }else{ MSG("Skipped LOD transformation, file %s exists", fn_lods); }
     }

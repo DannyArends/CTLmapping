@@ -40,13 +40,12 @@ double[][] tolod2(double[][] scores, double[][] permutations, double minlod, boo
   double[][] m = [];
   permlist.sort;
   double percentage = pow(10,-minlod);
-  MSG("perc -> %s",percentage);
   double critval = permlist[to!int((1.0-percentage)*permlist.length)];
-  MSG("%s",critval);
+  MSG("Perc %s -> %s",percentage, critval);
   for(size_t r=0;r<scores.length;r++){
     if(max!double(scores[r]) >= critval){
       double[] profile;
-      for(size_t c=0;c<scores.length;c++){
+      for(size_t c=0;c<scores[0].length;c++){
         size_t index = getIndex(permlist,abs(scores[r][c]));
         double estimate = 1.0;
         if(index < permlist.length){
@@ -59,6 +58,7 @@ double[][] tolod2(double[][] scores, double[][] permutations, double minlod, boo
       m ~= profile;
     }
   }
+  writeln(m.length);
   if(verbose) MSG("LOD transformation: (%s msecs)",(Clock.currTime()-stime).total!"msecs"());  
   return m;
 }

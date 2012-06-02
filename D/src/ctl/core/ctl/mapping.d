@@ -21,12 +21,20 @@ double[][] mapping(in double[][] phenotypes, in int[][] genotypes, uint phenotyp
   for(size_t m=0; m<genotypes.length; m++){
     size_t[] ind_aa  = which(genotypes[m],0);
     size_t[] ind_bb  = which(genotypes[m],1);
-    double[] pheno_aa = get(phenotypes[phenotype],ind_aa);
-    double[] pheno_bb = get(phenotypes[phenotype],ind_bb);
-    for(size_t p=0; p<phenotypes.length; p++){
-      double cor_aa = correlation!double(pheno_aa, get(phenotypes[p],ind_aa));
-      double cor_bb = correlation!double(pheno_bb, get(phenotypes[p],ind_bb));
-      difcormatrix[m][p] = pow(cor_aa - cor_bb,2);
+    if(ind_aa.length < 2 || ind_bb.length < 2){
+      for(size_t p=0; p<phenotypes.length; p++){ difcormatrix[m][p] = 0.0; }
+    }else{
+      double[] pheno_aa = get(phenotypes[phenotype],ind_aa);
+      double[] pheno_bb = get(phenotypes[phenotype],ind_bb);
+      for(size_t p=0; p<phenotypes.length; p++){
+        double cor_aa = correlation!double(pheno_aa, get(phenotypes[p],ind_aa));
+        double cor_bb = correlation!double(pheno_bb, get(phenotypes[p],ind_bb));
+        if(isnan(cor_aa) || isnan(cor_bb)){
+          difcormatrix[m][p] = 0.0;
+        }else{
+          difcormatrix[m][p] = pow(cor_aa - cor_bb,2);
+        }
+      }
     }
   }
   if(verbose) MSG("CTL mapping took: (%s msecs)",(Clock.currTime()-stime).total!"msecs"());
