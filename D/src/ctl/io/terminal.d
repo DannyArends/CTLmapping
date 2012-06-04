@@ -23,7 +23,7 @@ version(Windows){
     Black  = 0 , DarkBlue   = 1 , DarkGreen = 2 , DarkAzure = 3 , DarkRed = 4,
     Purple = 5 , DarkYellow = 6 , Silver    = 7 , Gray      = 8 , Blue    = 9,
     Green  = 10, Aqua       = 11, Red       = 12, Magenta   = 13, Yellow  = 14,
-    White  = 15, Default    = 256}
+    White  = 15, Default    = 15}
   
   static{ extern(C) HANDLE hConsole = null; }
 
