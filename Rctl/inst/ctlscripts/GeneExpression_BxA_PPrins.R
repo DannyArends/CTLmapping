@@ -52,4 +52,4 @@ for(x in unique(chrs)){
 
 filled_cross$pheno <- filled_cross$pheno[,todo]
 qtls <- qtls[,todo]
-ctls <- CTLscan.cross(filled_cross, pheno.col=1:25, have.qtl=t(qtls), n.perm=250)
+ctls <- CTLscan.cross(filled_cross, pheno.col=1:250, have.qtl=t(qtls), n.perm=250)
