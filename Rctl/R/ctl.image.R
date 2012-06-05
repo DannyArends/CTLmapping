@@ -33,7 +33,7 @@ internal.image <- function(mymatrix, colorrange, mainlabel, do.grid, grid.col, a
   if(!is.null(mymatrix)){ 
     image(1:ncol(mymatrix),1:nrow(mymatrix),t(mymatrix), main=mainlabel, yaxt="n", 
           xaxt="n", ylab="", xlab="",col=c("white",gray.colors(4)[4:1]), cex.main=0.7, 
-          breaks = c(0,2,4,8,10,100),add=add)
+          breaks = c(0,2,4,8,10,10000),add=add)
     axis(2,rownames(mymatrix),at=1:nrow(mymatrix),las=2,cex.axis=0.5)
     axis(1,colnames(mymatrix),at=1:ncol(mymatrix),las=2,cex.axis=0.5)
     if(do.grid){
