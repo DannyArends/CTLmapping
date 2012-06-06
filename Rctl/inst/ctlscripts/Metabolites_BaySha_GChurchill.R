@@ -4,7 +4,7 @@
 # (C) 2012 Danny Arends - GBIC - University of Groningen
 #   - Files are distributed with the Rctl package in Rctl/tests
 # Start by: 
-# setwd("C:/github/CTLmapping/Rctl/tests")
+# setwd("E:/github/Rpackages/CTLmapping/Rctl/inst/ctlscripts")
 
 metabolites <- read.table("Metabolites_BaySha_GChurchill.txt",sep="\t",row.names=1,header=TRUE)
 genotypes   <- read.table("Genotypes_BaySha.txt",row.names=1,header=TRUE)
