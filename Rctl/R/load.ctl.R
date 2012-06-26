@@ -19,10 +19,11 @@ load.ctl <- function(genotypes = "ngenotypes.txt", phenotypes = "nphenotypes.txt
     idx <- (x+1)
     if(file.exists(paste(output,"/ctl",x,".txt",sep=""))){
       if(verbose) cat("CTLs found for ",idx,"/",nrow(phenodata)," ",phenodata[idx,1],"\n")
-      results[[idx]]$ctl <-  read.csv(paste(output,"/ctl",1,".txt",sep=""),sep="\t",header=FALSE)
+      results[[idx]]$ctl <-  read.csv(paste(output,"/ctl",x,".txt",sep=""),sep="\t",header=FALSE)
       rownames(results[[idx]]$ctl) <- phenodata[,1]
       colnames(results[[idx]]$ctl) <- genodata[,1]
       class(results[[idx]]$ctl) <- c(class(results[[idx]]$ctl),"CTL")
+      attr(results[[idx]]$ctl,"name") <-  phenodata[idx,1]
     }else{
       stop("No CTLS found for:", phenodata[idx,1],"\n")
     }
