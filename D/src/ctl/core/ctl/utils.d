@@ -13,7 +13,7 @@ import std.stdio, std.conv, std.string;
 import ctl.core.array.matrix;
 import ctl.core.stats.correlation;
 
-pure size_t[] which(T)(in T[] marker, T type = 0){
+pure size_t[] which(T)(in T[] marker,in T type = 0){
   size_t[] indices;
   for(size_t i=0; i < marker.length; i++){ if(marker[i] == type) indices ~= i; }
   return indices;

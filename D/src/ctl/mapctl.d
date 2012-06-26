@@ -44,6 +44,8 @@ void main(string[] args){
       MSG("Dataset: Measurements on %s and %s individuals\n", genotypes[0].length, phenotypes[0].length);
     }
     if(genotypes[0].length != phenotypes[0].length){ ERR("Mismatch between individuals %s != %s", genotypes[0].length, phenotypes[0].length); return; }
+    
+    int[][] encodings = getEncodings(genotypes);
     //We need an output path default to ./ ??
     if(!exists(output)) mkdirRecurse(output);
 
@@ -71,7 +73,7 @@ void main(string[] args){
       string fn_lods = output ~ "/lodscores"~to!string(p)~".txt";
 
       if(needanalysis(fn_ctl,overwrite)){
-        score = mapping(phenotypes,  genotypes, p, true);
+        score = mapping(phenotypes,  genotypes, encodings, p, true);
         score = translate(score);
         writeFile(score,  fn_ctl, null, overwrite, verbose);
       }else{ //Reload the scores
@@ -82,7 +84,7 @@ void main(string[] args){
         MSG("Reusing trait 0 permutations");
       }else{
         if(needanalysis(fn_perm,overwrite)){
-          perms = permutation(phenotypes, genotypes, p, settings.getInt("--nperms"), verbose);
+          perms = permutation(phenotypes, genotypes, encodings, p, settings.getInt("--nperms"), verbose);
           writeFile(perms, fn_perm, null, overwrite, verbose);
         }else{ //Reload the permutations
           perms = parseFile!double(fn_perm, false, false);

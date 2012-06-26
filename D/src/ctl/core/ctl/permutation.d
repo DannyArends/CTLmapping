@@ -26,14 +26,14 @@ T[][] permute(T)(in T[][] genotypes){
   return newgeno;
 }
 
-double[][] permutation(in double[][] phenotypes, in int[][] genotypes, size_t phenotype = 1, uint permutations = 100, bool verbose = true){
+double[][] permutation(in double[][] phenotypes, in int[][] genotypes, in int[][] encodings, size_t phenotype = 1, uint permutations = 100, bool verbose = true){
   assert(phenotype < phenotypes.length);
   SysTime stime = Clock.currTime();
   double[][] perms;
   double[][] perm_t;
   if(verbose) write(" ");
   for(size_t p=0; p < permutations; p++){
-    perm_t = mapping(phenotypes, permute!int(genotypes), phenotype, false);
+    perm_t = mapping(phenotypes, permute!int(genotypes), encodings, phenotype, false);
     perms ~= doMatrixMax!double(perm_t);
     if((p % max!uint((permutations/20),to!uint(1))) == 0 && verbose){write("."); stdout.flush();}
     GC.collect();
