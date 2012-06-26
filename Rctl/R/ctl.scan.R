@@ -9,7 +9,7 @@
 #
 
 #-- CTLscan main function --#
-CTLscan <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1:ncol(phenotypes), have.qtl, method = c("pearson", "kendall", "spearman"), conditions = NULL, n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE){
+CTLscan <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1:ncol(phenotypes), have.qtl, method = c("pearson","pearsonordered", "kendall", "spearman"), conditions = NULL, n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE){
   if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   
@@ -17,9 +17,10 @@ CTLscan <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1:ncol(p
   toremove <- check.genotypes(genotypes, geno.enc, verbose)
   results <- vector("list",length(pheno.col))
   stage <- 1
+  cat("[Detected] ",nrow(phenotypes)," individuals, ",ncol(genotypes)," markers")
   if(missing(have.qtl)){
     cat("Stage 0.1: Mapping Trait - Marker associations (QTL)\n")
-    attr(results,"qtl") <- QTLscan(genotypes, phenotypes, pheno.col, conditions, verbose=verbose)$qtl
+    attr(results,"qtl") <- QTLscan(genotypes, phenotypes, pheno.col, conditions, n.cores, verbose=verbose)$qtl
     stage <- 2
   }else{
     if(ncol(have.qtl) != ncol(genotypes))   cat("[SEVERE] argument 'have.qtl' should be of size:",length(pheno.col)," ",ncol(genotypes),"\n")

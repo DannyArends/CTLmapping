@@ -165,6 +165,14 @@ chr_total_length <- function(map_info, gap = 25){
   (l-gap) #Gaps are between, so we don't need the last gap
 }
 
+a_loc <- function(map_info, id=1, gap = 25){
+  res <- NULL
+  for(x in 1:nrow(map_info)){
+    res <- c(res, m_loc(map_info,x))
+  }
+  res
+}
+
 m_loc <- function(map_info, id=1, gap = 25){
   chr <- map_info[id,1]
   l <- 0
@@ -175,32 +183,30 @@ m_loc <- function(map_info, id=1, gap = 25){
   l + map_info[id,2]
 }
 
-plot.CTLscan3 <- function(x, map_info, addQTL = TRUE, onlySignificant = TRUE, significance = 0.05, do.legend=TRUE, cex.legend=1.0, ...){
-  p <- rep(0,ncol(ctls[[1]]$l))
+plot.CTLscan3 <- function(x, map_info, todo = c(4,6,2)){
+  p <- rep(0,ncol(x$l))
   i <- 1;
-  summarized <- apply(ctls[[1]]$l,2,sum)
+  summarized <- apply(x$l,2,sum)
   xxx <- NULL
-  mycolors <- topo.colors(nrow(ctls[[1]]$l))
-  plot(c(0, chr_total_length(map_info)),c(0, max(summarized)), type='n')
-  apply(ctls[[1]]$l,1,
+  mycolors <- topo.colors(nrow(x$l[todo,]))
+  plot(c(0, chr_total_length(map_info)),c(0, max(summarized,x$qtl)), type='n',xlab="Location (cM)",ylab="LOD score")
+  apply(x$l,1,
     function(d){
      for(idx in 1:length(d)){
-        rect(m_loc(map_info,idx)-1,p[idx],m_loc(map_info,idx)+1,p[idx]+d[idx],col=mycolors[i],lwd=0,lty=0)
+     #   rect(m_loc(map_info,idx)-1,p[idx],m_loc(map_info,idx)+1,p[idx]+d[idx],col=mycolors[i],lwd=0,lty=0)
       }
       p <<- p + d
       i <<- i + 1
     }
   )
   loc <- NULL
-  for(x in 1:nrow(map_info)){loc <- c(loc,m_loc(map_info,x))}
+  for(y in 1:nrow(map_info)){loc <- c(loc,m_loc(map_info,y))}
 
-  for(x in unique(map_info[,1])){
-    onchr <- which(map_info[,1]==x)
-    points(loc[onchr],summarized[onchr],type='l',lwd=1)
+  for(y in unique(map_info[,1])){
+    onchr <- which(map_info[,1]==y)
+    points(loc[onchr],summarized[onchr],type='l',lwd=2,lty=1)
+    points(loc[onchr],as.numeric(x$qtl)[onchr],type='l',lwd=2,lty=2,col="red")
   }
-  points(as.numeric(x$qtl),type='l',lwd=2,col="red")
-  rownames(CTLmatrix) <- rownames(x$ctl)[mysign]
-  invisible(CTLmatrix)
 }
 
 plot.CTLpermute <- function(x, type="s", ...){

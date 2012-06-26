@@ -40,7 +40,7 @@ CTLpermute.internal <- function(perm, genotypes, phenotypes, geno.enc=c(1,2), ph
   if(saveFiles) write.table(myperm, file=paste(directory,"/Permutation_",pheno.col,"_",perm,".txt",sep=""))
   el <- proc.time()
   if(verbose) cat("  - Permutation",perm,"took:",as.numeric(el[3]-sl[3]),"seconds.\n")
-  as.numeric(apply(abs(myperm),2,max))
+  as.numeric(max(abs(myperm)))
 }
 
 #-- CTLpermute main function --#

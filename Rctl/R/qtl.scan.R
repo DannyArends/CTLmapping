@@ -52,14 +52,14 @@ map.fast <- function(marker, phenotypes, conditions = NULL, verbose = FALSE){
 }
 
 #-- QTLscan main function --#
-QTLscan <- function(genotypes, phenotypes, conditions=NULL, n.core=2, verbose = TRUE){
+QTLscan <- function(genotypes, phenotypes, pheno.col, conditions=NULL, n.cores=2, verbose = TRUE){
   if(missing(genotypes)) stop("genotypes are missing")
   if(missing(phenotypes)) stop("phenotypes are missing")
   st  <- proc.time()
   phenotypes <- clean.phenotypes(phenotypes)
-  if("snow" %in% rownames(installed.packages()) && n.core > 1){
+  if("snow" %in% rownames(installed.packages()) && n.cores > 1){
     require("snow")
-    cl <- snow::makeCluster(n.core)
+    cl <- snow::makeCluster(n.cores)
     models <- snow::parApply(cl, genotypes, 2, "map.fast", phenotypes, conditions)
     snow::stopCluster(cl)
   }else{
@@ -80,13 +80,13 @@ QTLscan <- function(genotypes, phenotypes, conditions=NULL, n.core=2, verbose = 
 }
 
 #-- R/qtl interface --#
-QTLscan.cross <- function(cross, pheno.col, conditions=NULL, n.core=2, verbose = FALSE){
+QTLscan.cross <- function(cross, pheno.col, conditions=NULL, n.cores=2, verbose = FALSE){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
   if(has_rqtl()){
     require(qtl)
     phenotypes <- apply(qtl::pull.pheno(cross),2,as.numeric)
     genotypes <- qtl::pull.geno(cross)
-    QTLscan(genotypes, phenotypes, conditions, n.core, verbose)
+    QTLscan(genotypes, phenotypes, pheno.col, conditions, n.cores, verbose)
   }else{
     warning(.has_rqtl_warnmsg)
   }

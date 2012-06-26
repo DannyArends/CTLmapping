@@ -10,9 +10,9 @@
 
 write.marker.attributes <- function(QTLscan, mapinfo){
   if(missing(QTLscan)) stop("argument 'CTLobject' is missing, with no default")
-  if(!missing(chr.edges)){
-    chr          <- 1
+  if(!missing(mapinfo)){
     chr.edges    <- get.chr.edges(mapinfo)+.5
+    chr          <- 1
     markernames  <- colnames(QTLscan)
   
     cat("", file="node_attributes.txt")
@@ -33,6 +33,7 @@ write.marker.attributes <- function(QTLscan, mapinfo){
 
 QTLnetwork <- function(CTLobject, mapinfo, lod.threshold = 5, filename){
   if(missing(CTLobject)) stop("argument 'CTLobject' is missing, with no default")
+  qtls <- ctl.qtlmatrix(CTLobject)
   if(!missing(mapinfo)){
     chr.edges   <- get.chr.edges(mapinfo)+.5
     write.marker.attributes(qtls, mapinfo)
@@ -45,7 +46,7 @@ QTLnetwork <- function(CTLobject, mapinfo, lod.threshold = 5, filename){
   edges       <- 0
   ncons       <- 0
   chr         <- 1
-  qtls        <- ctl.qtlmatrix(CTLobject)
+  
   markernames <- colnames(qtls)
   traitnames  <- rownames(qtls)
 
