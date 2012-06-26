@@ -25,9 +25,13 @@ genotypes <- genotypes[ids,]
 #How can we use the StdDev?
 metab_means <- grep("Mean",colnames(metabolites))
 metabolites <- metabolites[,metab_means]
+metabolites <- metabolites[,1:9]
+
+metabo_order <- apply(metabolites,2,rank)
 
 #Print a piece of the data how does it look?
-metabolites[1:5,1:10]
+metabolites[1:5,1:9]
+metabo_order[1:5,1:9]
 genotypes[1:5,1:10]
 map_info[1:10,1:3]
 
@@ -35,12 +39,16 @@ map_info[1:10,1:3]
 library(ctl)
 source("Helper_Functions.r")
 source("Basic_QC.R",local=TRUE,echo=TRUE)
-ctls <- CTLscan(genotypes, metabolites, geno.enc=c("A","B"), n.perm = 1250)
+#ctls <- CTLscan(genotypes, metabolites, geno.enc=c("A","B"), n.perm = 1250)
+ctls <- CTLscan(genotypes, metabo_order, geno.enc=c("A","B"), n.perm = 1250)
 
 #Create comparison QTL / CTL heatmaps using QTLimage() and image.CTLscan()
 png("Comparison_QTL_CTL.png",width=2000,height=1000)
   op <- par(mfrow=c(1,2)); op <- par(cex=1.8);
-  QTLimage(ctls); image(ctls);
+  QTLimage(ctls);
+  abline(v=c(18,29,41,52,69))
+  image(ctls);
+  abline(v=c(18,29,41,52,69))
 dev.off()
 
 postscript("QTL_CTL.eps", width = 14.0, height = 6.0)
@@ -102,5 +110,25 @@ for(x in 1:length(CTLperTrait)){
   cat(name(ctls[[as.numeric(names(CTLperTrait)[x])]]),CTLperTrait[x],"\n",sep="\t")
   ctloutmatrix <- rbind(ctloutmatrix,c(name(ctls[[as.numeric(names(CTLperTrait)[x])]]),CTLperTrait[x]))
 }
+
+
+c("MT4.Mean","MSO4.Mean","But.3.enyl.Mean")
+c(6,2,4)
+c("MT3.Mean", "MT4.Mean","MT7.Mean")
+c(5,6,9)
+
+op <- par(mfrow=c(3,2))
+for(n in c(5,6,9)){
+  ctl <- ctls[[n]]
+  op <- par(cex=1.0)
+  plot.CTLscan3(ctl,map_info,cex.legend=0.7)
+  box()
+  cnt<-1;add_col <- apply(matrix(0,ncol(ctl$ctl),nrow(ctl$ctl)),2,function(x){x <- rep(cnt,length(x));cnt <<- cnt+1;return(x)})
+  image(1:ncol(ctl$ctl), 1:nrow(ctl$ctl),add_col, col=topo.colors(nrow(ctl$ctl),alpha=0.8),ylab="Metabolites",xlab="Markers",main=paste(ctl.name(ctl),"@ Marker x Phenotype matrix"))
+  image(1:ncol(ctl$ctl), 1:nrow(ctl$ctl),t(ctl$l), add=TRUE)
+  abline(v=(c(18,29,41,52,69)+.5),col="black");box()
+  #abline(h=(1:nrow(ctl$ctl)+.5),col="white");box()
+}
+
 
 
