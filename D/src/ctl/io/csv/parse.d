@@ -83,7 +83,7 @@ T[][] parseFile(T)(string filename, bool verbose = false ,bool hasRowHeader= tru
         }
         }
         freevector(splitted);
-        if((Clock.currTime()-stime).total!"seconds"() > 0 && (Clock.currTime()-stime).total!"seconds"() % 10 == 0) MSG("At: %s", data.length);
+        //if((Clock.currTime()-stime).total!"seconds"() > 0 && (Clock.currTime()-stime).total!"seconds"() % 10 == 0) MSG("At: %s", data.length);
       }
       freevector(content);
       freevector(inputbuffer);
