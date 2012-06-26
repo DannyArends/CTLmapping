@@ -41,7 +41,7 @@ void main(string[] args){
       MSG("Dataset: %s geno- and %s phenotypes", genotypes.length, phenotypes.length);
       if(genotypes.length == 0){ ERR("No genotypes loaded, analysis aborted"); return; }
       if(phenotypes.length == 0){ ERR("No phenotypes loaded, analysis aborted"); return; }
-      MSG("Dataset: Measurements on %s and %s individuals\n", genotypes[0].length, phenotypes[0].length);
+      MSG("Dataset: Measurements on %s and %s individuals", genotypes[0].length, phenotypes[0].length);
     }
     if(genotypes[0].length != phenotypes[0].length){ ERR("Mismatch between individuals %s != %s", genotypes[0].length, phenotypes[0].length); return; }
     
