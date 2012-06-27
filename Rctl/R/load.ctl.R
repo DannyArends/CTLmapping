@@ -1,5 +1,4 @@
-load.ctl <- function(genotypes = "ngenotypes.txt", phenotypes = "nphenotypes.txt", output = "ctlout", verbose = FALSE){
-  setwd("e:/gbic/ludectl")
+load.ctl <- function(genotypes = "ngenotypes.txt", phenotypes = "nphenotypes.txt", output = "ctlout", n.pheno=250, verbose = FALSE){
   require(ctl)
   genotypes = "ngenotypes.txt"; phenotypes = "nphenotypes.txt"; output = "ctlout"; verbose = TRUE
   phenodata <- read.csv(phenotypes,sep="\t",header=FALSE)
@@ -15,7 +14,7 @@ load.ctl <- function(genotypes = "ngenotypes.txt", phenotypes = "nphenotypes.txt
   }else{
     cat("Warning no QTL results found (-qtl)\n")
   }
-  for(x in 0:(nrow(phenodata)-1)){
+  for(x in 0:min((nrow(phenodata)-1),n.pheno)){
     idx <- (x+1)
     if(file.exists(paste(output,"/ctl",x,".txt",sep=""))){
       if(verbose) cat("CTLs found for ",idx,"/",nrow(phenodata)," ",phenodata[idx,1],"\n")
@@ -41,5 +40,12 @@ load.ctl <- function(genotypes = "ngenotypes.txt", phenotypes = "nphenotypes.txt
   }
   class(results) <- c(class(results),"CTLobject")
   results
-  
+}
+
+load.lude <- function(){
+  genotypes = "ngenotypes.txt"
+  phenotypes = "nphenotypes.txt"
+  output = "ctlout"
+  memory.limit(2000)
+  load.ctl(genotypes, phenotypes, output)
 }
