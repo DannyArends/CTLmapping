@@ -1,4 +1,4 @@
-setwd("E:\\GBIC\\LudeCTL")
+setwd("E:\\GBIC\\Lude CTL")
 memory.limit(2000)
 
 harmjanToLude <- function(hjnum = 32268){ koppel[which(koppel[,1]==hjnum),2] }
@@ -15,6 +15,8 @@ expdata <- expdata[expids, ]
 namesexp <- gsub(".","-",colnames(expdata),fixed=T)
 namesexp <- gsub("HT12_","-",namesexp)
 colnames(expdata) <- namesexp
+
+write.csv(expdata,file="out_40PCA_noG_eQTL.txt",sep="\t",quote=FALSE,row.names)
 
 getDataMatrix <- function(chr, loc, margin = 100){
   info <- read.csv(paste("genotypes/chr",chr,".map",sep=""), header=FALSE, sep="\t", row.names=2)
