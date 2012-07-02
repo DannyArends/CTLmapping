@@ -58,6 +58,19 @@ createGenotype <- function(firstbase,secondbase, x){
   snps       <- getSNP(firstbase[,x])
   for(b in 1:length(firstbase[,x])){
     if(as.character(firstbase[b,x])==as.character(secondbase[b,x])){
+      genotype <- c(genotype,1)
+    }else{
+      genotype <- c(genotype,2)
+    }
+  }
+  return(genotype)
+}
+
+createGenotype_N3 <- function(firstbase,secondbase, x){
+  genotype   <- NULL
+  snps       <- getSNP(firstbase[,x])
+  for(b in 1:length(firstbase[,x])){
+    if(as.character(firstbase[b,x])==as.character(secondbase[b,x])){
       if(as.character(firstbase[b,x])==snps[1]){
         genotype <- c(genotype,1)
       }else{
@@ -73,23 +86,28 @@ createGenotype <- function(firstbase,secondbase, x){
 genotypes <- NULL
 qtlmatrix <- NULL
 for(x in 1:ncol(firstbase)){
-  genotype   <- createGenotype(firstbase,secondbase,x)
- # models     <- aov(apply(expdata,1,as.numeric) ~ as.numeric(as.factor(genotype)))
-  #modelinfo  <- summary(models)
-  #qtls       <- -log10(as.numeric(unlist(lapply(modelinfo,"[",1,5))))
-  #qtlmatrix  <- cbind(qtlmatrix,qtls)
+  genotype   <- createGenotype_N3(firstbase,secondbase,x)
+  models     <- aov(apply(expdata,1,as.numeric) ~ as.numeric(as.factor(genotype)))
+  modelinfo  <- summary(models)
+  qtls       <- -log10(as.numeric(unlist(lapply(modelinfo,"[",1,5))))
+  qtlmatrix  <- cbind(qtlmatrix,qtls)
   genotypes  <- cbind(genotypes,genotype)
 
- # plot(c(0,nrow(expdata)),c(0,50), t='n', xlab="Probe", ylab="LOD")
- # points(qtls, t='h', xlab="Probe", ylab="LOD")
+  plot(c(0,nrow(expdata)),c(0,50), t='n', xlab="Probe", ylab="LOD")
+  points(qtls, t='h', xlab="Probe", ylab="LOD")
 }
+
+sums <- apply(genotypes,2,function(x){c(sum(x==2,na.rm=T),sum(x==1,na.rm=T))})
+bad_markers <- unique(c(which(sums[1,] < 20),which(sums[2,] < 20)))
+if(is.na(bad_markers&&1)) bad_markers <- c()
+
+write.table(file="qtls.txt",qtlmatrix[,],sep="\t",col.names=FALSE)
+
+significantqtls <- which(apply(qtlmatrix[,],1,max) > 5)
 
 image(t(qtlmatrix),breaks=c(0,5,10,100),col=c("white","gray","black"),xlab="Loc (bp)",ylab="Probe")
 box()
 
-sums <- apply(genotypes,2,function(x){c(sum(x==3,na.rm=T),sum(x==1,na.rm=T))})
-bad_markers <- unique(c(which(sums[1,] < 20),which(sums[2,] < 20)))
-
-write.table(file="n3genotypes.txt",cbind(genonames[-bad_markers,],t(genotypes[,-bad_markers])),sep="\t",na="",col.names=FALSE)
-write.table(file="n3phenotypes.txt",cbind(NA,NA,expdata),sep="\t",na="",col.names=FALSE,quote=FALSE)
+#write.table(file="hhgenotypes.txt",cbind(genonames[,],t(genotypes[,])),sep="\t",na="",col.names=FALSE)
+#write.table(file="hhphenotypes.txt",cbind(NA,NA,expdata),sep="\t",na="",col.names=FALSE,quote=FALSE)
 

@@ -15,15 +15,7 @@ CTLprofiles <- function(CTLobject, against = c("markers","phenotypes"), signific
   notice <- TRUE
   for(p in 1:length(CTLobject)){
     lod <- CTLtoLODvector(CTLobject[[p]], against)
-    threshold <- -log10(significance)
-    if(!is.nan(getPermuteThresholds(CTLobject[[p]],significance)[1])){
-      if(notice) cat("  - [Notice] Permutation available parameter 'significance' is ignored\n")
-      threshold <- getPermuteThresholds(CTLobject[[p]],significance)[1]
-      notice <- FALSE
-    }else{
-      if(warn) cat("  - [Warning] Too few permutations, unable to find significant\n")
-      warn <- FALSE
-    }
+      threshold <- -log10(significance)
     if(max(lod) > threshold){
       mymatrix <- rbind(mymatrix,lod)
       mynames <- c(mynames,attr(CTLobject[[p]]$ctl,"name"))  
