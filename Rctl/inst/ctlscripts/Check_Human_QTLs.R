@@ -44,7 +44,7 @@ createGenotype_N3 <- function(firstbase,secondbase, x){
 
 table(apply(transQTLs[,c(3,4)],1,function(x){paste(x,collapse=" ")}))
 
-chr3data   <- getDataMatrix(12, 54768447, 2000)
+chr3data   <- getDataMatrix(3,	56840816, 10000)
 
 #Match to the genotypes
 expdata <-  expdata[, match(rownames(chr3data[[2]]), colnames(expdata))]
