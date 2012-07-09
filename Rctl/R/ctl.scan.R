@@ -17,7 +17,7 @@ CTLscan <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1:ncol(p
   toremove <- check.genotypes(genotypes, geno.enc, verbose)
   results <- vector("list",length(pheno.col))
   stage <- 1
-  cat("[Detected] ",nrow(phenotypes)," individuals, ",ncol(genotypes)," markers")
+  cat("[] ",nrow(phenotypes)," individuals, ",ncol(genotypes)," markers\n")
   if(missing(have.qtl)){
     cat("Stage 0.1: Mapping Trait - Marker associations (QTL)\n")
     attr(results,"qtl") <- QTLscan(genotypes, phenotypes, pheno.col, conditions, n.cores, verbose=verbose)$qtl
@@ -90,7 +90,7 @@ CTLmapping <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1, me
 }
 
 #-- R/qtl interface --#
-CTLscan.cross <- function(cross, pheno.col, have.qtl, method = c("pearson", "kendall", "spearman"), n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE){
+CTLscan.cross <- function(cross, pheno.col, have.qtl, method = c("pearson", "pearsonordered", "kendall", "spearman"), n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
   if(has_rqtl()){
     require(qtl)

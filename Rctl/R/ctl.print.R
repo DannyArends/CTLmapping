@@ -13,6 +13,20 @@ print.CTLobject <- function(x, ...){
   cat("- Number of scanned phenotypes:",length(x),"\n")
 }
 
+getSignificantCTL <- function(CTLobject, threshold = 0.05, sep = ' '){
+  all_significant <- vector("list", length(CTLobject))
+  for(x in 1:length(CTLobject)){ #Get all significant CTLs
+    significant_ctls <- names(which(apply(CTLobject[[x]]$l,1,function(x){any(x > -log10(threshold))})))
+    if(length(significant_ctls) > 0){
+      for(p in significant_ctls){
+        cat(x, ctl.name(CTLobject[[x]]), p ,colnames(CTLobject[[x]]$l)[which.max(CTLobject[[x]]$l[p,])], max(CTLobject[[x]]$l[p,]),'\n',sep=sep)
+      }
+      all_significant[[x]] <- significant_ctls
+    }
+  }
+  invisible(all_significant)
+}
+
 print.CTLscan <- function(x, ...){
   cat("CTLscan summary",attr(x$ctl,"name"),"\n\n")
   cat("- Number of background phenotypes",dim(x$ctl)[1],"\n")

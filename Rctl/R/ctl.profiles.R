@@ -15,11 +15,15 @@ CTLprofiles <- function(CTLobject, against = c("markers","phenotypes"), signific
   notice <- TRUE
   for(p in 1:length(CTLobject)){
     lod <- CTLtoLODvector(CTLobject[[p]], against)
-      threshold <- -log10(significance)
+    threshold <- -log10(significance)
     if(max(lod) > threshold){
       mymatrix <- rbind(mymatrix,lod)
       mynames <- c(mynames,attr(CTLobject[[p]]$ctl,"name"))  
     }
+  }
+  if(is.null(mymatrix)){
+    cat('No significant')
+    return(NULL);
   }
   rownames(mymatrix) <- mynames
   if(against[1] == "phenotypes"){

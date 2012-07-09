@@ -13,6 +13,7 @@ import std.stdio, std.math, std.datetime, std.random, std.conv;
 import ctl.core.array.ranges, ctl.io.terminal, core.memory;
 import ctl.core.array.matrix, ctl.core.ctl.mapping;
 import ctl.core.stats.basic;
+import ctl.io.csv.write, ctl.io.csv.parse;
 
 T[][] permute(T)(in T[][] genotypes){
   T[][] newgeno = newmatrix!T(genotypes.length,genotypes[0].length);
@@ -33,7 +34,8 @@ double[][] permutation(in double[][] phenotypes, in int[][] genotypes, in int[][
   double[][] perm_t;
   if(verbose) write(" ");
   for(size_t p=0; p < permutations; p++){
-    perm_t = mapping(phenotypes, permute!int(genotypes), encodings, phenotype, false);
+    int[][] new_genotypes = permute!int(genotypes);
+    perm_t = mapping(phenotypes, new_genotypes, encodings, phenotype, false);
     perms ~= doMatrixMax!double(perm_t);
     if((p % max!uint((permutations/20),to!uint(1))) == 0 && verbose){write("."); stdout.flush();}
     GC.collect();

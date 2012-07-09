@@ -5,7 +5,7 @@
   Scan for Correlated Trait Locus (CTL) in populations
 }
 \usage{
-CTLscan(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1:ncol(phenotypes), have.qtl, method = c("pearson", "kendall", "spearman"), conditions = NULL, 
+CTLscan(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1:ncol(phenotypes), have.qtl, method = c("pearson", "pearsonordered", "kendall", "spearman"), conditions = NULL, 
         n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE)
 }
 

@@ -3,9 +3,12 @@ memory.limit(2000)
 
 harmjanToLude <- function(hjnum = 32268){ koppel[which(koppel[,1]==hjnum),2] }
 
-expdata    <- read.csv("out_40PCA_noG_eQTL.txt", sep="\t", row.names=1,check.names = FALSE)
-transQTLs  <- read.csv("input/eQTLsFDR0.05.txt", header=TRUE, sep="\t",row.names=NULL)
-koppel     <- read.csv("input/koppeltabel1.txt", header=TRUE, sep="\t",row.names=NULL)
+expdata_raw  <- read.csv("out_RAW_eQTL.txt", sep="\t", row.names=1,check.names = FALSE)
+expdata_pca  <- read.csv("out_40PCA_noG_eQTL.txt", sep="\t", row.names=1,check.names = FALSE)
+transQTLs    <- read.csv("input/eQTLsFDR0.05.txt", header=TRUE, sep="\t",row.names=NULL)
+koppel       <- read.csv("input/koppeltabel1.txt", header=TRUE, sep="\t",row.names=NULL)
+
+expdata_raw <- expdata_raw[,match(colnames(expdata_pca),colnames(expdata_raw))]
 
 hjnames    <- unique(as.character(transQTLs[,5]))
 allnames   <- unique(as.character(unlist(lapply(hjnames,harmjanToLude))))
@@ -70,3 +73,15 @@ for(snp in 1:ncol(firstbase)){
 image(qtlmatrix,breaks=c(0,20,1000),col=c('white','black'))
 box()
 max(qtlmatrix)
+
+
+#load.lude <- function(){
+  memory.limit(2000)
+  setwd("e:/gbic/lude ctl")
+ 
+  ctls <- ctl.load("hjg.txt", "hjpRAW.txt", "hjoRAW")
+   
+  aa <- CTLprofiles(resHJ,signi=0.01)
+  #write.table(aa,file="ctls_n3_500.txt",col.names=TRUE, append=FALSE, sep="\t")
+#}
+

@@ -82,7 +82,7 @@ T[] stringvectortotype(T)(string[] entities){
     try{
       rowleveldata[cnt] = to!T(entities[cnt]);
     }catch(Throwable e){
-      rowleveldata[cnt] = to!T(0);
+      rowleveldata[cnt] = T.max;
     }
   }
   return rowleveldata;

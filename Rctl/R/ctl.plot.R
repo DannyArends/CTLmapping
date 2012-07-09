@@ -153,23 +153,17 @@ plot.CTLscan <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance 
   invisible(CTLmatrix)
 }
 
-chrlength <- function(map_info, chr = 1){
-  max(map_info[which(map_info[,1]==chr),2])
-}
+chr_length <- function(map_info, chr = 1){ max(map_info[which(map_info[,1]==chr),2]) }
 
 chr_total_length <- function(map_info, gap = 25){
   l <- 0
-  for(x in unique(map_info[,1])){
-    l <- l + chrlength(map_info,x) + gap
-  }
+  for(x in unique(map_info[,1])){ l <- l + chr_length(map_info,x) + gap }
   (l-gap) #Gaps are between, so we don't need the last gap
 }
 
 a_loc <- function(map_info, id=1, gap = 25){
   res <- NULL
-  for(x in 1:nrow(map_info)){
-    res <- c(res, m_loc(map_info,x))
-  }
+  for(x in 1:nrow(map_info)){ res <- c(res, m_loc(map_info,x)) }
   res
 }
 
@@ -177,13 +171,13 @@ m_loc <- function(map_info, id=1, gap = 25){
   chr <- map_info[id,1]
   l <- 0
   while((chr-1) > 0){
-   l <- l + chrlength(map_info, (chr-1))+gap
+   l <- l + chr_length(map_info, (chr-1))+gap
    chr <- chr - 1
   }
   l + map_info[id,2]
 }
 
-plot.CTLscan3 <- function(x, map_info, todo = c(4,6,2)){
+plot.CTLscan3 <- function(x, map_info, todo = c(4,6,2), ...){
   p <- rep(0,ncol(x$l))
   i <- 1;
   summarized <- apply(x$l,2,sum)

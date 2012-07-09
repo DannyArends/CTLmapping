@@ -1,10 +1,22 @@
-load.ctl <- function(genotypes = "ngenotypes.txt", phenotypes = "nphenotypes.txt", output = "ctlout", from=1, to=250, verbose = FALSE){
+#
+# ctl.load.R
+#
+# copyright (c) 2012 Danny Arends, Bruno Tesson and Ritsert C. Jansen
+# last modified Jul, 2012
+# first written Jun, 2012
+# 
+# R functions to do load CTL mapping donw with the D version
+#
+
+#-- ctl.load function --#
+ctl.load <- function(genotypes = "ngenotypes.txt", phenotypes = "nphenotypes.txt", output = "ctlout", from=1, to, verbose = FALSE){
   require(ctl)
   phenodata <- read.csv(phenotypes,sep="\t",header=FALSE)
   genodata  <- read.csv(genotypes,sep="\t",header=FALSE)
   singleperms <- FALSE
+  if(missing(to)) to <- nrow(phenodata)
+  cat("to",to,"\n")
   results <- vector("list",(to-(from-1)))
-
   if(file.exists(paste(output,"/qtls.txt",sep=""))){
     if(verbose) cat("QTL results found\n")
     qtldata <- read.csv(paste(output,"/qtls.txt",sep=""),sep="\t",header=FALSE)
@@ -21,7 +33,7 @@ load.ctl <- function(genotypes = "ngenotypes.txt", phenotypes = "nphenotypes.txt
     idx <- (x+1)-(from-1) # D2.0 counts from 0, R from 1
     cat(idx," ", x," ",phenodata[(x+1),1],"\n")
     if(file.exists(paste(output,"/ctl",x,".txt",sep=""))){
-      if(verbose) cat("CTLs found for ",idx,"/",min((nrow(phenodata)), to - from)," ",phenodata[idx,1],"\n")
+      if(verbose) cat("CTLs found for ",idx,"/",min((nrow(phenodata)), to - (from-1))," ",phenodata[idx,1],"\n")
       results[[idx]]$ctl <-  read.csv(paste(output,"/ctl",x,".txt",sep=""),sep="\t",header=FALSE)
       rownames(results[[idx]]$ctl) <- phenodata[,1]
       colnames(results[[idx]]$ctl) <- genodata[,1]
@@ -47,13 +59,3 @@ load.ctl <- function(genotypes = "ngenotypes.txt", phenotypes = "nphenotypes.txt
   class(results) <- c(class(results),"CTLobject")
   results
 }
-
-#load.lude <- function(){
-  memory.limit(2000)
-  setwd("e:/gbic/ludectl")
- 
-  resN3 <- load.ctl("n3genotypes.txt", "n3phenotypes.txt", "ctln3out",251,500)
-   
-  aa <- CTLprofiles(resN3,signi=0.01)
-  write.table(aa,file="ctls_n3_500.txt",col.names=TRUE, append=FALSE, sep="\t")
-#}

@@ -1,6 +1,6 @@
 library(ctl)
 data(ath.metabolites)
-ctl_result <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, pheno.col=1:3, n.perm=20)
+ctl_result <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, pheno.col=1:3, n.perm=150)
 
 jpeg("pxmmatrix.jpg",w=1024,h=768)
 image(ctl_result,grid.col="white")

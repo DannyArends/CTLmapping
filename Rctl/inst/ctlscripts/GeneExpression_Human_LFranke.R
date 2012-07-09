@@ -3,7 +3,7 @@ memory.limit(2000)
 
 harmjanToLude <- function(hjnum = 32268){ koppel[which(koppel[,1]==hjnum),2] }
 
-expdata    <- read.csv("out_40PCA_noG.txt", sep="\t", row.names=1)
+expdata    <- read.csv("out_RAW.txt", sep="\t", row.names=1)
 transQTLs  <- read.csv("input/eQTLsFDR0.05.txt", header=TRUE, sep="\t",row.names=NULL)
 koppel     <- read.csv("input/koppeltabel1.txt", header=TRUE, sep="\t",row.names=NULL)
 
@@ -16,7 +16,7 @@ namesexp <- gsub(".","-",colnames(expdata),fixed=T)
 namesexp <- gsub("HT12_","-",namesexp)
 colnames(expdata) <- namesexp
 
-write.csv(expdata,file="out_40PCA_noG_eQTL.txt",sep="\t",quote=FALSE,row.names)
+write.csv(expdata,file="out_RAW_eQTL.txt",sep="\t",quote=FALSE)
 
 getDataMatrix <- function(chr, loc, margin = 100){
   info <- read.csv(paste("genotypes/chr",chr,".map",sep=""), header=FALSE, sep="\t", row.names=2)
@@ -28,12 +28,12 @@ getDataMatrix <- function(chr, loc, margin = 100){
   list(genotype_info,genotypes[,ids])
 }
 
-chr2data   <- getDataMatrix(2,   60573474, 250000)
-chr3data   <- getDataMatrix(3,   56840816, 250000)
-chr6_1data   <- getDataMatrix(6,  139880112, 250000)
-chr6_2data   <- getDataMatrix(6,  135468837, 250000)
-chr7data   <- getDataMatrix(7,   50395922, 250000)
-chr11data   <- getDataMatrix(11,    192856, 250000)
+chr2data      <- getDataMatrix(2,   60573474, 250000)
+chr3data      <- getDataMatrix(3,   56840816, 250000)
+chr6_1data    <- getDataMatrix(6,  139880112, 250000)
+chr6_2data    <- getDataMatrix(6,  135468837, 250000)
+chr7data      <- getDataMatrix(7,   50395922, 250000)
+chr11data     <- getDataMatrix(11,    192856, 250000)
 chr12_1data   <- getDataMatrix(12,  54756892, 250000)
 chr12_2data   <- getDataMatrix(12, 110368991, 250000)
 

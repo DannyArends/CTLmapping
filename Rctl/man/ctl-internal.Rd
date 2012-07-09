@@ -48,7 +48,12 @@
 \alias{print.CTLpermute}
 
 %ctl.plot.R
+\alias{chr_length}
+\alias{chr_total_length}
+\alias{a_loc}
+\alias{m_loc}
 \alias{plot.CTLscan2}
+\alias{plot.CTLscan3}
 \alias{plotExpression}
 
 %helper.functions.R
