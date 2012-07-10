@@ -111,22 +111,14 @@ plot.CTLscan2 <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance
 
 plot.CTLscan <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance = 0.05, do.legend=TRUE, cex.legend=1.0, ...){
   if(missing(x)) stop("argument 'x' is missing, with no default")
-  if(!is.null(x$p) && !is.nan(getPermuteThresholds(x,significance)[1])){
-    mysign <- as.numeric(which(apply(abs(x$ctl),1,max) > getPermuteThresholds(x,significance)[1]))
-  }else{
-    mysign <- as.numeric(which(apply(abs(x$l),1,max) > -log10(significance)))
-  }
+  mysign <- as.numeric(which(apply(abs(x$l),1,max) > -log10(significance)))
   if(length(mysign) ==0 || onlySignificant == FALSE){
     mysign <- 1:nrow(x$ctl)
     do.legend=FALSE
   }
-  if(is.null(x$l)){
-    CTLmatrix <- matrix(abs(x$ctl[mysign, ]),length(mysign),ncol(x$ctl))
-  }else{
-    CTLmatrix <- matrix(x$l[mysign, ],length(mysign),ncol(x$l))
-  }
+  CTLmatrix <- matrix(x$l[mysign, ],length(mysign),ncol(x$l))
   summarized <- apply(CTLmatrix,2,sum)
-  plot(c(0,ncol(x$ctl)),c(min(c(summarized,x$qtl)),max(c(summarized,x$qtl))), type='n',xlab="Marker", ylab="-log10(P-value)", main=paste("Phenotype contribution to CTL of",attr(x$ctl,"name")),...)
+  plot(c(0,ncol(x$ctl)),c(min(c(summarized,x$qtl)),max(c(5,summarized,x$qtl))), type='n',xlab="Marker", ylab="-log10(P-value)", main=paste("Phenotype contribution to CTL of",attr(x$ctl,"name")),...)
   p <- rep(0,ncol(x$ctl))
   i <- 1;
   mycolors <- topo.colors(nrow(CTLmatrix))
@@ -140,12 +132,11 @@ plot.CTLscan <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance 
     }
   )
   if(!is.null(x$l)){
-    n <- dim(x$ctl)[2]
-    abline(h=-log10(c(0.05/n,0.01/n,0.001/n)),col=c("red","orange","green"),lty=2)
+    abline(h=-log10(c(0.05,0.01,0.001)),col=c("red","orange","green"),lty=2)
     legend("topright",as.character(paste("CTL-FDR:",c(0.05,0.01,0.001),"%")),col=c("red","orange","green"),lty=rep(2,3),lwd=1,cex=cex.legend)
   }
   if(do.legend){
-    legend("topleft",rownames(x$ctl)[mysign],col=mycolors,lwd=1,cex=cex.legend)
+    legend("bottomright",rownames(x$ctl)[mysign],col=mycolors,lwd=1,cex=cex.legend)
   }
   points(summarized,type='l',lwd=1)
   points(as.numeric(x$qtl),type='l',lwd=2,col="red")
