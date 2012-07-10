@@ -69,12 +69,12 @@ ctlmatrix <-   CTLprofiles(ctls,signi=2)
 #image(1:153, 1:103, t(qtlmatrix[sign_probes,sign_snps]),col=c("white","gray","black"),breaks=c(0,5,10,1000),ylab='probe',xlab='snp',xaxt='n')
 image(1:153, 1:103, t(ctlmatrix),col=c("white",gray.colors(2)[2:1],"black"),breaks=c(0,2,5,10,1000),ylab='probe',xlab='snp',xaxt='n')
 box()
-#chr_start <- c()
-#chr_ends <- c()
-#for(x in unique(snp_descr[sign_snps,1])){
-#  chr_start <- c(chr_start,min(which(snp_descr[sign_snps,1]==x)))
-#  chr_ends  <- c(chr_ends, max(which(snp_descr[sign_snps,1]==x)))
-#}
+chr_start <- c()
+chr_ends <- c()
+for(x in unique(snp_descr[,1])){
+  chr_start <- c(chr_start,min(which(snp_descr[,1]==x)))
+  chr_ends  <- c(chr_ends, max(which(snp_descr[,1]==x)))
+}
 abline(v=.5 + chr_ends)
 for(x in 1:length(chr_start)){
   axis(1,at=(chr_start[x]+chr_ends[x])/2,paste(unique(aa[,2])[x]),cex=0.3)

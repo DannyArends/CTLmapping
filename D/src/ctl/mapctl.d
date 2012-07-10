@@ -66,7 +66,7 @@ void main(string[] args){
       if(qtllod != null) writeFile(qtllod, output ~ "/qtls.txt", null, overwrite, verbose);
     }else{ WARN("Skipped QTL mapping"); }
 
-    for(size_t p=0; p < phenotypes.length; p++){ //Main CTL mapping loop
+    for(size_t p=settings.getInt("--start"); p < phenotypes.length; p++){ //Main CTL mapping loop
       if(verbose) MSG("- Phenotype %s -",p);
       string fn_ctl  = output ~ "/ctl"~to!string(p)~".txt";
       string fn_perm = output ~ "/perms"~to!string(p)~".txt";
@@ -83,9 +83,13 @@ void main(string[] args){
      if(settings.getBool("--sp") && p > 0){
         MSG("Reusing trait 0 permutations");
       }else{
-        if(needanalysis(fn_perm,overwrite)){
+        if(settings.getBool("--ap") || needanalysis(fn_perm,overwrite)){
           perms = permutation(phenotypes, genotypes, encodings, p, settings.getInt("--nperms"), verbose);
-          writeFile(perms, fn_perm, null, overwrite, verbose);
+          if(settings.getBool("--ap")){
+            addToFile(perms, fn_perm);
+          }else{
+            writeFile(perms,  fn_perm, null, overwrite, verbose);
+          }
         }else{ //Reload the permutations
           perms = parseFile!double(fn_perm, false, false);
           MSG("Skipped permutations, file %s exists", fn_perm); }

@@ -86,7 +86,9 @@ CTLsettings parseCmd(string[] args){
   bool verbose = true;
   bool redo = false;
   bool sp = false;
-  uint nperms = 100;
+  bool ap = false;
+  uint start    = 0;
+  uint nperms   = 100;
   double minlod = 1.5;
   string phenotype_filename = "test/data/phenotypes.csv";
   string genotype_filename = "test/data/genotypes.csv";
@@ -97,7 +99,9 @@ CTLsettings parseCmd(string[] args){
              , "verbose|v", &verbose
              , "effect|e", &effect
              , "qtl|q", &qtl
-             , "sp|s", &sp
+             , "sp", &sp
+             , "start", &start
+             , "ap", &ap
              , "output|o", &output
              , "redo|r", &redo
              , "nperms|n", &nperms
@@ -111,9 +115,11 @@ CTLsettings parseCmd(string[] args){
   opt.booleans ~= S!bool("--effect"       ,"Perform effect scan", effect);
   opt.booleans ~= S!bool("--qtl"          ,"Perform QTL scan", qtl);
   opt.booleans ~= S!bool("--sp"           ,"Single permutation mode (reuse permutations of T0)", sp);
+  opt.booleans ~= S!bool("--ap"           ,"Add permutations mode", ap);
   opt.strings  ~= S!string("--output"     ,"Path to write output to (DEFAULT: ./)", output);
   opt.booleans ~= S!bool("--redo"         ,"Overwrite previous output files", redo);
   opt.integers ~= S!uint("--nperms"       ,"Number of permutations", nperms);
+  opt.integers ~= S!uint("--start"        ,"Start at this phenotype", start);
   opt.doubles  ~= S!double("--minlod"     ,"Minimum LOD score", minlod);
   opt.strings  ~= S!string("--phenotypes" ,"File containing phenotypes", phenotype_filename);
   opt.strings  ~= S!string("--genotypes"  ,"File containing genotypes", genotype_filename);

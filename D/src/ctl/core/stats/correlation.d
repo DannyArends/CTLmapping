@@ -9,7 +9,7 @@
  **********************************************************************/
 module ctl.core.stats.correlation;
 
-import std.math;
+import std.math, std.stdio;
 
 //D routines for correlation analysis almost as fast as the RBlas version 
 //But this allows us to write out to disk, using almost no additional RAM

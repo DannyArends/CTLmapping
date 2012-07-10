@@ -31,6 +31,25 @@ void writeFile(T)(T[][] m, string filename, string[] rownames, bool overwrite = 
     }
     fp.close();
   }catch(Throwable e){
-    writefln("File %s read exception: %s", filename,e);
+    writefln("File %s write exception: %s", filename,e);
+  }
+}
+
+
+void addToFile(T)(T[][] m, string filename){
+  try{
+    MSG("addToFile");
+    auto fp = new File(filename,"a");
+    string      buffer;
+    for (int r=0; r<m.length; r++) {
+      for (int c=0; c<m[r].length; c++) {
+        if(c!=0) fp.write("\t");
+        fp.write(to!string(m[r][c]));
+      }
+      fp.writeln();
+    }
+    fp.close();
+  }catch(Throwable e){
+    writefln("File %s write exception: %s", filename,e);
   }
 }

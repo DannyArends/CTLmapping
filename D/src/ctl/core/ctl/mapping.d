@@ -23,6 +23,7 @@ int[][] getEncodings(in int[][] genotypes, bool verbose = true){
     r ~= d;
   }
   if(verbose) MSG("Scan of encoded genotype took: (%s msecs)\n",(Clock.currTime()-stime).total!"msecs"());
+  MSG("%s",r);
   return r;
 }
 
@@ -36,8 +37,9 @@ double[][] mapping(in double[][] phenotypes, in int[][] genotypes, in int[][] en
       for(size_t y=(x+1);y<encodings[m].length;y++){
       size_t[] ind_aa  = which(genotypes[m],encodings[m][x]);
       size_t[] ind_bb  = which(genotypes[m],encodings[m][y]);
+     // writeln(ind_aa.length ," ", ind_bb.length);
       if(ind_aa.length < 2 || ind_bb.length < 2){
-        for(size_t p=0; p<phenotypes.length; p++){ difcormatrix[m][p] = 0.0; }
+        for(size_t p=0; p<phenotypes.length; p++){ difcormatrix[m][p] += 0.0; }
       }else{
         double[] pheno_aa = get(phenotypes[phenotype],ind_aa);
         double[] pheno_bb = get(phenotypes[phenotype],ind_bb);
@@ -45,9 +47,9 @@ double[][] mapping(in double[][] phenotypes, in int[][] genotypes, in int[][] en
           double cor_aa = correlation!double(pheno_aa, get(phenotypes[p],ind_aa));
           double cor_bb = correlation!double(pheno_bb, get(phenotypes[p],ind_bb));
           if(isnan(cor_aa) || isnan(cor_bb)){
-            difcormatrix[m][p] = 0.0;
+            difcormatrix[m][p] += 0.0;
           }else{
-            difcormatrix[m][p] = pow(cor_aa - cor_bb, 2);
+            difcormatrix[m][p] += pow(cor_aa - cor_bb, 2);
           }
         }
       }

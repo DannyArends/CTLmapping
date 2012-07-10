@@ -29,7 +29,7 @@ qtlimage <- function(CTLscan, do.grid = TRUE, grid.col = "black", verbose = FALS
   invisible(mymatrix)
 }
 
-internal.image <- function(mymatrix, colorrange = whiteblack, mainlabel="Image", do.grid = TRUE, grid.col = 'white', add=FALSE, breaks = c(0, 1.301, 2, 3, 10, 10000), snp_descr){
+internal.image <- function(mymatrix, colorrange = whiteblack, mainlabel="Image", do.grid = TRUE, grid.col = 'white', add=FALSE, breaks = c(0, 1, 2, 3, 10, 10000), snp_descr){
   if(!is.null(mymatrix)){ 
     image(1:ncol(mymatrix),1:nrow(mymatrix),t(mymatrix), main=mainlabel, yaxt="n", 
           xaxt="n", ylab="", xlab="",col=c("white",gray.colors(4)[4:1]), cex.main=0.7, 

@@ -14,7 +14,7 @@ import ctl.io.reader, ctl.io.terminal, ctl.core.array.matrix;
 
 class CSVreader : Reader{
   override double[][] loadphenotypes(string filename = "phenotypes.csv"){
-    return parseFile!double(filename);
+    return parseFile!double(filename,false,true,0);
   }
   
   override string[] loadphenonames(string filename = "phenotypes.csv"){
@@ -58,7 +58,7 @@ string[] parseNames(string filename){
 }
 
 
-T[][] parseFile(T)(string filename, bool verbose = false ,bool hasRowHeader= true){
+T[][] parseFile(T)(string filename, bool verbose = false ,bool hasRowHeader = true, T nullval = T.max){
   T[][] data;
   if(!exists(filename) || !isFile(filename)){
     ERR("No such file %s",filename);
@@ -77,9 +77,9 @@ T[][] parseFile(T)(string filename, bool verbose = false ,bool hasRowHeader= tru
         string[] splitted = chomp(buffer).split("\t");
         if(splitted.length > 0){
         if(hasRowHeader){
-          data ~= stringvectortotype!T(splitted[3..$]);
+          data ~= stringvectortotype!T(splitted[3..$],nullval);
         }else{
-          data ~= stringvectortotype!T(splitted[0..$]);        
+          data ~= stringvectortotype!T(splitted[0..$],nullval);
         }
         }
         freevector(splitted);

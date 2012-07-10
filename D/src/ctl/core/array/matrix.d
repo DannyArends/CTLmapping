@@ -75,14 +75,14 @@ void freematrix(T)(T[][] m) {
   GC.free(cast(void*)m);
 }
 
-T[] stringvectortotype(T)(string[] entities){
+T[] stringvectortotype(T)(string[] entities, T nullval = T.max){
   T[] rowleveldata;
   rowleveldata.length = entities.length;
   for(size_t cnt = 0;cnt < entities.length; cnt++){
     try{
       rowleveldata[cnt] = to!T(entities[cnt]);
     }catch(Throwable e){
-      rowleveldata[cnt] = T.max;
+      rowleveldata[cnt] = nullval;
     }
   }
   return rowleveldata;
