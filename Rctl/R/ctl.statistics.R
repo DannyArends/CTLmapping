@@ -27,7 +27,7 @@ CTLtoP <- function(CTLscan, onlySignificant = TRUE, verbose = TRUE){
     rnames <- rownames(CTLscan$ctl)
   }
   pvalues <- unlist(lapply(1:length(permvalues),function(x){1-(x-1)/length(permvalues)}))
-  result <- apply(scaled, 2, function(x){CTLtoPvalue.internal(x, permvalues, pvalues, l, permvalues[.1*l])})
+  result <- apply(scaled, 2, function(x){CTLtoPvalue.internal(x, permvalues, pvalues, l, permvalues[.05*l])})
   rownames(result) <- rnames
   result
 }
@@ -73,7 +73,7 @@ CTLtoPvalue.internal <- function(CTLscore, permvalues, pvalues, l = length(permv
 #Use the top 10% of permutation scores and fit a GPD uppertail distribution, then use the 
 #GPD to obtain P-values for outliers, If the GPD is 0 we reduce our value till we get the 
 #minimum P-value
-extrapolateBeyondRange <- function(permvalues, value = 0.6){
+extrapolateBeyondRange <- function(permvalues, value = 0.6, top = 20){
   require(POT)
   gpd.threshold <- permvalues[(.80*length(permvalues))]
   mle <- fitgpd(permvalues, gpd.threshold, "mle")

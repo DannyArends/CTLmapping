@@ -8,11 +8,11 @@
 # Image plot routines for CTL analysis
 #
 
-image.CTLobject <- function(x, against = c("markers","phenotypes"), significance = 0.05, col=whiteblack, do.grid=TRUE, grid.col = "white", verbose = FALSE, add=FALSE, snp_descr, ...){
+image.CTLobject <- function(x, against = c("markers","phenotypes"), significance = 0.05, col=whiteblack, do.grid=TRUE, grid.col = "white", verbose = FALSE, add=FALSE, breaks = c(0, 1, 2, 3, 10, 10000), snp_descr, ...){
   colorrange <- col
   mymatrix <- CTLprofiles(x, against, significance)
   mainlabel <- paste("CTL phenotypes vs",against[1],"at P-value <",significance)
-  internal.image(mymatrix, colorrange, mainlabel,do.grid, grid.col, snp_descr=snp_descr)
+  internal.image(mymatrix, colorrange, mainlabel,do.grid, grid.col, breaks=breaks, snp_descr=snp_descr)
 }
 
 qtlimage <- function(CTLscan, do.grid = TRUE, grid.col = "black", verbose = FALSE){

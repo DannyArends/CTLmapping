@@ -23,7 +23,6 @@ int[][] getEncodings(in int[][] genotypes, bool verbose = true){
     r ~= d;
   }
   if(verbose) MSG("Scan of encoded genotype took: (%s msecs)\n",(Clock.currTime()-stime).total!"msecs"());
-  MSG("%s",r);
   return r;
 }
 
