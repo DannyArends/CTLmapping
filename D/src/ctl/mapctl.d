@@ -111,6 +111,6 @@ void main(string[] args){
     }
     writeln();
     MSG("mapCTL finished (%s seconds)",(Clock.currTime()-stime).total!"seconds"()," seconds");
-    MSG("Continue by starting R and loading the results:\n library(ctl)\n ctls <- load.ctl(\"%s\", \"%s\", \"%s\")\n plot(ctls)",input_g, input_p,output);
+    MSG("Continue by starting R and loading the results:\n library(ctl)\n ctls <- ctl.load(\"%s\", \"%s\", \"%s\")\n image(ctls)",input_g, input_p,output);
   }
 }

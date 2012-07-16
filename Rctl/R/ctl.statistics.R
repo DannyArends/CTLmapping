@@ -27,7 +27,7 @@ CTLtoP <- function(CTLscan, onlySignificant = TRUE, verbose = TRUE){
     rnames <- rownames(CTLscan$ctl)
   }
   pvalues <- unlist(lapply(1:length(permvalues),function(x){1-(x-1)/length(permvalues)}))
-  result <- apply(scaled, 2, function(x){CTLtoPvalue.internal(x, permvalues, pvalues, l, permvalues[.05*l])})
+  result <- apply(scaled, 2, function(x){CTLtoPvalue.internal(x, permvalues, pvalues, l, permvalues[0.05 * l])})
   rownames(result) <- rnames
   result
 }
@@ -44,9 +44,18 @@ CTLscoretoPvalue <- function(CTLscore, CTLpermute){
 #Determine a P-value based on the relative position of the score within the permutations
 #Out of range values are tested using a GPD to estimate a P-value
 CTLtoPvalue.internal <- function(CTLscore, permvalues, pvalues, l = length(permvalues), cv = 0){
+  cv <- as.numeric(cv)
+  permvalues <- as.numeric(permvalues)
   res <- unlist(lapply(CTLscore, function(y){
-    if(is.na(y)) return(1)
+    #cat("Critical value:", cv,"\n")
+    #cat("Request for:",y,"???",as.numeric(y) < as.numeric(cv),"\n")
+    y <- as.numeric(y)
+    if(is.na(y)){
+      cat("NA\n")
+      return(1)
+    }
     if(y < cv){
+      #cat("<cv = 0\n")
       return(pvalues[1])
     }else{
       myrange <- which(permvalues > y)
@@ -54,9 +63,11 @@ CTLtoPvalue.internal <- function(CTLscore, permvalues, pvalues, l = length(permv
       if(length(myrange) > 0) icx <- min(myrange)
       if(is.finite(icx)){
         if(pvalues[min(icx)]==0) stop("P value of 0.0 at: pvalues[min(icx)]")
+#        cat("inrage: ",icx," ",y, "==>",pvalues[min(icx)],"\n")
         return(pvalues[min(icx)])
       }else{
         tryCatch(estimate <- extrapolateBeyondRange(permvalues, y),  error = function(e) {estimate <<- 1})
+        cat("estimate: ",estimate,"\n")
         best_p <- pvalues[length(pvalues)]
         if(estimate > best_p){
           if(best_p == 0) stop("P value of 0.0 at: 1-((l-1)/l)")
@@ -83,7 +94,8 @@ extrapolateBeyondRange <- function(permvalues, value = 0.6, top = 20){
   dens <- function(x) dgpd(x, loc, scale, shape)
   warn <- FALSE
   prev.value <- value
-  while(as.numeric(dens(value))==0){
+  while(as.numeric(dens(value))==0 && value > 0){
+    cat(value," ",as.numeric(dens(value)),"\n")
     warn <- TRUE
     value <- value - 0.0001
   }
