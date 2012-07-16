@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+<html>
+  <head>
+    <meta name="robots" content="all"> 
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+<meta name='Keywords' content='Bioinformatics, Download, Rctl, mapCTL, How-To, CTL mapping, Network reconstruction, QTL mapping' > 
+      <style type="text/css" media="screen"> @import "css/style.css";</style>
+      <style type="text/css" media="print"> @import "css/print.css";</style> 
+    <meta name='Description' content='Home | Download CTL mapping software from mapctl.org' > 
+  	<meta name='Author' content='Danny Arends' >
+    <title>Correlated Traits Locus mapping - Download software</title>
+    <meta name="google-site-verification" content="DsMDeZoTvTlEitDMkLas4JAnQt2KCJ2iTwP8AP9mxho" />
+    <script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-26110234-1']);
+	  _gaq.push(['_setDomainName', 'none']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+    </script>
+    <script type="text/javascript">
+    var showing = false;
+    function showHide(shID) {
+      if(document.getElementById(shID)){
+        if(document.getElementById(shID).style.display != 'block'){
+          document.getElementById(shID).style.display = 'block';
+          document.getElementById(shID+'-btn').innerHTML = 'Read less...';
+        }else{
+          document.getElementById(shID+'-btn').innerHTML = 'Read more...';
+          document.getElementById(shID).style.display = 'none';
+        }
+        showing = !showing;
+      }
+    }
+    
+    </script>
+  </head>
+  <body>
+  <div id="container" class="centre maxwidth">
+    <div id="head" class="maxwidth">
+      <h1>Correlated Traits Locus (CTL) mapping</h1>
+    </div>
+    <div id="menu">
+      <br>
+      <ul>
+        <li><a href="index.html"    >Overview</a> | </li>
+        <li><a href="download.html" >Download</a> | </li>
+        <li><a href="manual.html"   >Manuals</a>  | </li>
+        <li><a href="examples.html" >Examples</a> | </li>
+        <li><a href="pdf/paper.pdf" >Paper</a>   (<a href="pdf/cite.bib" target='_blank'>cite</a>)</li>
+      </ul>
+    </div>
+  </div>
+  <div id="container" class="centre maxwidth">
+  <div class="mid">
+  
+  
+  
+  <h2>Download</h2>
+    The R version of the CTL mapping software is available via Cran, first download and install R (see <a href="http://cran.r-project.org/doc/manuals/R-admin.html" target="_blank">here</a> for more help). 
+    After installation of R, open an R terminal and install the ctl package by:<br><br>
+    <code>
+    install.packages("ctl")
+    </code>
+    <br><br>
+    This will pop-up a mirror selection window. Select a mirror close to your own location and wait for the download to finish, then load the package using:
+    <br><br>
+    <code>
+    library("ctl")
+    </code>
+    <br><br>
+    
+    <h4>About R</h4>
+    R is an open-source implementation of the S language. 
+    <br>
+    <a href="#" id="hidebox-btn" class="showLink" onclick="showHide('hidebox');return false;">Read more...</a><br>
+    <div id="hidebox" class="more">
+      Described on the R project homepage:<br>
+      <small><code>
+      "R is a system for statistical computation and graphics. It consists of a language plus a run-time 
+      environment with graphics, a debugger, access to certain system functions, and the ability to run 
+      programs stored in script files.
+      </code><br><br><code>
+      The core of R is an interpreted computer language which allows branching and looping as well as 
+      modular programming using functions. Most of the user-visible functions in R are written in R. It 
+      is possible for the user to interface to procedures written in the C, C++, or FORTRAN languages 
+      for efficiency. The R distribution contains functionality for a large number of statistical procedures. 
+      Among these are: linear and generalized linear models, nonlinear regression models, time series 
+      analysis, classical parametric and nonparametric tests, clustering and smoothing. There is also a 
+      large set of functions which provide a flexible graphical environment for creating various kinds of 
+      data presentations. Additional modules are available for a variety of specific purposes."
+      </code></small>  
+      <br>
+      R is freely available for Windows, unix and MacOS, and may be downloaded from the Comprehensive R Archive Network (CRAN).
+      Learning R may require a formidable investment of time, but it will definitely be worth the effort. Numerous free documents 
+      on getting started with R are available on CRAN. In addition, several books are available on R, S and S-PLUS; for example, 
+      see WN Venables, BD Ripley (2002) Modern Applied Statistics with S (4th ed, Springer) or P Dalgaard (2008) Introductory 
+      statistics with R (2nd ed, Springer).
+    </div>
+    <br>
+  <h4>Access the source code</h4>
+    The source code is available at <a href="https://github.com/DannyArends/CTLmapping" target="_blank">Github</a>
+    <br><br>
+  
+  <h2>Contributors</h2>
+  <b>Contact</b> for problems/questions/suggestions: Danny Arends (Danny.Arends at Gmail.com)<br>
+  <small>
+    (c) 2011 - <a href="http://gbic.target.rug.nl/" target="_blank">Groningen Bioinformatics Centre</a> :<br>  
+    Danny Arends - <a href='http://www.dannyarends.nl' target="_blank">www.dannyarends.nl</a>,
+    Pjotr Prins - <a href='http://www.thebird.nl' target="_blank">www.thebird.nl</a>, and
+    Ritsert C. Jansen - <a href='http://www.rug.nl/fmns-research/bioinformatics/index' target="_blank">www.rug.nl/gbic</a>
+  </small>
+  </div>
+  </div>
+  </body>
+</html>

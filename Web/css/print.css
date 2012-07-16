@@ -1,0 +1,28 @@
+/* Print Style Sheet */
+@media print {
+	body { 
+		background: none !important;
+		color:#0e3753;
+		margin:0;
+		padding:30px;
+	}
+	
+	#bg {display:none;}
+	#head {display:none;}
+	.printlogo{display:block;float:right;}
+	
+	#content {
+		margin-left:0; 
+		float:none; 
+		width:auto;
+		font-family:Calibri, Helvetica, sans-serif;
+		font-size:10pt;
+	}
+	
+	a {text-decoration:none;color:#0e3753;}
+	h1,h2,h3,h4,h5,h6 {color:#0e3753;}
+	#footer {display:none;}
+	.submenu {display:none;}
+	#disclaimer {display:none;}
+	#social {display:none;}
+}

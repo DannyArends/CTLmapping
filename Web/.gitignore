@@ -1,0 +1,11 @@
+*.o
+*.so
+*.bin
+*.png
+*.pdf
+*~
+*.log
+*.out
+*.aux
+build/*
+*.img

@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+<html>
+  <head>
+    <meta name="robots" content="all"> 
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <meta name='Keywords' content='Bioinformatics, Examples, How-To, CTL mapping, Network reconstruction, QTL mapping' > 
+      <style type="text/css" media="screen"> @import "css/style.css";</style>
+      <style type="text/css" media="print"> @import "css/print.css";</style> 
+    <meta name='Description' content='Home | CTL mapping examples at mapctl.org' > 
+  	<meta name='Author' content='Danny Arends' >
+    <title>Correlated Traits Locus mapping - Example analysis</title>
+    <meta name="google-site-verification" content="DsMDeZoTvTlEitDMkLas4JAnQt2KCJ2iTwP8AP9mxho" />
+    <script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-26110234-1']);
+	  _gaq.push(['_setDomainName', 'none']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+    </script>
+    <script type="text/javascript">
+    var showing = false;
+    function showHide(shID) {
+      if(document.getElementById(shID)){
+        if(document.getElementById(shID).style.display != 'block'){
+          document.getElementById(shID).style.display = 'block';
+          document.getElementById(shID+'-btn').innerHTML = 'Read less...';
+        }else{
+          document.getElementById(shID+'-btn').innerHTML = 'Read more...';
+          document.getElementById(shID).style.display = 'none';
+        }
+        showing = !showing;
+      }
+    }
+    
+    </script>    
+  </head>
+  <body>
+  <div id="container" class="centre maxwidth">
+    <div id="head" class="maxwidth">
+      <h1>Correlated Traits Locus (CTL) mapping</h1>
+    </div>
+    <div id="menu">
+      <br>
+      <ul>
+        <li><a href="index.html"    >Overview</a> | </li>
+        <li><a href="download.html" >Download</a> | </li>
+        <li><a href="manual.html"   >Manuals</a>  | </li>
+        <li><a href="examples.html" >Examples</a> | </li>
+        <li><a href="pdf/paper.pdf" >Paper</a>   (<a href="pdf/cite.bib" target='_blank'>cite</a>)</li>
+      </ul>
+    </div>
+  </div>
+  <div id="container" class="centre maxwidth">
+  <div class="mid">
+  <h2>CTL mapping examples</h2>
+  CTL mapping has been applied in several datasets we show here some basic analysis I performed on the data.
+  I start off by doing basic QC on the provided dataset, followed by QTL and CTL mapping.<br><br>
+  
+  <h4>Metabolites in <i>Arabidopsis thaliana</i></h4>
+  Show the analysis of the 63 metabolites analysed by Gary Churchill.<br>
+    <a href="#" id="hidebox1-btn" class="showLink" onclick="showHide('hidebox1');return false;">Read more...</a><br>
+    <div id="hidebox1" class="more">
+      <table width=80%>
+      <tr><td>Individuals:</td><td>403</td><td>Traits:</td><td>63</td></tr>
+      <tr><td>Markers:</td><td>69</td><td>Chromosomes:</td><td>5</td></tr>
+      </table>
+      <h5>Results: Quality Control</h5>
+      <div>
+        <img src="img/EX1_QC_GM.png" width=500 height=300 alt="QC of the genetic map"><br/>
+        <small><b>Fig 1-0</b> - QC - The genetic map</small>
+      </div>
+
+      <div>
+        <img src="img/EX1_QC_TRAITS.png" width=500 height=300 alt="QC of trait correlation"><br/>
+        <small><b>Fig 1-1</b> - QC - Trait correlations</small>
+      </div>
+      <br>
+      <h5>Results: CTL, QTL</h5>
+      We first show the comparison between a QTL and a CTL heatmap
+      <div>
+        <img src="img/EX1_QTL_CTL.png" width=500 height=300 alt="QTL / CTL comparison plot"><br/>
+        <small><b>Fig 1-2</b> - QTL / CTL comparison heatmap</small>
+      </div>
+    </div>
+  <br><br>
+  
+  <h4>Classical traits + metabolites in 4 seed conditions <i>Arabidopsis thaliana</i></h4>
+  Show the analysis of the classical traits and metabolites based on data collected by Ronny Joosen.<br>
+    <a href="#" id="hidebox2-btn" class="showLink" onclick="showHide('hidebox2');return false;">Read more...</a><br>
+    <div id="hidebox2" class="more">
+      <table width=80%>
+      <tr><td>Individuals:</td><td>???</td><td>Traits:</td><td>???</td></tr>
+      <tr><td>Markers:</td><td>69</td><td>Chromosomes:</td><td>5</td></tr>
+      </table>
+      <h5>Results: Quality Control</h5>
+      <div>
+        <img src="img/EX2_QC_GM.png" width=500 height=300 alt="QC of the genetic map"><br/>
+        <small><b>Fig 1-0</b> - QC - The genetic map</small>
+      </div>
+
+      <div>
+        <img src="img/EX2_QC_TRAITS.png" width=500 height=300 alt="QC of trait correlation"><br/>
+        <small><b>Fig 1-1</b> - QC - Trait correlations</small>
+      </div>
+      <br>
+      <h5>Results: CTL, QTL</h5>
+      We first show the comparison between a QTL and a CTL heatmap
+      <div>
+        <img src="img/EX2_QTL_CTL.png" width=500 height=300 alt="QTL / CTL comparison plot"><br/>
+        <small><b>Fig 1-2</b> - QTL / CTL comparison heatmap</small>
+      </div>
+    </div>
+  <br><br>
+  
+  <h4>Gene expression in <i>Saccharomyces cerevisiae</i></h4>
+  Show the analysis of 3000 gene expression probes of Rachel Brem.<br>
+    <a href="#" id="hidebox3-btn" class="showLink" onclick="showHide('hidebox3');return false;">Read more...</a><br>
+    <div id="hidebox3" class="more">
+      <table width=80%>
+      <tr><td>Individuals:</td><td>???</td><td>Traits:</td><td>3000</td></tr>
+      <tr><td>Markers:</td><td>???</td><td>Chromosomes:</td><td>???</td></tr>
+      </table>
+      <h5>Results: Quality Control</h5>
+      TODO
+      <br>
+      <h5>Results: CTL, QTL</h5>
+      TODO
+    </div>
+  <br><br>
+
+  <h4>Metabolites in <i>Arabidopsis thaliana</i></h4>
+  Show the analysis of the 24 metabolites of Ying Fu.<br>
+    <a href="#" id="hidebox4-btn" class="showLink" onclick="showHide('hidebox4');return false;">Read more...</a><br>
+    <div id="hidebox4" class="more">
+      <table width=80%>
+      <tr><td>Individuals:</td><td>162</td><td>Traits:</td><td>24</td></tr>
+      <tr><td>Markers:</td><td>117</td><td>Chromosomes:</td><td>5</td></tr>
+      </table>    
+      <h5>Results: Quality Control</h5>
+      TODO
+      <br>
+      <h5>Results: CTL, QTL</h5>
+      TODO
+    </div>
+  <br><br>
+
+  
+  <h2>Download the examples</h2>
+  Datasets are distributed with the R package (available from CRAN), additionally you can download the datasets 
+  and scripts here:
+  <ul>
+    <li> * <i>Arabidopsis thaliana</i> - 63 metabolites      (<a href="data/gary.data">dataset</a>,  <a href="data/gary.R">script</a>,  pdf) </li>
+    <li> * <i>Arabidopsis thaliana</i> - Classical traits + metabolites in 4 seed conditions (<a href="data/ronny.data">dataset</a>, <a href="data/ronny.R">script</a>,  pdf) </li>
+    <li> * <i>Saccharomyces cerevisiae</i> - 63 metabolites  (<a href="data/brem.data">dataset</a>,  <a href="data/brem.R">script</a>,  pdf) </li>
+    <li> * <i>Arabidopsis thaliana</i> - 24 metabolites      (<a href="data/multi.data">dataset</a>, <a href="data/multi.R">script</a>, pdf) </li>
+  </ul>
+  <br>
+  <h2>Contributors</h2>
+  <b>Contact</b> for problems/questions/suggestions: Danny Arends (Danny.Arends at Gmail.com)<br>  
+  <small>  
+    (c) 2011 - <a href="http://gbic.target.rug.nl/" target="_blank">Groningen Bioinformatics Centre</a> :<br>  
+    Danny Arends - <a href='http://www.dannyarends.nl' target="_blank">www.dannyarends.nl</a>,
+    Pjotr Prins - <a href='http://www.thebird.nl' target="_blank">www.thebird.nl</a>, and
+    Ritsert C. Jansen - <a href='http://www.rug.nl/fmns-research/bioinformatics/index' target="_blank">www.rug.nl/gbic</a>
+  </small>
+  </div>
+  </div>
+  </body>
+</html>
