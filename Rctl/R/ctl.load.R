@@ -41,18 +41,18 @@ ctl.load <- function(genotypes = "ngenotypes.txt", phenotypes = "nphenotypes.txt
       class(results[[idx]]$ctl)       <- c(class(results[[idx]]$ctl),"CTL")
       attr(results[[idx]]$ctl,"name") <-  phenodata[(x+1),1]
     }else{
-      stop("No CTLS found for:", phenodata[x,1],"\n")
+      stop("No CTLs found for:", phenodata[x,1],"\n")
     }
     if(!singleperms && file.exists(paste(output,"/perms",x,".txt",sep=""))){
       results[[idx]]$p        <- apply(read.csv(paste(output,"/perms",x,".txt",sep=""),sep="\t",header=FALSE),1,max)
       class(results[[idx]]$p) <- c(class(results[[idx]]$p),"CTLpermute")
     }else{
-      if(x==1) cat("[Warning] results are from 'single permutation mode' (--sp) this might induce many false positives \n")
+      if(x==1) cat("[Warning] results are from 'single permutation mode' (--sp) NOTE: This might induce many false positives \n")
       if(from > 1 && !singleperms) results[[1]]$p <- apply(read.csv(paste(output,"/perms0.txt",sep=""),sep="\t",header=FALSE),1,max)
       singleperms       <- TRUE
       results[[idx]]$p  <- results[[1]]$p
     }
-    if(verbose) cat("Recalculating LOD score using Permutations and GPD distribution\n")
+    if(verbose) cat("Recalculating LOD score using permutations, using GPD distribution for extreme scores\n")
     results[[idx]]$l      <- toLod(results[[idx]], FALSE, FALSE)
     class(results[[idx]]) <- c(class(results[[idx]]),"CTLscan")
   }
