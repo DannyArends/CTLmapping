@@ -56,7 +56,7 @@ addChromosomeLines <- function(snp_descr, col='black'){
     chr_start <- c(chr_start,min(which(snp_descr[,1]==x)))
     chr_ends  <- c(chr_ends, max(which(snp_descr[,1]==x)))
   }
-  abline(v=.5 + chr_ends,lwd=1,lty=2,col=col)
+  abline(v=.5 + chr_ends, lwd=1, lty=2, col=col)
   for(x in 1:length(chr_start)){
     axis(1,at=(chr_start[x]+chr_ends[x])/2,paste("Chr",unique(snp_descr[,1])[x]),cex.axis=0.3)
   }
