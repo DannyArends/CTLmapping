@@ -12,7 +12,7 @@
 CTLscan <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1:ncol(phenotypes), have.qtl, method = c("pearson","pearsonordered", "kendall", "spearman"), conditions = NULL, n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE){
   if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
-  
+  st <- proc.time()
   cat("Stage 0.0: Checking data\n")
   toremove <- check.genotypes(genotypes, geno.enc, verbose)
   results <- vector("list",length(pheno.col))
@@ -50,6 +50,7 @@ CTLscan <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1:ncol(p
     class(results[[idx]]) <- c(class(results[[idx]]),"CTLscan")
     idx <- idx + 1
   }
+  cat("Done after: ",(proc.time()-st)[3]," seconds\n")
   class(results) <- c(class(results),"CTLobject")
   results
 }

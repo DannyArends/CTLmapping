@@ -41,7 +41,7 @@ ctl.load <- function(genotypes = "ngenotypes.txt", phenotypes = "nphenotypes.txt
       class(results[[idx]]$ctl)       <- c(class(results[[idx]]$ctl),"CTL")
       attr(results[[idx]]$ctl,"name") <-  phenodata[(x+1),1]
     }else{
-      stop("No CTLs found for:", phenodata[x,1],"\n")
+      stop("ERROR: Missing file No CTLs found for:", phenodata[x,1],"\n")
     }
     if(!singleperms && file.exists(paste(output,"/perms",x,".txt",sep=""))){
       results[[idx]]$p        <- apply(read.csv(paste(output,"/perms",x,".txt",sep=""),sep="\t",header=FALSE),1,max)

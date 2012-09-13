@@ -27,7 +27,7 @@ CTLtoP <- function(CTLscan, onlySignificant = TRUE, verbose = TRUE){
     rnames <- rownames(CTLscan$ctl)
   }
   pvalues <- unlist(lapply(1:length(permvalues),function(x){1-(x-1)/length(permvalues)}))
-  result <- apply(scaled, 2, function(x){CTLtoPvalue.internal(x, permvalues, pvalues, l, permvalues[0.05 * l])})
+  result <- apply(scaled, 2, function(x){CTLtoPvalue.internal(x, permvalues, pvalues, l)})
   rownames(result) <- rnames
   result
 }
@@ -43,8 +43,8 @@ CTLscoretoPvalue <- function(CTLscore, CTLpermute){
 
 #Determine a P-value based on the relative position of the score within the permutations
 #Out of range values are tested using a GPD to estimate a P-value
-CTLtoPvalue.internal <- function(CTLscore, permvalues, pvalues, l = length(permvalues), cv = 0){
-  cv <- as.numeric(cv)
+CTLtoPvalue.internal <- function(CTLscore, permvalues, pvalues, l = length(permvalues)){
+  cv <- as.numeric(permvalues[1])
   permvalues <- as.numeric(permvalues)
   res <- unlist(lapply(CTLscore, function(y){
     #cat("Critical value:", cv,"\n")
@@ -54,6 +54,7 @@ CTLtoPvalue.internal <- function(CTLscore, permvalues, pvalues, l = length(permv
       cat("NA\n")
       return(1)
     }
+   # cat("y:",y,"cv:", cv,"\n")
     if(y < cv){
       #cat("<cv = 0\n")
       return(pvalues[1])

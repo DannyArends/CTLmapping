@@ -7,13 +7,9 @@
  * First written May, 2011<br>
  * Written in the D Programming Language (http://www.digitalmars.com/d)
  **********************************************************************/
-import std.stdio, std.math, std.conv, std.file, std.datetime;
-import ctl.core.array.matrix, core.memory;
-import ctl.core.stats.basic, ctl.core.stats.tolod;
-import ctl.core.analysis, ctl.core.ctl.utils;
-import ctl.core.ctl.mapping, ctl.core.ctl.permutation;
-import ctl.io.reader, ctl.io.terminal;
-import ctl.io.cmdline.parse;
+import std.stdio, std.math, std.conv, std.file, std.datetime, core.memory;
+import ctl.core.array.matrix, ctl.core.stats.basic, ctl.core.stats.tolod, ctl.core.analysis, ctl.core.ctl.utils;
+import ctl.core.ctl.mapping, ctl.core.ctl.permutation, ctl.io.reader, ctl.io.terminal, ctl.io.cmdline.parse;
 import ctl.io.csv.write, ctl.io.csv.parse;
 
 void main(string[] args){
@@ -21,7 +17,7 @@ void main(string[] args){
   MSG("Correlated Trait Locus (CTL) mapping in D");
   MSG("(c) 2012 written by Danny Arends in the D programming language");
   CTLsettings settings   = parseCmd(args);
-  MSG("ARGS parsed");
+  MSG("Command line arguments parsed");
   Reader ireader  = initialize(settings);
   bool verbose    = settings.getBool("--verbose");
   bool overwrite  = settings.getBool("--redo");
@@ -110,7 +106,7 @@ void main(string[] args){
       GC.minimize();
     }
     writeln();
-    MSG("mapCTL finished (%s seconds)",(Clock.currTime()-stime).total!"seconds"()," seconds");
+    MSG("CTL mapping finished in %s seconds",(Clock.currTime()-stime).total!"seconds"()," seconds");
     MSG("Continue by starting R and loading the results:\n library(ctl)\n ctls <- ctl.load(\"%s\", \"%s\", \"%s\")\n image(ctls)",input_g, input_p,output);
   }
 }

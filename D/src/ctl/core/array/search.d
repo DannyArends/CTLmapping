@@ -31,9 +31,7 @@ pure size_t searchArrayBinary(T)(in T[] haystack, T needle){
     if(needle > haystack[mid]){
       first = mid + 1;
     }else if(needle < haystack[mid]){
-
       last = mid - 1;
-      
     }else{
       return mid;
     }
