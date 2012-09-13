@@ -42,27 +42,28 @@ CTLscoretoPvalue <- function(CTLscore, CTLpermute){
 #Determine a P-value based on the relative position of the score within the permutations
 #Out of range values are tested using a GPD to estimate a P-value
 CTLtoPvalue.internal <- function(CTLscore, permvalues, pvalues){
-  cv <- as.numeric(permvalues[1])
+  cv <- as.numeric(permvalues[1])               #Critical value, every score < cv get set to p=1
   permvalues <- as.numeric(permvalues)
-  res <- unlist(lapply(CTLscore, function(y){
-    y <- as.numeric(y)
-    if(is.na(y)) return(1)
-    if(y < cv) return(pvalues[1])
-    myrange <- which(permvalues > y)
+  ctlpvals <- unlist(lapply(CTLscore, function(score){
+    score <- as.numeric(score)
+    if(is.na(score)) return(1)                      #NA Value
+    if(score < cv) return(1)                        #score < cv
+    myrange <- which(permvalues > score)
     icx <- Inf
     if(length(myrange) > 0) icx <- min(myrange)
     if(is.finite(icx)){
       if(pvalues[min(icx)]==0) stop("P value of 0.0 at: pvalues[min(icx)]")
-      return(pvalues[min(icx)])
-    }else{
-      tryCatch(estimate <- extrapolateBeyondRange(permvalues, y),  error = function(e) {estimate <<- 1})
-      cat("Y is out of Range estimate: ",estimate,"\n")
+      return(pvalues[min(icx)])                     #Score falls inside the permutations
+    }else{ # Score > any permutation p-value
+      tryCatch(estimate <- extrapolateBeyondRange(permvalues, score),  
+               error = function(e){ estimate <<- 1 })
       best_p <- pvalues[length(pvalues)]
+      cat("Score ",score," is outside of permutation range: ",estimate,"/",best_p,"\n")
       if(estimate > best_p) return(best_p)
       return(estimate)
     }
   }))
-  res
+  return(ctlpvals)
 }
 
 #Use the top 10% of permutation scores and fit a GPD uppertail distribution, then use the 
@@ -79,7 +80,7 @@ extrapolateBeyondRange <- function(permvalues, value = 0.6, top = 20){
   warn <- FALSE
   prev.value <- value
   while(as.numeric(dens(value))==0 && value > 0){
-    cat(value," ",as.numeric(dens(value)),"\n")
+    #cat("[FIX] Out of range and p=0:", value," ",as.numeric(dens(value)),"\n")
     warn <- TRUE
     value <- value - 0.0001
   }
