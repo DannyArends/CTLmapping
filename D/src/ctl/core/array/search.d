@@ -47,7 +47,7 @@ unittest{
   string test_fun;
   try{
     test_fun = "pure size_t getIndex(T)(T[] haystack, T needle)";
-    assert(getIndex([3,5],4) == 1,                 "\n"~test_fun~" Test 1");
+    assert(getIndex([3,5],4) == 0,                 "\n"~test_fun~" Test 1");
     assert(getIndex([1,3,4,7,8,10,15],8)  == 4,    "\n"~test_fun~" Test 2");
     assert(getIndex([1,2,4,7,8,10,15],3)  == 2,    "\n"~test_fun~" Test 3");
     assert(getIndex([1,2,4,7,8,10,15],9)  == 4,    "\n"~test_fun~" Test 4");
