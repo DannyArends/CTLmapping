@@ -21,10 +21,11 @@ CTLscan <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1:ncol(p
   if(missing(have.qtl)){
     cat("Stage 0.1: Mapping Trait - Marker associations (QTL)\n")
     attr(results,"qtl") <- QTLscan(genotypes, phenotypes, pheno.col, conditions, n.cores, verbose=verbose)$qtl
+    cat("Dims:",dim(attr(results,"qtl")),"\n")
     stage <- 2
   }else{
-    if(ncol(have.qtl) != ncol(genotypes))   cat("[SEVERE] argument 'have.qtl' should be of size:",length(pheno.col)," ",ncol(genotypes),"\n")
-    if(nrow(have.qtl) != length(pheno.col)) cat("[SEVERE] argument 'have.qtl' should be of size:",length(pheno.col)," ",ncol(genotypes),"\n")
+    if(ncol(have.qtl) != ncol(genotypes))   cat("[SEVERE] argument 'have.qtl' should be of size:",ncol(phenotypes)," ",ncol(genotypes),"\n")
+    if(nrow(have.qtl) != ncol(phenotypes)) cat("[SEVERE] argument 'have.qtl' should be of size:",ncol(phenotypes)," ",ncol(genotypes),"\n")
     attr(results,"qtl") <- have.qtl
   }
   if(!is.null(toremove)){
@@ -63,19 +64,11 @@ CTLmapping <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1, me
   results <- NULL
   ctlprofile <- apply(genotypes,2, 
     function(geno){
-      res <- matrix(0,1,ncol(phenotypes))
-      for(x in 1:(length(geno.enc)-1)){
-        for(y in (x+1):length(geno.enc)){
-          if(x != y){
-            geno1 <- which(geno==geno.enc[x])
-            geno2 <- which(geno==geno.enc[y])
-            cor1 <- cor(phenotypes[geno1,pheno.col],phenotypes[geno1,],use="pair",method=method[1])
-            cor2 <- cor(phenotypes[geno2,pheno.col],phenotypes[geno2,],use="pair",method=method[1])
-            res = res + (cor1 - cor2)^2
-          }
-        }
-      }
-      return(res)
+      geno1 <- which(geno==geno.enc[1])
+      geno2 <- which(geno==geno.enc[2])
+      cor1 <- cor(phenotypes[geno1,pheno.col],phenotypes[geno1,],use="pair",method=method[1])
+      cor2 <- cor(phenotypes[geno2,pheno.col],phenotypes[geno2,],use="pair",method=method[1])
+      return(cor1 - cor2)^2
     }
   )
   rownames(ctlprofile) <- colnames(phenotypes)
