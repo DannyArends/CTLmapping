@@ -35,6 +35,7 @@
 %ctl.image.R
 \alias{internal.image}
 \alias{qtlimage}
+\alias{addChromosomeLines}
 
 %qtl.scan.R
 \alias{QTLscan}
@@ -45,6 +46,7 @@
 
 %ctl.print.R
 \alias{getPermuteThresholds}
+\alias{getSignificantCTL}
 \alias{print.CTLpermute}
 
 %ctl.plot.R

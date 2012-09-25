@@ -5,7 +5,7 @@
   Scan for Correlated Trait Locus (CTL) in populations
 }
 \usage{
-CTLscan(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1:ncol(phenotypes), have.qtl, method = c("pearson", "pearsonordered", "kendall", "spearman"), conditions = NULL, 
+CTLscan(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1:ncol(phenotypes), method = c("pearson", "pearsonordered", "kendall", "spearman"), conditions = NULL, 
         n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE)
 }
 
@@ -14,7 +14,6 @@ CTLscan(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1:ncol(phenotypes), 
   \item{phenotypes}{ Matrix of phenotypes. (individuals x phenotypes) }
   \item{geno.enc}{ Specifying the encoding of the genotype matrix. }
   \item{pheno.col}{ Which phenotype column(s) should we analyse. Defaults to analyse all phenotype columns. }
-  \item{have.qtl}{ When QTL results are already calculated supply them using the have.qtl parameter. }
   \item{method}{ Character string indicating which correlation coefficient is to be computed. One of "pearson" (default), "kendall", or "spearman". }
   \item{conditions}{ A vector of experimental conditions applied during the experiment. These conditions will be used as covariates in the QTL modeling step
                      (NOT used when parameter have.qtl is supplied). }

@@ -9,7 +9,7 @@
 
 \usage{
 \method{image}{CTLobject}(x, against = c("markers","phenotypes"), significance = 0.05, 
-      col=whiteblack, do.grid=TRUE, grid.col = "black", verbose = FALSE, add=FALSE, \dots)
+      col=whiteblack, do.grid=TRUE, grid.col = "black", verbose = FALSE, add=FALSE, breaks = c(0, 1, 2, 3, 10, 10000), marker_info, \dots)
 }
 
 \arguments{
@@ -22,6 +22,8 @@
   \item{grid.col}{ Colors used to draw the grid. }
   \item{verbose}{ Be verbose. }
   \item{add}{ Add this plot to a previously opened plot window. }
+  \item{breaks}{ See par }
+  \item{marker_info}{ Information used to plot chromosome lines. }
   \item{\dots}{ Passed to the function \code{\link[graphics]{image}} when it is called. }
 }
 

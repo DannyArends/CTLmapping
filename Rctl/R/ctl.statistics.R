@@ -21,7 +21,7 @@ CTLtoP <- function(CTLscan, onlySignificant = TRUE, verbose = TRUE){
     scaled <- abs(CTLscan$ctl[significant, ])
     rnames <- rownames(CTLscan$ctl)[significant]
   }else{
-    if(onlySignificant) warn("No significant found, converting all")
+    if(onlySignificant) warning("No significant found, converting all")
     scaled <- abs(CTLscan$ctl)
     rnames <- rownames(CTLscan$ctl)
   }
