@@ -104,16 +104,19 @@ int** newimatrix(size_t rows, size_t cols){
 }
 
 double** todmatrix(char* content){
-  char*   num;
+  char*   num = newcvector(0);
   int     colcnt = 0;
   int     ccol = 0;
   int     nrows = 0;
   double** matrix = newdmatrix(0, 0);
   double* row = newdvector(0);
   int     rowok = 0;
+  int     l = 0;
   do{
     if(content[0] == '\t'){
       row = addtodvector(row, ccol, atof(num));
+      num = newcvector(0);
+      l = 0;
       ccol++;
     }
     if(content[0] == '\n' || content[0] == '\0'){
@@ -127,12 +130,18 @@ double** todmatrix(char* content){
         rowok = 1;
       }
       if(rowok){
-        row = addtodvector(row, ccol, atoi(num));
+        row = addtodvector(row, ccol, atof(num));
+        num = newcvector(0);
+        l = 0;
         matrix = addtodmatrix(matrix, nrows, ccol, row);
         row = newdvector(0);
         ccol = 0;
         nrows++;
       }
+    }
+    if(content[0] != ' '){
+      num = addtocvector(num,l,content[0]);
+      l++;
     }
     content++;
   }while(content[0] != '\0');
@@ -141,16 +150,19 @@ double** todmatrix(char* content){
 }
 
 int** toimatrix(char* content){
-  char*   num;
+  char*   num = newcvector(0);
   int     colcnt = 0;
-  int     ccol = 0;
-  int     nrows = 0;
-  int**   matrix = newimatrix(0, 0);
-  int*    row = newivector(0);
-  int     rowok = 0;
+  int     ccol   = 0;
+  int     nrows  = 0;
+  int** matrix   = newimatrix(0, 0);
+  int* row       = newivector(0);
+  int     rowok  = 0;
+  int     l      = 0;
   do{
     if(content[0] == '\t'){
       row = addtoivector(row, ccol, atoi(num));
+      num = newcvector(0);
+      l = 0;
       ccol++;
     }
     if(content[0] == '\n' || content[0] == '\0'){
@@ -165,11 +177,17 @@ int** toimatrix(char* content){
       }
       if(rowok){
         row = addtoivector(row, ccol, atoi(num));
+        num = newcvector(0);
+        l = 0;
         matrix = addtoimatrix(matrix, nrows, ccol, row);
         row = newivector(0);
         ccol = 0;
         nrows++;
       }
+    }
+    if(content[0] != ' '){
+      num = addtocvector(num,l,content[0]);
+      l++;
     }
     content++;
   }while(content[0] != '\0');

@@ -13,12 +13,8 @@ int main(int argc, char **argv){
   size_t cnt;
   while((ch = getopt(argc, argv, "g:p:")) != -1){
     switch(ch){
-      case 'g':
-        genofilename = optarg;
-      break;
-      case 'p':
-        phenofilename = optarg;
-      break;
+      case 'g': genofilename = optarg;  break;
+      case 'p': phenofilename = optarg; break;
       default: break;
     }
   }
@@ -27,5 +23,6 @@ int main(int argc, char **argv){
   double** phenotypes = todmatrix(phenocontent);
   char* genocontent   = getfilecontent(genofilename);
   int** genotypes     = toimatrix(genocontent);
+
   return 0;
 }
