@@ -44,7 +44,7 @@ double studentT(T)(in T[] x, in T[] y){
   return studentTC(corr,df);
 }
 
-double studentTC(double corr, double df){
+double studentTC(double corr, int df){
   double t = abs(corr * sqrt(df / (1 - corr*corr)));
   writefln("Cor:%s", corr);
   writefln("T:%s",  t);
@@ -53,7 +53,7 @@ double studentTC(double corr, double df){
 
 double pvalue(T)(in T[] x, in T[] y){
   double t = studentT(x,y);
-  double df = x.length-2.0;
+  int df = x.length-2.0;
   double k = gamma((df+1) / 2.0);
   double k2 = k / (sqrt(PI*df) * gamma(df / 2.0));
   double p = pow(k2 * (pow(1+t,2)/df), -((df+1)/2.0));
