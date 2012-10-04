@@ -103,15 +103,15 @@ int** newimatrix(size_t rows, size_t cols){
   return m;
 }
 
-double** todmatrix(char* content){
-  char*   num = newcvector(0);
-  int     colcnt = 0;
-  int     ccol = 0;
-  int     nrows = 0;
+Phenotypes todmatrix(char* content){
+  char*    num    = newcvector(0);
+  int      colcnt = 0;
+  int      ccol   = 0;
+  int      nrows  = 0;
   double** matrix = newdmatrix(0, 0);
-  double* row = newdvector(0);
-  int     rowok = 0;
-  int     l = 0;
+  double*  row    = newdvector(0);
+  int      rowok  = 0;
+  int      l      = 0;
   do{
     if(content[0] == '\t'){
       row = addtodvector(row, ccol, atof(num));
@@ -146,16 +146,20 @@ double** todmatrix(char* content){
     content++;
   }while(content[0] != '\0');
   printf("Parsed into %dx%d matrix\n",nrows,colcnt);
-  return matrix;
+  Phenotypes p;
+  p.nindividuals = colcnt;
+  p.nphenotypes = nrows;
+  p.data = matrix;
+  return p;
 }
 
-int** toimatrix(char* content){
+Genotypes toimatrix(char* content){
   char*   num = newcvector(0);
   int     colcnt = 0;
   int     ccol   = 0;
   int     nrows  = 0;
-  int** matrix   = newimatrix(0, 0);
-  int* row       = newivector(0);
+  int**   matrix = newimatrix(0, 0);
+  int*    row    = newivector(0);
   int     rowok  = 0;
   int     l      = 0;
   do{
@@ -192,7 +196,11 @@ int** toimatrix(char* content){
     content++;
   }while(content[0] != '\0');
   printf("Parsed into %dx%d matrix\n",nrows,colcnt);
-  return matrix;
+  Genotypes g;
+  g.nindividuals = colcnt;
+  g.nmarkers = nrows;
+  g.data = matrix;
+  return g;
 }
 
 void printdmatrix(double** m, size_t rows, size_t cols){
@@ -227,7 +235,7 @@ void freematrix(void** m, size_t rows){
   free(m);
 }
 
-int* which(int* marker, size_t nindividuals, int type){
+IndexVector which(int* marker, size_t nindividuals, int type){
   size_t i;
   size_t length  = 0;
   int*   indices = newivector(length);
@@ -237,12 +245,15 @@ int* which(int* marker, size_t nindividuals, int type){
       length++;
     }
   }  
-  return indices;
+  IndexVector v;
+  v.data = indices;
+  v.nelements = length;
+  return v;
 }
 
-double* get(double* phenotype, size_t nelements, size_t* r){
+double* get(double* phenotype, IndexVector r){
   size_t i;
-  double* ph = newdvector(nelements);
-  for(i = 0; i < nelements; i++){ ph[i] = phenotype[r[i]]; }
+  double* ph = newdvector(r.nelements);
+  for(i = 0; i < r.nelements; i++){ ph[i] = phenotype[r.data[i]]; }
   return ph;
 }

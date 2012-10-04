@@ -1,9 +1,9 @@
-#include "structs.h"
+#include "correlation.h"
  
 double correlation(double* x, double* y, size_t dim){
   double XiYi = 0.0;
-  double Xi = 0.0;
-  double Yi = 0.0;
+  double Xi   = 0.0;
+  double Yi   = 0.0;
   double XiP2 = 0.0;
   double YiP2 = 0.0;
   int i = 0;
