@@ -7,6 +7,8 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <math.h>
+    #include <float.h>
+    #include "CMemLeak.h"
 
     typedef struct{
       double** data;
@@ -44,8 +46,8 @@
     void freevector(void* v);
     void freematrix(void** m, size_t rows);
 
-    IndexVector which(int* marker, size_t nindividuals, int type);
-    double*     get(double* phenotype, IndexVector idx);
+    IndexVector which(const int* marker, size_t nindividuals, int type);
+    double*     get(const double* phenotype, IndexVector idx);
   #endif //__STRUCTS_H__
 #ifdef __cplusplus
   }

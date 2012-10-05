@@ -91,14 +91,14 @@ double** newdmatrix(size_t rows, size_t cols){
 }
 
 int** newimatrix(size_t rows, size_t cols){
-  size_t i;
+  size_t x;
   int** m = (int**) calloc(rows, sizeof(int*));
   if(m==NULL){
     printf("Not enough memory for new int matrix\n");
     exit(-1);
   }
-  for(i = 0; i<rows; i++) {
-    m[i]= newivector(cols);
+  for(x = 0; x<rows; x++) {
+    m[x]= newivector(cols);
   }
   return m;
 }
@@ -164,7 +164,9 @@ Genotypes toimatrix(char* content){
   int     l      = 0;
   do{
     if(content[0] == '\t'){
-      row = addtoivector(row, ccol, atoi(num));
+      int* t = addtoivector(row, ccol, atoi(num));
+      freevector((void*)row);
+      row = t;
       num = newcvector(0);
       l = 0;
       ccol++;
@@ -180,7 +182,9 @@ Genotypes toimatrix(char* content){
         rowok = 1;
       }
       if(rowok){
-        row = addtoivector(row, ccol, atoi(num));
+        int* t = addtoivector(row, ccol, atoi(num));
+        freevector((void*)row);
+        row = t;
         num = newcvector(0);
         l = 0;
         matrix = addtoimatrix(matrix, nrows, ccol, row);
@@ -214,6 +218,30 @@ void printdmatrix(double** m, size_t rows, size_t cols){
   }
 }
 
+void printIndexVector(IndexVector v){
+  size_t r;
+  for(r = 0; r < v.nelements; r++){
+    printf("%d, ",v.data[r]);
+  }
+  printf("\n");
+}
+
+void printdvector(double* v, size_t length){
+  size_t r;
+  for(r = 0; r < length; r++){
+    printf("%f, ",v[r]);
+  }
+  printf("\n");
+}
+
+void printivector(int* v, size_t length){
+  size_t r;
+  for(r = 0; r < length; r++){
+    printf("%d, ",v[r]);
+  }
+  printf("\n");
+}
+
 void printimatrix(int** m, size_t rows, size_t cols){
   size_t r,c;
   for(r = 0; r < rows; r++){
@@ -229,31 +257,34 @@ void freevector(void* v){ free(v); }
 
 void freematrix(void** m, size_t rows){
   size_t i;
-  for(i = 0; i<rows; i++) {
+  for(i = 0; i < rows; i++){
     free(m[i]);
   }
   free(m);
 }
 
-IndexVector which(int* marker, size_t nindividuals, int type){
+IndexVector which(const int* marker, size_t nindividuals, int type){
   size_t i;
   size_t length  = 0;
-  int*   indices = newivector(length);
+  IndexVector v;
+  v.data = newivector(length);
   for(i = 0; i < nindividuals; i++){ 
     if(marker[i] == type){
-      indices = addtoivector(indices, length, i); 
+      int* t = addtoivector(v.data, length, i); 
+      free(v.data);
+      v.data = t;
       length++;
     }
   }  
-  IndexVector v;
-  v.data = indices;
   v.nelements = length;
   return v;
 }
 
-double* get(double* phenotype, IndexVector r){
+double* get(const double* phenotype, IndexVector r){
   size_t i;
   double* ph = newdvector(r.nelements);
-  for(i = 0; i < r.nelements; i++){ ph[i] = phenotype[r.data[i]]; }
+  for(i = 0; i < r.nelements; i++){
+    ph[i] = phenotype[r.data[i]]; 
+  }
   return ph;
 }

@@ -7,13 +7,15 @@ int main(int argc, char **argv){
   printf("Correlated Trait Locus (CTL) mapping\n");
   printf("(c) 2012 written by Danny Arends\n");
   printf("Number of command line arguments passed: %d\n", argc);
-  char* genofilename = "../D/test/data/genotypes.csv";
-  char* phenofilename= "../D/test/data/phenotypes.csv";
+  char*  genofilename = "../D/test/data/genotypes.csv";
+  char*  phenofilename= "../D/test/data/phenotypes.csv";
+  size_t nperms = 10;
   char   ch;
-  while((ch = getopt(argc, argv, "g:p:")) != -1){
+  while((ch = getopt(argc, argv, "g:p:n:")) != -1){
     switch(ch){
       case 'g': genofilename = optarg;  break;
       case 'p': phenofilename = optarg; break;
+      case 'n': nperms = atoi(optarg); break;
       default: break;
     }
   }
@@ -26,12 +28,18 @@ int main(int argc, char **argv){
     printf("Individuals doesn't match between genotypes and phenotypes");
     return -1;
   }else{
-    size_t p;
+    size_t p = 0;
     for(p = 0; p < phenotypes.nphenotypes;p++){
-      printf("Mapping phenotype %d\n",p);
-      double** scores = ctlmapping(phenotypes, genotypes, p);
-      //printdmatrix(scores,10,10);
+      printf("Phenotype %d: Mapping",p);
+      double** ctlscores = ctlmapping(phenotypes, genotypes, p);
+      printf(", Permutation");
+      double* permutations = permutation(phenotypes, genotypes, p, nperms, 0);
+      printf(", toLOD\n");
+      freematrix((void**)ctlscores, genotypes.nmarkers);
+      free(permutations);
     }
+    freematrix((void**)phenotypes.data, phenotypes.nphenotypes);
+    freematrix((void**)genotypes.data, genotypes.nmarkers);
   }
   return 0;
 }
