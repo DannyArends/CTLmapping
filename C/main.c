@@ -20,6 +20,7 @@ int main(int argc, char **argv){
   char*  phenofilename= "../D/test/data/phenotypes.csv";
   size_t nperms = 100;
   char   ch;
+  srand(time(NULL));
   while((ch = getopt(argc, argv, "g:p:n:h")) != -1){
     switch(ch){
       case 'g': genofilename = optarg;  break;
