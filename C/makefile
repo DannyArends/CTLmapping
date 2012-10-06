@@ -1,6 +1,6 @@
 #### Start of system configuration section. ####
 srcdir = .
-CC = gcc -O
+CC = gcc -O -pedantic -w -Wall -Wextra
 DEFS =
 LIBS =
 
