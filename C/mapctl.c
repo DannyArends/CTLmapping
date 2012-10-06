@@ -1,8 +1,7 @@
 #include "mapctl.h"
 
 double random(){
-  double r = rand() / (RAND_MAX+1.0);
-  return r;
+  return rand() / (RAND_MAX+1.0);
 }
 
 int* swap(int* idx, int i1, int i2){
@@ -19,8 +18,8 @@ int* randomizerange(int* idx, int max){
 }
 
 Genotypes permutegenotypes(Genotypes genotypes){
-  size_t m,i;
-  size_t* idx = newivector(genotypes.nindividuals);
+  int m,i;
+  int* idx = newivector(genotypes.nindividuals);
   for(i = 0; i < genotypes.nindividuals; i++){ idx[i] = i; }
 
   idx = randomizerange(idx, genotypes.nindividuals);
