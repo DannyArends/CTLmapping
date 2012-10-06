@@ -11,7 +11,7 @@
 
     //Custom length index vector
     typedef struct{
-      size_t* data;
+      int* data;
       size_t  nelements;
     } clvector;
 
@@ -26,7 +26,9 @@
     void     printcvector(const char*   v, size_t dim);
     void     printdvector(const double* v, size_t dim);
     void     printivector(const int*    v, size_t dim);
-    
+
+    int*     randomizeivector(int* idx, size_t dim);
+
     clvector which(const int*  v, size_t dim, int type);
     double*  get(const double* v, clvector idxs);
 

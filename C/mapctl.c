@@ -1,28 +1,11 @@
 #include "mapctl.h"
 
-double random(){
-  return rand() / (RAND_MAX+1.0);
-}
-
-int* swap(int* idx, int i1, int i2){
-  int t = idx[i2];
-  idx[i2] = idx[i1];
-  idx[i1] = t;
-  return idx;
-}
-
-//Fisher-Yates random-range generation
-int* randomizerange(int* idx, int max){
-  if(max==0) return idx;
-  return randomizerange(swap(idx, (int)(random()*(max-2)), max-1),(max-1));
-}
-
 Genotypes permutegenotypes(Genotypes genotypes){
-  int m,i;
+  size_t m,i;
   int* idx = newivector(genotypes.nindividuals);
   for(i = 0; i < genotypes.nindividuals; i++){ idx[i] = i; }
 
-  idx = randomizerange(idx, genotypes.nindividuals);
+  idx = randomizeivector(idx, genotypes.nindividuals);
   int** newgenodata = newimatrix(genotypes.nmarkers, genotypes.nindividuals);
 
   for(i = 0; i < genotypes.nindividuals; i++){
@@ -34,17 +17,6 @@ Genotypes permutegenotypes(Genotypes genotypes){
   Genotypes g = genotypes;
   g.data = newgenodata;
   return g;
-}
-
-double matrixmax(double** m, size_t rows, size_t cols){
-  size_t r,c;
-  double max = -DBL_MAX;
-  for(r = 0; r < rows; r++){
-    for(c = 0; c < cols; c++){
-      if(m[r][c] > max) max = m[r][c];
-    }
-  }
-  return max;
 }
 
 double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, int nperms){

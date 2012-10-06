@@ -43,7 +43,7 @@ int main(int argc, char **argv){
     size_t p = 0;
     for(p = 0; p < phenotypes.nphenotypes;p++){
       double** ctls = mapctl(phenotypes, genotypes, p, nperms);
-      printdmatrix(ctls, genotypes.nmarkers, phenotypes.nphenotypes);
+      writeout(ctls, p, genotypes.nmarkers, phenotypes.nphenotypes);
       freematrix((void**)ctls, genotypes.nmarkers);
     }
     freematrix((void**)phenotypes.data, phenotypes.nphenotypes);

@@ -6,7 +6,7 @@ double correlation(double* x, double* y, size_t dim){
   double Yi   = 0.0;
   double XiP2 = 0.0;
   double YiP2 = 0.0;
-  int i = 0;
+  size_t i    = 0;
   for(i = 0; i < dim; i++){
     XiYi += x[i] * y[i];
     Xi   += x[i];

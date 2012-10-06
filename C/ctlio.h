@@ -6,6 +6,7 @@
     
     #include "structs.h"
   
+    void   writeout(double** ctls, size_t phenotype, size_t nmar, size_t nphe);
     size_t filesize(char* name);
     char*  getfilecontent(char* name);
     

@@ -4,6 +4,8 @@
   #ifndef __SORT_H__
     #define __SORT_H__
     
+    #include <stdio.h>
+
     #include "structs.h"
     
     int c_cmp(const void *a, const void *b);

@@ -89,6 +89,23 @@ void printivector(const int* v, size_t dim){
   printf("\n");
 }
 
+double random(){
+  return rand() / (RAND_MAX+1.0);
+}
+
+int* swap(int* idx, int i1, int i2){
+  int t = idx[i2];
+  idx[i2] = idx[i1];
+  idx[i1] = t;
+  return idx;
+}
+
+//Fisher-Yates random-range generation
+int* randomizeivector(int* idx, size_t max){
+  if(max==2) return idx;
+  return randomizeivector(swap(idx, (int)(random()*(max-2)), max-1),(max-1));
+}
+
 clvector which(const int* v, size_t dim, int type){
   size_t i;
   size_t length  = 0;
