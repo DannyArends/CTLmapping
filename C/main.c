@@ -42,16 +42,9 @@ int main(int argc, char **argv){
   }else{
     size_t p = 0;
     for(p = 0; p < phenotypes.nphenotypes;p++){
-      printf("Phenotype %d: Mapping",p);
-      double** dcorscores = ctlmapping(phenotypes, genotypes, p);
-      printf(", Permutation");
-      double* permutations = permutation(phenotypes, genotypes, p, nperms, 0);
-      printf(", toLOD\n");
-      double** ctls = toLOD(dcorscores, permutations, genotypes.nmarkers, phenotypes.nphenotypes, nperms);
+      double** ctls = mapctl(phenotypes, genotypes, p, nperms);
       printdmatrix(ctls, genotypes.nmarkers, phenotypes.nphenotypes);
       freematrix((void**)ctls, genotypes.nmarkers);
-      freematrix((void**)dcorscores, genotypes.nmarkers);
-      free(permutations);
     }
     freematrix((void**)phenotypes.data, phenotypes.nphenotypes);
     freematrix((void**)genotypes.data, genotypes.nmarkers);

@@ -47,12 +47,24 @@ double matrixmax(double** m, size_t rows, size_t cols){
   return max;
 }
 
+double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, int nperms){
+  printf("Phenotype %d: Mapping",phenotype);
+  double** dcorscores = diffcor(phenotypes, genotypes, phenotype);
+  printf(", Permutation");
+  double* permutations = permutation(phenotypes, genotypes, phenotype, nperms, 0);
+  printf(", toLOD\n");
+  double** ctls = toLOD(dcorscores, permutations, genotypes.nmarkers, phenotypes.nphenotypes, nperms);
+  freematrix((void**)dcorscores, genotypes.nmarkers);
+  free(permutations);
+  return ctls;
+}
+
 double* permutation(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, size_t nperms, int verbose){
   size_t p;
   double* scores = newdvector(nperms);
   for(p = 0; p < nperms; p++){
     Genotypes g = permutegenotypes(genotypes);
-    double** ctls = ctlmapping(phenotypes, g, phenotype);
+    double** ctls = diffcor(phenotypes, g, phenotype);
     scores[p] = matrixmax(ctls, genotypes.nmarkers, phenotypes.nphenotypes);
     freematrix((void**)ctls   , genotypes.nmarkers);
     freematrix((void**)g.data , genotypes.nmarkers);
@@ -85,7 +97,7 @@ double** toLOD(double** scores, double* permutations, size_t nmar, size_t nphe, 
   return ctls;
 }
 
-double** ctlmapping(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype){
+double** diffcor(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype){
   size_t m,p,debug = 0;
   double** difcormatrix = newdmatrix(genotypes.nmarkers, phenotypes.nphenotypes);
   for(m = 0; m < genotypes.nmarkers; m++){
