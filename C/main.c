@@ -24,6 +24,7 @@ int main(int argc, char **argv){
   char* genocontent     = getfilecontent(genofilename);
   Phenotypes phenotypes = todmatrix(phenocontent);
   Genotypes genotypes   = toimatrix(genocontent);
+
   if(phenotypes.nindividuals != genotypes.nindividuals){
     printf("Individuals doesn't match between genotypes and phenotypes");
     return -1;
