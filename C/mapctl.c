@@ -30,7 +30,7 @@ Genotypes permutegenotypes(Genotypes genotypes){
       newgenodata[m][i] = genotypes.data[m][idx[i]];
     }
   }
-  freevector((void*)idx);
+  free(idx);
   Genotypes g = genotypes;
   g.data = newgenodata;
   return g;
@@ -53,25 +53,45 @@ double* permutation(const Phenotypes phenotypes, const Genotypes genotypes, size
   for(p = 0; p < nperms; p++){
     Genotypes g = permutegenotypes(genotypes);
     double** ctls = ctlmapping(phenotypes, g, phenotype);
-    scores[p] = matrixmax(ctls,genotypes.nmarkers,phenotypes.nphenotypes);
+    scores[p] = matrixmax(ctls, genotypes.nmarkers, phenotypes.nphenotypes);
     freematrix((void**)ctls   , genotypes.nmarkers);
     freematrix((void**)g.data , genotypes.nmarkers);
-    if(verbose) printf("Done with permutation %d\n",p);
+    if(verbose) printf("Done with permutation %d\n", p);
   }
   return scores;
 }
 
-double** toLOD(double** scores, double* permutations){
-  return scores;
+double getidx(double val, double* permutations, size_t nperms){
+  size_t i;
+  for(i=0; i < nperms; i++){
+    if(permutations[i] > val) return i;
+  }
+  return (nperms-1);
 }
- 
+
+double estimate(double val, double* permutations, size_t nperms){
+  return -log10(1.0 - (getidx(val, permutations, nperms)/(double)nperms));
+}
+
+double** toLOD(double** scores, double* permutations, size_t nmar, size_t nphe, size_t nperms){
+  qsort(permutations, nperms, sizeof(double),d_cmp);
+  double** ctls = newdmatrix(nmar, nphe);
+  size_t p,m;
+  for(m = 0; m < nmar; m++){
+    for(p = 0; p < nphe; p++){
+      ctls[m][p] = estimate(scores[m][p], permutations, nperms);
+    }
+  }
+  return ctls;
+}
+
 double** ctlmapping(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype){
   size_t m,p,debug = 0;
   double** difcormatrix = newdmatrix(genotypes.nmarkers, phenotypes.nphenotypes);
   for(m = 0; m < genotypes.nmarkers; m++){
     if(debug) printf("Search and allocation marker %d\n", p);
-    IndexVector ind_aa  = which(genotypes.data[m], phenotypes.nindividuals, 0);
-    IndexVector ind_bb  = which(genotypes.data[m], phenotypes.nindividuals, 1);
+    clvector ind_aa  = which(genotypes.data[m], phenotypes.nindividuals, 0);
+    clvector ind_bb  = which(genotypes.data[m], phenotypes.nindividuals, 1);
     double* pheno_aa1 = get(phenotypes.data[phenotype],ind_aa);
     double* pheno_bb1 = get(phenotypes.data[phenotype],ind_bb);
     for(p = 0; p < phenotypes.nphenotypes; p++){

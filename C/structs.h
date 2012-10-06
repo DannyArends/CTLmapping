@@ -8,6 +8,7 @@
     #include <stdlib.h>
     #include <math.h>
     #include <float.h>
+    #include "vector.h"
 
     typedef struct{
       double** data;
@@ -21,32 +22,20 @@
       size_t   nindividuals;
     }Genotypes;
 
-    typedef struct{
-      size_t* data;
-      size_t  nelements;
-    }IndexVector;
+    double**   newdmatrix(size_t rows, size_t cols);
+    int**      newimatrix(size_t rows, size_t cols);
+    
+    double**   addtodmatrix(double** matrix, size_t size, size_t cols, double* n);
+    int**      addtoimatrix(int** matrix, size_t size, size_t cols, int* n);
 
-    double*  newdvector(size_t dim);
-    int*     newivector(size_t dim);
-    char*    newcvector(size_t dim);
-    double*  addtodvector(double* vector, size_t size, double n);
-    int*     addtoivector(int* vector, size_t size, int n);
-    char*    addtocvector(char* vector, size_t size, char n);
-
-    double** newdmatrix(size_t rows, size_t cols);
-    int**    newimatrix(size_t rows, size_t cols);
-
-    Phenotypes todmatrix(char* content);
-    Genotypes  toimatrix(char* content);
+    Phenotypes todmatrix(const char* content);
+    Genotypes  toimatrix(const char* content);
 
     void printdmatrix(double** m, size_t rows, size_t cols);
     void printimatrix(int** m, size_t rows, size_t cols);
-
-    void freevector(void* v);
+    
     void freematrix(void** m, size_t rows);
 
-    IndexVector which(const int* marker, size_t nindividuals, int type);
-    double*     get(const double* phenotype, IndexVector idx);
   #endif //__STRUCTS_H__
 #ifdef __cplusplus
   }

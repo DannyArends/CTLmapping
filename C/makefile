@@ -9,7 +9,7 @@ CFLAGS = $(CDEBUG) -I$(srcdir) $(DEFS)
 LDFLAGS = -g
 #### End of system configuration section. ####
 
-SOURCES    = main.c structs.c ctlio.c correlation.c mapctl.c
+SOURCES    = main.c vector.c sort.c structs.c ctlio.c correlation.c mapctl.c
 OBJECTS    = $(SOURCES:.cpp=.o)
 EXECUTABLE = mapctl.exe
 
