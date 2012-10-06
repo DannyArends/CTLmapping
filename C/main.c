@@ -2,20 +2,30 @@
 #include "ctlio.h"
 #include "mapctl.h"
 #include <getopt.h>
- 
+
+void printhelp(){
+  printf("Usage:\n");
+  printf(" mapctl -g<genotype_file> -p<phenotype_file>\n\n");
+  printf(" -p<FILE>   Input file with phenotype data (Default: phenotypes.csv)\n");
+  printf(" -g<FILE>   Input file with genotype data (Default: genotypes.csv)\n");
+  printf(" -n<N>      # of permutations (Default: 100)\n");
+  printf(" -h         Shows this help\n");
+}
+
 int main(int argc, char **argv){
   printf("Correlated Trait Locus (CTL) mapping\n");
-  printf("(c) 2012 written by Danny Arends\n");
-  printf("Number of command line arguments passed: %d\n", argc);
+  printf("(c) 2012 GBIC, written by Danny Arends\n");
+  printf("Number of command line arguments passed: %d\n", (argc-1));
   char*  genofilename = "../D/test/data/genotypes.csv";
   char*  phenofilename= "../D/test/data/phenotypes.csv";
-  size_t nperms = 10;
+  size_t nperms = 100;
   char   ch;
-  while((ch = getopt(argc, argv, "g:p:n:")) != -1){
+  while((ch = getopt(argc, argv, "g:p:n:h")) != -1){
     switch(ch){
       case 'g': genofilename = optarg;  break;
       case 'p': phenofilename = optarg; break;
-      case 'n': nperms = atoi(optarg); break;
+      case 'n': nperms = atoi(optarg);  break;
+      case 'h': printhelp(); return 0;  break;
       default: break;
     }
   }
@@ -46,5 +56,7 @@ int main(int argc, char **argv){
     freematrix((void**)phenotypes.data, phenotypes.nphenotypes);
     freematrix((void**)genotypes.data, genotypes.nmarkers);
   }
+  printf("All done. Thank you for using mapctl\n");
+  printf("Please cite: CTL mapping - Journal - Arends et al. [2012]\n");
   return 0;
 }
