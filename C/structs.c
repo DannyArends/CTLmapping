@@ -46,7 +46,8 @@ int** addtoimatrix(int** matrix, size_t size, size_t cols, int* n){
   return m;
 }
 
-Phenotypes todmatrix(const char* content){
+/* Creates the phenotype struct from a string */
+Phenotypes tophenotypes(const char* content){
   char*    num    = newcvector(0);
   int      colcnt = 0;
   int      ccol   = 0;
@@ -100,7 +101,8 @@ Phenotypes todmatrix(const char* content){
   return p;
 }
 
-Genotypes toimatrix(const char* content){
+/* Creates the genotype struct from a string */
+Genotypes togenotypes(const char* content){
   char*   num = newcvector(0);
   int     colcnt = 0;
   int     ccol   = 0;

@@ -28,8 +28,8 @@
     double**   addtodmatrix(double** matrix, size_t size, size_t cols, double* n);
     int**      addtoimatrix(int** matrix, size_t size, size_t cols, int* n);
 
-    Phenotypes todmatrix(const char* content);
-    Genotypes  toimatrix(const char* content);
+    Phenotypes tophenotypes(const char* content);
+    Genotypes  togenotypes(const char* content);
 
     void printdmatrix(double** m, size_t rows, size_t cols);
     void printimatrix(int** m, size_t rows, size_t cols);
