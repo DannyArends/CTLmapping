@@ -8,6 +8,7 @@
     #include <stdlib.h>
     #include <math.h>
     #include <float.h>
+    #include "vector.h"
 
     double** newdmatrix(size_t rows, size_t cols);
     int**    newimatrix(size_t rows, size_t cols);
