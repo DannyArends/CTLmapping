@@ -3,7 +3,7 @@
 double** newdmatrix(size_t rows, size_t cols){
   size_t i;
   double** m = (double**) calloc(rows, sizeof(double*));
-  if(m==NULL) err("Not enough memory for new double matrix\n");
+  if(m==NULL) err("Not enough memory for new double matrix [%ix%i]\n", rows, cols);
   for(i = 0; i<rows; i++) {
     m[i]= newdvector(cols);
   }
@@ -13,7 +13,7 @@ double** newdmatrix(size_t rows, size_t cols){
 double** asdmatrix(int rows, int cols, double* data){
   int i;
   double** m = (double**) calloc(rows, sizeof(double*));
-  if(m==NULL) err("Not enough memory for new double matrix\n");
+  if(m==NULL) err("Not enough memory for new double matrix [%ix%i]\n", rows, cols);
   m[0] = data;
   for(i=1; i< rows; i++) 
     m[i] = m[i-1] + cols;
@@ -24,7 +24,7 @@ double** asdmatrix(int rows, int cols, double* data){
 int** asimatrix(int rows, int cols, int* data){
   int i;
   int** m = (int**) calloc(rows, sizeof(int*));
-  if(m==NULL) err("Not enough memory for new integer matrix\n");
+  if(m==NULL) err("Not enough memory for new integer matrix [%ix%i]\n", rows, cols);
   m[0] = data;
   for(i=1; i< rows; i++) 
     m[i] = m[i-1] + cols;
@@ -36,7 +36,7 @@ int** asimatrix(int rows, int cols, int* data){
 int** newimatrix(size_t rows, size_t cols){
   size_t x;
   int** m = (int**) calloc(rows, sizeof(int*));
-  if(m==NULL) err("Not enough memory for new integer matrix\n");
+  if(m==NULL) err("Not enough memory for new integer matrix [%ix%i]\n", rows, cols);
   for(x = 0; x<rows; x++) {
     m[x]= newivector(cols);
   }
@@ -45,7 +45,6 @@ int** newimatrix(size_t rows, size_t cols){
 
 double** addtodmatrix(double** matrix, size_t size, size_t cols, double* n){
   double** m = newdmatrix(size+1, cols);
-  if(m==NULL) err("Not enough memory for new double matrix\n");
   size_t i;
   for(i = 0;i < size;i++){
     m[i] = matrix[i];
@@ -56,7 +55,6 @@ double** addtodmatrix(double** matrix, size_t size, size_t cols, double* n){
 
 int** addtoimatrix(int** matrix, size_t size, size_t cols, int* n){
   int** m = newimatrix(size+1, cols);
-  if(m==NULL) err("Not enough memory for new integer matrix\n");
   size_t i;
   for(i = 0;i < size;i++){
     m[i] = matrix[i];

@@ -20,7 +20,6 @@ int* newivector(size_t dim){
 
 int* addtoivector(const int* v, size_t dim, int n){
   int* v1 = newivector(dim+1);
-  if(v1==NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
   size_t i;
   for(i = 0;i < dim;i++){
     v1[i] = v[i];
@@ -31,7 +30,6 @@ int* addtoivector(const int* v, size_t dim, int n){
 
 double* addtodvector(const double* v, size_t dim, double n){
   double* v1 = newdvector(dim+1);
-  if(v1==NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
   size_t i;
   for(i = 0;i < dim;i++){
     v1[i] = v[i];
@@ -42,7 +40,6 @@ double* addtodvector(const double* v, size_t dim, double n){
 
 char* addtocvector(const char* v, size_t dim, char n){
   char* v1 = newcvector(dim+1);
-  if(v1==NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
   size_t i;
   for(i = 0;i < dim;i++){
     v1[i] = v[i];
