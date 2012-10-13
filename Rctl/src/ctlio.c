@@ -6,7 +6,7 @@ void writeout(double** ctls, size_t phenotype, size_t nmar, size_t nphe){
   char* filename = (char*)calloc(25, sizeof(char));
   char* buf      = (char*)calloc(8, sizeof(char));
   strcpy(filename,"pheno");
-  itoa(phenotype,  buf, 10);
+  sprintf(buf,"%i",phenotype);
   strcat(filename, buf);
   strcat(filename,".o");
   file = fopen(filename,"a+");
