@@ -43,11 +43,11 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, geno.enc
   n.ind = nrow(genotypes); n.mar = ncol(genotypes); n.phe = ncol(phenotypes)
   genotypes[genotypes==geno.enc[1]] <- 0
   genotypes[genotypes==geno.enc[2]] <- 1
-  if(any(is.na(genotypes))) genotypes[is.na(genotypes)]    <- -999
-  if(any(is.na(phenotypes))) phenotypes[is.na(phenotypes)] <- -999
   res <- list()
   ss <- proc.time()
   res$qtl   <- apply(genotypes,2,function(x){-log10(cor.test(x, phenotypes[,pheno.col])$p.value)})
+  if(any(is.na(genotypes)))  genotypes[is.na(genotypes)]   <- -999
+  if(any(is.na(phenotypes))) phenotypes[is.na(phenotypes)] <- -999
   e1 <- proc.time()
 	result <- .C("R_mapctl",as.integer(n.ind), as.integer(n.mar), as.integer(n.phe),
                     			as.integer(unlist(genotypes)), as.double(unlist(phenotypes)),
