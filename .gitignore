@@ -1,5 +1,7 @@
 *~
 *.obj
+*.so
+*.rds
 *.Rout
 *.dvi
 *.Rhistory

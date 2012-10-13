@@ -69,7 +69,7 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, geno.enc
 }
 
 #-- R/qtl interface --#
-CTLscan.cross <- function(cross, pheno.col, n.perm=100, conditions = NULL, n.cores=2, verbose = FALSE){
+CTLscan.cross <- function(cross, pheno.col, n.perms=100, conditions = NULL, n.cores=2, verbose = FALSE){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
   if(has_rqtl()){
     require(qtl)
@@ -83,7 +83,7 @@ CTLscan.cross <- function(cross, pheno.col, n.perm=100, conditions = NULL, n.cor
     phenotypes <- apply(rqtl_pheno,2,as.numeric)         #R/qtl phenotypes are a data.frame (Need matrix)
     if(missing(pheno.col)) pheno.col <- 1:ncol(phenotypes)
     genotypes <- qtl::pull.geno(cross)
-    CTLscan(genotypes=genotypes, phenotypes=phenotypes, pheno.col=pheno.col, n.perm=n.perm, 
+    CTLscan(genotypes=genotypes, phenotypes=phenotypes, pheno.col=pheno.col, n.perms=n.perms, 
             conditions=conditions, n.cores=n.cores, geno.enc=geno.enc, verbose=verbose)
   }else{
     warning("Please install the R/qtl library (install.packages(\"qtl\"))")
