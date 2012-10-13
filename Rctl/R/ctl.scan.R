@@ -18,7 +18,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.per
 
   results <- vector("list",length(pheno.col))
   stage <- 1
-  cat(ncol(phenotypes)," phenotypes", nrow(phenotypes)," individuals, ", ncol(genotypes)," markers\n")
+  cat("data.overview:",ncol(phenotypes)," phenotypes,", nrow(phenotypes)," individuals, ", ncol(genotypes)," markers\n")
 
   if(!is.null(toremove)){
     cat("Stage 0.",stage,": Cleaning genotype data for mapping\n",sep="")
@@ -27,7 +27,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.per
   }
   idx <- 1
   for(phe in pheno.col){
-    results[[idx]] <- CTLmapping(genotypes, phenotypes, pheno.col=phe, n.perms = n.perms, geno.enc=geno.enc)
+    results[[idx]] <- CTLmapping(genotypes, phenotypes, pheno.col=phe, n.perms = n.perms, geno.enc=geno.enc, verbose=verbose)
     attr(results[[idx]],"name") <- colnames(phenotypes)[phe]
     class(results[[idx]]) <- c(class(results[[idx]]),"CTLscan")
     idx <- idx + 1
@@ -45,7 +45,10 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, geno.enc
   genotypes[genotypes==geno.enc[2]] <- 1
   if(any(is.na(genotypes))) genotypes[is.na(genotypes)]    <- -999
   if(any(is.na(phenotypes))) phenotypes[is.na(phenotypes)] <- -999
+  res <- list()
   ss <- proc.time()
+  res$qtl   <- apply(genotypes,2,function(x){-log10(cor.test(x, phenotypes[,pheno.col])$p.value)})
+  e1 <- proc.time()
 	result <- .C("R_mapctl",as.integer(n.ind), as.integer(n.mar), as.integer(n.phe),
                     			as.integer(unlist(genotypes)), as.double(unlist(phenotypes)),
                           as.integer((pheno.col-1)), as.integer(n.perms),
@@ -53,7 +56,7 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, geno.enc
                           perms=as.double(rep(0,n.perms)),
                           ctl=as.double(rep(0,n.mar*n.phe)), 
                           PACKAGE="ctl")
-  res <- list()
+  e2 <- proc.time()
   res$dcor  <- matrix(result$dcor, n.mar, n.phe)
   res$perms <- result$perms
   res$ctl   <- matrix(result$ctl, n.mar, n.phe)
@@ -61,8 +64,7 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, geno.enc
   rownames(res$ctl)  <- colnames(genotypes); colnames(res$ctl)  <- colnames(phenotypes)
   attr(res,"name") <- colnames(phenotypes)[pheno.col]
   class(res) <- c(class(res),"CTLscan")
-  ee <- proc.time()
-  if(verbose) cat("  - CTLscan of",colnames(phenotypes)[pheno.col],"took",as.numeric(ee[3]-ss[3]),"seconds\n")
+  if(verbose) cat("Phenotype ",pheno.col,": Done after ",as.numeric(e2[3]-e1[3])," ",as.numeric(e1[3]-ss[3])," seconds\n",sep="")
   invisible(res)
 }
 

@@ -8,7 +8,7 @@
 # check.genotypes, getRVM, lodscorestoscanone, getCorrelatedPhenotypes, gcLoop
 
 check.genotypes <- function(genotypes, geno.enc=c(1,2), verbose=FALSE){
-  if(verbose) cat(" - Genotypes: individuals=",nrow(genotypes),", markers=",ncol(genotypes),"\n",sep="")
+  if(verbose) cat("check.genotypes:",nrow(genotypes),"individuals, ",ncol(genotypes),"markers\n")
   if(length(geno.enc)!=2) stop("argument 'geno.enc' length is incorrect, provide two genotype.values")
   
   toremove <- NULL
@@ -21,7 +21,7 @@ check.genotypes <- function(genotypes, geno.enc=c(1,2), verbose=FALSE){
     }
     idx <<- idx+1
   })
-  if(length(toremove) > 0) cat(" - Genotypes: removing",length(toremove),"markers\n")
+  if(length(toremove) > 0) cat("check.genotypes: Removing",length(toremove),"markers\n")
   toremove
 }
 
