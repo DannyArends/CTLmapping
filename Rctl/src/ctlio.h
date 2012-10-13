@@ -4,6 +4,8 @@
   #ifndef __CTLIO_H__
     #define __CTLIO_H__
     
+    #include <string.h>
+    #include "ctl.h"
     #include "structs.h"
   
     void   writeout(double** ctls, size_t phenotype, size_t nmar, size_t nphe);

@@ -8,6 +8,7 @@
     #include <stdlib.h>
     #include <math.h>
     #include <float.h>
+    #include "ctl.h"
     #include "vector.h"
 
     double** newdmatrix(size_t rows, size_t cols);
@@ -15,6 +16,9 @@
     
     double** addtodmatrix(double** matrix, size_t size, size_t cols, double* n);
     int**    addtoimatrix(int** matrix, size_t size, size_t cols, int* n);
+    
+    double** asdmatrix(int rows, int cols, double* data);
+    int**    asimatrix(int rows, int cols, int* data);
 
     double matrixmax(double** m, size_t rows, size_t cols);
     

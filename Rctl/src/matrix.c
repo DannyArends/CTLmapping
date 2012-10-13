@@ -4,7 +4,7 @@ double** newdmatrix(size_t rows, size_t cols){
   size_t i;
   double** m = (double**) calloc(rows, sizeof(double*));
   if(m==NULL){
-    printf("Not enough memory for new double matrix\n");
+    info("Not enough memory for new double matrix\n");
     exit(-1);
   }
   for(i = 0; i<rows; i++) {
@@ -13,11 +13,32 @@ double** newdmatrix(size_t rows, size_t cols){
   return m;
 }
 
+double** asdmatrix(int rows, int cols, double* data){
+  int i;
+  double** m = (double**) calloc(rows, sizeof(double*));
+  m[0] = data;
+  for(i=1; i< rows; i++) 
+    m[i] = m[i-1] + cols;
+
+  return m;
+}
+
+int** asimatrix(int rows, int cols, int* data){
+  int i;
+  int** m = (int**) calloc(rows, sizeof(int*));
+  m[0] = data;
+  for(i=1; i< rows; i++) 
+    m[i] = m[i-1] + cols;
+
+  return m;
+}
+
+
 int** newimatrix(size_t rows, size_t cols){
   size_t x;
   int** m = (int**) calloc(rows, sizeof(int*));
   if(m==NULL){
-    printf("Not enough memory for new int matrix\n");
+    info("Not enough memory for new int matrix\n");
     exit(-1);
   }
   for(x = 0; x<rows; x++) {
@@ -50,10 +71,10 @@ void printdmatrix(double** m, size_t rows, size_t cols){
   size_t r,c;
   for(r = 0; r < rows; r++){
     for(c = 0; c < cols; c++){
-      if(c > 0) printf("\t");
-      printf("%f",m[r][c]);
+      if(c > 0) info("\t");
+      info("%f",m[r][c]);
     }
-    printf("\n");
+    info("\n");
   }
 }
 
@@ -61,10 +82,10 @@ void printimatrix(int** m, size_t rows, size_t cols){
   size_t r,c;
   for(r = 0; r < rows; r++){
     for(c = 0; c < cols; c++){
-      if(c > 0) printf("\t");
-      printf("%d",m[r][c]);
+      if(c > 0) info("\t");
+      info("%d",m[r][c]);
     }
-    printf("\n");
+    info("\n");
   }
 }
 

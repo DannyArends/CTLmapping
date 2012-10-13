@@ -3,7 +3,7 @@
 char* newcvector(size_t dim){
   char* v = (char*) calloc(dim, sizeof(char));
   if(v==NULL){
-    printf("Not enough memory for new vector of dimension %d\n",(dim+1));
+    info("Not enough memory for new vector of dimension %d\n",(dim+1));
     exit(-1);
   }
   return v;
@@ -12,7 +12,7 @@ char* newcvector(size_t dim){
 double* newdvector(size_t dim){
   double* v = (double*) calloc(dim, sizeof(double));
   if(v==NULL){
-    printf("Not enough memory for new vector of dimension %d\n",(dim+1));
+    info("Not enough memory for new vector of dimension %d\n",(dim+1));
     exit(-1);
   }
   return v;
@@ -60,33 +60,33 @@ char* addtocvector(const char* v, size_t dim, char n){
 void printclvector(clvector v){
   size_t r;
   for(r = 0; r < v.nelements; r++){
-    printf("%d, ",v.data[r]);
+    info("%d, ",v.data[r]);
   }
-  printf("\n");
+  info("\n");
 }
 
 void printcvector(const char* v, size_t dim){
   size_t r;
   for(r = 0; r < dim; r++){
-    printf("%c, ",v[r]);
+    info("%c, ",v[r]);
   }
-  printf("\n");
+  info("\n");
 }
 
 void printdvector(const double* v, size_t dim){
   size_t r;
   for(r = 0; r < dim; r++){
-    printf("%f, ",v[r]);
+    info("%f, ",v[r]);
   }
-  printf("\n");
+  info("\n");
 }
 
 void printivector(const int* v, size_t dim){
   size_t r;
   for(r = 0; r < dim; r++){
-    printf("%d, ",v[r]);
+    info("%d, ",v[r]);
   }
-  printf("\n");
+  info("\n");
 }
 
 double random(){

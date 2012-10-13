@@ -8,6 +8,7 @@
     #include <stdlib.h>
     #include <math.h>
     #include <float.h>
+    #include "ctl.h"
     #include "vector.h"
     #include "matrix.h"
 

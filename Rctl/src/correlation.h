@@ -4,6 +4,7 @@
   #ifndef __CORRELATION_H__
     #define __CORRELATION_H__
     
+    #include "ctl.h"
     #include "structs.h"
     
     double correlation(double* x, double* y, size_t dim);

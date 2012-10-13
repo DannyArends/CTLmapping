@@ -4,7 +4,7 @@
 int c_cmp(const void *a, const void *b){
   const char **ia = (const char **)a;
   const char **ib = (const char **)b;
-  return strncmp(*ia, *ib);
+  return strcmp(*ia, *ib);
 }
 
 /* qsort double comparison function */

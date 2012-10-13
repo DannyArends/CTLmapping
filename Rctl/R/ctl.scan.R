@@ -46,6 +46,26 @@ CTLscan <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1:ncol(p
   results
 }
 
+cCTLmap <- function(genotypes, phenotypes, pheno.col=1,n.perms=100){
+  n.ind = nrow(genotypes)
+  n.mar = ncol(genotypes)
+  n.phe = ncol(phenotypes)
+  genotypes <- genotypes-1
+  genotypes[is.na(genotypes)]   <- 0
+  phenotypes[is.na(phenotypes)] <- 0
+	result <- .C("R_mapctl",
+				as.integer(n.ind),
+        as.integer(n.mar),
+        as.integer(n.phe),
+				as.integer(unlist(genotypes)),
+        as.double(unlist(phenotypes)),
+				as.integer((pheno.col-1)),
+				as.integer(n.perms),
+				CTL=as.double(rep(0,n.mar*n.phe)),
+			  PACKAGE="ctl")
+  matrix(result$CTL, n.mar, n.phe)
+}
+
 CTLmapping <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1, method = c("pearson", "kendall", "spearman"), verbose = FALSE){
   if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")

@@ -27,7 +27,7 @@ size_t filesize(char* name){
   size_t cnt = 0;
   FILE* file = fopen(name, "r");
   if(file == NULL){
-    printf("Error opening file: %s\n", name);
+    info("Error opening file: %s\n", name);
     return cnt;
   }
   do{
@@ -45,7 +45,7 @@ char* getfilecontent(char* name){
   size_t cnt     = 0;
   char   ch;
   if(file == NULL){
-    printf("Error opening file: %s\n", name);
+    info("Error opening file: %s\n", name);
     exit(-1);
   }
   do{
@@ -55,6 +55,6 @@ char* getfilecontent(char* name){
   }while(ch != EOF);
   fclose(file);
   if(content[cnt] != '\n') content = addtocvector(content,cnt,'\n');
-  printf("File '%s' loaded: %d bytes\n", name, fsize);
+  info("File '%s' loaded: %d bytes\n", name, fsize);
   return content;
 }

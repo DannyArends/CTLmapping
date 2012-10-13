@@ -13,7 +13,7 @@ Phenotypes tophenotypes(const char* content){
   do{
     if(content[0] == '\t'){
       if(ccol > 2){
-        double* t = addtodvector(row, ccol, atof(num));
+        double* t = addtodvector(row, ccol-3, atof(num));
         free(row);
         row = t;
       }
@@ -26,16 +26,16 @@ Phenotypes tophenotypes(const char* content){
         colcnt = ccol;
         rowok = 1;
       }else if(ccol != colcnt){
-        printf("Wrong number of columns on line %d\n",nrows);
+        info("Wrong number of columns on line %d\n",nrows);
         rowok = 0;
       }else{
         rowok = 1;
       }
       if(rowok){
-        row = addtodvector(row, ccol, atof(num));
+        row = addtodvector(row, ccol-3, atof(num));
         num = newcvector(0);
         l = 0;
-        matrix = addtodmatrix(matrix, nrows, ccol, row);
+        matrix = addtodmatrix(matrix, nrows, ccol-3, row);
         row = newdvector(0);
         ccol = 0;
         nrows++;
@@ -47,7 +47,7 @@ Phenotypes tophenotypes(const char* content){
     }
     content++;
   }while(content[0] != '\0');
-  printf("Parsed into %dx%d matrix\n",nrows,colcnt);
+  info("Parsed into %dx%d matrix\n",nrows,colcnt-2);
   Phenotypes p;
   p.nindividuals = colcnt-2;
   p.nphenotypes = nrows;
@@ -68,7 +68,7 @@ Genotypes togenotypes(const char* content){
   do{
     if(content[0] == '\t'){
       if(ccol > 2){
-        int* t = addtoivector(row, ccol, atoi(num));
+        int* t = addtoivector(row, ccol-3, atoi(num));
         free(row);
         row = t;
       }
@@ -87,12 +87,12 @@ Genotypes togenotypes(const char* content){
         rowok = 1;
       }
       if(rowok){
-        int* t = addtoivector(row, ccol, atoi(num));
+        int* t = addtoivector(row, ccol-3, atoi(num));
         free(row);
         row = t;
         num = newcvector(0);
         l = 0;
-        matrix = addtoimatrix(matrix, nrows, ccol, row);
+        matrix = addtoimatrix(matrix, nrows, ccol-3, row);
         row = newivector(0);
         ccol = 0;
         nrows++;
@@ -104,7 +104,7 @@ Genotypes togenotypes(const char* content){
     }
     content++;
   }while(content[0] != '\0');
-  printf("Parsed into %dx%d matrix\n",nrows,colcnt);
+  printf("Parsed into %dx%d matrix\n",nrows,colcnt-2);
   Genotypes g;
   g.nindividuals = colcnt-2;
   g.nmarkers = nrows;

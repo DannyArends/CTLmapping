@@ -8,6 +8,7 @@
     #include <stdlib.h>
     #include <math.h>
     #include <float.h>
+    #include "ctl.h"
 
     //Custom length index vector
     typedef struct{

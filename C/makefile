@@ -6,7 +6,7 @@ LIBS =
 
 CDEBUG = -g
 CFLAGS = $(CDEBUG) -I. -I$(srcdir) $(DEFS)
-LDFLAGS = -g -I. -I$(srcdir)
+LDFLAGS = -g -I. -I$(srcdir) -DSTANDALONE
 #### End of system configuration section. ####
 
 SOURCES    = main.c $(srcdir)/vector.c $(srcdir)/matrix.c $(srcdir)/sort.c $(srcdir)/structs.c \

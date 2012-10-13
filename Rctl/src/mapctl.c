@@ -19,12 +19,55 @@ Genotypes permutegenotypes(Genotypes genotypes){
   return g;
 }
 
+void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p, int *nperms, double* res){
+  int nindividuals = (int)(*nind);
+  int nmarkers = (int)(*nmar);
+  int nphenotypes = (int)(*nphe);
+  int phenotype = (int)(*p);
+  int npermutations = (int)(*nperms);
+
+  info("Called from R: %i %i %i %i\n",nmarkers, nindividuals, nphenotypes, phenotype);
+  
+  Phenotypes phenotypes;
+  phenotypes.data = asdmatrix(nphenotypes, nindividuals, pheno);
+  phenotypes.nphenotypes = nphenotypes;
+  phenotypes.nindividuals = nindividuals;
+  
+  Genotypes genotypes;
+  genotypes.data = asimatrix(nmarkers, nindividuals, geno);
+  genotypes.nmarkers = nmarkers;
+  genotypes.nindividuals = nindividuals;
+  
+  double** result = mapctl(phenotypes, genotypes, phenotype, npermutations);
+  info("CTL done\n");
+  size_t i;
+  for(i=0;i<(nphenotypes*nmarkers);i++){
+    int m = i % nmarkers;
+    int p = i / nmarkers;
+    res[i] = result[m][p];
+  }
+  info("Result returned\n");
+}
+
 double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, int nperms){
-  printf("Phenotype %d: Mapping",phenotype);
+//  printdmatrix(phenotypes.data, phenotypes.nphenotypes, phenotypes.nindividuals);
+//  printimatrix(genotypes.data , genotypes.nmarkers, genotypes.nindividuals);
+
+  info("Phenotype %d: Mapping",phenotype);
   double** dcorscores = diffcor(phenotypes, genotypes, phenotype);
-  printf(", Permutation");
+//  printdmatrix(dcorscores, genotypes.nmarkers, phenotypes.nphenotypes);
+  #ifdef USING_R
+    R_CheckUserInterrupt();
+  #endif
+  
+  info(", Permutation");
   double* permutations = permutation(phenotypes, genotypes, phenotype, nperms, 0);
-  printf(", toLOD\n");
+
+  #ifdef USING_R
+    R_CheckUserInterrupt();
+  #endif
+
+  info(", toLOD\n");
   double** ctls = toLOD(dcorscores, permutations, genotypes.nmarkers, phenotypes.nphenotypes, nperms);
   freematrix((void**)dcorscores, genotypes.nmarkers);
   free(permutations);
@@ -40,7 +83,10 @@ double* permutation(const Phenotypes phenotypes, const Genotypes genotypes, size
     scores[p] = matrixmax(ctls, genotypes.nmarkers, phenotypes.nphenotypes);
     freematrix((void**)ctls   , genotypes.nmarkers);
     freematrix((void**)g.data , genotypes.nmarkers);
-    if(verbose) printf("Done with permutation %d\n", p);
+    if(verbose) info("Done with permutation %d\n", p);
+    #ifdef USING_R
+      R_CheckUserInterrupt();
+    #endif    
   }
   return scores;
 }
@@ -73,25 +119,25 @@ double** diffcor(const Phenotypes phenotypes, const Genotypes genotypes, size_t 
   size_t m,p,debug = 0;
   double** difcormatrix = newdmatrix(genotypes.nmarkers, phenotypes.nphenotypes);
   for(m = 0; m < genotypes.nmarkers; m++){
-    if(debug) printf("Search and allocation marker %d\n", p);
+    if(debug) info("Search and allocation marker %d\n", p);
     clvector ind_aa  = which(genotypes.data[m], phenotypes.nindividuals, 0);
     clvector ind_bb  = which(genotypes.data[m], phenotypes.nindividuals, 1);
     double* pheno_aa1 = get(phenotypes.data[phenotype],ind_aa);
     double* pheno_bb1 = get(phenotypes.data[phenotype],ind_bb);
     for(p = 0; p < phenotypes.nphenotypes; p++){
-      if(debug) printf("Search and allocation phenotype %d", p);
+      if(debug) info("Search and allocation phenotype %d", p);
       double* pheno_aa2 = get(phenotypes.data[p],ind_aa);
       double* pheno_bb2 = get(phenotypes.data[p],ind_bb);
-      if(debug) printf(", done");
+      if(debug) info(", done");
       double cor_aa = correlation(pheno_aa1, pheno_aa2, ind_aa.nelements);
       double cor_bb = correlation(pheno_bb1, pheno_bb2, ind_bb.nelements);
-      if(debug) printf(", correlation done");
+      if(debug) info(", correlation done");
       difcormatrix[m][p] = pow(cor_aa - cor_bb, 2);
-      if(debug) printf(", cleanup\n");
+      if(debug) info(", cleanup\n");
       free(pheno_aa2);
       free(pheno_bb2);
     }
-    if(debug) printf("Marker done\n");
+    if(debug) info("Marker done\n");
     free(pheno_aa1);
     free(pheno_bb1);
     free(ind_aa.data);
