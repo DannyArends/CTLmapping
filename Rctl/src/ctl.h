@@ -7,12 +7,17 @@
     #ifdef STANDALONE
       #define info(format, ...) { \
         printf(format, ## __VA_ARGS__);}
+      #define err(format, ...) { \
+        printf(format, ## __VA_ARGS__); \
+        exit(-1);}
     #else
       #define USING_R
       #include <R.h>
       #define info(format, ...) { \
         Rprintf(format, ## __VA_ARGS__);}
-    #endif
+      #define err(format, ...) { \
+        error(format, ## __VA_ARGS__);}
+      #endif
     
   #endif //__CTL_H__
 #ifdef __cplusplus

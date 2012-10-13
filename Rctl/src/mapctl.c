@@ -20,8 +20,10 @@ Genotypes permutegenotypes(Genotypes genotypes){
 }
 
 void updateR(int flush){
-  R_CheckUserInterrupt();
-  if(flush) R_FlushConsole();
+  #ifdef USING_R
+    R_CheckUserInterrupt();
+    if(flush) R_FlushConsole();
+  #endif
 }
 
 void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p, int *nperms, double* dcor, double* perms, double* res){
@@ -45,9 +47,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   genotypes.nindividuals = nindividuals;
 
   info("Phenotype %d: Mapping", (phenotype+1));  
-  #ifdef USING_R
-    updateR(1);
-  #endif
+  updateR(1);
   dcors = diffcor(phenotypes, genotypes, phenotype);
   for(i=0; i < (nphenotypes*nmarkers); i++){
     int m = i % nmarkers; int p = i / nmarkers;
@@ -55,18 +55,14 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   }
 
   info(", Permutation");
-  #ifdef USING_R
-    updateR(1);
-  #endif
+  updateR(1);
   double* permutations = permutation(phenotypes, genotypes, phenotype, npermutations, 0);
   for(i=0; i < npermutations; i++){
     perms[i] = permutations[i];
   }
 
   info(", toLOD\n");
-  #ifdef USING_R
-    updateR(1);
-  #endif
+  updateR(1);
   ctls = toLOD(dcors, perms, genotypes.nmarkers, phenotypes.nphenotypes, npermutations);
   for(i=0; i < (nphenotypes*nmarkers); i++){
     int m = i % nmarkers;

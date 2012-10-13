@@ -45,8 +45,7 @@ char* getfilecontent(char* name){
   size_t cnt     = 0;
   char   ch;
   if(file == NULL){
-    info("Error opening file: %s\n", name);
-    exit(-1);
+    err("Error opening file: %s\n", name);
   }
   do{
     ch = fgetc(file);

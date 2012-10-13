@@ -81,7 +81,7 @@ Genotypes togenotypes(const char* content){
         colcnt = ccol;
         rowok = 1;
       }else if(ccol != colcnt){
-        printf("Wrong number of columns on line %d\n",nrows);
+        info("Wrong number of columns on line %d\n",nrows);
         rowok = 0;
       }else{
         rowok = 1;
@@ -104,7 +104,7 @@ Genotypes togenotypes(const char* content){
     }
     content++;
   }while(content[0] != '\0');
-  printf("Parsed into %dx%d matrix\n",nrows,colcnt-2);
+  info("Parsed into %dx%d matrix\n",nrows,colcnt-2);
   Genotypes g;
   g.nindividuals = colcnt-2;
   g.nmarkers = nrows;
