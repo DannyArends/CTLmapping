@@ -27,8 +27,9 @@
 
 \examples{
   library(ctl)          # Load CTL library
-  data(ath.result)      # Arabidopsis Thaliana results
-  hist(ath.result,1:3)  # Compare the results of the first 3 scans
+  data(ath.metabolites)                    # Arabidopsis Thaliana dataset
+  ctl_result <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, pheno.col=1:3)
+  hist(ctl_result,1:3)  # Compare the results of the first 3 scans
 }
 
 \seealso{

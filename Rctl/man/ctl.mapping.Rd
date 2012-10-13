@@ -5,15 +5,15 @@
   Scan for correlated trait loci (CTL)
 }
 \usage{
-CTLmapping(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1, method = c("pearson", "kendall", "spearman"), verbose = FALSE)
+CTLmapping(genotypes, phenotypes, pheno.col=1, n.perms=100, geno.enc=c(1,2), verbose = FALSE)
 }
 
 \arguments{
   \item{genotypes}{ Matrix of genotypes. (individuals x markers) }
   \item{phenotypes}{ Matrix of phenotypes. (individuals x phenotypes) }
-  \item{geno.enc}{ Specifying the encoding of the genotype matrix. }
   \item{pheno.col}{ Which phenotype column should we analyse. NOTE: CTLmapping is limited to a single trait, for multiple traits use \code{\link{CTLscan}}). }
-  \item{method}{ Character string indicating which correlation coefficient is to be computed. One of "pearson" (default), "kendall", or "spearman". }
+  \item{n.perms}{ Number of permutations to perform. }
+  \item{geno.enc}{ Specifying the encoding of the genotype matrix. }
   \item{verbose}{ Be verbose. }
 }
 \details{
@@ -25,10 +25,9 @@ TODO
 \value{
 CTLscan, a list of:
 \itemize{
-  \item $ctls - Matrix of differential correlation scores for each trait at each marker
-  \item $qtl  - Vector of QTL lodscores for each marker
-  \item $p    - Vector of maximums per marker obtained during permutations
-  \item $l    - Matrix of LOD scores for CTL likelihood
+  \item $dcor  - Matrix of differential correlation scores for each trait at each marker
+  \item $perms - Vector of maximums per marker obtained during permutations
+  \item $ctls  - Matrix of LOD scores for CTL likelihood
 }
 }
 \references{ 
@@ -45,7 +44,6 @@ CTLscan, a list of:
   library(ctl)
   data(ath.metabolites) # Arabidopsis Thaliana dataset
   CTLscan1 <- CTLmapping(ath.metab$genotypes, ath.metab$phenotypes)
-  CTLscan1
   plot(CTLscan1)        # Plot the first phenotype scan
 }
 

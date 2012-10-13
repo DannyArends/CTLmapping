@@ -19,7 +19,6 @@
   following core functionality:
   \itemize{
     \item \code{\link{CTLscan}} - Scan for CTL
-    \item \code{\link{CTLpermute}} - Permutation routine for CTL mapping
     \item \code{\link{CTLnetwork}} - Create a CTL network from a \code{\link{CTLscan}}
     \item \code{\link{CTLprofiles}} - Extract CTL interaction profiles 
     \item \code{\link{image.CTLobject}} - Heatmap overview of a CTLscan
@@ -33,7 +32,6 @@
   Some additional functionality:
   \itemize{
     \item \code{\link{CTLscan.cross}} - Use an R/qtl cross object with \code{\link{CTLscan}}
-    \item \code{\link{CTLpermute.cross}} - Use an R/qtl cross object with \code{\link{CTLpermute}}
   }
 }
 \author{ 
@@ -51,6 +49,6 @@
 \seealso{
   \itemize{
     \item \code{\link{CTLscan}} - Scan for CTL
-    \item \code{\link{CTLpermute}} - Permutation routine for CTL mapping
+    \item \code{\link{CTLscan.cross}} - Use an R/qtl cross object with \code{\link{CTLscan}}
   }
 }

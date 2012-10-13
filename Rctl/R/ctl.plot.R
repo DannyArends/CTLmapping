@@ -10,9 +10,8 @@
 
 CTLasLOD <- function(CTLscan, QTLscores, main, do.legend=TRUE){
   if(missing(CTLscan)) stop("argument 'CTLscan' is missing, with no default")
-  if(missing(main)){
-    main <- paste("Comparison CTL:QTL of",attr(CTLscan$ctl,"name"))
-  }
+  if(missing(main)) main <- paste("Comparison CTL:QTL of",ctl.name(CTLscan))
+  
   op <- par(mfrow=c(2,1))
   plot.CTLscan(CTLscan,do.legend=do.legend)
   CTLscores <- CTLtoLODvector(CTLscan)
@@ -84,7 +83,7 @@ plot.CTLscan2 <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance
     CTLmatrix <- matrix(sign(x$ctl[mysign, ]) * x$ctl[mysign, ],length(mysign),ncol(x$ctl))
   }
   summarized <- apply(CTLmatrix,2,sum)
-  plot(c(0,ncol(x$ctl)),c(min(c(summarized,x$qtl)),max(c(summarized,x$qtl))), type='n',xlab="Marker", ylab="-log10(P-value)", main=paste("Phenotype contribution to CTL of",attr(x$ctl,"name")),...)
+  plot(c(0,ncol(x$ctl)),c(min(c(summarized,x$qtl)),max(c(summarized,x$qtl))), type='n',xlab="Marker", ylab="-log10(P-value)", main=paste("Phenotype contribution to CTL of",ctl.name(x)),...)
   p <- rep(0,ncol(x$ctl))
   i <- 1;
   mycolors <- rep("black",nrow(CTLmatrix))
@@ -118,7 +117,7 @@ plot.CTLscan <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance 
   }
   CTLmatrix <- matrix(x$ctl[,mysign],nrow(x$ctl),length(mysign))
   summarized <- apply(CTLmatrix,1,sum)
-  plot(c(0,nrow(x$ctl)),c(min(c(summarized,x$qtl)),max(c(5,summarized,x$qtl))), type='n',xlab="Marker", ylab="-log10(P-value)", main=paste("Phenotype contribution to CTL of",attr(x$ctl,"name")),...)
+  plot(c(0,nrow(x$ctl)),c(min(c(summarized,x$qtl)),max(c(5,summarized,x$qtl))), type='n',xlab="Marker", ylab="-log10(P-value)", main=paste("Phenotype contribution to CTL of",ctl.name(x)), ...)
   p <- rep(0,nrow(x$ctl))
   i <- 1;
   mycolors <- topo.colors(ncol(CTLmatrix))
@@ -136,7 +135,7 @@ plot.CTLscan <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance 
     legend("topright",as.character(paste("CTL-FDR:",c(0.05,0.01,0.001),"%")),col=c("red","orange","green"),lty=rep(2,3),lwd=1,cex=cex.legend)
   }
   if(do.legend){
-    legend("topleft",rownames(x$ctl)[mysign],col=mycolors,lwd=1,cex=cex.legend)
+    legend("topleft",colnames(x$ctl)[mysign],col=mycolors,lwd=1,cex=cex.legend)
   }
   points(summarized,type='l',lwd=1)
   points(as.numeric(x$qtl),type='l',lwd=2,col="red")
@@ -196,7 +195,7 @@ plot.CTLscan3 <- function(x, map_info, todo = c(4,6,2), ...){
 
 plot.CTLpermute <- function(x, type="s", ...){
   if(missing(x)) stop("argument 'x' is missing, with no default")
-  plot(seq(0,0.9,0.01),CTLscoretoPvalue(seq(0,0.9,0.01),x),main="CTL to P.value",xlab="CTL",ylab="Pvalue", type=type,...)
+  #plot(seq(0,0.9,0.01),CTLscoretoPvalue(seq(0,0.9,0.01),x),main="CTL to P.value",xlab="CTL",ylab="Pvalue", type=type,...)
   significant <- print.CTLpermute(x)
   mycolors <- c("red","orange","green")
   idx <- 1

@@ -70,7 +70,7 @@ lodscorestoscanone <- function(cross,lodscores,traitnames = NULL){
     class(qtlprofile) <- c("scanone", "data.frame")
     qtlprofile
   }else{
-    warning(.has_rqtl_warnmsg)
+    warning("Please install the R/qtl library (install.packages(\"qtl\"))")
   }
 }
 

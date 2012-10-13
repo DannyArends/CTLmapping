@@ -36,7 +36,7 @@ QTLnetwork <- function(CTLobject, mapinfo, lod.threshold = 5, filename){
   qtls <- ctl.qtlmatrix(CTLobject)
   if(!missing(mapinfo)){
     chr.edges   <- get.chr.edges(mapinfo)+.5
-    write.marker.attributes(qtls, mapinfo)
+    if(qtls) write.marker.attributes(qtls, mapinfo)
   }
   if(missing(filename)){ 
     filename <- "network_qtl.sif" 
@@ -47,8 +47,8 @@ QTLnetwork <- function(CTLobject, mapinfo, lod.threshold = 5, filename){
   ncons       <- 0
   chr         <- 1
   
-  markernames <- colnames(qtls)
-  traitnames  <- rownames(qtls)
+  markernames <- colnames(CTLobject[[1]]$ctl)
+  traitnames  <- rownames(CTLobject[[1]]$ctl)
 
   if(missing(filename)) 
   cat("",file=filename)
@@ -69,17 +69,19 @@ QTLnetwork <- function(CTLobject, mapinfo, lod.threshold = 5, filename){
   }
   cat("Wrote",ncons," marker interconnections to",filename,"\n")
   #Print the QTLs between genetic markers and traits
-  for(x in apply(qtls,1,function(x){which(x > lod.threshold)})){
-    for(marker in names(x)){
-      cat(paste(ctl.name(CTLobject[[idx]]),"\tQTL\t",marker,"\t",round(qtls[idx,marker],digits=1),"\n",sep=""),file=filename,append=TRUE)
-      edges <- edges+1
+  if(qtls){
+    for(x in apply(qtls,1,function(x){which(x > lod.threshold)})){
+      for(marker in names(x)){
+        cat(paste(ctl.name(CTLobject[[idx]]),"\tQTL\t",marker,"\t",round(qtls[idx,marker],digits=1),"\n",sep=""),file=filename,append=TRUE)
+        edges <- edges+1
+      }
+      idx <- idx + 1
     }
-    idx <- idx + 1
+    cat("Wrote",edges,"QTL edges to",filename,"\n")
   }
-  cat("Wrote",edges,"QTL edges to",filename,"\n")
 }
 
-CTLnetwork <- function(CTLobject, mapinfo, lod.threshold = 5, add.qtl = TRUE, verbose = FALSE){
+CTLnetwork <- function(CTLobject, mapinfo, significance = 0.05, add.qtl = TRUE, verbose = FALSE){
   if(missing(CTLobject)) stop("argument 'CTLobject' is missing, with no default")
   edges        <- 0
   edge_p_count <- NULL
@@ -91,7 +93,7 @@ CTLnetwork <- function(CTLobject, mapinfo, lod.threshold = 5, add.qtl = TRUE, ve
   for(CTL in CTLobject){
     for(x in 1:ncol(CTL$ctl)){
       if(is.null(CTL$perms)) stop("No permutations found, need permutations to determine likelihood\n")
-      for(id in which(abs(CTL$ctl[,x]) > lod.threshold)){
+      for(id in which(abs(CTL$ctl[,x]) > -log10(significance))){
         edge_name <- paste(ctl.name(CTL),"CTL",ctl.names(CTLobject)[x],sep="\t")
         if(edge_name %in% edge_p_count[,1]){
           edgeid <- which(edge_p_count[,1] %in% edge_name)
@@ -115,8 +117,10 @@ CTLnetwork <- function(CTLobject, mapinfo, lod.threshold = 5, add.qtl = TRUE, ve
     }
     cat("Wrote",nrow(edge_p_count),"CTL edges to network_summary.sif\n")
   }
-  if(add.qtl) QTLnetwork(CTLobject, mapinfo, lod.threshold, "network_full.sif")
-  if(add.qtl) QTLnetwork(CTLobject, mapinfo, lod.threshold, "network_summary.sif")
+  if(!is.null(ctl.qtlmatrix(CTLobject)) & add.qtl){
+    QTLnetwork(CTLobject, mapinfo, -log10(significance), "network_full.sif")
+    QTLnetwork(CTLobject, mapinfo, -log10(significance), "network_summary.sif")
+  }
   invisible(unique(edge_p_count))
 }
 

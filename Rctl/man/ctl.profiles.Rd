@@ -20,8 +20,6 @@
 }
 
 \details{
-  CTL thresholds can be obtained using the \code{\link{CTLpermute}}  
-  
   These matrices can be combined with QTL information to perform de novo 
   reconstruction of interaction networks.
   

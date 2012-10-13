@@ -5,17 +5,16 @@
   Scan for Correlated Trait Locus (CTL) in populations (using an R/qtl cross object)
 }
 \usage{
-CTLscan.cross(cross, pheno.col, method = c("pearson", "pearsonordered", "kendall", "spearman"), n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE)
+CTLscan.cross(cross, pheno.col, n.perm=100, conditions = NULL, n.cores=2, verbose = FALSE)
 }
 
 \arguments{
   \item{cross}{ An object of class \code{cross}. See \code{\link[qtl]{read.cross}} for details. }
   \item{pheno.col}{ Which phenotype column should we analyse. }
-  \item{method}{ Character string indicating which correlation coefficient is to be computed. One of "pearson" (default), "kendall", or "spearman". }
   \item{n.perm}{ Number of permutations }
+  \item{conditions}{ A vector of experimental conditions applied during the experiment. These conditions 
+    will be used as covariates in the QTL modeling step. }
   \item{n.cores}{ Number of CPU cores to use during the analysis }
-  \item{directory}{ Directory in which to save the output }
-  \item{saveFiles}{ Save the permjutation matrices to HDD }
   \item{verbose}{ Be verbose. }
 }
 \details{

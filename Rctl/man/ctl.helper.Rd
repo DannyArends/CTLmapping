@@ -3,7 +3,7 @@
 \alias{ctl.names}
 \alias{ctl.ctlmatrix}
 \alias{ctl.qtlmatrix}
-\alias{ctl.lodmatrix}
+\alias{ctl.dcormatrix}
 \alias{ctl.qtlprofile}
 \title{CTLhelper - Helper functions for CTL mapping }
 \description{
@@ -15,7 +15,7 @@ ctl.qtlmatrix(CTLobject)
 
 ctl.name(CTLscan)
 ctl.ctlmatrix(CTLscan)
-ctl.lodmatrix(CTLscan)
+ctl.dcormatrix(CTLscan)
 ctl.qtlprofile(CTLscan)
 }
 

@@ -16,7 +16,7 @@ hist.CTLobject <- function(x, pheno.col=1, ...){
     if(is.null(x[[pheno]]$perms)) stop(paste("Permutations not found for pheno.col=",pheno))
     sorted <- sort(unlist(x[[pheno]]$perms))
     hist(sorted, breaks=seq(0,1.0,0.01), add=TRUE, col=pheno, ...)
-    namez <- c(namez,attr(x[[pheno]]$ctl,"name"))
+    namez <- c(namez,ctl.name(x[[pheno]]))
   }
   legend("topright", legend=namez, col=pheno.col,lwd=6)
 }

@@ -1,10 +1,10 @@
 \name{plot.CTLpermute}
 \alias{plot.CTLpermute}
 
-\title{Differential correlation versus Likelihood curves}
+\title{Differential correlation versus likelihood plotted in curves}
 
 \description{
-  Differential correlation versus Likelihood curves (the output of \code{\link{CTLpermute}}).
+  Differential correlation versus likelihood plot curves.
 }
 
 \usage{
@@ -12,10 +12,11 @@
 }
 
 \arguments{
-  \item{x}{ An object of class \code{"CTLpermute"}, as output by \code{\link{CTLpermute}}. }
+  \item{x}{ An object of class \code{"CTLscan"}. }
   \item{type}{ What type of plot should be drawn. for possible options see \code{\link[graphics]{plot}}. }
   \item{\dots}{ Passed to the function \code{\link[graphics]{plot}} when it is called. }
 }
+
 \value{
   None.
 }

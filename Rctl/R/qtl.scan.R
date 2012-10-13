@@ -88,7 +88,7 @@ QTLscan.cross <- function(cross, pheno.col, conditions=NULL, n.cores=2, verbose 
     genotypes <- qtl::pull.geno(cross)
     QTLscan(genotypes, phenotypes, pheno.col, conditions, n.cores, verbose)
   }else{
-    warning(.has_rqtl_warnmsg)
+    warning("Please install the R/qtl library (install.packages(\"qtl\"))")
   }
 }
 

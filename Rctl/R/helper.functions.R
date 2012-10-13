@@ -12,10 +12,10 @@
 # - Chromosome edge locations from mapfile
 # - Get the top-correlated metabolites
 
-ctl.names      <- function(CTLobject){ unlist(lapply(CTLobject,function(x){return(attr(x$ctl,"name"));})) }
+ctl.names      <- function(CTLobject){ unlist(lapply(CTLobject, ctl.name)) }
 ctl.qtlmatrix  <- function(CTLobject){ return(attr(CTLobject,"qtl")); }
 
-ctl.name       <- function(CTLscan){ return(attr(CTLscan$ctl,"name")); }
+ctl.name       <- function(CTLscan){ return(attr(CTLscan,"name")); }
 ctl.dcormatrix <- function(CTLscan){ return(CTLscan$dcor); }
 ctl.qtlprofile <- function(CTLscan){ return(CTLscan$qtl); }
 ctl.ctlmatrix  <- function(CTLscan){ return(CTLscan$ctl); }

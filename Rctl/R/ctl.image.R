@@ -21,7 +21,7 @@ qtlimage <- function(CTLscan, do.grid = TRUE, grid.col = "black", verbose = FALS
   mynames <- NULL
   for(num in 1:length(CTLscan)){ 
     mymatrix <- rbind(mymatrix,as.numeric(unlist(CTLscan[[num]]$qtl))) 
-    mynames <- c(mynames,attr(CTLscan[[num]]$ctl,"name"))  
+    mynames <- c(mynames,ctl.name(CTLscan[[num]]))  
   }
   rownames(mymatrix) <- mynames
   colnames(mymatrix) <- names(CTLscan[[1]]$qtl)
