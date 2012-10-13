@@ -1,15 +1,16 @@
 #### Start of system configuration section. ####
-srcdir = .
+srcdir = ../Rctl/src
 CC = gcc -O -pedantic -w -Wall -Wextra
 DEFS =
 LIBS =
 
 CDEBUG = -g
-CFLAGS = $(CDEBUG) -I$(srcdir) $(DEFS)
-LDFLAGS = -g
+CFLAGS = $(CDEBUG) -I. -I$(srcdir) $(DEFS)
+LDFLAGS = -g -I. -I$(srcdir)
 #### End of system configuration section. ####
 
-SOURCES    = main.c vector.c matrix.c sort.c structs.c ctlio.c correlation.c mapctl.c
+SOURCES    = main.c $(srcdir)/vector.c $(srcdir)/matrix.c $(srcdir)/sort.c $(srcdir)/structs.c \
+                    $(srcdir)/ctlio.c $(srcdir)/correlation.c $(srcdir)/mapctl.c
 OBJECTS    = $(SOURCES:.cpp=.o)
 EXECUTABLE = mapctl.exe
 
@@ -18,7 +19,7 @@ all: $(SOURCES) $(EXECUTABLE)
 $(EXECUTABLE): $(OBJECTS) 
 	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 
-.cpp.o:
+.c.o:
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:
