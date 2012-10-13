@@ -98,8 +98,8 @@ toLod <- function(CTLscan, onlySignificant = TRUE, verbose = TRUE){
 
 CTLtoLODvector <- function(CTLscan, against = c("markers","phenotypes")){
   if(missing(CTLscan)) stop("argument 'CTLscan' is missing, with no default")
-  if(against[1]=="markers")return(apply(CTLscan$ctl,2,sum))
-  if(against[1]=="phenotypes")return(apply(CTLscan$ctl,1,max))
+  if(against[1]=="markers")return(apply(CTLscan$ctl,1,sum))
+  if(against[1]=="phenotypes")return(apply(CTLscan$ctl,2,max))
 }
 
 CTLscantoScanone <- function(cross, CTLscan){

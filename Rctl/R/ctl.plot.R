@@ -111,18 +111,18 @@ plot.CTLscan2 <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance
 
 plot.CTLscan <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance = 0.05, do.legend=TRUE, cex.legend=1.0, ...){
   if(missing(x)) stop("argument 'x' is missing, with no default")
-  mysign <- as.numeric(which(apply(abs(x$ctl),1,max) > -log10(significance)))
+  mysign <- as.numeric(which(apply(abs(x$ctl),2,max) > -log10(significance)))
   if(length(mysign) ==0 || onlySignificant == FALSE){
-    mysign <- 1:nrow(x$ctl)
+    mysign <- 1:ncol(x$ctl)
     do.legend=FALSE
   }
-  CTLmatrix <- matrix(x$ctl[mysign, ],length(mysign),ncol(x$ctl))
-  summarized <- apply(CTLmatrix,2,sum)
-  plot(c(0,ncol(x$ctl)),c(min(c(summarized,x$qtl)),max(c(5,summarized,x$qtl))), type='n',xlab="Marker", ylab="-log10(P-value)", main=paste("Phenotype contribution to CTL of",attr(x$ctl,"name")),...)
-  p <- rep(0,ncol(x$ctl))
+  CTLmatrix <- matrix(x$ctl[,mysign],nrow(x$ctl),length(mysign))
+  summarized <- apply(CTLmatrix,1,sum)
+  plot(c(0,nrow(x$ctl)),c(min(c(summarized,x$qtl)),max(c(5,summarized,x$qtl))), type='n',xlab="Marker", ylab="-log10(P-value)", main=paste("Phenotype contribution to CTL of",attr(x$ctl,"name")),...)
+  p <- rep(0,nrow(x$ctl))
   i <- 1;
-  mycolors <- topo.colors(nrow(CTLmatrix))
-  apply(CTLmatrix,1,
+  mycolors <- topo.colors(ncol(CTLmatrix))
+  apply(CTLmatrix,2,
     function(d){
      for(idx in 1:length(d)){
         rect(idx-0.5,p[idx],idx+0.5,p[idx]+d[idx],col=mycolors[i],lwd=0,lty=0)
@@ -136,11 +136,11 @@ plot.CTLscan <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance 
     legend("topright",as.character(paste("CTL-FDR:",c(0.05,0.01,0.001),"%")),col=c("red","orange","green"),lty=rep(2,3),lwd=1,cex=cex.legend)
   }
   if(do.legend){
-    legend("bottomright",rownames(x$ctl)[mysign],col=mycolors,lwd=1,cex=cex.legend)
+    legend("topleft",rownames(x$ctl)[mysign],col=mycolors,lwd=1,cex=cex.legend)
   }
   points(summarized,type='l',lwd=1)
   points(as.numeric(x$qtl),type='l',lwd=2,col="red")
-  rownames(CTLmatrix) <- rownames(x$ctl)[mysign]
+  colnames(CTLmatrix) <- colnames(x$ctl)[mysign]
   invisible(CTLmatrix)
 }
 
