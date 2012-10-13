@@ -19,7 +19,12 @@ Genotypes permutegenotypes(Genotypes genotypes){
   return g;
 }
 
-void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p, int *nperms, double* dcor, double* res){
+void updateR(int flush){
+  R_CheckUserInterrupt();
+  if(flush) R_FlushConsole();
+}
+
+void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p, int *nperms, double* dcor, double* perms, double* res){
   int nindividuals  = (int)(*nind);
   int nmarkers      = (int)(*nmar);
   int nphenotypes   = (int)(*nphe);
@@ -28,6 +33,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   Phenotypes phenotypes;
   Genotypes  genotypes;
   size_t     i;
+  double**   dcors;
   double**   ctls;
   
   phenotypes.data = asdmatrix(nphenotypes, nindividuals, pheno);
@@ -37,45 +43,50 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   genotypes.data = asimatrix(nmarkers, nindividuals, geno);
   genotypes.nmarkers = nmarkers;
   genotypes.nindividuals = nindividuals;
-  
-  double** dcors = diffcor(phenotypes, genotypes, phenotype);
-  for(i=0;i<(nphenotypes*nmarkers);i++){
-    int m = i % nmarkers;
-    int p = i / nmarkers;
+
+  info("Phenotype %d: Mapping", (phenotype+1));  
+  #ifdef USING_R
+    updateR(1);
+  #endif
+  dcors = diffcor(phenotypes, genotypes, phenotype);
+  for(i=0; i < (nphenotypes*nmarkers); i++){
+    int m = i % nmarkers; int p = i / nmarkers;
     dcor[i] = dcors[m][p];
   }
-  freematrix((void**)dcors, genotypes.nmarkers);
-  
-  ctls = mapctl(phenotypes, genotypes, phenotype, npermutations);
-  for(i=0;i<(nphenotypes*nmarkers);i++){
+
+  info(", Permutation");
+  #ifdef USING_R
+    updateR(1);
+  #endif
+  double* permutations = permutation(phenotypes, genotypes, phenotype, npermutations, 0);
+  for(i=0; i < npermutations; i++){
+    perms[i] = permutations[i];
+  }
+
+  info(", toLOD\n");
+  #ifdef USING_R
+    updateR(1);
+  #endif
+  ctls = toLOD(dcors, perms, genotypes.nmarkers, phenotypes.nphenotypes, npermutations);
+  for(i=0; i < (nphenotypes*nmarkers); i++){
     int m = i % nmarkers;
     int p = i / nmarkers;
     res[i] = ctls[m][p];
   }
+  freematrix((void**)dcors, genotypes.nmarkers);
   freematrix((void**)ctls, genotypes.nmarkers);
   return;
-}
-
-void updateR(int flush){
-  R_CheckUserInterrupt();
-  if(flush) R_FlushConsole();
 }
 
 double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, int nperms){
   info("Phenotype %d: Mapping", (phenotype+1));
   double** dcorscores = diffcor(phenotypes, genotypes, phenotype);
   info(", Permutation");
-  #ifdef USING_R
-    updateR(1);
-  #endif
   double* permutations = permutation(phenotypes, genotypes, phenotype, nperms, 0);
   info(", toLOD\n");
   double** ctls = toLOD(dcorscores, permutations, genotypes.nmarkers, phenotypes.nphenotypes, nperms);
   freematrix((void**)dcorscores, genotypes.nmarkers);
   free(permutations);
-  #ifdef USING_R
-    updateR(1);
-  #endif
   return ctls;
 }
 

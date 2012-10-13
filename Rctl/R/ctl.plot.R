@@ -69,7 +69,7 @@ plotExpression <- function(genotypes, phenotypes, traits=c("X3.Hydroxypropyl", "
 
 plot.CTLscan2 <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance = 0.05, do.legend=TRUE, ...){
   if(missing(x)) stop("argument 'x' is missing, with no default")
-  if(!is.null(x$p) && !is.nan(getPermuteThresholds(x,significance)[1])){
+  if(!is.null(x$perms) && !is.nan(getPermuteThresholds(x,significance)[1])){
     mysign <- as.numeric(which(apply(abs(x$ctl),1,max) > getPermuteThresholds(x,significance)[1]))
   }else{
     mysign <- as.numeric(which(apply(abs(x$ctl),1,max) > -log10(significance)))

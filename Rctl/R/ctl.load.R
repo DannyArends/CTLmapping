@@ -44,13 +44,13 @@ ctl.load <- function(genotypes = "ngenotypes.txt", phenotypes = "nphenotypes.txt
       stop("ERROR: Missing file No CTLs found for:", phenodata[x,1],"\n")
     }
     if(!singleperms && file.exists(paste(output,"/perms",x,".txt",sep=""))){
-      results[[idx]]$p        <- apply(read.csv(paste(output,"/perms",x,".txt",sep=""),sep="\t",header=FALSE),1,max)
-      class(results[[idx]]$p) <- c(class(results[[idx]]$p),"CTLpermute")
+      results[[idx]]$perms        <- apply(read.csv(paste(output,"/perms",x,".txt",sep=""),sep="\t",header=FALSE),1,max)
+      class(results[[idx]]$perms) <- c(class(results[[idx]]$perms),"CTLpermute")
     }else{
       if(x==1) cat("[Warning] results are from 'single permutation mode' (--sp) NOTE: This might induce many false positives \n")
-      if(from > 1 && !singleperms) results[[1]]$p <- apply(read.csv(paste(output,"/perms0.txt",sep=""),sep="\t",header=FALSE),1,max)
+      if(from > 1 && !singleperms) results[[1]]$perms <- apply(read.csv(paste(output,"/perms0.txt",sep=""),sep="\t",header=FALSE),1,max)
       singleperms       <- TRUE
-      results[[idx]]$p  <- results[[1]]$p
+      results[[idx]]$perms  <- results[[1]]$perms
     }
     if(verbose) cat("Recalculating LOD score using permutations, using GPD distribution for extreme scores\n")
     results[[idx]]$ctl    <- toLod(results[[idx]], FALSE, FALSE)

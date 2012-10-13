@@ -11,11 +11,11 @@
 
 CTLtoP <- function(CTLscan, onlySignificant = TRUE, verbose = TRUE){
   if(missing(CTLscan)) stop("argument 'CTLscan' is missing, with no default")
-  permvalues <- sort(unlist(CTLscan$p))
+  permvalues <- sort(unlist(CTLscan$perms))
   significant <- c()
   if(onlySignificant){
     maximums <- apply(abs(CTLscan$ctl),1,max)
-    significant <- as.numeric(which(maximums > getPermuteThresholds(CTLscan$p)[1]))
+    significant <- as.numeric(which(maximums > getPermuteThresholds(CTLscan$perms)[1]))
   }  
   if(length(significant) > 1){
     scaled <- abs(CTLscan$ctl[significant, ])

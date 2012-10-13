@@ -27,7 +27,7 @@
 \examples{
   library(ctl)
   data(ath.result) # Arabidopsis Thaliana dataset
-  plot(ath.result[[1]]$p)
+  plot(ath.result[[1]]$perms)
 }
 
 \seealso{

@@ -90,7 +90,7 @@ CTLnetwork <- function(CTLobject, mapinfo, lod.threshold = 5, add.qtl = TRUE, ve
   
   for(CTL in CTLobject){
     for(x in 1:ncol(CTL$ctl)){
-      if(is.null(CTL$p)) stop("No permutations found, need permutations to determine likelihood\n")
+      if(is.null(CTL$perms)) stop("No permutations found, need permutations to determine likelihood\n")
       for(id in which(abs(CTL$ctl[,x]) > lod.threshold)){
         edge_name <- paste(ctl.name(CTL),"CTL",ctl.names(CTLobject)[x],sep="\t")
         if(edge_name %in% edge_p_count[,1]){

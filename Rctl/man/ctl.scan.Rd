@@ -32,10 +32,9 @@ TODO
 \value{
 CTLobject, a list with at each index a CTLscan object:
 \itemize{
-  \item $ctls - Matrix of differential correlation scores for each trait at each marker
-  \item $qtl  - Vector of QTL lodscores for each marker
-  \item $p    - Vector of maximums per marker obtained during permutations
-  \item $l    - Matrix of LOD scores for CTL likelihood
+  \item $dcor  - Matrix of differential correlation scores for each trait at each marker
+  \item $perms - Vector of maximums per marker obtained during permutations
+  \item $ctls  - Matrix of LOD scores for CTL likelihood
 }
 }
 \references{ 
