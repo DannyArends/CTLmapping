@@ -49,7 +49,7 @@ CTLprofile <- function(CTLobject, pheno.col=1, significance=0.05, verbose = TRUE
   sign_p <- colnames(p2pm)[which(p2pm[pheno.col,] > threshold)]
   result <- NULL
   for(phenoname in sign_p){
-    myrow <- as.numeric(CTLobject[[pheno.col]]$l[phenoname,sign_m] > threshold)
+    myrow <- as.numeric(CTLobject[[pheno.col]]$ctl[phenoname,sign_m] > threshold)
     result <- rbind(result, myrow)
   }
   if(!is.null(result)){

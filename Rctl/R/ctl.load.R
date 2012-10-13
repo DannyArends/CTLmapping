@@ -53,7 +53,7 @@ ctl.load <- function(genotypes = "ngenotypes.txt", phenotypes = "nphenotypes.txt
       results[[idx]]$p  <- results[[1]]$p
     }
     if(verbose) cat("Recalculating LOD score using permutations, using GPD distribution for extreme scores\n")
-    results[[idx]]$l      <- toLod(results[[idx]], FALSE, FALSE)
+    results[[idx]]$ctl    <- toLod(results[[idx]], FALSE, FALSE)
     class(results[[idx]]) <- c(class(results[[idx]]),"CTLscan")
   }
   class(results) <- c(class(results),"CTLobject")

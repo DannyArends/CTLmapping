@@ -15,8 +15,6 @@
 \alias{get_CtlEnv}
 
 %ctl.statistics.r
-\alias{CTLpermute.internal}
-\alias{CTLpermuteMC}
 \alias{CTLscantoScanone}
 \alias{CTLscoretoPvalue}
 \alias{toLod}

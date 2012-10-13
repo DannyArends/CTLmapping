@@ -16,9 +16,9 @@ ctl.names      <- function(CTLobject){ unlist(lapply(CTLobject,function(x){retur
 ctl.qtlmatrix  <- function(CTLobject){ return(attr(CTLobject,"qtl")); }
 
 ctl.name       <- function(CTLscan){ return(attr(CTLscan$ctl,"name")); }
-ctl.ctlmatrix  <- function(CTLscan){ return(CTLscan$ctl); }
+ctl.dcormatrix <- function(CTLscan){ return(CTLscan$dcor); }
 ctl.qtlprofile <- function(CTLscan){ return(CTLscan$qtl); }
-ctl.lodmatrix  <- function(CTLscan){ return(CTLscan$l); }
+ctl.ctlmatrix  <- function(CTLscan){ return(CTLscan$ctl); }
 
 remove.diag <- function(x){ return(x*lower.tri(x) + x*upper.tri(x)); }
 up <- function(){abs(seq(-2,-0,0.1))/2} 

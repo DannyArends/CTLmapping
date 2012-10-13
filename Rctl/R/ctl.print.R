@@ -16,10 +16,10 @@ print.CTLobject <- function(x, ...){
 getSignificantCTL <- function(CTLobject, threshold = 0.05, sep = ' '){
   all_significant <- vector("list", length(CTLobject))
   for(x in 1:length(CTLobject)){ #Get all significant CTLs
-    significant_ctls <- names(which(apply(CTLobject[[x]]$l,1,function(x){any(x > -log10(threshold))})))
+    significant_ctls <- names(which(apply(CTLobject[[x]]$ctl,1,function(x){any(x > -log10(threshold))})))
     if(length(significant_ctls) > 0){
       for(p in significant_ctls){
-        cat(x, ctl.name(CTLobject[[x]]), p ,colnames(CTLobject[[x]]$l)[which.max(CTLobject[[x]]$l[p,])], max(CTLobject[[x]]$l[p,]),'\n',sep=sep)
+        cat(x, ctl.name(CTLobject[[x]]), p ,colnames(CTLobject[[x]]$ctl)[which.max(CTLobject[[x]]$ctl[p,])], max(CTLobject[[x]]$ctl[p,]),'\n',sep=sep)
       }
       all_significant[[x]] <- significant_ctls
     }

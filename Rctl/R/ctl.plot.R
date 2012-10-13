@@ -72,16 +72,16 @@ plot.CTLscan2 <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance
   if(!is.null(x$p) && !is.nan(getPermuteThresholds(x,significance)[1])){
     mysign <- as.numeric(which(apply(abs(x$ctl),1,max) > getPermuteThresholds(x,significance)[1]))
   }else{
-    mysign <- as.numeric(which(apply(abs(x$l),1,max) > -log10(significance)))
+    mysign <- as.numeric(which(apply(abs(x$ctl),1,max) > -log10(significance)))
   }
   if(length(mysign) ==0 || onlySignificant == FALSE){
     mysign <- 1:nrow(x$ctl)
     do.legend=FALSE
   }
-  if(is.null(x$l)){
+  if(is.null(x$ctl)){
     CTLmatrix <- matrix(abs(x$ctl[mysign, ]),length(mysign),ncol(x$ctl))
   }else{
-    CTLmatrix <- matrix(sign(x$ctl[mysign, ]) * x$l[mysign, ],length(mysign),ncol(x$l))
+    CTLmatrix <- matrix(sign(x$ctl[mysign, ]) * x$ctl[mysign, ],length(mysign),ncol(x$ctl))
   }
   summarized <- apply(CTLmatrix,2,sum)
   plot(c(0,ncol(x$ctl)),c(min(c(summarized,x$qtl)),max(c(summarized,x$qtl))), type='n',xlab="Marker", ylab="-log10(P-value)", main=paste("Phenotype contribution to CTL of",attr(x$ctl,"name")),...)
@@ -98,7 +98,7 @@ plot.CTLscan2 <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance
   if(do.legend){
     legend("topleft",c("QTL",paste("CTL",rownames(x$ctl)[mysign])),col=c("red",mycolors),lwd=2,pch=c(NA,1:length(mycolors)),cex=1.2)
   }
-  if(!is.null(x$l)){
+  if(!is.null(x$ctl)){
     n <- dim(x$ctl)[2]
     abline(h=-log10(c(0.05/n,0.01/n,0.001/n)),col=c("red","orange","green"),lty=2)
     abline(h=log10(c(0.05/n,0.01/n,0.001/n)),col=c("red","orange","green"),lty=2)
@@ -111,12 +111,12 @@ plot.CTLscan2 <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance
 
 plot.CTLscan <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance = 0.05, do.legend=TRUE, cex.legend=1.0, ...){
   if(missing(x)) stop("argument 'x' is missing, with no default")
-  mysign <- as.numeric(which(apply(abs(x$l),1,max) > -log10(significance)))
+  mysign <- as.numeric(which(apply(abs(x$ctl),1,max) > -log10(significance)))
   if(length(mysign) ==0 || onlySignificant == FALSE){
     mysign <- 1:nrow(x$ctl)
     do.legend=FALSE
   }
-  CTLmatrix <- matrix(x$l[mysign, ],length(mysign),ncol(x$l))
+  CTLmatrix <- matrix(x$ctl[mysign, ],length(mysign),ncol(x$ctl))
   summarized <- apply(CTLmatrix,2,sum)
   plot(c(0,ncol(x$ctl)),c(min(c(summarized,x$qtl)),max(c(5,summarized,x$qtl))), type='n',xlab="Marker", ylab="-log10(P-value)", main=paste("Phenotype contribution to CTL of",attr(x$ctl,"name")),...)
   p <- rep(0,ncol(x$ctl))
@@ -131,7 +131,7 @@ plot.CTLscan <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance 
       i <<- i + 1
     }
   )
-  if(!is.null(x$l)){
+  if(!is.null(x$ctl)){
     abline(h=-log10(c(0.05,0.01,0.001)),col=c("red","orange","green"),lty=2)
     legend("topright",as.character(paste("CTL-FDR:",c(0.05,0.01,0.001),"%")),col=c("red","orange","green"),lty=rep(2,3),lwd=1,cex=cex.legend)
   }
@@ -169,13 +169,13 @@ m_loc <- function(map_info, id=1, gap = 25){
 }
 
 plot.CTLscan3 <- function(x, map_info, todo = c(4,6,2), ...){
-  p <- rep(0,ncol(x$l))
+  p <- rep(0,ncol(x$ctl))
   i <- 1;
-  summarized <- apply(x$l,2,sum)
+  summarized <- apply(x$ctl,2,sum)
   xxx <- NULL
-  mycolors <- topo.colors(nrow(x$l[todo,]))
+  mycolors <- topo.colors(nrow(x$ctl[todo,]))
   plot(c(0, chr_total_length(map_info)),c(0, max(summarized,x$qtl)), type='n',xlab="Location (cM)",ylab="LOD score")
-  apply(x$l,1,
+  apply(x$ctl,1,
     function(d){
      for(idx in 1:length(d)){
      #   rect(m_loc(map_info,idx)-1,p[idx],m_loc(map_info,idx)+1,p[idx]+d[idx],col=mycolors[i],lwd=0,lty=0)

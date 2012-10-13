@@ -9,12 +9,16 @@
 #
 
 #-- CTLscan main function --#
-CTLscan <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1:ncol(phenotypes), method = c("pearson","pearsonordered", "kendall", "spearman"), conditions = NULL, n.perm=100, n.cores=2, directory="permutations", saveFiles = FALSE, verbose = FALSE){
+CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.perms=100, conditions = NULL, geno.enc=c(1,2), verbose = FALSE){
   if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   st <- proc.time()
   cat("Stage 0.0: Checking data\n")
   toremove <- check.genotypes(genotypes, geno.enc, verbose)
+  genotypes[genotypes==geno.enc[1]] <- 0
+  genotypes[genotypes==geno.enc[2]] <- 1
+  genotypes[is.na(genotypes)]       <- -999
+  phenotypes[is.na(phenotypes)]     <- -999
   results <- vector("list",length(pheno.col))
   stage <- 1
   cat("[INFO] ",nrow(phenotypes)," individuals, ",ncol(genotypes)," markers\n")
@@ -25,19 +29,8 @@ CTLscan <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1:ncol(p
     genotypes <- genotypes[,-toremove]
   }
   idx <- 1
-  for(p in pheno.col){
-    cat("Stage ",idx,".0: Mapping Correlated Traits Loci (CTL)\n",sep="")
-    results[[idx]]$ctl <- CTLmapping(genotypes, phenotypes, geno.enc=geno.enc, p, method=method, verbose)
-    if(n.perm > 0){
-      cat("Stage ",idx,".1: Permutation\n",sep="")
-      results[[idx]]$p <- CTLpermute(genotypes, phenotypes, geno.enc=geno.enc, p, method=method, n.perm, n.cores, directory, saveFiles, verbose)
-      
-      if(verbose)cat("Stage ",idx,".2: Transformation into LOD\n",sep="")
-      results[[idx]]$l <- toLod(results[[idx]], FALSE, verbose)
-    }else{
-      cat("Stage ",idx,".1: Skipping permutation\n",sep="")
-      if(verbose)cat("Stage ",idx,".2: Skipping transformation into LOD\n",sep="")
-    }
+  for(phe in pheno.col){
+    results[[idx]] <- cCTLmap(genotypes, phenotypes, pheno.col=phe, n.perms = n.perms)
     class(results[[idx]]) <- c(class(results[[idx]]),"CTLscan")
     idx <- idx + 1
   }
@@ -46,51 +39,26 @@ CTLscan <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1:ncol(p
   results
 }
 
-cCTLmap <- function(genotypes, phenotypes, pheno.col=1,n.perms=100){
-  n.ind = nrow(genotypes)
-  n.mar = ncol(genotypes)
-  n.phe = ncol(phenotypes)
-  genotypes <- genotypes-1
-  genotypes[is.na(genotypes)]   <- 0
-  phenotypes[is.na(phenotypes)] <- 0
-	result <- .C("R_mapctl",
-				as.integer(n.ind),
-        as.integer(n.mar),
-        as.integer(n.phe),
-				as.integer(unlist(genotypes)),
-        as.double(unlist(phenotypes)),
-				as.integer((pheno.col-1)),
-				as.integer(n.perms),
-				CTL=as.double(rep(0,n.mar*n.phe)),
-			  PACKAGE="ctl")
-  matrix(result$CTL, n.mar, n.phe)
-}
-
-CTLmapping <- function(genotypes, phenotypes, geno.enc=c(1,2), pheno.col = 1, method = c("pearson", "kendall", "spearman"), verbose = FALSE){
+cCTLmap <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, verbose = FALSE){
   if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
-  if(length(pheno.col)!=1) stop("CTLmapping can only scan 1 phenotype at once, use CTLscan for multiple phenotypes")
+  n.ind = nrow(genotypes); n.mar = ncol(genotypes); n.phe = ncol(phenotypes)
+
   ss <- proc.time()
-  results <- NULL
-  ctlprofile <- apply(genotypes,2, 
-    function(geno){
-      geno1 <- which(geno==geno.enc[1])
-      geno2 <- which(geno==geno.enc[2])
-      cor1 <- cor(phenotypes[geno1,pheno.col],phenotypes[geno1,],use="pair",method=method[1])
-      cor2 <- cor(phenotypes[geno2,pheno.col],phenotypes[geno2,],use="pair",method=method[1])
-      return(cor1 - cor2)^2
-    }
-  )
-  rownames(ctlprofile) <- colnames(phenotypes)
-  colnames(ctlprofile) <- colnames(genotypes)
-  results <- ctlprofile
-  attr(results,"name") <- colnames(phenotypes)[pheno.col]
-  class(results) <- c(class(results),"CTL")
+	result <- .C("R_mapctl",as.integer(n.ind), as.integer(n.mar), as.integer(n.phe),
+                    			as.integer(unlist(genotypes)), as.double(unlist(phenotypes)),
+                          as.integer((pheno.col-1)), as.integer(n.perms),
+                          dcor=as.double(rep(0,n.mar*n.phe)),
+                          ctl=as.double(rep(0,n.mar*n.phe)), 
+                          PACKAGE="ctl")
+  res <- list()
+  res$dcor <- matrix(result$dcor, n.mar, n.phe)
+  res$ctl  <- matrix(result$ctl, n.mar, n.phe)
+  rownames(res$dcor) <- colnames(genotypes); colnames(res$dcor) <- colnames(phenotypes)
+  rownames(res$ctl)  <- colnames(genotypes); colnames(res$ctl)  <- colnames(phenotypes)
   ee <- proc.time()
-  if(verbose){
-    cat("  - CTLscan of",colnames(phenotypes)[pheno.col],"took",as.numeric(ee[3]-ss[3]),"seconds\n")
-  }
-  results
+  if(verbose) cat("  - CTLscan of",colnames(phenotypes)[pheno.col],"took",as.numeric(ee[3]-ss[3]),"seconds\n")
+  invisible(res)
 }
 
 #-- R/qtl interface --#

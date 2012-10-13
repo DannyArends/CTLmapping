@@ -91,17 +91,17 @@ CTLnetwork <- function(CTLobject, mapinfo, lod.threshold = 5, add.qtl = TRUE, ve
   for(CTL in CTLobject){
     for(x in 1:ncol(CTL$ctl)){
       if(is.null(CTL$p)) stop("No permutations found, need permutations to determine likelihood\n")
-      for(id in which(abs(CTL$l[,x]) > lod.threshold)){
+      for(id in which(abs(CTL$ctl[,x]) > lod.threshold)){
         edge_name <- paste(ctl.name(CTL),"CTL",ctl.names(CTLobject)[x],sep="\t")
         if(edge_name %in% edge_p_count[,1]){
           edgeid <- which(edge_p_count[,1] %in% edge_name)
           if(verbose) cat("Duplicate edge",edgeid,":", edge_name,"\n")
-          edge_p_count[edgeid,2] <- as.numeric(edge_p_count[edgeid,2])+abs(CTL$l[id,x])
+          edge_p_count[edgeid,2] <- as.numeric(edge_p_count[edgeid,2])+abs(CTL$ctl[id,x])
           edge_p_count[edgeid,3] <- as.numeric(edge_p_count[edgeid,3])+1
         }else{
-          edge_p_count <- rbind(edge_p_count,c(edge_name, CTL$l[id,x], 1))
+          edge_p_count <- rbind(edge_p_count,c(edge_name, CTL$ctl[id,x], 1))
         }
-        cat(ctl.name(CTL),"CTL",rownames(CTL$ctl)[id],CTL$l[id,x],colnames(CTL$ctl)[x],"\n",file="network_full.sif",append=TRUE)
+        cat(ctl.name(CTL),"CTL",rownames(CTL$ctl)[id],CTL$ctl[id,x],colnames(CTL$ctl)[x],"\n",file="network_full.sif",append=TRUE)
         edges <- edges+1
       }
     }
