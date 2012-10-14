@@ -96,10 +96,9 @@ double* permutation(const Phenotypes phenotypes, const Genotypes genotypes, size
     freematrix((void**)ctls   , genotypes.nmarkers);
     freematrix((void**)g.data , genotypes.nmarkers);
     if(verbose) info("Done with permutation %d\n", p);
-    #ifdef USING_R
-      updateR(0);
-    #endif    
+    updateR(0);
   }
+  qsort(scores, nperms, sizeof(double),d_cmp);
   return scores;
 }
 
@@ -116,13 +115,13 @@ double estimate(double val, double* permutations, size_t nperms){
 }
 
 double** toLOD(double** scores, double* permutations, size_t nmar, size_t nphe, size_t nperms){
-  qsort(permutations, nperms, sizeof(double),d_cmp);
   double** ctls = newdmatrix(nmar, nphe);
   size_t p,m;
   for(m = 0; m < nmar; m++){
     for(p = 0; p < nphe; p++){
       ctls[m][p] = estimate(scores[m][p], permutations, nperms);
     }
+    updateR(0);
   }
   return ctls;
 }
@@ -148,6 +147,7 @@ double** diffcor(const Phenotypes phenotypes, const Genotypes genotypes, size_t 
       if(debug) info(", cleanup\n");
       free(pheno_aa2);
       free(pheno_bb2);
+      updateR(0);
     }
     if(debug) info("Marker done\n");
     free(pheno_aa1);

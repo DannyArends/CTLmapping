@@ -11,7 +11,9 @@ int c_cmp(const void *a, const void *b){
 int d_cmp(const void *a, const void *b){
   const double *ia = (const double *)a;
   const double *ib = (const double *)b;
-  return ceil(*ia  - *ib);
+  if(*ia < *ib) return -1;
+  else if(*ia > *ib) return 1;
+  return 0;
 }
 
 /* qsort int comparison function */
