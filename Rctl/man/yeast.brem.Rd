@@ -4,7 +4,6 @@
 \title{ 
   Example gene expression data from Saccharomyces cerevisiae on 301 RNA expressions.
 }
-
 \description{
   Saccharomyces recombinant inbred lines. There are 109 lines, 301 phenotypes, genotyped 
   at 282 markers on 16 chromosomes stored as a list with 3 matrices: genotypes, phenotypes

@@ -26,7 +26,6 @@
 }
 \references{
   \itemize{
-   
     \item Keurentjes, J. J. and Fu, J. and de Vos, C. H. and Lommen, A. and Hall, R. D. and 
       Bino, R. J. and van der Plas, L. H. and Jansen, R. C. and Vreugdenhil, D. and 
       Koornneef, M. (2006), The genetics of plant metabolism. \emph{Nature Genetics.} 

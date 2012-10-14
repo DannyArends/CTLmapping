@@ -24,7 +24,13 @@
     \item \code{\link{CTLprofiles}} - Extract CTL interaction profiles
   }
   For all these functions we also provide examples and demonstrations on real genetical 
-  genomics data.
+  genomics data. We thank all contributors for publishing their data online and will 
+  accept submissions of intrestion datasets, currently ctl provides:
+  \itemize{
+    \item \code{\link{ath.metabolites}} - Metabolite expression data from Arabidopsis Thaliana
+    \item \code{\link{ath.churchill}} - Metabolite expression data from Arabidopsis Thaliana
+    \item \code{\link{yeast.brem}} - Gene expression data from Saccharomyces cerevisiae
+  }
 }
 \details{
   More detailed information and/or examples are given per function as needed.
