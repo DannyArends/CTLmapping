@@ -44,6 +44,7 @@
 
 %helper.functions.R
 \alias{remove.diag}
+\alias{dcor}
 \alias{get.chr.edges}
 \alias{up}
 \alias{dw}

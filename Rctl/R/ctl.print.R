@@ -27,9 +27,9 @@ CTLsignificant <- function(CTLobject, significance = 0.05, what = c("names","ids
         if(what != "ids"){ m_above <- names(m_above) }
         for(m in m_above){
           if(what == "ids"){
-            all_sign <- rbind(all_sign, c(x, m, p, CTLobject[[x]]$ctl[m, p]) )
+            all_sign <- rbind(all_sign, c(x, m, p, CTLobject[[x]]$ctl[m, p], CTLobject[[x]]$dcor[m, p]) )
           }else{
-            all_sign <- rbind(all_sign, c(ctl.name(CTLobject[[x]]), m, p, CTLobject[[x]]$ctl[m, p]) )
+            all_sign <- rbind(all_sign, c(ctl.name(CTLobject[[x]]), m, p, CTLobject[[x]]$ctl[m, p], CTLobject[[x]]$dcor[m, p]) )
           }
         }
       }
@@ -39,7 +39,7 @@ CTLsignificant <- function(CTLobject, significance = 0.05, what = c("names","ids
   if(!is.null(all_sign)){
     all_sign <- as.data.frame(all_sign)
     all_sign[,4] <- round(as.numeric(as.character(all_sign[,4])),d=2)
-    colnames(all_sign) <- c("trait","marker","trait","lod")
+    colnames(all_sign) <- c("trait","marker","trait","lod","dcor")
     items <- nrow(all_sign)
   }
   cat("Found",items,"significant CTLs\n")

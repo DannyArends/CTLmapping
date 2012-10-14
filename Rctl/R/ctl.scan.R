@@ -10,8 +10,8 @@
 
 #-- CTLscan main function --#
 CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.perms=100, conditions = NULL, have.qtls = NULL, n.cores = 1, geno.enc = c(1,2), verbose = FALSE){
-  if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
-  if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
+  if(missing(genotypes) || is.null(genotypes)) stop("argument 'genotypes' is missing, with no default")
+  if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   st <- proc.time()
   cat("Stage 0.0: Checking data\n")
   toremove <- check.genotypes(genotypes, geno.enc, verbose)
@@ -40,8 +40,8 @@ CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.per
 }
 
 CTLmapping <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, has.qtl = NULL, geno.enc=c(1,2), verbose = FALSE){
-  if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
-  if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
+  if(missing(genotypes) || is.null(genotypes)) stop("argument 'genotypes' is missing, with no default")
+  if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   n.ind = nrow(genotypes); n.mar = ncol(genotypes); n.phe = ncol(phenotypes)
   genotypes[genotypes==geno.enc[1]] <- 0
   genotypes[genotypes==geno.enc[2]] <- 1
@@ -66,6 +66,10 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, has.qtl 
   res$dcor  <- matrix(result$dcor, n.mar, n.phe)
   res$perms <- result$perms
   res$ctl   <- matrix(result$ctl, n.mar, n.phe)
+  if(any(is.na(res$dcor))){
+    warning("NaN DCOR scores detected, no variance ?")
+    res$ctl[is.na(res$dcor)] <- 0
+  }
   rownames(res$dcor) <- colnames(genotypes); colnames(res$dcor) <- colnames(phenotypes)
   rownames(res$ctl)  <- colnames(genotypes); colnames(res$ctl)  <- colnames(phenotypes)
   attr(res,"name") <- colnames(phenotypes)[pheno.col]
