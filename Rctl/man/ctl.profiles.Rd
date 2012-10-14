@@ -14,7 +14,7 @@
 \arguments{
   \item{CTLobject}{ An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
   \item{against}{ Plot the CTL against either: markers or phenotypes. }
-  \item{significance}{ Significance threshold for setting a genomewide FDR. }
+  \item{significance}{ Significance threshold to set a genome wide False Discovery Rate (FDR). }
   \item{verbose}{ Be verbose. }
   \item{warn}{ Warn when there are not enough permutations. }
 }

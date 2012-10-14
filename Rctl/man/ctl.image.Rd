@@ -9,17 +9,17 @@
 
 \usage{
 \method{image}{CTLobject}(x, against = c("markers","phenotypes"), significance = 0.05, 
-      col=whiteblack, do.grid=TRUE, grid.col = "black", verbose = FALSE, add=FALSE, breaks = c(0, 1, 2, 3, 10, 10000), marker_info, \dots)
+      col=whiteblack, do.grid=TRUE, grid.col = "white", verbose = FALSE, add=FALSE, breaks = c(0, 1, 2, 3, 10, 10000), marker_info, \dots)
 }
 
 \arguments{
   \item{x}{ An object of class \code{"CTLscan"}, as output by \code{\link{CTLscan}}. }
-  \item{against}{ Which interaction matrice to image, the phenotype*marker or the phenotype*phenotypes, 
-  this parameter is passed to the \code{\link{CTLprofiles}} function. }
-  \item{significance}{ Significance threshold for setting a genomewide FDR. }
+  \item{against}{ Plot which interaction matrice, options are: markers: the phenotype*marker or 
+                  phenotypes: the phenotype*phenotypes matrix. }
+  \item{significance}{ Significance threshold to set a genome wide False Discovery Rate (FDR). }
   \item{col}{ Color-range used in plotting. }
-  \item{do.grid}{ Draw grid lines. }
-  \item{grid.col}{ Colors used to draw the grid. }
+  \item{do.grid}{ When TRUE, grid lines are added to the plot. }
+  \item{grid.col}{ Color used for the grid lines, only used when do.grid = TRUE. }
   \item{verbose}{ Be verbose. }
   \item{add}{ Add this plot to a previously opened plot window. }
   \item{breaks}{ See par }

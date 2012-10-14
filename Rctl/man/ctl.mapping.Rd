@@ -52,8 +52,12 @@ CTLscan, a list of:
 \examples{
   library(ctl)
   data(ath.metabolites) # Arabidopsis Thaliana dataset
-  CTLscan1 <- CTLmapping(ath.metab$genotypes, ath.metab$phenotypes)
-  plot(CTLscan1)        # Plot the first phenotype scan
+  singlescan <- CTLmapping(ath.metab$genotypes, ath.metab$phenotypes, pheno.col=23)
+
+  plot(singlescan)      # Plot the results of the CTL scan for the phenotype
+
+  summary <- CTLsignificant(singlescan)
+  summary               # Get a list of significant CTLs
 }
 
 \keyword{methods}

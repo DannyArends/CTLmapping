@@ -8,14 +8,14 @@
 # Image plot routines for CTL analysis
 #
 
-image.CTLobject <- function(x, against = c("markers","phenotypes"), significance = 0.05, col=whiteblack, do.grid=TRUE, grid.col = "black", verbose = FALSE, add=FALSE, breaks = c(0, 1, 2, 3, 10, 10000), marker_info, ...){
+image.CTLobject <- function(x, against = c("markers","phenotypes"), significance = 0.05, col=whiteblack, do.grid=TRUE, grid.col = "white", verbose = FALSE, add=FALSE, breaks = c(0, 1, 2, 3, 10, 10000), marker_info, ...){
   colorrange <- col
   mymatrix <- CTLprofiles(x, against, significance)
   mainlabel <- paste("CTL phenotypes vs",against[1],"at P-value <",significance)
   internal.image(mymatrix, colorrange, mainlabel,do.grid, grid.col, breaks=breaks, marker_info=marker_info)
 }
 
-qtlimage <- function(CTLscan, do.grid = TRUE, grid.col = "black", verbose = FALSE){
+qtlimage <- function(CTLscan, do.grid = TRUE, grid.col = "white", verbose = FALSE){
   colorrange <- c("white",gray.colors(10)[10:1])
   mymatrix <- NULL
   mynames <- NULL
@@ -61,13 +61,6 @@ addChromosomeLines <- function(marker_info, col='black'){
     axis(1,at=(chr_start[x]+chr_ends[x])/2,paste("Chr",unique(marker_info[,1])[x]),cex.axis=0.3)
   }
   box()
-}
-
-QTLimage <- function(x, do.grid=TRUE, grid.col = "black", verbose = FALSE, ...){
-  colorrange <- c("white",gray.colors(10)[10:1])
-  mymatrix <- attr(x,"qtl")
-  mainlabel <- paste("QTL heatmap")
-  internal.image(mymatrix, colorrange, mainlabel,do.grid, grid.col)
 }
 
 # end of ctl.image.R

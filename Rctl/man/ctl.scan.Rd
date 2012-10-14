@@ -59,10 +59,13 @@ CTLobject, a list with at each index a CTLscan object:
 \examples{
   library(ctl)
   data(ath.metabolites)                    # Arabidopsis Thaliana dataset
-  ctl_result <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, pheno.col=1:5)
+
+  ctl_result <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, pheno.col=1:3)
   ctl_result
-  sign <- CTLsignificant(ctl_result)       # Matrix of Trait, Marker, Trait interactions 
-  sign
+
+  summary <- CTLsignificant(ctl_result)    # Matrix of Trait, Marker, Trait interactions 
+  summary                                  # Get a list of significant CTLs
+
   plot(ctl_result,3)                       # Plot the third phenotype
   image(ctl_result, against="markers")     # PxM matrix
   image(ctl_result, against="phenotypes")  # PxP matrix
