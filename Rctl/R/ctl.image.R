@@ -16,7 +16,7 @@ image.CTLobject <- function(x, against = c("markers","phenotypes"), significance
   internal.image(mymatrix, colorrange, mainlabel,do.grid, grid.col, breaks=breaks, marker_info=marker_info)
 }
 
-qtlimage <- function(x, do.grid = TRUE, grid.col = "white", verbose = FALSE){
+qtlimage <- function(x, do.grid = TRUE, grid.col = "white", verbose = FALSE, ...){
   if(missing(x)) stop("argument 'x' is missing, with no default")
   colorrange <- c("white",gray.colors(10)[10:1])
   mymatrix <- NULL
@@ -27,7 +27,7 @@ qtlimage <- function(x, do.grid = TRUE, grid.col = "white", verbose = FALSE){
   }
   rownames(mymatrix) <- mynames
   colnames(mymatrix) <- names(x[[1]]$qtl)
-  internal.image(mymatrix, colorrange, "QTLs", do.grid, grid.col)
+  internal.image(mymatrix, colorrange, "QTLs", do.grid, grid.col, ...)
   invisible(mymatrix)
 }
 
