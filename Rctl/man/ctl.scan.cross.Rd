@@ -5,7 +5,7 @@
   Scan for Correlated Trait Locus (CTL) in populations (using an R/qtl cross object)
 }
 \usage{
-CTLscan.cross(cross, pheno.col, n.perms=100, conditions = NULL, n.cores=2, verbose = FALSE)
+CTLscan.cross(cross, pheno.col, n.perms=100, conditions=NULL, have.qtls=NULL, n.cores=2, verbose=FALSE)
 }
 
 \arguments{
@@ -14,6 +14,7 @@ CTLscan.cross(cross, pheno.col, n.perms=100, conditions = NULL, n.cores=2, verbo
   \item{n.perms}{ Number of permutations }
   \item{conditions}{ A vector of experimental conditions applied during the experiment. These conditions 
     will be used as covariates in the QTL modeling step. }
+  \item{have.qtls}{ Can be used to provide QTL results, when external QTL results are available. }
   \item{n.cores}{ Number of CPU cores to use during the analysis }
   \item{verbose}{ Be verbose. }
 }

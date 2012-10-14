@@ -6,7 +6,7 @@
 }
 \usage{
 CTLscan(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.perms=100, conditions = NULL, 
-        n.cores = 1, geno.enc = c(1,2), verbose = FALSE)
+        have.qtls=NULL, n.cores = 1, geno.enc = c(1,2), verbose = FALSE)
 }
 
 \arguments{
@@ -16,6 +16,7 @@ CTLscan(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.perms=100, cond
   \item{n.perms}{ Number of permutations to perform. }
   \item{conditions}{ A vector of experimental conditions applied during the experiment. These conditions 
     will be used as covariates in the QTL modeling step. }
+  \item{have.qtls}{ Can be used to provide QTL results, when external QTL results are available. }
   \item{n.cores}{ Number of CPU cores to use during the analysis. }
   \item{geno.enc}{ Specifying the encoding of the genotype matrix. }
   \item{verbose}{ Be verbose. }
