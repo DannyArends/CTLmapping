@@ -46,11 +46,22 @@ CTLobject, a list with at each index a CTLscan object:
 \note{
   TODO
 }
+\seealso{
+  \itemize{
+    \item \code{\link{CTLscan.cross}} - Use an R/qtl cross object with \code{\link{CTLscan}}
+    \item \code{\link{CTLsignificant}} - Significant interactions from a \code{\link{CTLscan}}
+    \item \code{\link{CTLnetwork}} - Create a CTL network from a \code{\link{CTLscan}}
+    \item \code{\link{image.CTLobject}} - Heatmap overview of a \code{\link{CTLscan}}
+    \item \code{\link{plot.CTLscan}} - Plot the CTL curve for a single trait
+  }
+}
 \examples{
   library(ctl)
   data(ath.metabolites)                    # Arabidopsis Thaliana dataset
   ctl_result <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, pheno.col=1:5)
   ctl_result
+  sign <- CTLsignificant(ctl_result)       # Matrix of Trait, Marker, Trait interactions 
+  sign
   plot(ctl_result,3)                       # Plot the third phenotype
   image(ctl_result, against="markers")     # PxM matrix
   image(ctl_result, against="phenotypes")  # PxP matrix

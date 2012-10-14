@@ -40,6 +40,14 @@ CTLscan, a list of:
 \note{
   TODO
 }
+\seealso{
+  \itemize{
+    \item \code{\link{CTLscan}} - Main function to scan for CTL
+    \item \code{\link{CTLscan.cross}} - Use an R/qtl cross object with \code{\link{CTLscan}}
+    \item \code{\link{CTLsignificant}} - Significant interactions from a \code{\link{CTLscan}}
+    \item \code{\link{plot.CTLscan}} - Plot the CTL curve for a single trait
+  }
+}
 \examples{
   library(ctl)
   data(ath.metabolites) # Arabidopsis Thaliana dataset

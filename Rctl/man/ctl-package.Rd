@@ -18,19 +18,20 @@
   The R package is a basic iomplementation and it includes the 
   following core functionality:
   \itemize{
-    \item \code{\link{CTLscan}} - Scan for CTL
+    \item \code{\link{CTLscan}} - Main function to scan for CTL
+    \item \code{\link{CTLsignificant}} - Significant interactions from a \code{\link{CTLscan}}
     \item \code{\link{CTLnetwork}} - Create a CTL network from a \code{\link{CTLscan}}
-    \item \code{\link{CTLprofiles}} - Extract CTL interaction profiles 
     \item \code{\link{image.CTLobject}} - Heatmap overview of a CTLscan
     \item \code{\link{plot.CTLscan}} - Plot the CTL curve for a single trait
+    \item \code{\link{CTLprofiles}} - Extract CTL interaction profiles
   }
-  
-  Also provide are demos
+  For all these functions we also provide examples and demonstrations on real datasets.  
 }
 \details{
   More detailed information and/or examples are given per function as needed.
   Some additional functionality:
   \itemize{
+    \item \code{\link{basic.qc}} - Some basic quality checks for phenotype and genotype data
     \item \code{\link{CTLscan.cross}} - Use an R/qtl cross object with \code{\link{CTLscan}}
   }
 }

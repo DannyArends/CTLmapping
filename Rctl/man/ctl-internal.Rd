@@ -41,6 +41,7 @@
 \alias{plot.CTLscan2}
 \alias{plot.CTLscan3}
 \alias{plotExpression}
+\alias{CTLasLOD}
 
 %helper.functions.R
 \alias{remove.diag}

@@ -37,6 +37,16 @@ Columns: Genetic markers) for the phenotype.
 \note{
   TODO
 }
+\seealso{
+  \itemize{
+    \item \code{\link{CTLscan}} - Main function to scan for CTL
+    \item \code{\link{CTLsignificant}} - Significant interactions from a \code{\link{CTLscan}}
+    \item \code{\link{CTLnetwork}} - Create a CTL network from a \code{\link{CTLscan}}
+    \item \code{\link{image.CTLobject}} - Heatmap overview of a \code{\link{CTLscan}}
+    \item \code{\link{plot.CTLscan}} - Plot the CTL curve for a single trait
+  }
+}
+
 \examples{
   library(ctl)
   if(has_rqtl()){

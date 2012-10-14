@@ -5,7 +5,7 @@
   Get all significant interactions from a genome-wide CTLscan.
 }
 \usage{
-CTLsignificant <- function(CTLobject, significance = 0.05, what = c("names","ids"))
+CTLsignificant(CTLobject, significance = 0.05, what = c("names","ids"))
 }
 
 \arguments{
