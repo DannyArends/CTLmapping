@@ -4,7 +4,6 @@
 \alias{write.node.attributes}
 \alias{write.marker.attributes}
 \alias{QTLnetwork}
-\alias{KEGG.pathway.parser}
 \alias{nodesToGenes}
 
 %zzz.r
@@ -15,14 +14,9 @@
 \alias{get_CtlEnv}
 
 %ctl.statistics.r
-\alias{CTLscantoScanone}
-\alias{CTLscoretoPvalue}
-\alias{toLod}
-\alias{CTLasLOD}
-\alias{CTLtoLODvector}
-\alias{CTLtoP}
 \alias{extrapolateBeyondRange}
-\alias{CTLtoPvalue.internal}
+\alias{CTLscantoScanone}
+\alias{CTLtoLODvector}
 
 %ctl.utils.R
 \alias{check.genotypes}
@@ -34,13 +28,6 @@
 \alias{internal.image}
 \alias{qtlimage}
 \alias{addChromosomeLines}
-
-%qtl.scan.R
-\alias{QTLscan}
-\alias{create.matrix}
-\alias{clean.phenotypes}
-\alias{map.fast}
-\alias{QTLscan.cross}
 
 %ctl.print.R
 \alias{getPermuteThresholds}
