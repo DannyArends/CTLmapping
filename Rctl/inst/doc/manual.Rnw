@@ -296,6 +296,16 @@ function on individual CTLscans and shows a colorful and detailed view of the
 plot(ctls[[1]])
 @
 
+\bigskip
+\textbf{\sffamily Get a list of significant CTLs}
+\nopagebreak
+
+Get significant CTL interactions by using CTLsignificant.
+
+<<echo=TRUE,eval=FALSE>>=
+sign <- CTLsignificant(ctl_scan)
+@
+
 \emph{CTLnetwork and cytoscape}\\
 The CTLnetwork function outputs CTL and (optional) QTL data from the CTLobject into a network 
 format, if mapinfo is available it is used. The network format is relatively easy and can also
@@ -345,12 +355,6 @@ using:
 <<echo=TRUE,eval=FALSE>>=
 ctls <- read.dctl("genotypes.csv","phenotypes.csv",results="<PATH>/output/")
 @
-
-\bigskip
-\textbf{\sffamily Significance using CTLpermute}
-\nopagebreak
-
-Explains how to determine CTL significance using the CTLpermute function.
 
 \bigskip
 \textbf{\sffamily Some famous last words}
