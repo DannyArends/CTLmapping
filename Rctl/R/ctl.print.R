@@ -13,18 +13,37 @@ print.CTLobject <- function(x, ...){
   cat("- Number of scanned phenotypes:",length(x),"\n")
 }
 
-getSignificantCTL <- function(CTLobject, threshold = 0.05, sep = ' '){
-  all_significant <- vector("list", length(CTLobject))
+CTLsignificant <- function(CTLobject, threshold = 0.05, what = c("names","ids")){
+  if(any(class(CTLobject)=="CTLscan")) CTLobject = list(CTLobject)
+  all_sign <- NULL
+  if(length(what) > 1) what = what[1]
   for(x in 1:length(CTLobject)){ #Get all significant CTLs
-    significant_ctls <- names(which(apply(CTLobject[[x]]$ctl,1,function(x){any(x > -log10(threshold))})))
-    if(length(significant_ctls) > 0){
-      for(p in significant_ctls){
-        cat(x, ctl.name(CTLobject[[x]]), p ,colnames(CTLobject[[x]]$ctl)[which.max(CTLobject[[x]]$ctl[p,])], max(CTLobject[[x]]$ctl[p,]),'\n',sep=sep)
+    p_above <- which(apply(CTLobject[[x]]$ctl,2,function(x){any(x > -log10(threshold))}))
+    if(what != "ids"){ p_above <- names(p_above) }
+    
+    if(length(p_above) > 0){
+      for(p in p_above){
+        m_above <- which(CTLobject[[x]]$ctl[,p] > -log10(threshold))
+        if(what != "ids"){ m_above <- names(m_above) }
+        for(m in m_above){
+          if(what == "ids"){
+            all_sign <- rbind(all_sign, c(x, m, p, CTLobject[[x]]$ctl[m, p]) )
+          }else{
+            all_sign <- rbind(all_sign, c(ctl.name(CTLobject[[x]]), m, p, CTLobject[[x]]$ctl[m, p]) )
+          }
+        }
       }
-      all_significant[[x]] <- significant_ctls
     }
   }
-  invisible(all_significant)
+  items <- 0
+  if(!is.null(all_sign)){
+    all_sign <- as.data.frame(all_sign)
+    all_sign[,4] <- round(as.numeric(as.character(all_sign[,4])),d=2)
+    colnames(all_sign) <- c("trait","marker","trait","lod")
+    items <- nrow(all_sign)
+  }
+  cat("Found",items,"significant CTLs\n")
+  invisible(all_sign)
 }
 
 print.CTLscan <- function(x, ...){
