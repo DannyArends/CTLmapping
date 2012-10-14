@@ -9,7 +9,7 @@
 #
 
 #-- CTLscan main function --#
-CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.perms=100, conditions = NULL, n.cores = 1, geno.enc = c(1,2), verbose = FALSE){
+CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.perms=100, conditions = NULL, have.qtls = NULL, n.cores = 1, geno.enc = c(1,2), verbose = FALSE){
   if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   st <- proc.time()
@@ -27,7 +27,9 @@ CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.per
   }
   idx <- 1
   for(phe in pheno.col){
-    results[[idx]] <- CTLmapping(genotypes, phenotypes, pheno.col=phe, n.perms = n.perms, geno.enc=geno.enc, verbose=verbose)
+    qtl <- NULL
+    if(!is.null(have.qtls) && idx < ncol(have.qtls)) qtl <- have.qtls[,idx]
+    results[[idx]] <- CTLmapping(genotypes, phenotypes, pheno.col=phe, n.perms = n.perms, has.qtl = qtl, geno.enc=geno.enc, verbose=verbose)
     attr(results[[idx]],"name") <- colnames(phenotypes)[phe]
     class(results[[idx]]) <- c(class(results[[idx]]),"CTLscan")
     idx <- idx + 1
@@ -37,15 +39,19 @@ CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.per
   results
 }
 
-CTLmapping <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, geno.enc=c(1,2), verbose = FALSE){
+CTLmapping <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, has.qtl = NULL, geno.enc=c(1,2), verbose = FALSE){
   if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   n.ind = nrow(genotypes); n.mar = ncol(genotypes); n.phe = ncol(phenotypes)
   genotypes[genotypes==geno.enc[1]] <- 0
   genotypes[genotypes==geno.enc[2]] <- 1
   res <- list()
-  ss <- proc.time()
-  res$qtl   <- apply(genotypes,2,function(x){-log10(cor.test(x, phenotypes[,pheno.col])$p.value)})
+  ss  <- proc.time()
+  if(!is.null(has.qtl)){
+    res$qtl <- has.qtl
+  }else{
+    res$qtl <- apply(genotypes,2,function(x){-log10(cor.test(x, phenotypes[,pheno.col])$p.value)})
+  }
   if(any(is.na(genotypes)))  genotypes[is.na(genotypes)]   <- -999
   if(any(is.na(phenotypes))) phenotypes[is.na(phenotypes)] <- -999
   e1 <- proc.time()
@@ -69,7 +75,7 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, geno.enc
 }
 
 #-- R/qtl interface --#
-CTLscan.cross <- function(cross, pheno.col, n.perms=100, conditions = NULL, n.cores=2, verbose = FALSE){
+CTLscan.cross <- function(cross, pheno.col, n.perms=100, conditions = NULL, have.qtls = NULL, n.cores=2, verbose = FALSE){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
   if(has_rqtl()){
     require(qtl)
@@ -84,7 +90,7 @@ CTLscan.cross <- function(cross, pheno.col, n.perms=100, conditions = NULL, n.co
     if(missing(pheno.col)) pheno.col <- 1:ncol(phenotypes)
     genotypes <- qtl::pull.geno(cross)
     CTLscan(genotypes=genotypes, phenotypes=phenotypes, pheno.col=pheno.col, n.perms=n.perms, 
-            conditions=conditions, n.cores=n.cores, geno.enc=geno.enc, verbose=verbose)
+            conditions=conditions, have.qtls=have.qtls, n.cores=n.cores, geno.enc=geno.enc, verbose=verbose)
   }else{
     warning("Please install the R/qtl library (install.packages(\"qtl\"))")
   }
