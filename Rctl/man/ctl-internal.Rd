@@ -31,7 +31,6 @@
 
 %ctl.print.R
 \alias{getPermuteThresholds}
-\alias{getSignificantCTL}
 \alias{print.CTLpermute}
 
 %ctl.plot.R

@@ -13,17 +13,17 @@ print.CTLobject <- function(x, ...){
   cat("- Number of scanned phenotypes:",length(x),"\n")
 }
 
-CTLsignificant <- function(CTLobject, threshold = 0.05, what = c("names","ids")){
+CTLsignificant <- function(CTLobject, significance = 0.05, what = c("names","ids")){
   if(any(class(CTLobject)=="CTLscan")) CTLobject = list(CTLobject)
   all_sign <- NULL
   if(length(what) > 1) what = what[1]
   for(x in 1:length(CTLobject)){ #Get all significant CTLs
-    p_above <- which(apply(CTLobject[[x]]$ctl,2,function(x){any(x > -log10(threshold))}))
+    p_above <- which(apply(CTLobject[[x]]$ctl,2,function(x){any(x > -log10(significance))}))
     if(what != "ids"){ p_above <- names(p_above) }
     
     if(length(p_above) > 0){
       for(p in p_above){
-        m_above <- which(CTLobject[[x]]$ctl[,p] > -log10(threshold))
+        m_above <- which(CTLobject[[x]]$ctl[,p] > -log10(significance))
         if(what != "ids"){ m_above <- names(m_above) }
         for(m in m_above){
           if(what == "ids"){
