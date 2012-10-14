@@ -1,14 +1,13 @@
 #
 # ctl.statistics.R
 #
-# copyright (c) 2010 Danny Arends, Bruno Tesson and Ritsert C. Jansen
-# last modified Jan, 2012
+# copyright (c) 2010-2012 - GBIC, Danny Arends, Bruno Tesson and Ritsert C. Jansen
+# last modified Oct, 2012
 # first written Nov, 2011
 # 
 # R functions to do transform CTL mapping scores to Pvalues and LOD
 # Example data C. Elegans and available at request ( Danny.Arends@gmail.com )
 #
-
 
 #Use the top 10% of permutation scores and fit a GPD uppertail distribution, then use the 
 #GPD to obtain P-values for outliers, If the GPD estimates a 0 p-value we reduce our value 

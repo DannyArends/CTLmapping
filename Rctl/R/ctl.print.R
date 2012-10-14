@@ -1,8 +1,8 @@
 #
 # ctl.print.R
 #
-# copyright (c) 2010-2011 Danny Arends and Ritsert C. Jansen
-# last modified Jan, 2012
+# copyright (c) 2010-2012 - GBIC, Danny Arends, Bruno Tesson and Ritsert C. Jansen
+# last modified Oct, 2012
 # first written Oct, 2011
 # 
 # Print routines for CTL analysis
@@ -47,6 +47,7 @@ CTLsignificant <- function(CTLobject, significance = 0.05, what = c("names","ids
 }
 
 print.CTLscan <- function(x, ...){
+  if(missing(x)) stop("argument 'x' is missing, with no default")
   cat("CTLscan summary",attr(x$ctl,"name"),"\n\n")
   cat("- Number of background phenotypes",dim(x$ctl)[1],"\n")
   cat("- Number of markers",dim(x$ctl)[2],"\n")

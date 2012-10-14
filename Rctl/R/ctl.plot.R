@@ -1,8 +1,8 @@
 #
 # ctl.plot.R
 #
-# copyright (c) 2010 Danny Arends and Bruno Tesson
-# last modified Jan, 2012
+# copyright (c) 2010-2012 - GBIC, Danny Arends, Bruno Tesson and Ritsert C. Jansen
+# last modified Oct, 2012
 # first written Nov, 2010
 # 
 # Plotting routines for CTL analysis

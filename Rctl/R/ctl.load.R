@@ -1,7 +1,7 @@
 #
 # ctl.load.R
 #
-# copyright (c) 2012 Danny Arends, Bruno Tesson and Ritsert C. Jansen
+# copyright (c) 2010-2012 - GBIC, Danny Arends, Bruno Tesson and Ritsert C. Jansen
 # last modified Jul, 2012
 # first written Jun, 2012
 # 

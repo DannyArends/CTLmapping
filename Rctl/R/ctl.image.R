@@ -1,35 +1,38 @@
 #
 # ctl.image.R
 #
-# copyright (c) 2010 Danny Arends and Ritsert C. Jansen
-# last modified Jan, 2012
+# copyright (c) 2010-2012 - GBIC, Danny Arends, Bruno Tesson and Ritsert C. Jansen
+# last modified Oct, 2012
 # first written Nov, 2010
 # 
 # Image plot routines for CTL analysis
 #
 
 image.CTLobject <- function(x, against = c("markers","phenotypes"), significance = 0.05, col=whiteblack, do.grid=TRUE, grid.col = "white", verbose = FALSE, add=FALSE, breaks = c(0, 1, 2, 3, 10, 10000), marker_info, ...){
+  if(missing(x)) stop("argument 'x' is missing, with no default")
   colorrange <- col
   mymatrix <- CTLprofiles(x, against, significance)
   mainlabel <- paste("CTL phenotypes vs",against[1],"at P-value <",significance)
   internal.image(mymatrix, colorrange, mainlabel,do.grid, grid.col, breaks=breaks, marker_info=marker_info)
 }
 
-qtlimage <- function(CTLscan, do.grid = TRUE, grid.col = "white", verbose = FALSE){
+qtlimage <- function(x, do.grid = TRUE, grid.col = "white", verbose = FALSE){
+  if(missing(x)) stop("argument 'x' is missing, with no default")
   colorrange <- c("white",gray.colors(10)[10:1])
   mymatrix <- NULL
   mynames <- NULL
-  for(num in 1:length(CTLscan)){ 
-    mymatrix <- rbind(mymatrix,as.numeric(unlist(CTLscan[[num]]$qtl))) 
-    mynames <- c(mynames,ctl.name(CTLscan[[num]]))  
+  for(num in 1:length(x)){ 
+    mymatrix <- rbind(mymatrix,as.numeric(unlist(x[[num]]$qtl))) 
+    mynames <- c(mynames,ctl.name(x[[num]]))  
   }
   rownames(mymatrix) <- mynames
-  colnames(mymatrix) <- names(CTLscan[[1]]$qtl)
+  colnames(mymatrix) <- names(x[[1]]$qtl)
   internal.image(mymatrix, colorrange, "QTLs", do.grid, grid.col)
   invisible(mymatrix)
 }
 
 internal.image <- function(mymatrix, colorrange = whiteblack, mainlabel="Image", do.grid = TRUE, grid.col = 'white', add=FALSE, breaks = c(0, 1, 2, 3, 10, 10000), marker_info){
+  if(missing(mymatrix)) stop("argument 'mymatrix' is missing, with no default")
   if(!is.null(mymatrix)){ 
     image(1:ncol(mymatrix),1:nrow(mymatrix),t(mymatrix), main=mainlabel, yaxt="n", 
           xaxt="n", ylab="", xlab="",col=c("white",gray.colors(4)[4:1]), cex.main=0.7, 

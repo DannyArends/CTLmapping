@@ -26,7 +26,6 @@
 
 %ctl.image.R
 \alias{internal.image}
-\alias{qtlimage}
 \alias{addChromosomeLines}
 
 %ctl.print.R

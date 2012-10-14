@@ -1,19 +1,19 @@
 #
 # ctl.network.R
 #
-# copyright (c) 2010 Danny Arends and Bruno Tesson
-# last modified Jan, 2012
+# copyright (c) 2010-2012 - GBIC, Danny Arends, Bruno Tesson and Ritsert C. Jansen
+# last modified Oct, 2012
 # first written Oct, 2011
 # 
 # Network routines for CTL analysis
 #
 
-write.marker.attributes <- function(QTLscan, mapinfo){
-  if(missing(QTLscan)) stop("argument 'CTLobject' is missing, with no default")
+write.marker.attributes <- function(CTLobject, mapinfo){
+  if(missing(CTLobject)) stop("argument 'CTLobject' is missing, with no default")
   if(!missing(mapinfo)){
     chr.edges    <- get.chr.edges(mapinfo)+.5
     chr          <- 1
-    markernames  <- colnames(QTLscan)
+    markernames  <- colnames(CTLobject)
   
     cat("", file="node_attributes.txt")
     #Connections between genetic markers

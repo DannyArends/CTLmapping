@@ -1,14 +1,14 @@
 #
 # ctl.profiles.R
 #
-# copyright (c) 2011 Danny Arends and Ritsert C. Jansen
-# last modified Feb, 2012
+# copyright (c) 2010-2012 - GBIC, Danny Arends, Bruno Tesson and Ritsert C. Jansen
+# last modified Oct, 2012
 # first written Oct, 2010
 # 
-#
 
 #Create the 2 possible CTL matrices: 1) phenotypes versus markers (PxM) and 2) Phenotypes versus phenotypes (PxP)
 CTLprofiles <- function(CTLobject, against = c("markers","phenotypes"), significance=0.05, verbose=FALSE, warn = TRUE){
+  if(missing(CTLobject)) stop("argument 'CTLobject' is missing, with no default")
   mymatrix <- NULL
   mynames <- NULL
   warn <- warn

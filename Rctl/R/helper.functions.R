@@ -1,8 +1,8 @@
 #
 # helper.functions.R
 #
-# copyright (c) 2010-2011 Danny Arends and Ritsert C. Jansen
-# last modified May, 2012
+# copyright (c) 2010-2012 - GBIC, Danny Arends, Bruno Tesson and Ritsert C. Jansen
+# last modified Oct, 2012
 # first written May, 2012
 # 
 # Basic QC routines used in the examples of CTL analysis
@@ -39,3 +39,4 @@ top.correlated <- function(x){
   return(ret)
 }
 
+# end of helper.functions.R

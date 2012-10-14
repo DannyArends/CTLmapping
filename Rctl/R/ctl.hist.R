@@ -1,12 +1,11 @@
 #
 # ctl.hist.R
 #
-# copyright (c) 2010-2011 Danny Arends and Ritsert C. Jansen
-# last modified Jan, 2012
+# copyright (c) 2010-2012 - GBIC, Danny Arends, Bruno Tesson and Ritsert C. Jansen
+# last modified Oct, 2012
 # first written Dec, 2011
 # 
 # Histogram routines for CTL analysis
-#
 
 hist.CTLobject <- function(x, pheno.col=1, ...){
   if(missing(x)) stop("argument 'x' which expects a 'CTLobject' object is missing, with no default")

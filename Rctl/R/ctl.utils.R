@@ -1,8 +1,8 @@
 #
 # ctl.utils.R
 #
-# copyright (c) 2010 Danny Arends and Ritsert C. Jansen
-# last modified Feb, 2012
+# copyright (c) 2010-2012 - GBIC, Danny Arends, Bruno Tesson and Ritsert C. Jansen
+# last modified Oct, 2012
 # first written nov, 2010
 # 
 # check.genotypes, getRVM, lodscorestoscanone, getCorrelatedPhenotypes, gcLoop

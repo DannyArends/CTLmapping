@@ -1,8 +1,8 @@
 #
 # ctl.scan.R
 #
-# copyright (c) 2010 Danny Arends and Ritsert C. Jansen
-# last modified Feb, 2012
+# copyright (c) 2010-2012 - GBIC, Danny Arends, Bruno Tesson and Ritsert C. Jansen
+# last modified Oct, 2012
 # first written Jan, 2011
 # 
 # R functions to do CTL mapping
