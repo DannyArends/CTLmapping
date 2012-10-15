@@ -51,7 +51,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   dcors = diffcor(phenotypes, genotypes, phenotype);
   for(i=0; i < (nphenotypes*nmarkers); i++){
     int m = i % nmarkers; int p = i / nmarkers;
-    dcor[i] = dcors[m][p];
+    dcor[i] = floorf(dcors[m][p] * 1000 + 0.5) / 1000;
   }
 
   info(", Permutation");
@@ -67,7 +67,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   for(i=0; i < (nphenotypes*nmarkers); i++){
     int m = i % nmarkers;
     int p = i / nmarkers;
-    res[i] = ctls[m][p];
+    res[i] = floorf(ctls[m][p] * 1000 + 0.5) / 1000;
   }
   freematrix((void**)dcors, genotypes.nmarkers);
   freematrix((void**)ctls, genotypes.nmarkers);
