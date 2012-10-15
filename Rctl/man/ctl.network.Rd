@@ -11,7 +11,7 @@ CTLnetwork(CTLobject, significance=0.05, what=c("names","ids"), add.qtls=FALSE, 
   \item{CTLobject}{ An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
   \item{significance}{ Significance threshold for a genome wide false discovery rate (FDR). }
   \item{what}{ Return trait and marker names or column numbers (for indexing). }
-  \item{add.qtl}{ Should marker QTL trait interactions be added to the generated sif network 
+  \item{add.qtls}{ Should marker QTL trait interactions be added to the generated sif network 
     file, QTLs are included when they are above -log10(significance/n.markers). }
   \item{mapinfo}{ The mapinfo matrix with 3 columns: "Chr" - the chromosome number, "cM" - the 
     location of the marker in centiMorgans and the 3rd column "Mbp" - The location of the marker 
