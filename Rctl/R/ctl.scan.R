@@ -13,15 +13,14 @@ CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.per
   if(missing(genotypes) || is.null(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   st <- proc.time()
-  cat("Stage 0.0: Checking data\n")
+  cat("Checking data\n")
   toremove <- check.genotypes(genotypes, geno.enc, verbose)
 
   results <- vector("list",length(pheno.col))
-  stage <- 1
   cat("data.overview:",ncol(phenotypes)," phenotypes,", nrow(phenotypes)," individuals, ", ncol(genotypes)," markers\n")
 
   if(!is.null(toremove)){
-    cat("Stage 0.",stage,": Cleaning genotype data for mapping\n",sep="")
+    cat("Cleaning genotype data for mapping\n")
     warning(paste("Removing",length(toremove),"/",ncol(genotypes),"genotype markers")) 
     genotypes <- genotypes[,-toremove]
   }
