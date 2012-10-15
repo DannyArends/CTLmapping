@@ -50,7 +50,7 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, has.qtl 
   if(!is.null(has.qtl)){
     res$qtl <- has.qtl
   }else{
-    res$qtl <- apply(genotypes,2,function(x){-log10(cor.test(x, phenotypes[,pheno.col])$p.value)})
+    res$qtl <- apply(genotypes,2,function(x){-log10(t.test(phenotypes[,pheno.col] ~ x)$p.value)})
   }
   if(any(is.na(genotypes)))  genotypes[is.na(genotypes)]   <- -999
   if(any(is.na(phenotypes))) phenotypes[is.na(phenotypes)] <- -999
