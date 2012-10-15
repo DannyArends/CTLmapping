@@ -15,7 +15,8 @@ CTLnetwork(CTLobject, significance=0.05, what=c("names","ids"), add.qtls=FALSE, 
     file, QTLs are included when they are above -log10(significance/n.markers). }
   \item{mapinfo}{ The mapinfo matrix with 3 columns: "Chr" - the chromosome number, "cM" - the 
     location of the marker in centiMorgans and the 3rd column "Mbp" - The location of the marker 
-    in Mega basepairs. marker names (rownames) should match those in the CTLobject. }
+    in Mega basepairs. If supplied the marker names (rownames) should match those in the 
+    CTLobject (only significant markers will be annotated). }
   \item{file}{ A connection, or a character string naming the file to print to. If "" (the 
     default), CTLnetwork prints to the standard output connection, the console unless redirected 
     by sink. }

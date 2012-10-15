@@ -53,23 +53,31 @@ CTLnetwork <- function(CTLobject, significance = 0.05, what = c("names","ids"), 
       if(add.qtls){
         bfc <- length(CTLscan$qtl)
         above <- which(CTLscan$qtl > -log10((0.05/bfc)))
+        qtlmarkernames <- names(above); qtlmid <- 1
         for(m in above){
           cat(name, "\tQTL\t", markern[m],"\tQTL\t", CTLscan$qtl[m], "\n", sep="", file=netfile, append=TRUE)
+          all_m <- CTLnetwork.addmarker(all_m, mapinfo, markern[data[2]], qtlmarkernames[qtlmid])
+          qtlmid <- qtlmid+1
         }
       }
       cat(name, "\t", "CTL_", data[1],"_",data[3], "\t", markern[data[2]],"\tCTL\t", CTLscan$ctl[data[2],data[3]], "\n",sep="",file=netfile,append=TRUE)
       cat(markern[data[2]], "\t", "CTL_", data[1],"_",data[3], "\t", traitsn[data[3]],"\tCTL\t", CTLscan$ctl[data[2],data[3]], "\n",sep="",file=netfile,append=TRUE)
-      if(!missing(mapinfo)){
-        mid   <- which(rownames(mapinfo) %in% rownames(CTLscan$dcor)[data[2]])
-        mann  <- paste(markern[data[2]],"\tMARKER\t",mapinfo[mid,1],"\t",mapinfo[mid,2],sep="")
-        all_m <- unique(c(all_m, mann))
-      }
+      all_m <- CTLnetwork.addmarker(all_m, mapinfo, markern[data[2]], rownames(CTLscan$dcor)[data[2]])
       all_p <- unique(c(all_p, name, traitsn[data[3]]))
     }
     cat("NODE.DESCRIPTION\n")
     for(m in all_m){ cat(m,"\n",    sep="", file=nodefile, append=TRUE); }
     for(p in all_p){ cat(p,"\tPHENOTYPE\n", sep="", file=nodefile, append=TRUE); }
   }
+}
+
+CTLnetwork.addmarker <- function(markers, mapinfo, name, realname){
+  if(!missing(mapinfo)){
+    id      <- which(rownames(mapinfo) %in% realname)
+    fname   <- paste(name,"\tMARKER\t",mapinfo[id,1],"\t",mapinfo[id,2],sep="")
+    markers <- unique(c(markers, fname))
+  }
+  return(markers)
 }
 
 # end of ctl.network.R

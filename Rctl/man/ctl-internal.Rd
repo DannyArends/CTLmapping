@@ -1,17 +1,11 @@
 \name{ctl-internal}
 
 %ctl.network.R
-\alias{write.node.attributes}
-\alias{write.marker.attributes}
-\alias{QTLnetwork}
-\alias{nodesToGenes}
+\alias{CTLnetwork.addmarker}
 
 %zzz.r
-\alias{has_d}
 \alias{has_snow}
-\alias{has_rcurl}
 \alias{has_rqtl}
-\alias{get_CtlEnv}
 
 %ctl.statistics.r
 \alias{extrapolateBeyondRange}
