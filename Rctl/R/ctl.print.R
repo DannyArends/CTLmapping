@@ -38,7 +38,7 @@ CTLsignificant <- function(CTLobject, significance = 0.05, what = c("names","ids
   items <- 0
   if(!is.null(all_sign)){
     all_sign <- as.data.frame(all_sign)
-    all_sign[,4] <- round(as.numeric(as.character(all_sign[,4])),d=2)
+    all_sign[,4] <- round(as.numeric(as.character(all_sign[,4])), digits=2)
     colnames(all_sign) <- c("trait","marker","trait","lod","dcor")
     items <- nrow(all_sign)
   }
