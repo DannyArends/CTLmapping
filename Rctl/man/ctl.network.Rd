@@ -5,27 +5,31 @@
   Create a file containing the interaction network from a genome-wide CTLscan of multiple traits.
 }
 \usage{
-CTLnetwork(CTLobject, mapinfo, significance=0.05, add.qtl=TRUE, verbose=FALSE)
+CTLnetwork(CTLobject, significance=0.05, what=c("names","ids"), add.qtls=FALSE, mapinfo, file="")
 }
-
 \arguments{
   \item{CTLobject}{ An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
-  \item{significance}{ Significance threshold for setting a genomewide FDR. }
-  \item{mapinfo}{ The mapinfo matrix with 3 columns: "Chr" - the chromosome number, "cM" - the location of the marker in 
-                  centiMorgans and the 3rd column "Mbp" - The location of the marker in Mega basepairs. }
-  \item{add.qtl}{ Should QTL lines be added to the generated sif. }
-  \item{verbose}{ Be verbose }
+  \item{significance}{ Significance threshold for a genome wide false discovery rate (FDR). }
+  \item{what}{ Return trait and marker names or column numbers (for indexing). }
+  \item{add.qtl}{ Should marker QTL trait interactions be added to the generated sif network 
+    file, QTLs are included when they are above -log10(significance/n.markers). }
+  \item{mapinfo}{ The mapinfo matrix with 3 columns: "Chr" - the chromosome number, "cM" - the 
+    location of the marker in centiMorgans and the 3rd column "Mbp" - The location of the marker 
+    in Mega basepairs. marker names (rownames) should match those in the CTLobject. }
+  \item{file}{ A connection, or a character string naming the file to print to. If "" (the 
+    default), CTLnetwork prints to the standard output connection, the console unless redirected 
+    by sink. }
 }
 \details{
-Output 2 sif network files, and a node attributes file:
+Outputs a sif network file, and a node attribute file:
 \itemize{
-  \item network_full.sif    - Shows all the significant CTL connections between traits
-  \item network_summary.sif - Shows only a single summarized CTL connection between any 2 traits
-  \item node_attributes.txt - Attributes of the genetic marker nodes to color chromosomes
+  \item ctlnet<FILE>.sif - Shows CTL connections from Trait to Marker with edge descriptions
+  \item ctlnet<FILE>.nodes - Attributes of the nodes (Traits and Genetic markers) nodes to this 
+    file can be used to either color chromosomes, or add chromosome locations.
 }
 }
 \value{
- Vector of phenotype names inside the network
+  NONE
 }
 \references{ 
   TODO
@@ -40,8 +44,6 @@ Output 2 sif network files, and a node attributes file:
 \examples{
   library(ctl)
   data(ath.result)
-  in_network <- CTLnetwork(ath.result)
-  in_network
+  CTLnetwork(ath.result, 0.01)
 }
-
 \keyword{methods}
