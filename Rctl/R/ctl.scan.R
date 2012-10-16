@@ -62,13 +62,14 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, has.qtl 
                           ctl=as.double(rep(0,n.mar*n.phe)), 
                           PACKAGE="ctl")
   e2 <- proc.time()
-  res$dcor  <- Matrix(result$dcor, n.mar, n.phe) # Use matrix package to save memory
+  res$dcor  <- matrix(result$dcor, n.mar, n.phe)
   res$perms <- result$perms
-  res$ctl   <- Matrix(result$ctl, n.mar, n.phe)  # Use matrix package to save memory
+  res$ctl   <- matrix(result$ctl, n.mar, n.phe)
   if(any(is.na(res$dcor))){
     warning("NaN DCOR scores detected, no variance ?")
     res$ctl[is.na(res$dcor)] <- 0
   }
+  res$ctl  <- Matrix(res$ctl); res$dcor <- Matrix(res$dcor) # Use sparse matrix package to save memory
   rownames(res$dcor) <- colnames(genotypes); colnames(res$dcor) <- colnames(phenotypes)
   rownames(res$ctl)  <- colnames(genotypes); colnames(res$ctl)  <- colnames(phenotypes)
   attr(res,"name") <- colnames(phenotypes)[pheno.col]
