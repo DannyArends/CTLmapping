@@ -8,24 +8,6 @@
 # Network routines for CTL analysis
 #
 
-write.marker.attributes <- function(mapinfo){
-  if(!missing(mapinfo)){
-    chr.edges    <- get.chr.edges(mapinfo)+.5
-    chr          <- 1
-    markernames  <- rownames(mapinfo)
-  
-    #Connections between genetic markers
-    for(m1 in 1:(length(markernames)-1)){
-      cat(paste(markernames[m1],"\tCHR",chr,"\n",sep=""))
-      if((((2*m1+1)/2) %in% chr.edges)){
-        chr <- chr + 1
-      }
-    }
-    #Annotate the last marker on the last chromosome
-    cat(paste(markernames[length(markernames)],"\tCHR",chr,"\n",sep=""))
-  }
-}
-
 CTLnetwork <- function(CTLobject, significance = 0.05, what = c("names","ids"), add.qtls = FALSE, mapinfo, file = ""){
   if(length(what) > 1) what = what[1]
   significant <- CTLsignificant(CTLobject, significance, what = "ids")
