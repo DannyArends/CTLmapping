@@ -50,18 +50,16 @@ Columns: Genetic markers) for the phenotype.
 
 \examples{
   library(ctl)
-  if(has_rqtl()){
-    require(qtl)
-    data(multitrait)      # Arabidopsis Thaliana (R/qtl cross object)
-    
-    qtls <- scanone(multitrait,pheno.col=1:3)
-    ctls <- CTLscan.cross(multitrait, pheno.col=1:3, have.qtls=qtls[,-c(1,2)])
-    
-    plot(ctls, 1)         # Plot the first phenotype
+  require(qtl)
+  data(multitrait)      # Arabidopsis Thaliana (R/qtl cross object)
+  
+  rqtls <- scanone(multitrait,pheno.col=1:3)[,-c(1,2)]
+  ctls <- CTLscan.cross(multitrait, pheno.col=1:3, have.qtls=rqtls)
+  
+  plot(ctls, 1)         # Plot the first phenotype
 
-    summary <- CTLsignificant(ctls)
-    summary               # Get a list of significant CTLs
-  }
+  summary <- CTLsignificant(ctls)
+  summary               # Get a list of significant CTLs
 }
 
 \keyword{methods}

@@ -5,7 +5,7 @@
   Scan for correlated trait loci (CTL)
 }
 \usage{
-CTLmapping(genotypes, phenotypes, pheno.col=1, n.perms=100, has.qtl=NULL, geno.enc=c(1,2), verbose = FALSE)
+CTLmapping(genotypes, phenotypes, pheno.col=1, n.perms=100, have.qtls=NULL, geno.enc=c(1,2), verbose = FALSE)
 }
 
 \arguments{
@@ -13,7 +13,7 @@ CTLmapping(genotypes, phenotypes, pheno.col=1, n.perms=100, has.qtl=NULL, geno.e
   \item{phenotypes}{ Matrix of phenotypes. (individuals x phenotypes) }
   \item{pheno.col}{ Which phenotype column should we analyse. NOTE: CTLmapping is limited to a single trait, for multiple traits use \code{\link{CTLscan}}). }
   \item{n.perms}{ Number of permutations to perform. }
-  \item{has.qtl}{ Can be used to provide QTL results, when external QTL results are available. }
+  \item{have.qtls}{ Can be used to provide QTL results, when external QTL results are available. }
   \item{geno.enc}{ Specifying the encoding of the genotype matrix. }
   \item{verbose}{ Be verbose. }
 }

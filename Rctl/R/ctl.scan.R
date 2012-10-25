@@ -24,21 +24,28 @@ CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.per
     warning(paste("Removing",length(toremove),"/",ncol(genotypes),"genotype markers")) 
     genotypes <- genotypes[,-toremove]
   }
-  idx <- 1
-  for(phe in pheno.col){
-    qtl <- NULL
-    if(!is.null(have.qtls) && idx < ncol(have.qtls)) qtl <- have.qtls[,idx]
-    results[[idx]] <- CTLmapping(genotypes, phenotypes, pheno.col=phe, n.perms = n.perms, has.qtl = qtl, geno.enc=geno.enc, verbose=verbose)
-    attr(results[[idx]],"name") <- colnames(phenotypes)[phe]
-    class(results[[idx]]) <- c(class(results[[idx]]),"CTLscan")
-    idx <- idx + 1
+  if(n.cores==1){
+    idx <- 1
+    for(phe in pheno.col){
+      results[[idx]] <- CTLmapping(genotypes, phenotypes, pheno.col=phe, n.perms = n.perms, have.qtls = have.qtls, geno.enc=geno.enc, verbose=verbose)
+      idx <- idx + 1
+    }
+  }else{
+    min.cores <- min(n.cores,length(pheno.col))
+    if(min.cores != n.cores) warning("Changed the number of cores available (",n.cores," to ",min.cores,") for parallel computation")
+    cl <- parallel::makeCluster(rep("localhost", min.cores))
+    parallel::clusterEvalQ(cl, library(ctl))
+    results <- parallel::parLapply(cl, pheno.col, function(x, have.qtls){
+      CTLmapping(genotypes, phenotypes, pheno.col=x, n.perms = n.perms, have.qtls = have.qtls, geno.enc=geno.enc, verbose=verbose)
+    },have.qtls)
+    parallel::stopCluster(cl)
   }
   cat("Done after: ",(proc.time()-st)[3]," seconds\n")
   class(results) <- c(class(results),"CTLobject")
   results
 }
 
-CTLmapping <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, has.qtl = NULL, geno.enc=c(1,2), verbose = FALSE){
+CTLmapping <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, have.qtls = NULL, geno.enc=c(1,2), verbose = FALSE){
   if(missing(genotypes) || is.null(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   n.ind = nrow(genotypes); n.mar = ncol(genotypes); n.phe = ncol(phenotypes)
@@ -46,8 +53,8 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, has.qtl 
   genotypes[genotypes==geno.enc[2]] <- 1
   res <- list()
   ss  <- proc.time()
-  if(!is.null(has.qtl)){
-    res$qtl <- has.qtl
+  if(!is.null(have.qtls)){
+    res$qtl <- have.qtls[,pheno.col]
   }else{
     res$qtl <- apply(genotypes,2,function(x){-log10(t.test(phenotypes[,pheno.col] ~ x)$p.value)})
   }
@@ -79,7 +86,7 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, has.qtl 
 }
 
 #-- R/qtl interface --#
-CTLscan.cross <- function(cross, pheno.col, n.perms=100, conditions = NULL, have.qtls = NULL, n.cores=2, verbose = FALSE){
+CTLscan.cross <- function(cross, pheno.col, n.perms=100, conditions=NULL, have.qtls=NULL, n.cores=2, verbose=FALSE){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
   if(has_rqtl()){
     require(qtl)
