@@ -8,7 +8,7 @@
     #include "structs.h"
     
     double correlation(double* x, double* y, size_t dim);
-  
+    double tstat(double cor, int dim);
   #endif //__CORRELATION_H__
 #ifdef __cplusplus
   }

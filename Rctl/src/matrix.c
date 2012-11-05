@@ -96,6 +96,26 @@ double matrixmax(double** m, size_t rows, size_t cols){
   return max;
 }
 
+double** transpose(double** m, size_t rows, size_t cols){
+  double** nm = newdmatrix(cols,rows);
+  int r, c;
+  for(r = 0; r < rows; r++){
+    for(c = 0; c < cols; c++){
+      nm[c][r] = m[r][c];
+    }
+  }
+  return nm;
+}
+
+double vectormax(double* v, size_t dim){
+  size_t i;
+  double max = -DBL_MAX;
+  for(i = 0; i < dim; i++){
+    if(v[i] > max) max = v[i];
+  }
+  return max;
+}
+
 void freematrix(void** m, size_t rows){
   size_t i;
   for(i = 0; i < rows; i++){

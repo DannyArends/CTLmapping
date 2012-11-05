@@ -20,11 +20,14 @@
     double** asdmatrix(int rows, int cols, double* data);
     int**    asimatrix(int rows, int cols, int* data);
 
+    double vectormax(double* v, size_t dim);
     double matrixmax(double** m, size_t rows, size_t cols);
     
     void printdmatrix(double** m, size_t rows, size_t cols);
     void printimatrix(int** m, size_t rows, size_t cols);
     void freematrix(void** m, size_t rows);
+
+    double** transpose(double** m, size_t rows, size_t cols);
 
   #endif //__MATRIX_H__
 #ifdef __cplusplus
