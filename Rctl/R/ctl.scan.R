@@ -9,7 +9,7 @@
 #
 
 #-- CTLscan main function --#
-CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.perms=100, conditions = NULL, have.qtls = NULL, n.cores = 1, geno.enc = c(1,2), verbose = FALSE){
+CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.perms=100, strategy = c("breitling", "yang"), conditions = NULL, have.qtls = NULL, n.cores = 1, geno.enc = c(1,2), verbose = FALSE){
   if(missing(genotypes) || is.null(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   st <- proc.time()
@@ -21,13 +21,14 @@ CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.per
 
   if(!is.null(toremove)){
     cat("Cleaning genotype data for mapping\n")
+    if(length(toremove) == ncol(genotypes)) stop("Analysis would remove all markers\n")
     warning(paste("Removing",length(toremove),"/",ncol(genotypes),"genotype markers")) 
-    genotypes <- genotypes[,-toremove]
+    genotypes <- genotypes[,-toremove]    
   }
   if(n.cores==1){
     idx <- 1
     for(phe in pheno.col){
-      results[[idx]] <- CTLmapping(genotypes, phenotypes, pheno.col=phe, n.perms = n.perms, have.qtls = have.qtls, geno.enc=geno.enc, verbose=verbose)
+      results[[idx]] <- CTLmapping(genotypes, phenotypes, pheno.col=phe, n.perms = n.perms, strategy=strategy, have.qtls = have.qtls, geno.enc=geno.enc, verbose=verbose)
       idx <- idx + 1
     }
   }else{
@@ -36,7 +37,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.per
     cl <- parallel::makeCluster(rep("localhost", min.cores))
     parallel::clusterEvalQ(cl, library(ctl))
     results <- parallel::parLapply(cl, pheno.col, function(x, have.qtls){
-      CTLmapping(genotypes, phenotypes, pheno.col=x, n.perms = n.perms, have.qtls = have.qtls, geno.enc=geno.enc, verbose=verbose)
+      CTLmapping(genotypes, phenotypes, pheno.col=x, n.perms = n.perms, strategy=strategy, have.qtls = have.qtls, geno.enc=geno.enc, verbose=verbose)
     },have.qtls)
     parallel::stopCluster(cl)
   }
@@ -45,7 +46,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), n.per
   results
 }
 
-CTLmapping <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, have.qtls = NULL, geno.enc=c(1,2), verbose = FALSE){
+CTLmapping <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, strategy = c("breitling", "yang"), have.qtls = NULL, geno.enc=c(1,2), verbose = FALSE){
   if(missing(genotypes) || is.null(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   n.ind = nrow(genotypes); n.mar = ncol(genotypes); n.phe = ncol(phenotypes)
@@ -56,25 +57,36 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, have.qtl
   if(!is.null(have.qtls)){
     res$qtl <- have.qtls[,pheno.col]
   }else{
-    res$qtl <- apply(genotypes,2,function(x){-log10(t.test(phenotypes[,pheno.col] ~ x)$p.value)})
+    tryCatch(res$qtl <- apply(genotypes,2,function(x){-log10(anova(ln(phenotypes[,pheno.col] ~ x))[[5]][1])}), error = function(e) e)
   }
   if(any(is.na(genotypes)))  genotypes[is.na(genotypes)]   <- -999
   if(any(is.na(phenotypes))) phenotypes[is.na(phenotypes)] <- -999
   e1 <- proc.time()
+  perm.type = 0
+  perms = as.double(rep(0,n.perms))
+  if(strategy[1] == "yang"){
+    perm.type = 1
+    perms = as.double(rep(0,n.perms*n.phe))
+  }
 	result <- .C("R_mapctl",as.integer(n.ind), as.integer(n.mar), as.integer(n.phe),
                     			as.integer(unlist(genotypes)), as.double(unlist(phenotypes)),
                           as.integer((pheno.col-1)), as.integer(n.perms),
-                          dcor=as.double(rep(0,n.mar*n.phe)),
-                          perms=as.double(rep(0,n.perms)),
-                          ctl=as.double(rep(0,n.mar*n.phe)), 
+                          as.integer(perm.type),
+                          dcor =as.double(rep(0,n.mar*n.phe)),
+                          perms=as.double(perms),
+                          ctl  =as.double(rep(0,n.mar*n.phe)),
+                          as.integer(verbose), 
                           PACKAGE="ctl")
   e2 <- proc.time()
   res$dcor  <- matrix(result$dcor, n.mar, n.phe)
   res$perms <- result$perms
+  if(perm.type==1){
+    res$perms <- matrix(result$perms, n.perms, n.phe)
+  }
   res$ctl   <- matrix(result$ctl, n.mar, n.phe)
   if(any(is.na(res$dcor))){
     warning("NaN DCOR scores detected, no variance ?")
-    res$ctl[is.na(res$dcor)] <- 0
+    #res$ctl[is.na(res$dcor)] <- 0
   }
   res$ctl  <- Matrix(res$ctl); res$dcor <- Matrix(res$dcor) # Use sparse matrix package to save memory
   rownames(res$dcor) <- colnames(genotypes); colnames(res$dcor) <- colnames(phenotypes)
@@ -86,7 +98,7 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col=1, n.perms=100, have.qtl
 }
 
 #-- R/qtl interface --#
-CTLscan.cross <- function(cross, pheno.col, n.perms=100, conditions=NULL, have.qtls=NULL, n.cores=2, verbose=FALSE){
+CTLscan.cross <- function(cross, pheno.col, n.perms=100, strategy = c("breitling", "yang"), conditions=NULL, have.qtls=NULL, n.cores=2, verbose=FALSE){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
   if(has_rqtl()){
     require(qtl)
@@ -100,7 +112,7 @@ CTLscan.cross <- function(cross, pheno.col, n.perms=100, conditions=NULL, have.q
     phenotypes <- apply(rqtl_pheno,2,as.numeric)         #R/qtl phenotypes are a data.frame (Need matrix)
     if(missing(pheno.col)) pheno.col <- 1:ncol(phenotypes)
     genotypes <- qtl::pull.geno(cross)
-    CTLscan(genotypes=genotypes, phenotypes=phenotypes, pheno.col=pheno.col, n.perms=n.perms, 
+    CTLscan(genotypes=genotypes, phenotypes=phenotypes, pheno.col=pheno.col, n.perms=n.perms, strategy=strategy,
             conditions=conditions, have.qtls=have.qtls, n.cores=n.cores, geno.enc=geno.enc, verbose=verbose)
   }else{
     warning("Please install the R/qtl library (install.packages(\"qtl\"))")

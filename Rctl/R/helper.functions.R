@@ -26,15 +26,17 @@ dw <- function(){seq(0.1,2,0.1)/2}
 redblue <- function(){c(rgb(up,0,0), rgb(0,0,dw))}
 whiteblack <- function(){c("white",gray.colors(10)[10:1])}
 
-dcor <- function(genotypes, phenotypes, marker=1, pheno1=1, pheno2=1){
+dcor <- function(genotypes, phenotypes, marker=1, pheno1=1, pheno2=1, verbose = FALSE){
   idx1 <- which(genotypes[,marker]==1)
   idx2 <- which(genotypes[,marker]==2)
   c1 <- cor(phenotypes[idx1,pheno1],phenotypes[idx1,pheno2])
   c2 <- cor(phenotypes[idx2,pheno1],phenotypes[idx2,pheno2])
   dcor <- (c1-c2)^2
-  cat("COR_1: ",c1,", COR_2: ",c2,"\n",sep="")
-  cat("DCOR: ",dcor,"\n",sep="")
-  invisible(return(dcor))
+  if(verbose){
+    cat("COR_1: ",c1,", COR_2: ",c2,"\n",sep="")
+    cat("DCOR: ",dcor,"\n",sep="")
+  }
+  invisible(return(c(c1,c2,dcor)))
 }
 
 get.chr.edges <- function(mapinfo){
