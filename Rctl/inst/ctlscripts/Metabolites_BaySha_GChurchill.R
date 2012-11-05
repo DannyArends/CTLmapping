@@ -4,7 +4,7 @@
 # (C) 2012 Danny Arends - GBIC - University of Groningen
 #   - Files are distributed with the Rctl package in Rctl/tests
 # Start by: 
-# setwd("E:/github/Rpackages/CTLmapping/Rctl/inst/ctlscripts")
+# setwd("~/Github/Rpackages/CTLmapping/Rctl/inst/ctlscripts")
 
 metabolites <- read.table("Metabolites_BaySha_GChurchill.txt",sep="\t",row.names=1,header=TRUE)
 genotypes   <- read.table("Genotypes_BaySha.txt",row.names=1,header=TRUE)
@@ -20,6 +20,7 @@ rownames(genotypes) <- as.numeric(rownames(genotypes))
 #Match the genotype matrix to the phenotypes
 ids <- match(rownames(metabolites),rownames(genotypes))
 genotypes <- genotypes[ids,]
+genotypes <- apply(genotypes,2,function(x){as.numeric(as.factor(x))})
 
 #Take only the mean expressions.
 #How can we use the StdDev?
@@ -39,8 +40,8 @@ map_info[1:10,1:3]
 library(ctl)
 source("Helper_Functions.r")
 source("Basic_QC.R",local=TRUE,echo=TRUE)
-#ctls <- CTLscan(genotypes, metabolites, geno.enc=c("A","B"), n.perm = 1250)
-ctls <- CTLscan(genotypes, metabo_order, geno.enc=c("A","B"), n.perm = 1250)
+#ctls <- CTLscan(genotypes, metabolites, geno.enc=c("1","2"), n.perm = 1250)
+ctls <- CTLscan(genotypes, metabo_order, geno.enc=c("1","2"), n.perm = 1250)
 
 #Create comparison QTL / CTL heatmaps using QTLimage() and image.CTLscan()
 png("Comparison_QTL_CTL.png",width=2000,height=1000)

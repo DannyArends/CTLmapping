@@ -62,6 +62,8 @@ CTLobject, a list with at each index a CTLscan object:
 
   ctl_result <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, pheno.col=1:3)
   ctl_result
+  as.numeric(  ctl_result[[1]]$ctl[,1])
+  as.numeric(  ctl_result[[1]]$dcor[,1])
 
   summary <- CTLsignificant(ctl_result)    # Matrix of Trait, Marker, Trait interactions 
   summary                                  # Get a list of significant CTLs
