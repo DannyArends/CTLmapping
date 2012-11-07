@@ -51,9 +51,12 @@ plotInfo <- function(n1, n2, traits=100, n.perms=1000, strategy= c("Single","Sli
 
   #LUDE
   plot(c(-0.5,0.5),c(-0.5,0.5),t='n',main="likelihood P[ (CorA-CorB) ] (Method: LUDE)")
-  LCOR <- pnorm((qnorm(dt(tstat(AA,n1),n1+n2))-qnorm(dt(tstat(BB,n2),n1+n2))))
-  LCOR[is.nan(LCOR)] <- 0.5
-  LCOR <- (0.5-abs(LCOR - 0.5))*2
+#  LCOR <- pnorm((qnorm(dt(tstat(AA,n1),n1+n2))-qnorm(dt(tstat(BB,n2),n1+n2))))
+#  LCOR[is.nan(LCOR)] <- 0.5
+#  LCOR <- (0.5-abs(LCOR - 0.5))*2
+  LCOR <- (atanh(AA) - atanh(BB)) / sqrt((1/(n1-3)) + (1/(n1-3)))
+  LCOR <- dnorm(LCOR)*2
+  LCOR[is.nan(LCOR)] <- 0
   points(tolist(AA), tolist(BB), col=gray(tolist(LCOR)), pch=20, cex=0.1)
   abline(h=0,v=0,lty=3)
 
