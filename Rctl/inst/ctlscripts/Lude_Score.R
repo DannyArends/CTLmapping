@@ -74,7 +74,7 @@ plotInfo <- function(n1, n2, traits=100, n.perms=1000, strategy= c("Single","Sli
   list(tolist(AA), tolist(BB), DCOR, toP(DCOR,perms), tolist(LCOR))
 }
 
-res <- plotInfo(100,400,50,100)
+res <- plotInfo(100,400,50)
 
 #res <- plotInfo(100,100,str="Slice")
 #res <- plotInfo(100,100,str="Box")

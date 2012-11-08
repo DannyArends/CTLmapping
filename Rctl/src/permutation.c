@@ -19,12 +19,13 @@ Genotypes permutegenotypes(Genotypes genotypes){
   return g;
 }
 
-double* permute(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, size_t nperms, int verbose){
+double* permute(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, int alpha, int gamma, size_t nperms, int verbose){
   size_t p,ph;
   double* scores = newdvector(nperms);
+  if(alpha == 1 && gamma == 1){ return scores; }
   for(p = 0; p < nperms; p++){
     Genotypes g = permutegenotypes(genotypes);
-    double** ctls  = diffcor(phenotypes, g, phenotype);
+    double** ctls  = diffcor(phenotypes, g, phenotype, alpha, gamma);
     scores[p] = fabs(matrixmax(ctls, genotypes.nmarkers, phenotypes.nphenotypes));
 
     freematrix((void**)ctls   , genotypes.nmarkers);
@@ -36,12 +37,13 @@ double* permute(const Phenotypes phenotypes, const Genotypes genotypes, size_t p
   return scores;
 }
 
-double** permuteRowWise(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, size_t nperms, int verbose){
+double** permuteRowWise(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, int alpha, int gamma, size_t nperms, int verbose){
   size_t p,ph;
   double** scores = newdmatrix(phenotypes.nphenotypes, nperms);
+  if(alpha == 1 && gamma == 1){ return scores; }
   for(p = 0; p < nperms; p++){
     Genotypes g = permutegenotypes(genotypes);
-    double** ctls  = diffcor(phenotypes, g, phenotype);
+    double** ctls  = diffcor(phenotypes, g, phenotype, alpha, gamma);
     double** tctls = transpose(ctls, genotypes.nmarkers, phenotypes.nphenotypes);
     for(ph = 0; ph <  phenotypes.nphenotypes; ph++){
       scores[ph][p] = fabs(vectormax(tctls[ph], genotypes.nmarkers));
