@@ -9,7 +9,7 @@
 #
 
 #-- CTLscan main function --#
-CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), method = c("Exact","Power","Adjacency"), n.perms=100, strategy = c("breitling", "yang"), conditions = NULL, have.qtls = NULL, n.cores = 1, geno.enc = c(1,2), verbose = FALSE){
+CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), method = c("Exact","Power","Adjacency"), n.perms=100, strategy = c("Breitling", "Yang"), conditions = NULL, have.qtls = NULL, n.cores = 1, geno.enc = c(1,2), verbose = FALSE){
   if(missing(genotypes) || is.null(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   st <- proc.time()
@@ -46,7 +46,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), metho
   results
 }
 
-CTLmapping <- function(genotypes, phenotypes, pheno.col=1, method = c("Exact","Power","Adjacency"), n.perms=100, strategy = c("breitling", "yang"), have.qtls = NULL, geno.enc=c(1,2), verbose = FALSE){
+CTLmapping <- function(genotypes, phenotypes, pheno.col=1, method = c("Exact","Power","Adjacency"), n.perms=100, strategy = c("Breitling", "Yang"), have.qtls = NULL, geno.enc=c(1,2), verbose = FALSE){
   if(missing(genotypes) || is.null(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   n.ind = nrow(genotypes); n.mar = ncol(genotypes); n.phe = ncol(phenotypes)
@@ -65,7 +65,7 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col=1, method = c("Exact","P
 
   perm.type = 0
   perms = as.double(rep(0,n.perms))
-  if(strategy[1] == "yang"){
+  if(strategy[1] == "Yang"){
     perm.type = 1
     perms = as.double(rep(0,n.perms*n.phe))
   }
@@ -114,7 +114,7 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col=1, method = c("Exact","P
 }
 
 #-- R/qtl interface --#
-CTLscan.cross <- function(cross, pheno.col, method = c("Exact","Power","Adjacency"), n.perms=100, strategy = c("breitling", "yang"), conditions=NULL, have.qtls=NULL, n.cores=2, verbose=FALSE){
+CTLscan.cross <- function(cross, pheno.col, method = c("Exact","Power","Adjacency"), n.perms=100, strategy = c("Breitling", "Yang"), conditions=NULL, have.qtls=NULL, n.cores=2, verbose=FALSE){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
   if(has_rqtl()){
     require(qtl)
