@@ -118,6 +118,7 @@ plot.CTLscan <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance 
   CTLmatrix <- matrix(x$ctl[,mysign],nrow(x$ctl),length(mysign))
   summarized <- apply(CTLmatrix,1,sum)
   x$qtl[is.infinite(x$qtl)] <- max(x$qtl[is.finite(x$qtl)])
+  cat("MAX:",max(c(5,summarized)),"\n")
   plot(c(0,nrow(x$ctl)),c(min(c(summarized,x$qtl)),max(c(5,summarized,x$qtl))), type='n',xlab="Marker", ylab="-log10(P-value)", main=paste("Phenotype contribution to CTL of",ctl.name(x)), ...)
   p <- rep(0,nrow(x$ctl))
   i <- 1;
