@@ -9,13 +9,13 @@
 #
 
 #-- CTLscan main function --#
-CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), method = c("Exact","Power","Adjacency"), n.perms=100, strategy = c("Breitling", "Yang"), conditions = NULL, have.qtls = NULL, n.cores = 1, geno.enc = c(1,2), verbose = FALSE){
+CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), method = c("Exact","Power","Adjacency"), n.perms=100, strategy = c("Full", "Pairwise"), conditions = NULL, have.qtls = NULL, n.cores = 1, geno.enc = c(1,2), verbose = FALSE){
   if(missing(genotypes) || is.null(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   st <- proc.time()
   cat("Checking data\n")
   toremove <- check.genotypes(genotypes, geno.enc, verbose)
-
+  phenotypes <- apply(phenotypes,2,rank)
   results <- vector("list",length(pheno.col))
   cat("data.overview:",ncol(phenotypes)," phenotypes,", nrow(phenotypes)," individuals, ", ncol(genotypes)," markers\n")
 
@@ -46,7 +46,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), metho
   results
 }
 
-CTLmapping <- function(genotypes, phenotypes, pheno.col=1, method = c("Exact","Power","Adjacency"), n.perms=100, strategy = c("Breitling", "Yang"), have.qtls = NULL, geno.enc=c(1,2), verbose = FALSE){
+CTLmapping <- function(genotypes, phenotypes, pheno.col=1, method = c("Exact","Power","Adjacency"), n.perms=100, strategy = c("Full", "Pairwise"), have.qtls = NULL, geno.enc=c(1,2), verbose = FALSE){
   if(missing(genotypes) || is.null(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   n.ind = nrow(genotypes); n.mar = ncol(genotypes); n.phe = ncol(phenotypes)
@@ -57,7 +57,7 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col=1, method = c("Exact","P
   if(!is.null(have.qtls)){
     res$qtl <- have.qtls[,pheno.col]
   }else{
-    tryCatch(res$qtl <- apply(genotypes,2,function(x){-log10(anova(ln(phenotypes[,pheno.col] ~ x))[[5]][1])}), error = function(e) e)
+    tryCatch(res$qtl <- apply(genotypes,2,function(x){-log10(anova(lm(phenotypes[,pheno.col] ~ x))[[5]][1])}), error = function(e) e)
   }
   if(any(is.na(genotypes)))  genotypes[is.na(genotypes)]   <- -999
   if(any(is.na(phenotypes))) phenotypes[is.na(phenotypes)] <- -999
@@ -65,7 +65,7 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col=1, method = c("Exact","P
 
   perm.type = 0
   perms = as.double(rep(0,n.perms))
-  if(strategy[1] == "Yang"){
+  if(strategy[1] == "Pairwise"){
     perm.type = 1
     perms = as.double(rep(0,n.perms*n.phe))
   }
@@ -94,9 +94,8 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col=1, method = c("Exact","P
     res$ctl   <- matrix(result$ctl, n.mar, n.phe)
   }else{  #Exact
     res$ctl   <- pnorm(matrix(result$dcor, n.mar, n.phe))
-    #res$ctl[is.na(res$ctl)] <- 0.5
-    #res$ctl   <- (0.5-abs(res$ctl - 0.5))*2
-    res$ctl   <- res$ctl * (n.phe*n.mar)
+    res$ctl[is.na(res$ctl)] <- 0.5
+    res$ctl   <- ((0.5-abs(res$ctl - 0.5))*2) * (n.phe*n.mar)
     res$ctl[res$ctl > 1] <- 1
     res$ctl   <- -log10(res$ctl)
   }
@@ -114,7 +113,7 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col=1, method = c("Exact","P
 }
 
 #-- R/qtl interface --#
-CTLscan.cross <- function(cross, pheno.col, method = c("Exact","Power","Adjacency"), n.perms=100, strategy = c("Breitling", "Yang"), conditions=NULL, have.qtls=NULL, n.cores=2, verbose=FALSE){
+CTLscan.cross <- function(cross, pheno.col, method = c("Exact","Power","Adjacency"), n.perms=100, strategy = c("Full", "Pairwise"), conditions=NULL, have.qtls=NULL, n.cores=2, verbose=FALSE){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
   if(has_rqtl()){
     require(qtl)
