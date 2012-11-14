@@ -37,7 +37,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   dcors = diffcor(phenotypes, genotypes, phenotype, alpha, gamma);
   for(i=0; i < (nphenotypes*nmarkers); i++){
     int m = i % nmarkers; int p = i / nmarkers;
-    dcor[i] = floorf(dcors[m][p] * 1000 + 0.5) / 1000;
+    dcor[i] = dcors[m][p];
   }
 
   if(permtype){
@@ -66,7 +66,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   for(i=0; i < (nphenotypes*nmarkers); i++){
     int m = i % nmarkers;
     int p = i / nmarkers;
-    res[i] = floorf(ctls[m][p] * 1000 + 0.5) / 1000;
+    res[i] = ctls[m][p];
   }
   freematrix((void**)dcors, genotypes.nmarkers);
   freematrix((void**)ctls, genotypes.nmarkers);
