@@ -90,12 +90,10 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col=1, method = c("Exact","P
   if(perm.type==1){
     res$perms <- matrix(result$perms, n.perms, n.phe)
   }
-  if(method[1] != "Exact"){
+  if(method[1] != "Exact"){ # Likelihoods are computed in C
     res$ctl   <- matrix(result$ctl, n.mar, n.phe)
   }else{  #Exact
-    res$ctl   <- pnorm(matrix(result$dcor, n.mar, n.phe))
-    res$ctl[is.na(res$ctl)] <- 0.5
-    res$ctl   <- ((0.5-abs(res$ctl - 0.5))*2) * (n.phe*n.mar)
+    res$ctl   <- (2*dnorm(matrix(result$dcor, n.mar, n.phe))) * (n.mar * n.phe) #Single trait bonferonni correction
     res$ctl[res$ctl > 1] <- 1
     res$ctl   <- -log10(res$ctl)
   }

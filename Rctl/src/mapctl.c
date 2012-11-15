@@ -106,7 +106,7 @@ double** diffcor(const Phenotypes phenotypes, const Genotypes genotypes, size_t 
         if(alpha == 1 && gamma == 1){// DEFAULT No permutations, just exact calculations
           double z1 = .5*log((1.0 + cor_aa)/(1.0 - cor_aa));
           double z2 = .5*log((1.0 + cor_bb)/(1.0 - cor_bb));
-          double se = sqrt((1.0 / (double)(ind_aa.nelements-3)) + (1.0 / (double)(ind_bb.nelements-3)));
+          double se = sqrt((1.0 / ((double)(ind_aa.nelements-3)) + (1.0 / (double)(ind_bb.nelements-3))));
           difcormatrix[m][p] = (z1 - z2) / se;
           //info("Score: %f %f %f -> %f\n",z1,z2,se,difcormatrix[m][p]);
         }else{
