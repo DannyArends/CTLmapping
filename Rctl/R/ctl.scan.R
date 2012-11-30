@@ -13,11 +13,11 @@ CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), metho
   if(missing(genotypes) || is.null(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   st <- proc.time()
-  cat("Checking data\n")
+  if(verbose) cat("Checking data\n")
   toremove <- check.genotypes(genotypes, geno.enc, verbose)
   phenotypes <- apply(phenotypes,2,rank)
   results <- vector("list",length(pheno.col))
-  cat("data.overview:",ncol(phenotypes)," phenotypes,", nrow(phenotypes)," individuals, ", ncol(genotypes)," markers\n")
+  if(verbose) cat("data.overview:",ncol(phenotypes)," phenotypes,", nrow(phenotypes)," individuals, ", ncol(genotypes)," markers\n")
 
   if(!is.null(toremove)){
     cat("Cleaning genotype data for mapping\n")
@@ -41,7 +41,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col = 1:ncol(phenotypes), metho
     },have.qtls)
     parallel::stopCluster(cl)
   }
-  cat("Done after: ",(proc.time()-st)[3]," seconds\n")
+  if(verbose) cat("Done after: ",(proc.time()-st)[3]," seconds\n")
   class(results) <- c(class(results),"CTLobject")
   results
 }
