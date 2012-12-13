@@ -8,7 +8,8 @@
 # Network routines for CTL analysis
 #
 
-CTLnetwork <- function(CTLobject, significance = 0.05, what = c("names","ids"), add.qtls = FALSE, mapinfo, file = ""){
+CTLnetwork <- function(CTLobject, mapinfo, significance = 0.05, what = c("names","ids"), add.qtls = FALSE, file = "", verbose = TRUE){
+  results <- NULL
   if(length(what) > 1) what = what[1]
   significant <- CTLsignificant(CTLobject, significance, what = "ids")
   if(!is.null(significant)){
@@ -42,15 +43,25 @@ CTLnetwork <- function(CTLobject, significance = 0.05, what = c("names","ids"), 
           qtlmid <- qtlmid+1
         }
       }
-      cat(name, "\t", "CTL_", data[1],"_",data[3], "\t", markern[data[2]],"\tCTL\t", CTLscan$ctl[data[2],data[3]], "\n",sep="",file=netfile,append=TRUE)
-      cat(markern[data[2]], "\t", "CTL_", data[1],"_",data[3], "\t", traitsn[data[3]],"\tCTL\t", CTLscan$ctl[data[2],data[3]], "\n",sep="",file=netfile,append=TRUE)
+      lod <- CTLscan$ctl[data[2],data[3]]
+      results <- rbind(results, c(data[1], data[2], data[3], lod))
+      if(nodefile == "" && !verbose){ }else{
+        cat(name, "\t", "CTL_", data[1],"_",data[3], "\t", markern[data[2]],file=netfile, append=TRUE)
+        cat("\tCTL\t", lod, "\n", sep="", file=netfile, append=TRUE)
+        cat(markern[data[2]], "\t", "CTL_", data[1],"_",data[3], "\t",file=netfile, append=TRUE)
+        cat(traitsn[data[3]],"\tCTL\t", lod, "\n", sep="", file=netfile,append=TRUE)
+      }
       all_m <- CTLnetwork.addmarker(all_m, mapinfo, markern[data[2]], rownames(CTLscan$dcor)[data[2]])
       all_p <- unique(c(all_p, name, traitsn[data[3]]))
     }
+    colnames(results) <- c("T1","M","T2","LOD")
     cat("NODE.DESCRIPTION\n")
-    for(m in all_m){ cat(m,"\n",    sep="", file=nodefile, append=TRUE); }
-    for(p in all_p){ cat(p,"\tPHENOTYPE\n", sep="", file=nodefile, append=TRUE); }
+    if(nodefile == "" && !verbose){ }else{
+      for(m in all_m){ cat(m,"\n",    sep="", file=nodefile, append=TRUE); }
+      for(p in all_p){ cat(p,"\tPHENOTYPE\n", sep="", file=nodefile, append=TRUE); }
+    }
   }
+  invisible(results)
 }
 
 CTLnetwork.addmarker <- function(markers, mapinfo, name, realname){
