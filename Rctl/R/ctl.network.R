@@ -2,15 +2,17 @@
 # ctl.network.R
 #
 # copyright (c) 2010-2012 - GBIC, Danny Arends, Bruno Tesson and Ritsert C. Jansen
-# last modified Oct, 2012
+# last modified Dec, 2012
 # first written Oct, 2011
 # 
 # Network routines for CTL analysis
 #
 
 CTLnetwork <- function(CTLobject, mapinfo, significance = 0.05, what = c("names","ids"), add.qtls = FALSE, file = "", verbose = TRUE){
-  results <- NULL
+  if(missing(CTLobject) || is.null(CTLobject)) stop("argument 'CTLobject' is missing, with no default")
   if(length(what) > 1) what = what[1]
+
+  results <- NULL
   significant <- CTLsignificant(CTLobject, significance, what = "ids")
   if(!is.null(significant)){
     all_m <- NULL; all_p <- NULL;
@@ -20,7 +22,7 @@ CTLnetwork <- function(CTLobject, mapinfo, significance = 0.05, what = c("names"
       nodefile <- paste("ctlnet",file,".nodes",sep="")
     }
     cat("",file=netfile); cat("",file=nodefile);
-    cat("NETWORK.SIF\n")
+    if(verbose) cat("NETWORK.SIF\n")
     for(x in 1:nrow(significant)){
       data    <- as.numeric(significant[x,])
       CTLscan <- CTLobject[[data[1]]]
@@ -34,12 +36,12 @@ CTLnetwork <- function(CTLobject, mapinfo, significance = 0.05, what = c("names"
         traitsn <- paste("P", 1:ncol(CTLobject[[data[1]]]$dcor), sep="")
       }
       if(add.qtls){
-        bfc <- length(CTLscan$qtl)
-        above <- which(CTLscan$qtl > -log10((0.05/bfc)))
-        qtlmarkernames <- names(above); qtlmid <- 1
+        bfc    <- length(CTLscan$qtl)
+        above  <- which(CTLscan$qtl > -log10(significance))
+        qtlnms <- names(above); qtlmid <- 1
         for(m in above){
           cat(name, "\tQTL\t", markern[m],"\tQTL\t", CTLscan$qtl[m], "\n", sep="", file=netfile, append=TRUE)
-          all_m <- CTLnetwork.addmarker(all_m, mapinfo, markern[data[2]], qtlmarkernames[qtlmid])
+          all_m  <- CTLnetwork.addmarker(all_m, mapinfo, markern[data[2]], qtlnms[qtlmid])
           qtlmid <- qtlmid+1
         }
       }
@@ -55,7 +57,7 @@ CTLnetwork <- function(CTLobject, mapinfo, significance = 0.05, what = c("names"
       all_p <- unique(c(all_p, name, traitsn[data[3]]))
     }
     colnames(results) <- c("T1","M","T2","LOD")
-    cat("NODE.DESCRIPTION\n")
+    if(verbose) cat("NODE.DESCRIPTION\n")
     if(nodefile == "" && !verbose){ }else{
       for(m in all_m){ cat(m,"\n",    sep="", file=nodefile, append=TRUE); }
       for(p in all_p){ cat(p,"\tPHENOTYPE\n", sep="", file=nodefile, append=TRUE); }

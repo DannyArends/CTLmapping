@@ -7,6 +7,14 @@
 \alias{has_snow}
 \alias{has_rqtl}
 
+%ctl.circle.r
+\alias{mapinfotomarkerlocs}
+\alias{draw.element}
+\alias{draw.spline}
+\alias{circle.loc}
+\alias{nfrom}
+\alias{nto}
+
 %ctl.statistics.r
 \alias{extrapolateBeyondRange}
 \alias{CTLscantoScanone}

@@ -52,16 +52,16 @@ internal.image <- function(mymatrix, colorrange = whiteblack, mainlabel="Image",
   invisible(mymatrix)
 }
 
-addChromosomeLines <- function(marker_info, col='black'){
+addChromosomeLines <- function(markerinfo, col='black'){
   chr_start <- c()
   chr_ends <- c()
-  for(x in unique(marker_info[,1])){
-    chr_start <- c(chr_start,min(which(marker_info[,1]==x)))
-    chr_ends  <- c(chr_ends, max(which(marker_info[,1]==x)))
+  for(x in unique(markerinfo[,1])){
+    chr_start <- c(chr_start,min(which(markerinfo[,1]==x)))
+    chr_ends  <- c(chr_ends, max(which(markerinfo[,1]==x)))
   }
   abline(v=.5 + chr_ends, lwd=1, lty=2, col=col)
   for(x in 1:length(chr_start)){
-    axis(1,at=(chr_start[x]+chr_ends[x])/2,paste("Chr",unique(marker_info[,1])[x]),cex.axis=0.3)
+    axis(1,at=(chr_start[x]+chr_ends[x])/2,paste("Chr",unique(markerinfo[,1])[x]),cex.axis=0.3)
   }
   box()
 }
