@@ -13,7 +13,10 @@ ctl.circle(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, cex = 1
 
 \arguments{
   \item{CTLobject}{ An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
-  \item{mapinfo}{ Genetic map chromosome and location information (Colums: Chr cMPos). }
+  \item{mapinfo}{ The mapinfo matrix with 3 columns: "Chr" - the chromosome number, "cM" - the 
+    location of the marker in centiMorgans and the 3rd column "Mbp" - The location of the marker 
+    in Mega basepairs. If supplied the marker names (rownames) should match those in the 
+    CTLobject (only significant markers will be annotated). }
   \item{pheno.col}{ Which phenotype results to plot. Defaults to plot all phenotypes. } 
   \item{significance}{ Significance threshold to set a genome wide False Discovery Rate (FDR). }
   \item{gap}{ Gap between chromosomes in cM. }
@@ -32,6 +35,8 @@ ctl.circle(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, cex = 1
 \examples{
   library(ctl)
   data(ath.result)       # Arabidopsis Thaliana results
+  data(ath.metabolites)  # Arabidopsis Thaliana data set
+
   ctl.circle(ath.result, ath.metab$map, sign=0.001)
   ctl.circle(ath.result, ath.metab$map, pheno.col = 1:6, sign=0.01)
 }

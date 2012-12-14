@@ -13,7 +13,10 @@ ctl.lineplot(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, cex =
 
 \arguments{
   \item{CTLobject}{ An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
-  \item{mapinfo}{ Genetic map chromosome and location information (Colums: Chr cMPos). }
+  \item{mapinfo}{ The mapinfo matrix with 3 columns: "Chr" - the chromosome number, "cM" - the 
+    location of the marker in centiMorgans and the 3rd column "Mbp" - The location of the marker 
+    in Mega basepairs. If supplied the marker names (rownames) should match those in the 
+    CTLobject (only significant markers will be annotated). }
   \item{pheno.col}{ Which phenotype results to plot. Defaults to plot all phenotypes. } 
   \item{significance}{ Significance threshold to set a genome wide False Discovery Rate (FDR). }
   \item{gap}{ Gap between chromosomes in cM. }
@@ -32,6 +35,7 @@ ctl.lineplot(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, cex =
 \examples{
   require(ctl)
   data(ath.result)       # Arabidopsis Thaliana results
+  data(ath.metabolites)  # Arabidopsis Thaliana data set
 
   todo <- c(1,3,4,5,6,8,9,10,11,12,14,17,18,19,22,23)
   op   <- par(mfrow = c(4,4))

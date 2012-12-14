@@ -13,13 +13,22 @@ CTLscan.cross(cross, ...)
   \item{...}{ Passed to \code{\link{CTLscan}} function: 
     \itemize{
       \item pheno.col  - Which phenotype column should we analyse.
-      \item method     - We provide 3 ways of mapping correlation differences across the genome: Exact: Use 
-                         Cor to Z transformation to calculate the likelihood of a difference in correlation: 
-                         Cor(AA) - Cor(BB). Power: Power analysis using the squared difference in correlation
-                         (Cor(AA) - Cor(BB))^2. Adjacency: Power analysis using the squared difference in
-                         squared corrrelation (sign*Cor(AA)^2 - sign*Cor(BB)^2)^2 Note: Exact is the default
-                         and fastest option it uses a normal distribution for estimating p-values and uses
-                         bonferoni correction, all other methods use permutations to assign significance.
+      \item method     - We provide 3 ways of mapping correlation differences across the genome:
+                         \itemize{
+                           \item Exact: Uses a Correlation to Z score transformation to calculate the
+                                 likelihood of a difference in correlation: 
+                                 Cor(AA) - Cor(BB)
+                           \item Power: More powerful analysis method using the squared difference in     
+                                 correlation:
+                                 (Cor(AA) - Cor(BB))^2
+                           \item Adjacency: Adjacency method which using the squared difference in squared   
+                                 correlation, but keeping the sign of correlation:
+                                 (sign*Cor(AA)^2 - sign*Cor(BB)^2)^2
+                         }
+                         Note: Exact is the default and fastest option it uses a normal distribution for 
+                         estimating p-values and uses bonferoni correction. It has however the least power 
+                         to detect CTLs, the two other methods (Power and Adjacency) perform permutations to
+                         assign significance.
       \item n.perms    - Number of permutations to perform.
       \item strategy   - The permutation strategy to use, either Full (Compensate for marker and trait
                          correlation structure) or Pairwise (Compensate for marker correlation structure). 

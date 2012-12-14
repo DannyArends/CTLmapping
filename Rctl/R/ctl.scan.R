@@ -23,6 +23,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col, method = c("Exact", "Power
     cat("Data: phenotypes:", n.phe ," phenotypes, ", n.ind1, " individuals\n")
     cat("Data: genotypes:", n.mar ," markers, ", n.ind2, " individuals\n")
   }
+  if(!is.null(have.qtls) && ncol(have.qtls) != length(pheno.col)) stop("Number of QTLs doesn't match")
   if(n.ind1 != n.ind2) stop("Number of individuals doesn't match")
   if(!is.null(toremove)){
     if(length(toremove) == n.mar) stop("Analysis would remove all markers\n")
@@ -147,7 +148,7 @@ CTLscan.cross <- function(cross, ...){
     rqtl_pheno <- rqtl_pheno[,-cond_id]                      # Remove them as phenotypes
   }  
   phenotypes <- apply(rqtl_pheno, 2, as.numeric)             # R/qtl phenotypes data.frame (Need matrix)
-  genotypes  <- qtl::pull.geno(cross)
+  genotypes  <- pull.geno(cross)
   CTLscan(genotypes=genotypes, phenotypes=phenotypes, geno.enc = geno.enc, conditions = rqtl_c, ...)
 }
 
