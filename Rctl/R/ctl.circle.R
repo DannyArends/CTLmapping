@@ -85,3 +85,4 @@ ctl.circle <- function(CTLobject, mapinfo, pheno.col, significance=0.05, gap=50,
   }
 }
 
+# end of ctl.circle.R

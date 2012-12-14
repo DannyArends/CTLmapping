@@ -16,12 +16,14 @@
 
   The R package is a basic iomplementation and it includes the following core functionality:
   \itemize{
-    \item \code{\link{CTLscan}} - Main function to scan for CTL
-    \item \code{\link{CTLsignificant}} - Significant interactions from a \code{\link{CTLscan}}
-    \item \code{\link{CTLnetwork}} - Create a CTL network from a \code{\link{CTLscan}}
-    \item \code{\link{image.CTLobject}} - Heatmap overview of a CTLscan
-    \item \code{\link{plot.CTLscan}} - Plot the CTL curve for a single trait
-    \item \code{\link{CTLprofiles}} - Extract CTL interaction profiles
+    \item \code{\link{CTLscan}} - Main function to scan for CTL.
+    \item \code{\link{CTLsignificant}} - Significant interactions from a \code{\link{CTLscan}}.
+    \item \code{\link{CTLnetwork}} - Create a CTL network from a \code{\link{CTLscan}}.
+    \item \code{\link{image.CTLobject}} - Heatmap overview of a CTLscan.
+    \item \code{\link{plot.CTLscan}} - Plot the CTL curve for a single trait.
+    \item \code{\link{ctl.circle}} - Circle plot CTLs on single and multiple traits.
+    \item \code{\link{ctl.lineplot}} - Line plot CTLs on single and multiple traits.
+    \item \code{\link{CTLprofiles}} - Extract CTL interaction profiles.
   }
   For all these functions we also provide examples and demonstrations on real genetical 
   genomics data. We thank all contributors for publishing their data online and will 

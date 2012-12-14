@@ -45,3 +45,4 @@ ctl.lineplot <- function(CTLobject, mapinfo, pheno.col, significance = 0.05, gap
   box()
 }
 
+# end of ctl.lineplot.R
