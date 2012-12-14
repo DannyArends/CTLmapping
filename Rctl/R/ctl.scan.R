@@ -14,12 +14,11 @@ CTLscan <- function(genotypes, phenotypes, pheno.col, method = c("Exact", "Power
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   if(missing(pheno.col)) pheno.col = 1:ncol(phenotypes)
   st <- proc.time()
-  if(verbose) cat("Checking data\n")
   toremove   <- check.genotypes(genotypes, geno.enc, verbose)
   phenotypes <- apply(phenotypes,2,rank)
   results    <- vector("list",length(pheno.col))
   n.phe      <- ncol(phenotypes); n.ind1 <- nrow(phenotypes)
-  n.mar      <- ncol(genotypes);  n.ind2 <- ncol(genotypes)
+  n.mar      <- ncol(genotypes);  n.ind2 <- nrow(genotypes)
   if(verbose){
     cat("Data: phenotypes:", n.phe ," phenotypes, ", n.ind1, " individuals\n")
     cat("Data: genotypes:", n.mar ," markers, ", n.ind2, " individuals\n")
@@ -57,9 +56,10 @@ CTLscan <- function(genotypes, phenotypes, pheno.col, method = c("Exact", "Power
 CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, method = c("Exact","Power","Adjacency"), n.perms = 100, strategy = c("Full", "Pairwise"), have.qtls = NULL, geno.enc = c(1,2), verbose = FALSE){
   if(missing(genotypes) || is.null(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
+  if(geno.enc[1] != 0) genotypes[genotypes==geno.enc[1]] <- 0
+  if(geno.enc[2] != 1) genotypes[genotypes==geno.enc[2]] <- 1
+
   n.ind = nrow(genotypes); n.mar = ncol(genotypes); n.phe = ncol(phenotypes)
-  genotypes[genotypes==geno.enc[1]] <- 0
-  genotypes[genotypes==geno.enc[2]] <- 1
   res <- list()
   ss  <- proc.time()
   if(!is.null(have.qtls)){
