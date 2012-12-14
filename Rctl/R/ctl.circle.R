@@ -56,7 +56,7 @@ mapinfotomarkerlocs <- function(mapinfo, gap, type=c("line","circle")){
   invisible(markerlocs)
 }
 
-ctl.circle <- function(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, verbose = FALSE){
+ctl.circle <- function(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, cex=1, verbose = FALSE){
   if(missing(CTLobject) || is.null(CTLobject)) stop("argument 'CTLobject' is missing, with no default")
   if(missing(pheno.col)) pheno.col <- 1:length(CTLobject) 
   CTLobject  <- CTLobject[pheno.col]
@@ -68,7 +68,7 @@ ctl.circle <- function(CTLobject, mapinfo, pheno.col, significance = 0.05, gap =
   fromtlocs  <- circle.loc(length(nfrom(ctls)), 1.0)
   totlocs    <- circle.loc(length(nto(ctls)), 0.4)
   plot(c(-1.1, 1.1), c(-1.1, 1.1), type = "n", axes = FALSE, xlab = "", ylab = "")
-  points(markerlocs, pch=20, cex=0.5)   # Plot the markers
+  points(markerlocs, pch=20, cex=(cex/2))   # Plot the markers
   for(x in 1:nrow(ctls)){               # Plot the ctls
     from      <- fromtlocs[which(nfrom(ctls) %in% ctls[x,1]),]
     to   <- totlocs[which(nto(ctls) %in% ctls[x,3]),]
@@ -76,10 +76,10 @@ ctl.circle <- function(CTLobject, mapinfo, pheno.col, significance = 0.05, gap =
     draw.spline(from, to, via, lwd=(ctls[x,4]/5)+1, col=ctls[x,1])
   } # All done now plot the trait elements
   for(x in 1:nrow(fromtlocs)){ 
-    draw.element(fromtlocs[x,1], fromtlocs[x,2], pheno.col[nfrom(ctls)[x]]) 
+    draw.element(fromtlocs[x,1], fromtlocs[x,2], pheno.col[nfrom(ctls)[x]], cex=cex) 
   }
   for(x in 1:nrow(totlocs)){ 
-    draw.element(totlocs[x,1], totlocs[x,2], nto(ctls)[x]) 
+    draw.element(totlocs[x,1], totlocs[x,2], nto(ctls)[x], cex=cex) 
   }
 }
 
