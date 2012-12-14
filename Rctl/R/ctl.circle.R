@@ -37,7 +37,7 @@ mapinfotomarkerlocs <- function(mapinfo, gap, type=c("line","circle")){
   n.chr       <- unique(mapinfo[,1])
   chr.lengths <- NULL
   markerlocs  <- NULL
-  for(chr in 1:length(n.chr)){
+  for(chr in 1:length(n.chr)){ #Absolute length of the chromosomes
     ll <- mapinfo[lapply(unique(mapinfo[,1]),function(x){which(x==mapinfo[,1])})[[chr]],]
     chr.lengths <- c(chr.lengths, max(as.numeric(ll[,2]))-min(as.numeric(ll[,2])))
   }
@@ -45,7 +45,7 @@ mapinfotomarkerlocs <- function(mapinfo, gap, type=c("line","circle")){
   if(type == "line"){
     cmmap   <- cbind(seq(1,total.l),rep(0,total.l))
   }else if(type=="circle"){
-    cmmap   <- circle.loc(total.l+5, 0.7)
+    cmmap   <- circle.loc(total.l+5, 0.7) # TODO: Bug - Markers at -cM chromosome 1 -> negative idx
   }else{ stop("Type not supported, (Options: line & circle)"); }  
   for(x in 1:nrow(mapinfo)){
     m.chr <- which(unique(mapinfo[,1]) %in% mapinfo[x,1])
@@ -56,12 +56,14 @@ mapinfotomarkerlocs <- function(mapinfo, gap, type=c("line","circle")){
   invisible(markerlocs)
 }
 
-ctl.circle <- function(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, cex=1, verbose = FALSE){
+ctl.circle <- function(CTLobject, mapinfo, pheno.col, significance=0.05, gap=50, cex=1, verbose=FALSE){
   if(missing(CTLobject) || is.null(CTLobject)) stop("argument 'CTLobject' is missing, with no default")
   if(missing(pheno.col)) pheno.col <- 1:length(CTLobject) 
-  CTLobject  <- CTLobject[pheno.col]
+
+  CTLobject  <- CTLobject[pheno.col]  #Scale down to pheno.col as input
   n.markers  <- nrow(CTLobject[[1]]$ctl)
   ctls       <- CTLnetwork(CTLobject, mapinfo, significance, verbose = verbose)
+
   if(is.null(ctls)) return() # No ctls found
   markerlocs <- circle.loc(n.markers, 0.7)
   if(!missing(mapinfo)) markerlocs <- mapinfotomarkerlocs(mapinfo, gap, "circle")
@@ -69,7 +71,7 @@ ctl.circle <- function(CTLobject, mapinfo, pheno.col, significance = 0.05, gap =
   totlocs    <- circle.loc(length(nto(ctls)), 0.4)
   plot(c(-1.1, 1.1), c(-1.1, 1.1), type = "n", axes = FALSE, xlab = "", ylab = "")
   points(markerlocs, pch=20, cex=(cex/2))   # Plot the markers
-  for(x in 1:nrow(ctls)){               # Plot the ctls
+  for(x in 1:nrow(ctls)){                   # Plot the ctls
     from      <- fromtlocs[which(nfrom(ctls) %in% ctls[x,1]),]
     to   <- totlocs[which(nto(ctls) %in% ctls[x,3]),]
     via  <- markerlocs[ctls[x,2],]

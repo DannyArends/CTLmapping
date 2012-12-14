@@ -8,7 +8,7 @@
 }
 
 \usage{
-ctl.circle(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, verbose = FALSE)
+ctl.circle(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, cex = 1, verbose = FALSE)
 }
 
 \arguments{
@@ -17,6 +17,7 @@ ctl.circle(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, verbose
   \item{pheno.col}{ Which phenotype results to plot. Defaults to plot all phenotypes. } 
   \item{significance}{ Significance threshold to set a genome wide False Discovery Rate (FDR). }
   \item{gap}{ Gap between chromosomes in cM. }
+  \item{cex}{ Global magnificantion factor for the image elements. }
   \item{verbose}{ Be verbose. }
 }
 
