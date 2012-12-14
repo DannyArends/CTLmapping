@@ -1,13 +1,35 @@
-  
+#
+# ctl.power.R
+#
+# copyright (c) 2010-2012 - GBIC, Danny Arends, Pjotr Prins, Yang Li, and Ritsert C. Jansen
+# last modified Dec, 2012
+# first written Dec, 2012
+# 
+# Power analysis routines for CTL analysis
+#
+
 correlated.phenotype <- function(r = 0.5, nind = 5000, means = c(2,6), sds = c(0.3, 0.2)){
-  a <- rmvnorm(n=(nind*2), mu=means, sigma = matrix(c(sds[1]^2,r*(sds[1]*sds[2]),r*(sds[1]*sds[2]),sds[2]^2), 2, 2)) 
-  invisible(a)
+  sigma <- matrix(c(sds[1]^2, r*(sds[1]*sds[2]), r*(sds[1]*sds[2]), sds[2]^2), 2, 2)  
+  invisible(rmvnorm(n=(nind*2), mean = means, sigma = sigma))
+}
+
+check.marker <- function(marker, ratio = 50){
+  if(sum(marker==1) <= 2) return(FALSE)
+  if(sum(marker==2) <= 2) return(FALSE) 
+  if( ((sum(marker==1) / sum(marker==2))/2) - (ratio/100) > 0.05) return(FALSE)
+  return(TRUE)
+}
+
+check.pheno <- function(pheno, m0, m1, rdiff = 0.1, delta = 0.05){
+  if(is.na(abs(cor(pheno[m0,1],pheno[m0,2]) - cor(pheno[m1,1],pheno[m1,2])-rdiff))) return(FALSE)
+  if(abs(cor(pheno[m0,1],pheno[m0,2]) - cor(pheno[m1,1],pheno[m1,2])-rdiff) > delta) return(FALSE)
+  return(TRUE)
 }
 
 create.marker <- function(nind, ratio = 50){
-  marker <- as.numeric(runif(nind) > ratio / 100)+1
-  while(sum(marker==1) <= 2 || sum(marker==2) <= 2 || ((sum(marker==1)/sum(marker==2))/2) - (ratio/100) > 0.05){
-    marker <- as.numeric(runif(nind) > ratio / 100)+1
+  marker <- as.numeric(runif(nind) > ratio / 100) + 1
+  while(!check.marker(marker, ratio)){
+    marker <- as.numeric(runif(nind) > ratio / 100) + 1
   }
   return(marker)
 }
@@ -17,7 +39,7 @@ dcor.create <- function(rdiff = 0.1, nind = 5000, ratio = 50, delta = 0.05){
   m0 <- which(marker == 1);
   m1 <- which(marker == 2);
   pheno <- matrix(0, nind, 2)
-  while(is.na(abs(cor(pheno[m0,1],pheno[m0,2]) - cor(pheno[m1,1],pheno[m1,2])-rdiff)) || abs(cor(pheno[m0,1],pheno[m0,2]) - cor(pheno[m1,1],pheno[m1,2])-rdiff) > delta){
+  while(!check.pheno(pheno, m0, m1, rdiff, delta)){
     r0 <- runif(1)
     r1 <- r0-rdiff
     while(r1 < -1){
@@ -32,38 +54,42 @@ dcor.create <- function(rdiff = 0.1, nind = 5000, ratio = 50, delta = 0.05){
     pheno[m1,1] <- p1[,1]
     pheno[m1,2] <- p1[,2]
   }
-  #cat(abs(cor(pheno[m0,1],pheno[m0,2]) - cor(pheno[m1,1],pheno[m1,2])), "\n")
-  return(list(pheno, marker))
+  return(list(pheno, t(t(marker))))
 }
 
-power.test <- function(n = 1000, effects = seq(0, 1, 0.05), individuals = c(20, 40, 60), ratios = seq(10, 50, 5), method = c("Exact","Power","Adjacency")){
-  output <- NULL  
+power.test <- function(n, effects=seq(0, 1, 0.05), individuals=c(20, 40, 60), ratios=seq(10, 50, 5), ...){
+  output <- NULL
   for(rat in ratios){  
   for(eff in effects){
   for(ind in individuals){
     sign_cnt = 0
     for(x in 1:n){
-      input   <- dcor.create(eff, ind, rat) 
-      ctl_res <- CTLscan(t(t(input[[2]])), input[[1]], method=method[1], n.perms = 500, n.cores=1, verbose=FALSE)
-      if(ctl_res[[1]]$ctl[2] > -log10(0.05)){ sign_cnt = sign_cnt + 1; }
+      input   <- dcor.create(eff, ind, rat)
+      ctl_res <- CTLscan(input[[2]], input[[1]], ... , verbose=FALSE)
+      if(ctl_res[[1]]$ctl[2] > -log10(0.05)){ 
+        sign_cnt = sign_cnt + 1; 
+      }
     }
     output <- rbind(output, c(rat, eff, ind, sign_cnt / n))
-    cat("Done with:",rat, "/", eff, "on",ind,"Individuals\n")
-  } } }
+    cat("Done with:",rat, "/", eff, "on", ind, "Individuals\n")
+  }}}
   return(output)
 }
 
 test.power.test <- function(){
-  library(ctl)
-  library(mvtnorm)
-  res1 <- power.test(100, individuals = c(100),method="Exact")
-  res2 <- power.test(100, individuals = c(100),method="Power")
-  res3 <- power.test(100, individuals = c(100),method="Adjacency")
+  require(ctl)
+  res1 <- power.test(100, individuals = c(100), method="Exact")
+  res2 <- power.test(100, individuals = c(100), method="Power")
+  res3 <- power.test(100, individuals = c(100), method="Adjacency")
 
   plot(c(5,55),c(0,1),t='n', ylab="Effect Size", xlab="Genotype ratio")
   xdist <- 5; ydist <- 0.05
   for(x in 1:nrow(res)){ 
-    rect(res[x,1]-(xdist/2), res[x,2]-(ydist/2), res[x,1]+(xdist/2), res[x,2]+(ydist/2),col=rgb(1-res[x,4], res[x,4], 0), border="white"); 
+    x0 <- res[x,1]-(xdist/2); y0 <- res[x,2]-(ydist/2)
+    x1 <- res[x,1]+(xdist/2); y1 <- res[x,2]+(ydist/2)
+    rect(x0, y0, x1, y1, col=rgb(1-res[x,4], res[x,4], 0), border="white"); 
   }
   box()
 }
+
+# end of ctl.power.R

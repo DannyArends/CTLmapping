@@ -92,5 +92,4 @@ CTLnetwork.addmarker <- function(markers, mapinfo, name, realname){
   return(markers)
 }
 
-ctls <- CTLnetwork(ctl_result)
 # end of ctl.network.R
