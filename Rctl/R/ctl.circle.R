@@ -8,10 +8,14 @@
 # Circle plot routines for CTL analysis
 #
 
-draw.spline <- function(cn1, cn2, via = c(0,0), lwd = 1, col="blue", ...){
-  x <- c(cn1[1], via[1], cn2[1])
-  y <- c(cn1[2], via[2], cn2[2])
-  invisible(xspline(x, y, shape=0, lwd=lwd, border=col,...))
+draw.spline <- function(cn1, cn2, via = c(0,0), lwd = 1, type = 0, col="blue", ...){
+  x   <- c(cn1[1], via[1], cn2[1])
+  y   <- c(cn1[2], via[2], cn2[2])
+  lty <- 3
+  if(is.na(type) || type == 0){ lty <- 3;
+  }else if(type == 1){ lty <- 1;
+  }else{ lty <- 2; }
+  xspline(x, y, shape=0, lwd=lwd, border=col, lty=lty, ...)
 }
 
 draw.element <- function(x, y, title, cex=1, bg.col = "white", border.col="black"){
@@ -72,7 +76,7 @@ ctl.circle <- function(CTLobject, mapinfo, pheno.col, significance=0.05, gap=50,
   plot(c(-1.1, 1.1), c(-1.1, 1.1), type = "n", axes = FALSE, xlab = "", ylab = "")
   points(markerlocs, pch=20, cex=(cex/2))   # Plot the markers
   for(x in 1:nrow(ctls)){                   # Plot the ctls
-    from      <- fromtlocs[which(nfrom(ctls) %in% ctls[x,1]),]
+    from <- fromtlocs[which(nfrom(ctls) %in% ctls[x,1]),]
     to   <- totlocs[which(nto(ctls) %in% ctls[x,3]),]
     via  <- markerlocs[ctls[x,2],]
     draw.spline(from, to, via, lwd=(ctls[x,4]/5)+1, col=ctls[x,1])
