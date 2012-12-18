@@ -7,6 +7,20 @@
 \alias{has_snow}
 \alias{has_rqtl}
 
+%ctl.power.r
+\alias{correlated.phenotype}
+\alias{check.marker}
+\alias{check.pheno}
+\alias{create.marker}
+
+%ctl.circle.r
+\alias{mapinfotomarkerlocs}
+\alias{draw.element}
+\alias{draw.spline}
+\alias{circle.loc}
+\alias{nfrom}
+\alias{nto}
+
 %ctl.statistics.r
 \alias{extrapolateBeyondRange}
 \alias{CTLscantoScanone}

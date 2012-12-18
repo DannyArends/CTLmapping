@@ -2,24 +2,34 @@
 # ctl.network.R
 #
 # copyright (c) 2010-2012 - GBIC, Danny Arends, Bruno Tesson and Ritsert C. Jansen
-# last modified Oct, 2012
+# last modified Dec, 2012
 # first written Oct, 2011
 # 
 # Network routines for CTL analysis
 #
 
-CTLnetwork <- function(CTLobject, significance = 0.05, what = c("names","ids"), add.qtls = FALSE, mapinfo, file = ""){
+plot.CTLnetwork <- function(x, main="Causal significance", ...){
+  clrs <- rgb((1-x[,4]/max(x[,4])), (x[,4]+1)/(max(x[,4])+1), 0)
+  plot(x[,6], x[,7], col=clrs, pch=20, xlab="LOD Trait 1", ylab="LOD Trait 2", main = main, ...)
+}
+
+CTLnetwork <- function(CTLobject, mapinfo, significance = 0.05, LODdrop = 2, what = c("names","ids"), 
+              add.qtls = FALSE, file = "", verbose = TRUE){
+  if(missing(CTLobject) || is.null(CTLobject)) stop("argument 'CTLobject' is missing, with no default")
+  if(any(class(CTLobject)=="CTLscan")) CTLobject = list(CTLobject)
   if(length(what) > 1) what = what[1]
+
+  results <- NULL
   significant <- CTLsignificant(CTLobject, significance, what = "ids")
   if(!is.null(significant)){
     all_m <- NULL; all_p <- NULL;
-    nodefile="";   netfile = "";
+    nodefile=""; netfile = "";
     if(file != ""){
       netfile <- paste("ctlnet",file,".sif",sep="")
       nodefile <- paste("ctlnet",file,".nodes",sep="")
     }
     cat("",file=netfile); cat("",file=nodefile);
-    cat("NETWORK.SIF\n")
+    if(verbose) cat("NETWORK.SIF\n")
     for(x in 1:nrow(significant)){
       data    <- as.numeric(significant[x,])
       CTLscan <- CTLobject[[data[1]]]
@@ -32,25 +42,49 @@ CTLnetwork <- function(CTLobject, significance = 0.05, what = c("names","ids"), 
         markern <- paste("M",1:nrow(CTLobject[[data[1]]]$dcor), sep="")
         traitsn <- paste("P", 1:ncol(CTLobject[[data[1]]]$dcor), sep="")
       }
-      if(add.qtls){
-        bfc <- length(CTLscan$qtl)
-        above <- which(CTLscan$qtl > -log10((0.05/bfc)))
-        qtlmarkernames <- names(above); qtlmid <- 1
+      if(add.qtls){ # Add QTL to the output SIF
+        bfc    <- length(CTLscan$qtl)
+        above  <- which(CTLscan$qtl > -log10(significance))
+        qtlnms <- names(above); qtlmid <- 1
         for(m in above){
-          cat(name, "\tQTL\t", markern[m],"\tQTL\t", CTLscan$qtl[m], "\n", sep="", file=netfile, append=TRUE)
-          all_m <- CTLnetwork.addmarker(all_m, mapinfo, markern[data[2]], qtlmarkernames[qtlmid])
+          cat(name,"\tQTL\t",markern[m],"\tQTL\t",CTLscan$qtl[m],"\n",sep="",file=netfile,append=TRUE)
+          all_m  <- CTLnetwork.addmarker(all_m, mapinfo, markern[data[2]], qtlnms[qtlmid])
           qtlmid <- qtlmid+1
         }
       }
-      cat(name, "\t", "CTL_", data[1],"_",data[3], "\t", markern[data[2]],"\tCTL\t", CTLscan$ctl[data[2],data[3]], "\n",sep="",file=netfile,append=TRUE)
-      cat(markern[data[2]], "\t", "CTL_", data[1],"_",data[3], "\t", traitsn[data[3]],"\tCTL\t", CTLscan$ctl[data[2],data[3]], "\n",sep="",file=netfile,append=TRUE)
+      lod <- CTLscan$ctl[data[2],data[3]]
+      qlod1    <- CTLscan$qtl[data[2]]
+      qlod2    <- qlod1
+      edgetype <- NA
+      if(length(CTLobject) >= data[3]){  # Edge type based on QTL LOD scores
+        qlod2 <-CTLobject[[data[3]]]$qtl[data[2]]
+        if((qlod1-qlod2) > LODdrop){
+          edgetype <- 1
+        }else if((qlod1-qlod2) < -LODdrop){
+          edgetype <- -1
+        }else{ edgetype <- 0; }
+      }else{ cat("Warning: Phenotype", data[3], "from", data[1], "no CTL/QTL information"); }
+      #Store the results
+      results <- rbind(results, c(data[1], data[2], data[3], lod, edgetype, qlod1, qlod2))
+
+      if(nodefile == "" && !verbose){ }else{
+        cat(name, "\t", "CTL_", data[1],"_",data[3], "\t", markern[data[2]],file=netfile, append=TRUE)
+        cat("\tCTL\t", lod, "\n", sep="", file=netfile, append=TRUE)
+        cat(markern[data[2]], "\t", "CTL_", data[1],"_",data[3], "\t",file=netfile, append=TRUE)
+        cat(traitsn[data[3]],"\tCTL\t", lod, "\n", sep="", file=netfile,append=TRUE)
+      }
       all_m <- CTLnetwork.addmarker(all_m, mapinfo, markern[data[2]], rownames(CTLscan$dcor)[data[2]])
       all_p <- unique(c(all_p, name, traitsn[data[3]]))
     }
-    cat("NODE.DESCRIPTION\n")
-    for(m in all_m){ cat(m,"\n",    sep="", file=nodefile, append=TRUE); }
-    for(p in all_p){ cat(p,"\tPHENOTYPE\n", sep="", file=nodefile, append=TRUE); }
+    colnames(results) <- c("TRAIT1","MARKER","TRAIT2","LOD_C","CAUSAL","LOD_T1","LOD_T2")
+    if(verbose) cat("NODE.DESCRIPTION\n")
+    if(nodefile == "" && !verbose){ }else{
+      for(m in all_m){ cat(m,"\n",    sep="", file=nodefile, append=TRUE); }
+      for(p in all_p){ cat(p,"\tPHENOTYPE\n", sep="", file=nodefile, append=TRUE); }
+    }
   }
+  class(results) <- c(class(results),"CTLnetwork")
+  invisible(results)
 }
 
 CTLnetwork.addmarker <- function(markers, mapinfo, name, realname){
