@@ -62,8 +62,21 @@ test.power.test <- function(){
 
   plot(c(5,55),c(0,1),t='n', ylab="Effect Size", xlab="Genotype ratio")
   xdist <- 5; ydist <- 0.05
-  for(x in 1:nrow(res)){ 
-    rect(res[x,1]-(xdist/2), res[x,2]-(ydist/2), res[x,1]+(xdist/2), res[x,2]+(ydist/2),col=rgb(1-res[x,4], res[x,4], 0), border="white"); 
+  for(x in 1:nrow(res1)){ 
+    rect(res1[x,1]-(xdist/2), res1[x,2]-(ydist/2), res1[x,1]+(xdist/2), res1[x,2]+(ydist/2),col=rgb(1-res1[x,4], res1[x,4], 0), border="white"); 
   }
   box()
+  plot(c(5,55),c(0,1),t='n', ylab="Effect Size", xlab="Genotype ratio")
+  xdist <- 5; ydist <- 0.05
+  for(x in 1:nrow(res2)){ 
+    rect(res2[x,1]-(xdist/2), res2[x,2]-(ydist/2), res2[x,1]+(xdist/2), res2[x,2]+(ydist/2),col=rgb(1-res2[x,4], res2[x,4], 0), border="white"); 
+  }
+  box()
+  plot(c(5,55),c(0,1),t='n', ylab="Effect Size", xlab="Genotype ratio")
+  xdist <- 5; ydist <- 0.05
+  for(x in 1:nrow(res3)){ 
+    rect(res3[x,1]-(xdist/2), res3[x,2]-(ydist/2), res3[x,1]+(xdist/2), res3[x,2]+(ydist/2),col=rgb(1-res3[x,4], res3[x,4], 0), border="white"); 
+  }
+  box()
+
 }

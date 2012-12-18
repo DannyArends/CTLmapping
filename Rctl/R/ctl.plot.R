@@ -169,30 +169,21 @@ m_loc <- function(map_info, id=1, gap = 25){
   l + map_info[id,2]
 }
 
-plot.CTLscan3 <- function(x, map_info, todo = c(4,6,2), ...){
-  p <- rep(0,ncol(x$ctl))
-  i <- 1;
-  summarized <- apply(x$ctl,2,sum)
-  xxx <- NULL
-  mycolors <- topo.colors(nrow(x$ctl[todo,]))
-  plot(c(0, chr_total_length(map_info)),c(0, max(summarized,x$qtl)), type='n',xlab="Location (cM)",ylab="LOD score")
-  apply(x$ctl,1,
-    function(d){
-     for(idx in 1:length(d)){
-     #   rect(m_loc(map_info,idx)-1,p[idx],m_loc(map_info,idx)+1,p[idx]+d[idx],col=mycolors[i],lwd=0,lty=0)
-      }
-      p <<- p + d
-      i <<- i + 1
-    }
-  )
+plot.CTLscan3 <- function(x, map_info, ...){
+  summarized <- apply(x$ctl,1,sum)
+  plot(c(200, chr_total_length(map_info)),c(0, max(x$ctl,x$qtl)), type='n',xlab="",ylab="")
   loc <- NULL
   for(y in 1:nrow(map_info)){loc <- c(loc,m_loc(map_info,y))}
 
-  for(y in unique(map_info[,1])){
+  for(y in c(3,4,5)){
     onchr <- which(map_info[,1]==y)
-    points(loc[onchr],summarized[onchr],type='l',lwd=2,lty=1)
-    points(loc[onchr],as.numeric(x$qtl)[onchr],type='l',lwd=2,lty=2,col="red")
+    points(loc[onchr],as.numeric(x$qtl)[onchr],type='l', lwd=3, lty=1)
+    for(g in 1:ncol(x$ctl)){
+      points(loc[onchr],as.numeric(x$ctl[onchr,g]),type='l',lwd=3, lty=4, col=(g+1))
+    }
   }
+  traitnamez <- gsub(".Mean","", colnames(x$ctl))
+  legend("topleft",c(paste("QTL",gsub(".Mean","",ctl.name(x))),paste("CTL",traitnamez[1]),paste("CTL",traitnamez[2]),paste("CTL",traitnamez[3])),lwd=c(2, 2, 2, 2), lty=c(1,4,4,4),col=c("black",2,3,4))
 }
 
 plot.CTLpermute <- function(x, type="s", ...){
