@@ -17,7 +17,10 @@ ctl.lineplot <- function(CTLobject, mapinfo, pheno.col, significance = 0.05, gap
   ctls       <- ctls[which(ctls[,1] %in% pheno.col),]
   if(class(ctls)=="numeric") ctls <- t(ctls)
   if(nrow(ctls) < 1){    
-    stop(paste("No ctls edges found at significance<", significance))
+    warning(paste("No ctls edges found at significance<", significance))
+    plot(c(-1,1),c(-1,1),t='n', axes = FALSE, xlab = "", ylab = "")
+    box()    
+    return()
   }
   markerlocs <- cbind(seq(1,n.markers),rep(0,n.markers))
   total.l    <- n.markers  
@@ -35,7 +38,7 @@ ctl.lineplot <- function(CTLobject, mapinfo, pheno.col, significance = 0.05, gap
     from <- c(which(nfrom(ctls) %in% ctls[x,1]) * fromlocs,  0.6)
     to   <- c(which(nto(ctls) %in% ctls[x,3]) * tolocs, -0.6)
     via  <- c(markerlocs[ctls[x,2]],  0.0)
-    draw.spline(from, to, via, lwd=(ctls[x,4]/5)+1, type=ctls[x,5], col=ctls[x,1])
+    draw.spline(from, to, via, lwd=(ctls[x,4]/5)+1,lty=1, col=c("red","gray","green")[ctls[x,5]+2])
   } # All done now plot the trait elements
   for(x in 1:length(nfrom(ctls))){
     px <- which(nfrom(ctls) %in% nfrom(ctls)[x]) * fromlocs
@@ -50,3 +53,7 @@ ctl.lineplot <- function(CTLobject, mapinfo, pheno.col, significance = 0.05, gap
 }
 
 # end of ctl.lineplot.R
+#png("t.png",w=2000,h=2000)
+#op <- par(mfrow=c(3,3))
+#for(x in 1:9){  ctl.lineplot(ctls,map_info,x,sign = 1e-10, cex=4); }
+#dev.off()
