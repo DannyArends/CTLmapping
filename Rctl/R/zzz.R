@@ -7,9 +7,6 @@
 # 
 # .onLoad is run when the package is loaded with library(ctl)
 
-has_snow <- function() any(grep("snow",rownames(installed.packages())))
-has_rqtl <- function() any(grep("qtl",rownames(installed.packages())))
-
 .onLoad <- function(lib, pkg) library.dynam("ctl", pkg, lib)
 
 # end of zzz.R

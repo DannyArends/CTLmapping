@@ -3,10 +3,6 @@
 %ctl.network.R
 \alias{CTLnetwork.addmarker}
 
-%zzz.r
-\alias{has_snow}
-\alias{has_rqtl}
-
 %ctl.power.r
 \alias{correlated.phenotype}
 \alias{check.marker}

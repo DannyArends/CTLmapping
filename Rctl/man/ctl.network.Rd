@@ -5,7 +5,7 @@
   Create a file containing the interaction network from a genome-wide CTLscan of multiple traits.
 }
 \usage{
-CTLnetwork(CTLobject, mapinfo, significance=0.05, LODdrop=2, what=c("names","ids"), add.qtls=FALSE, file="")
+CTLnetwork(CTLobject, mapinfo, significance=0.05, LODdrop=2, what=c("names","ids"), add.qtls=FALSE, file="", verbose = TRUE)
 }
 \arguments{
   \item{CTLobject}{ An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
@@ -21,6 +21,7 @@ CTLnetwork(CTLobject, mapinfo, significance=0.05, LODdrop=2, what=c("names","ids
   \item{file}{ A connection, or a character string naming the file to print to. If "" (the 
     default), CTLnetwork prints to the standard output connection, the console unless redirected 
     by sink. }
+  \item{verbose}{ Be verbose. }
 }
 \details{
 Outputs a sif network file, and a node attribute file:
