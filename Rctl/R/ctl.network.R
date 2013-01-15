@@ -13,8 +13,7 @@ plot.CTLnetwork <- function(x, main="Causal significance", ...){
   plot(x[,6], x[,7], col=clrs, pch=20, xlab="LOD Trait 1", ylab="LOD Trait 2", main = main, ...)
 }
 
-CTLnetwork <- function(CTLobject, mapinfo, significance = 0.05, LODdrop = 2, what = c("names","ids"), 
-              add.qtls = FALSE, file = "", verbose = TRUE){
+CTLnetwork <- function(CTLobject, mapinfo, significance = 0.05, LODdrop = 2, what = c("names","ids"), short = FALSE, add.qtls = FALSE, file = "", verbose = TRUE){
   if(missing(CTLobject) || is.null(CTLobject)) stop("argument 'CTLobject' is missing, with no default")
   if(any(class(CTLobject)=="CTLscan")) CTLobject = list(CTLobject)
   if(length(what) > 1) what = what[1]
@@ -30,6 +29,7 @@ CTLnetwork <- function(CTLobject, mapinfo, significance = 0.05, LODdrop = 2, wha
     }
     cat("",file=netfile); cat("",file=nodefile);
     if(verbose) cat("NETWORK.SIF\n")
+    edges <- NULL
     for(x in 1:nrow(significant)){
       data    <- as.numeric(significant[x,])
       CTLscan <- CTLobject[[data[1]]]
@@ -68,10 +68,19 @@ CTLnetwork <- function(CTLobject, mapinfo, significance = 0.05, LODdrop = 2, wha
       results <- rbind(results, c(data[1], data[2], data[3], lod, edgetype, qlod1, qlod2))
 
       if(nodefile == "" && !verbose){ }else{
-        cat(name, "\t", "CTL_", data[1],"_",data[3], "\t", markern[data[2]],file=netfile, append=TRUE)
-        cat("\tCTL\t", lod, "\n", sep="", file=netfile, append=TRUE)
-        cat(markern[data[2]], "\t", "CTL_", data[1],"_",data[3], "\t",file=netfile, append=TRUE)
-        cat(traitsn[data[3]],"\tCTL\t", lod, "\n", sep="", file=netfile,append=TRUE)
+        if(short){
+          edge <- paste(name,traitsn[data[3]])
+          edgeI <- paste(traitsn[data[3]],name)
+          if(!edge %in% edges && !edgeI %in% edges){
+            cat(name, "\t", markern[data[2]],"\t", traitsn[data[3]],"\n",file=netfile, append=TRUE,sep="")
+            edges <- c(edges,edge)
+          }
+        }else{
+          cat(name, "\t", "CTL_", data[1],"_",data[3], "\t", markern[data[2]],file=netfile, append=TRUE,sep="")
+          cat("\tCTL\t", lod, "\n", file=netfile, append=TRUE,sep="")
+          cat(markern[data[2]], "\t", "CTL_", data[1],"_",data[3], "\t",file=netfile, append=TRUE,sep="")
+          cat(traitsn[data[3]],"\tCTL\t", lod, "\n", file=netfile,append=TRUE,sep="")
+        }
       }
       all_m <- CTLnetwork.addmarker(all_m, mapinfo, markern[data[2]], rownames(CTLscan$dcor)[data[2]])
       all_p <- unique(c(all_p, name, traitsn[data[3]]))
@@ -96,4 +105,13 @@ CTLnetwork.addmarker <- function(markers, mapinfo, name, realname){
   return(markers)
 }
 
+postscript("test.eps", width = 19.0, height = 19.0, paper="special", horizontal=FALSE)
+op <- par(mfrow=c(3,3))
+for(x in 1:8){  ctl.lineplot(ctls, map_info, x, 0.0001,cex=2, col="darkorange") }
+plot(1:10,1:10,t='n',xaxt='n',xlab="",,yaxt='n',ylab="")
+for(x in 1:9){
+  draw.element(3,10-(x - .5),as.character(x),cex=2, bg.col="lightgray")
+  text(6,10-(x - .5),ctl.names(ctls)[x],cex=2)
+}
+dev.off()
 # end of ctl.network.R
