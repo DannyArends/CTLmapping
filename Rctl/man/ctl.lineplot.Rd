@@ -8,7 +8,7 @@
 }
 
 \usage{
-ctl.lineplot(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, cex = 1, verbose = FALSE)
+ctl.lineplot(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, col = "orange", bg.col = "lightgray", cex = 1, verbose = FALSE)
 }
 
 \arguments{
@@ -20,6 +20,8 @@ ctl.lineplot(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, cex =
   \item{pheno.col}{ Which phenotype results to plot. Defaults to plot all phenotypes. } 
   \item{significance}{ Significance threshold to set a genome wide False Discovery Rate (FDR). }
   \item{gap}{ Gap between chromosomes in cM. }
+  \item{col}{ Line color. }
+  \item{bg.col}{ Node background color. }
   \item{cex}{ Global magnificantion factor for the image elements. }
   \item{verbose}{ Be verbose. }
 }
