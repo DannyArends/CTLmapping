@@ -53,7 +53,4 @@ ctl.lineplot <- function(CTLobject, mapinfo, pheno.col, significance = 0.05, gap
 }
 
 # end of ctl.lineplot.R
-#png("t.png",w=2000,h=2000)
-#op <- par(mfrow=c(3,3))
-#for(x in 1:9){  ctl.lineplot(ctls,map_info,x,sign = 1e-10, cex=4); }
-#dev.off()
+
