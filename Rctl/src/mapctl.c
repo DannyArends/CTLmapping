@@ -99,7 +99,7 @@ double zscore(double cor){
 }
 
 /* Calculate the difference in correlation matrix for phenotype 'phenotype' */
-double** diffcor(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, int alpha, int gamma){
+double** diffcor(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, int a, int b){
   size_t m,p,debug = 0;
   double** difcormatrix = newdmatrix(genotypes.nmarkers, phenotypes.nphenotypes);
   for(m = 0; m < genotypes.nmarkers; m++){
@@ -117,11 +117,11 @@ double** diffcor(const Phenotypes phenotypes, const Genotypes genotypes, size_t 
         double cor_aa = correlation(pheno_aa1, pheno_aa2, ind_aa.nelements);
         double cor_bb = correlation(pheno_bb1, pheno_bb2, ind_bb.nelements);
         if(debug) info(", correlation done");
-        if(alpha == 1 && gamma == 1){// DEFAULT No permutations, just exact calculations
+        if(a == 1 && b == 1){// DEFAULT No permutations, just exact calculations
           difcormatrix[m][p] = (zscore(cor_aa) - zscore(cor_bb)) / stderror(ind_aa.nelements, ind_bb.nelements);
           //info("Score: %f %f %f -> %f\n",z1,z2,se,difcormatrix[m][p]);
         }else{
-          difcormatrix[m][p] = pow(.5*(pow(cor_aa, alpha) - pow(cor_bb, alpha)), gamma);
+          difcormatrix[m][p] = pow(.5*(pow(cor_aa, a) - pow(cor_bb, a)), b);
         }
         if(debug) info(", cleanup\n");
         free(pheno_aa2);

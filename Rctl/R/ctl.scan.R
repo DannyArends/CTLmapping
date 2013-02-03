@@ -1,8 +1,8 @@
 #
 # ctl.scan.R
 #
-# copyright (c) 2010-2012 - GBIC, Danny Arends, Bruno Tesson and Ritsert C. Jansen
-# last modified Oct, 2012
+# copyright (c) 2010-2013 - GBIC, Danny Arends, Bruno Tesson and Ritsert C. Jansen
+# last modified Feb, 2013
 # first written Jan, 2011
 # 
 # R functions to do CTL mapping
@@ -15,7 +15,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col, method = c("Exact", "Power
   if(missing(pheno.col)) pheno.col = 1:ncol(phenotypes)
   st <- proc.time()
   toremove   <- check.genotypes(genotypes, geno.enc, verbose)
-  phenotypes <- apply(phenotypes,2,rank)
+  phenotypes <- apply(phenotypes, 2, rank) # Always use non-parametric statistics
   results    <- vector("list",length(pheno.col))
   n.phe      <- ncol(phenotypes); n.ind1 <- nrow(phenotypes)
   n.mar      <- ncol(genotypes);  n.ind2 <- nrow(genotypes)
