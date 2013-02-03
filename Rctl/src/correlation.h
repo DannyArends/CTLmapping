@@ -3,7 +3,8 @@
 #endif
   #ifndef __CORRELATION_H__
     #define __CORRELATION_H__
-    
+
+    #include <math.h>
     #include "ctl.h"
     #include "structs.h"
     

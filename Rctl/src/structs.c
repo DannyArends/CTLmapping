@@ -111,3 +111,4 @@ Genotypes togenotypes(const char* content){
   g.data = matrix;
   return g;
 }
+

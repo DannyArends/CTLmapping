@@ -1,5 +1,6 @@
 #include "ctlio.h"
 
+/* Write a double matrix to file */
 void writeout(double** ctls, size_t phenotype, size_t nmar, size_t nphe){
   size_t p,m;
   FILE* file;
@@ -22,6 +23,7 @@ void writeout(double** ctls, size_t phenotype, size_t nmar, size_t nphe){
   fclose(file);
 }
 
+/* File size of a file */
 size_t filesize(char* name){
   char ch;
   size_t cnt = 0;
@@ -38,6 +40,7 @@ size_t filesize(char* name){
   return cnt;
 }
 
+/* Get the whole string content of a file */
 char* getfilecontent(char* name){
   size_t fsize   = filesize(name);
   char*  content = newcvector(fsize);
@@ -57,3 +60,4 @@ char* getfilecontent(char* name){
   info("File '%s' loaded: %d bytes\n", name, fsize);
   return content;
 }
+

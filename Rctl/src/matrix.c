@@ -85,6 +85,7 @@ void printimatrix(int** m, size_t rows, size_t cols){
   }
 }
 
+/* Get the maximum value in matrix m */
 double matrixmax(double** m, size_t rows, size_t cols){
   size_t r,c;
   double max = -DBL_MAX;
@@ -96,6 +97,7 @@ double matrixmax(double** m, size_t rows, size_t cols){
   return max;
 }
 
+/* Transpose matrix M */
 double** transpose(double** m, size_t rows, size_t cols){
   double** nm = newdmatrix(cols,rows);
   int r, c;
@@ -107,6 +109,7 @@ double** transpose(double** m, size_t rows, size_t cols){
   return nm;
 }
 
+/* Get the maximum value in vector v */
 double vectormax(double* v, size_t dim){
   size_t i;
   double max = -DBL_MAX;
@@ -123,3 +126,4 @@ void freematrix(void** m, size_t rows){
   }
   free(m);
 }
+

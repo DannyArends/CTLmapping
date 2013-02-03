@@ -1,5 +1,6 @@
 #include "mapctl.h"
 
+/* Function to 'update' R, checks user input and can flushes console */
 void updateR(int flush){
   #ifdef USING_R
     R_CheckUserInterrupt();
@@ -7,6 +8,7 @@ void updateR(int flush){
   #endif
 }
 
+/* R interface to perform a CTL scan and permutations on phenotype 'phenotype' */
 void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p, int *nperms, int* a, int* g, int* permt, double* dcor, double* perms, double* res, int* verb){
   int nindividuals  = (int)(*nind);
   int nmarkers      = (int)(*nmar);
@@ -73,6 +75,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   return;
 }
 
+/* Perform a CTL scan and permutations on phenotype 'phenotype' */
 double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, int alpha, int gamma, int nperms){
   info("Phenotype %d: Mapping", (phenotype+1));
   double** dcorscores = diffcor(phenotypes, genotypes, phenotype, alpha, gamma);
@@ -85,6 +88,17 @@ double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, in
   return ctls;
 }
 
+/* Calculate the standard error */
+double stderror(size_t df1, size_t df2){
+  return(sqrt((1.0 / ((double)(df1-3)) + (1.0 / (double)(df2-3)))));
+}
+
+/* Transform a correlation coeficient into a Zscore */
+double zscore(double cor){
+  return(.5*log((1.0 + cor)/(1.0 - cor)));
+}
+
+/* Calculate the difference in correlation matrix for phenotype 'phenotype' */
 double** diffcor(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, int alpha, int gamma){
   size_t m,p,debug = 0;
   double** difcormatrix = newdmatrix(genotypes.nmarkers, phenotypes.nphenotypes);
@@ -104,10 +118,7 @@ double** diffcor(const Phenotypes phenotypes, const Genotypes genotypes, size_t 
         double cor_bb = correlation(pheno_bb1, pheno_bb2, ind_bb.nelements);
         if(debug) info(", correlation done");
         if(alpha == 1 && gamma == 1){// DEFAULT No permutations, just exact calculations
-          double z1 = .5*log((1.0 + cor_aa)/(1.0 - cor_aa));
-          double z2 = .5*log((1.0 + cor_bb)/(1.0 - cor_bb));
-          double se = sqrt((1.0 / ((double)(ind_aa.nelements-3)) + (1.0 / (double)(ind_bb.nelements-3))));
-          difcormatrix[m][p] = (z1 - z2) / se;
+          difcormatrix[m][p] = (zscore(cor_aa) - zscore(cor_bb)) / stderror(ind_aa.nelements, ind_bb.nelements);
           //info("Score: %f %f %f -> %f\n",z1,z2,se,difcormatrix[m][p]);
         }else{
           difcormatrix[m][p] = pow(.5*(pow(cor_aa, alpha) - pow(cor_bb, alpha)), gamma);
@@ -126,3 +137,4 @@ double** diffcor(const Phenotypes phenotypes, const Genotypes genotypes, size_t 
   }
   return difcormatrix;
 }
+
