@@ -20,17 +20,15 @@ ctl.dcormatrix <- function(CTLscan){ return(CTLscan$dcor); }
 ctl.qtlprofile <- function(CTLscan){ return(CTLscan$qtl); }
 ctl.ctlmatrix  <- function(CTLscan){ return(CTLscan$ctl); }
 
-remove.diag <- function(x){ return(x*lower.tri(x) + x*upper.tri(x)); }
-up <- function(){abs(seq(-2,-0,0.1))/2} 
-dw <- function(){seq(0.1,2,0.1)/2}
-redblue <- function(){c(rgb(up,0,0), rgb(0,0,dw))}
-whiteblack <- function(){c("white",gray.colors(10)[10:1])}
+remove.diag    <- function(x){ return(x*lower.tri(x) + x*upper.tri(x)); }
+redblue        <- function(){c(rgb(abs(seq(-2,-0,0.1))/2,0,0), rgb(0,0,seq(0.1,2,0.1)/2))}
+whiteblack     <- function(){c("white",gray.colors(10)[10:1])}
 
-dcor <- function(genotypes, phenotypes, marker=1, pheno1=1, pheno2=1, verbose = FALSE){
-  idx1 <- which(genotypes[,marker]==1)
-  idx2 <- which(genotypes[,marker]==2)
-  c1 <- cor(phenotypes[idx1,pheno1],phenotypes[idx1,pheno2])
-  c2 <- cor(phenotypes[idx2,pheno1],phenotypes[idx2,pheno2])
+dcor <- function(genotypes, phenotypes, marker=1, pheno1=1, pheno2=1, geno.enc=c(1,2), verbose = FALSE){
+  idx1 <- which(genotypes[,marker] == geno.enc[1])
+  idx2 <- which(genotypes[,marker] == geno.enc[2])
+  c1 <- cor(phenotypes[idx1,pheno1], phenotypes[idx1,pheno2])
+  c2 <- cor(phenotypes[idx2,pheno1], phenotypes[idx2,pheno2])
   dcor <- (c1-c2)^2
   if(verbose){
     cat("COR_1: ",c1,", COR_2: ",c2,"\n",sep="")
@@ -40,7 +38,9 @@ dcor <- function(genotypes, phenotypes, marker=1, pheno1=1, pheno2=1, verbose = 
 }
 
 get.chr.edges <- function(mapinfo){
-  unlist(lapply(unique(mapinfo[,1]),function(x){max(which(mapinfo[,1]==x));}))
+  unlist(lapply(unique(mapinfo[,1]),function(x){
+    max(which(mapinfo[,1]==x));
+  }))
 }
 
 top.correlated <- function(x){
@@ -53,3 +53,4 @@ top.correlated <- function(x){
 }
 
 # end of helper.functions.R
+

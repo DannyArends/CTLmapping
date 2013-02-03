@@ -57,7 +57,7 @@ dcor.create <- function(rdiff = 0.1, nind = 5000, ratio = 50, delta = 0.05){
   return(list(pheno, t(t(marker))))
 }
 
-power.test <- function(n, effects=seq(0, 1, 0.05), individuals=c(20, 40, 60), ratios=seq(10, 50, 5), ...){
+CTLpowerAnalysis <- function(n, effects=seq(0, 1, 0.05), individuals=c(20, 40, 60), ratios=seq(10, 50, 5), ...){
   output <- NULL
   for(rat in ratios){  
   for(eff in effects){
@@ -78,18 +78,31 @@ power.test <- function(n, effects=seq(0, 1, 0.05), individuals=c(20, 40, 60), ra
 
 test.power.test <- function(){
   require(ctl)
-  res1 <- power.test(100, individuals = c(100), method="Exact")
-  res2 <- power.test(100, individuals = c(100), method="Power")
-  res3 <- power.test(100, individuals = c(100), method="Adjacency")
+  res1 <- CTLpowerAnalysis(100, individuals = c(100), method="Exact")
+  res2 <- CTLpowerAnalysis(100, individuals = c(100), method="Power")
+  res3 <- CTLpowerAnalysis(100, individuals = c(100), method="Adjacency")
 
   plot(c(5,55),c(0,1),t='n', ylab="Effect Size", xlab="Genotype ratio")
   xdist <- 5; ydist <- 0.05
-  for(x in 1:nrow(res)){ 
-    x0 <- res[x,1]-(xdist/2); y0 <- res[x,2]-(ydist/2)
-    x1 <- res[x,1]+(xdist/2); y1 <- res[x,2]+(ydist/2)
-    rect(x0, y0, x1, y1, col=rgb(1-res[x,4], res[x,4], 0), border="white"); 
+  for(x in 1:nrow(res1)){ 
+    x0 <- res1[x,1]-(xdist/2); y0 <- res1[x,2]-(ydist/2)
+    x1 <- res1[x,1]+(xdist/2); y1 <- res1[x,2]+(ydist/2)
+    rect(x0, y0, x1, y1, col=rgb(1-res1[x,4], res1[x,4], 0), border="white"); 
+  }
+  box()
+  plot(c(5,55),c(0,1),t='n', ylab="Effect Size", xlab="Genotype ratio")
+  xdist <- 5; ydist <- 0.05
+  for(x in 1:nrow(res2)){ 
+    rect(res2[x,1]-(xdist/2), res2[x,2]-(ydist/2), res2[x,1]+(xdist/2), res2[x,2]+(ydist/2),col=rgb(1-res2[x,4], res2[x,4], 0), border="white"); 
+  }
+  box()
+  plot(c(5,55),c(0,1),t='n', ylab="Effect Size", xlab="Genotype ratio")
+  xdist <- 5; ydist <- 0.05
+  for(x in 1:nrow(res3)){ 
+    rect(res3[x,1]-(xdist/2), res3[x,2]-(ydist/2), res3[x,1]+(xdist/2), res3[x,2]+(ydist/2),col=rgb(1-res3[x,4], res3[x,4], 0), border="white"); 
   }
   box()
 }
 
 # end of ctl.power.R
+

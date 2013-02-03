@@ -5,7 +5,7 @@
   Create a file containing the interaction network from a genome-wide CTLscan of multiple traits.
 }
 \usage{
-CTLnetwork(CTLobject, mapinfo, significance=0.05, LODdrop=2, what=c("names","ids"), add.qtls=FALSE, file="")
+CTLnetwork(CTLobject, mapinfo, significance = 0.05, LODdrop = 2, what = c("names", "ids"), short = FALSE, add.qtls = FALSE, file = "", verbose = TRUE)
 }
 \arguments{
   \item{CTLobject}{ An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
@@ -16,11 +16,13 @@ CTLnetwork(CTLobject, mapinfo, significance=0.05, LODdrop=2, what=c("names","ids
   \item{significance}{ Significance threshold for a genome wide false discovery rate (FDR). }
   \item{LODdrop}{ Drop in LOD score needed before we assign an edge type. }
   \item{what}{ Return trait and marker names or column numbers (for indexing). }
+  \item{short}{ Edges are markers when TRUE, otherwise markers are nodes (default). }
   \item{add.qtls}{ Should marker QTL trait interactions be added to the generated sif network 
     file, QTLs are included when they are above -log10(significance/n.markers). }
   \item{file}{ A connection, or a character string naming the file to print to. If "" (the 
     default), CTLnetwork prints to the standard output connection, the console unless redirected 
     by sink. }
+  \item{verbose}{ Be verbose. }
 }
 \details{
 Outputs a sif network file, and a node attribute file:
