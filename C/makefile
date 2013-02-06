@@ -6,11 +6,11 @@ LIBS =
 
 CDEBUG = -g
 CFLAGS = $(CDEBUG) -I. -I$(srcdir) $(DEFS)
-LDFLAGS = -g -I. -I$(srcdir) -DSTANDALONE
+LDFLAGS = -g -I. -I$(srcdir) -lm -DSTANDALONE
 #### End of system configuration section. ####
 
 SOURCES    = main.c $(srcdir)/vector.c $(srcdir)/matrix.c $(srcdir)/sort.c $(srcdir)/structs.c \
-                    $(srcdir)/ctlio.c $(srcdir)/correlation.c $(srcdir)/mapctl.c
+                    $(srcdir)/ctlio.c $(srcdir)/correlation.c $(srcdir)/permutation.c $(srcdir)/mapctl.c
 OBJECTS    = $(SOURCES:.cpp=.o)
 EXECUTABLE = mapctl.exe
 
