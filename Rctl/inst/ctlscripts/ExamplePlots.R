@@ -1,7 +1,7 @@
-aa <- rnorm(500)
-bb <- rnorm(500)
-ma <- (runif(500)-0.5)/2
-mb <- (runif(500)-0.5)/2
+aa <- rnorm(1000)
+bb <- rnorm(1000)
+ma <- (runif(1000)-0.5)/2
+mb <- (runif(1000)-0.5)/2
 
 pchaa <- 20
 pchbb <- 20
@@ -10,36 +10,99 @@ ccex <- 1.0
 
 setwd("~/Github/Articles/CTLpaper/nar/img")
 #png("CTL_Example.png",width=1024,height=768)
-postscript("CTL_Example.eps",width=20, height=15,paper="special", horizontal=FALSE)
-  op <- par(mfrow = c(2,2))
+postscript("CTL_Example_5.eps",width=30, height=15,paper="special", horizontal=FALSE)
+  op <- par(mfrow = c(2,3))
   op <- par(cex=c(2))
   op <- par(mgp=c(0.1, 1, 0))
   op <- par(mai=c(0.2, 0.2, 0.1, 0.1))
 
-  #A) QTL, CTL
-  plot(c(-3,3),c(-3,3),t='n', xlab="", ylab="", main="",xaxt='n',yaxt='n')
-  points(sort(aa)+ma,sort(bb)+mb, pch=pchaa,col='red')
-  points(bb+ma, (0.2*aa)-2.5, pch=pchbb,col='blue')
+aa <- rnorm(1000)
+bb <- rnorm(1000)
+ma <- (runif(1000)-0.5)/2
+mb <- (runif(1000)-0.5)/2
+
+  #A) QTL QTL, CTL
+  plot(c(-3.5,3.5),c(-3.5,3.5),t='n', xlab="", ylab="", main="",xaxt='n',yaxt='n')
+  points(sort(aa)+0.5, bb-1, pch=pchaa,col='black')
+  points(sort(aa)+ma-1,sort(bb)+mb+.5,pch=pchbb,col="gray")
   legend("topleft", c("A)"),bty='n')
 
-  #B) QTL, CTL
-  plot(c(-3,3),c(-3,3),t='n', xlab="", ylab="", main="",xaxt='n',yaxt='n')
-  points(aa, bb, pch=pchaa,col='red')
-  points(sort(aa)+ma,sort(bb)+mb,pch=pchbb,col="blue")
+aa <- rnorm(1000)
+bb <- rnorm(1000)
+ma <- (runif(1000)-0.5)/2
+mb <- (runif(1000)-0.5)/2
+
+  #A) QTL, CTL
+  plot(c(-3.5,3.5),c(-3.5,3.5),t='n', xlab="", ylab="", main="",xaxt='n',yaxt='n')
+  points(sort(aa), bb-1, pch=pchaa,col='black')
+  points(sort(aa)+ma,sort(bb)+mb+.5,pch=pchbb,col="gray")
   legend("topleft", c("B)"),bty='n')
 
-  plot(c(-3,3),c(-3,3),t='n', xlab="", ylab="", main="",xaxt='n',yaxt='n')
-  points(bb+ma, (0.2*aa)-1, pch=pchaa,col='red')
-  points(bb+ma, (0.2*aa), pch=pchbb,col='blue')
+aa <- rnorm(1000)
+bb <- rnorm(1000)
+ma <- (runif(1000)-0.5)/2
+mb <- (runif(1000)-0.5)/2
+
+  #B) QTL, CTL - Genotype AA ON
+  plot(c(-3.5,3.5),c(-3.5,3.5),t='n', xlab="", ylab="", main="",xaxt='n',yaxt='n')
+  points(aa, bb, pch=pchaa,col='black')
+  points(sort(aa)+ma,sort(bb)+mb,pch=pchbb,col="gray")
   legend("topleft", c("C)"),bty='n')
+
+#aa <- rnorm(1000)
+#bb <- rnorm(1000)
+#ma <- (runif(1000)-0.5)/2
+#mb <- (runif(1000)-0.5)/2
+
+#  plot(c(-3.5,3.5),c(-3.5,3.5),t='n', xlab="", ylab="", main="",xaxt='n',yaxt='n')
+#  points(bb+ma+0.7, (0.2*aa)-0.7+(aa/2), pch=pchaa,col='black')
+#aa <- rnorm(1000)
+#bb <- rnorm(1000)
+#ma <- (runif(1000)-0.5)/2
+#mb <- (runif(1000)-0.5)/2
+#  points(bb+ma-0.7, (0.2*aa)+(aa/2)+0.7, pch=pchbb,col='gray')
+#  legend("topleft", c("E)"),bty='n')
+
+
+aa <- rnorm(1000)
+bb <- rnorm(1000)
+ma <- (runif(1000)-0.5)/2
+mb <- (runif(1000)-0.5)/2
+
+  plot(c(-3.5,3.5),c(-3.5,3.5),t='n', xlab="", ylab="", main="",xaxt='n',yaxt='n')
+  points(bb+ma, (0.2*aa)-0.7+(aa/2), pch=pchaa,col='black')
+aa <- rnorm(1000)
+bb <- rnorm(1000)
+ma <- (runif(1000)-0.5)/2
+mb <- (runif(1000)-0.5)/2
+  points(bb+ma, (0.2*aa)+(aa/2)+0.7, pch=pchbb,col='gray')
+  legend("topleft", c("D)"),bty='n')
   #legend("topright", c("No QTL T1","QTL T2","No CTL T1:T2"),bty='n')
+
+aa <- rnorm(1000)
+bb <- rnorm(1000)
+ma <- (runif(1000)-0.5)/2
+mb <- (runif(1000)-0.5)/2
+
+  #A) QTL, CTL - Genotype AA OFF
+  plot(c(-3.5,3.5),c(-3.5,3.5),t='n', xlab="", ylab="", main="",xaxt='n',yaxt='n')
+  points(sort(aa)+ma,sort(bb)+mb, pch=pchaa,col='gray')
+  points(bb+ma, (0.1*aa)-2.5, pch=pchbb,col='black')
+  legend("topleft", c("E)"),bty='n')
 
 
   #legend("topleft", c("No QTL T1","QTL T2","CTL T1:T2"),bty='n')
 
-  plot(c(-3,3),c(-3,3),t='n', xlab="", ylab="", main="",xaxt='n',yaxt='n')
-  points(bb, aa, pch=pchaa,col='red')
-  points(bb+ma, aa, pch=pchbb,col='blue')
-  legend("topleft", c("D)"),bty='n')
+#  plot(c(-3.5,3.5),c(-3.5,3.5),t='n', xlab="", ylab="", main="",xaxt='n',yaxt='n')
+#  points(bb, aa, pch=pchaa,col='black')
+
+#aa <- rnorm(1000)
+#bb <- rnorm(1000)
+#ma <- (runif(1000)-0.5)/2
+#mb <- (runif(1000)-0.5)/2
+
+#  points(bb+ma, aa, pch=pchbb,col='gray')
+#  points(bb[1:50], aa[1:50], pch=pchaa,col='black')
+#  legend("topleft", c("G)"),bty='n')
   #legend("topright", c("No QTL T1","No QTL T2","No CTL T1:T2"),bty='n')
 dev.off()

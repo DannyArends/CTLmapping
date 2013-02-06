@@ -57,6 +57,14 @@ dcor.create <- function(rdiff = 0.1, nind = 5000, ratio = 50, delta = 0.05){
   return(list(pheno, t(t(marker))))
 }
 
+getRatio <- function(majorFreq = 0.9){
+  minFreq = 1-majorFreq
+  pp <- majorFreq * majorFreq
+  pq <- 2 * minFreq * majorFreq
+  qq <- minFreq * minFreq
+  100*((pq+qq)/pp)
+}
+
 CTLpowerAnalysis <- function(n, effects=seq(0, 1, 0.05), individuals=c(20, 40, 60), ratios=seq(10, 50, 5), ...){
   output <- NULL
   for(rat in ratios){  
@@ -66,9 +74,12 @@ CTLpowerAnalysis <- function(n, effects=seq(0, 1, 0.05), individuals=c(20, 40, 6
     for(x in 1:n){
       input   <- dcor.create(eff, ind, rat)
       ctl_res <- CTLscan(input[[2]], input[[1]], ... , verbose=FALSE)
+      if(!is.nan(ctl_res[[1]]$ctl[2])){
       if(ctl_res[[1]]$ctl[2] > -log10(0.05)){ 
         sign_cnt = sign_cnt + 1; 
       }
+      }
+      #cat("Done ",x,"\n")
     }
     output <- rbind(output, c(rat, eff, ind, sign_cnt / n))
     cat("Done with:",rat, "/", eff, "on", ind, "Individuals\n")
@@ -78,9 +89,37 @@ CTLpowerAnalysis <- function(n, effects=seq(0, 1, 0.05), individuals=c(20, 40, 6
 
 test.power.test <- function(){
   require(ctl)
-  res1 <- CTLpowerAnalysis(100, individuals = c(100), method="Exact")
-  res2 <- CTLpowerAnalysis(100, individuals = c(100), method="Power")
-  res3 <- CTLpowerAnalysis(100, individuals = c(100), method="Adjacency")
+  res1 <- CTLpowerAnalysis(1000, effects=c(0.1, 0.25, 0.5, 0.75, 1.0, 1.5), individuals = c(30, 40, 50, 75, 100, 150, 200, 500, 1000),ratios=c(50), method="Exact")
+
+  ratios <-  100*c(getRatio(0.95), getRatio(0.9), getRatio(0.8), getRatio(0.7),  getRatio(0.6))
+  res2 <- CTLpowerAnalysis(1000, effects=c(0.3), individuals = c(30, 40, 50, 75, 100, 150, 200, 500, 1000),ratios=ratios, method="Exact")
+#  res2 <- CTLpowerAnalysis(100, individuals = c(100), method="Power")
+ # res3 <- CTLpowerAnalysis(100, individuals = c(100), method="Adjacency")
+
+  setwd("~/Github/Articles/CTLpaper/nar/img")
+  postscript("power_analysis.eps",width=12, height=6,paper="special", horizontal=FALSE)
+
+  op <- par(mfrow=c(1,2))
+  plot(c(0,1000),c(0,1),t='n', ylab="Power", xlab="Sample size", sub="(Major allele frequency: 50%)")
+  cnt <- 1
+  for(x in unique(res1[,2])){
+    idx <- which(res1[,2] == x)
+    points(res1[idx,3], res1[idx,4], t='o', col = cnt,pch=20)
+    cnt <- cnt + 1
+  }
+  legend("bottomright",legend= as.character(round(unique(res1[,2]),d=2)),col=c(1:cnt),lwd=1,title="Effect size",pch=20)
+
+  plot(c(0,1000),c(0,1),t='n', ylab="Power", xlab="Sample size", sub="(Effect size: 0.3)")
+  cnt <- 1
+  for(x in unique(res2[,1])){
+    idx <- which(res2[,1] == x)
+    points(res2[idx,3], res2[idx,4], t='o', col = cnt,pch=20)
+    cnt <- cnt + 1
+  }
+  legend("bottomright",legend=(100-unique(res2[,1])), col=c(1:cnt),lwd=1,title="Major allele frequency",pch=20)
+
+
+  dev.off()
 
   plot(c(5,55),c(0,1),t='n', ylab="Effect Size", xlab="Genotype ratio")
   xdist <- 5; ydist <- 0.05
