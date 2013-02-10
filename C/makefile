@@ -15,13 +15,24 @@ EXECUTABLE = mapctl
 STATIC     = libctl.a
 SHARED     = libctl.so
 
+# target: help - Display possible targets
+help:
+	egrep "^# target:" [Mm]akefile
+
 all: clean $(SOURCES) $(EXECUTABLE)
 
+# target: static - CTL as static library
 static: clean $(SOURCES) $(STATIC)
 
+# target: test - Debug build
 debug: CFLAGS += -g
 debug: all
 
+# target: test - Test by executing CTL mapping
+test: all
+	./mapctl
+
+# target: shared - CTL as shared library
 shared: DEFS += -fPIC
 shared: clean $(SOURCES) $(SHARED)
 
@@ -37,6 +48,7 @@ $(SHARED): $(OBJECTS)
 .c.o:
 	$(CC) $(CFLAGS) $< -o $@
 
+# target: clean - Cleanup
 clean:
 	rm -rf *o *.so *.a *exe
 	rm -rf ../Rctl/src/*o

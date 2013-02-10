@@ -4,6 +4,7 @@ MAKE = make
 MOVE = mv
 CSRC = ./C
 DSRC = ./D
+#### End of system configuration section. ####
 
 all: static shared installR versionC
 

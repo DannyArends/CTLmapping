@@ -1,8 +1,11 @@
 #! /bin/sh
 
-R CMD check Rctl
+make checkR
 
 cd D
-rake clean
-rake test_all
+  make test
+  make clean
+cd ../C
+  make test
+  make clean
 cd ../..
