@@ -23,6 +23,7 @@ qtlHD. To use QTAB files as input clone the qtlHD directory in the same
 folder as the CTLmapping repository and use rake to compile, the QTAB 
 library is build and wrapped automatically:
 
+    $ git clone git://github.com/DannyArends/qtlHD.git       # Download the qtlHD repository
     $ git clone git://github.com/DannyArends/CTLmapping.git  # Download the repository
     $ cd CTLmapping                                          # Goto the folder
     $ make DqtlHD                                            # Compile the executable
