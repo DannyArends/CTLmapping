@@ -22,6 +22,13 @@ classical phenotypes, protein abundance and gene expression) CTL shows the
 genetic wiring of the classical phenotypes and identify key players in the 
 genetic / protein network underlying QTL and CTL.
 
+Download the package
+--------------------
+Prepare your environment by download and moving to the folder:
+    $ git clone git://github.com/DannyArends/CTLmapping.git  # Download the repository
+    $ cd CTLmapping                                          # Goto the folder
+
+
 Installation of R version
 -------------------------
 Prepare your environment by download and installing the R environment from 
@@ -29,27 +36,32 @@ Prepare your environment by download and installing the R environment from
 download CTLmapping and install into R by using (from a terminal / command 
 line):
 
-    $ git clone git://github.com/DannyArends/CTLmapping.git  # Download the repository
-    $ R CMD INSTALL CTLmapping/Rctl                          # Install the package
+    $ make installR                                          # Install into R
+    $ R CMD INSTALL Rctl                                     # Install the package
 
 Optionally you can install the pre-build packages by downloading the appropriate 
 package for your operating system. 
+
+Compile the C version
+---------------------
+Just run 'make' from a terminal / command line:
+
+    $ make versionC                                          # Compile the executable
+    $ make static                                            # Compile the static library
+    $ make shared                                            # Compile the shared library
 
 Compile the D 2.0 version
 -------------------------
 Prepare your environment by download and installing the DMD 2.0 compiler from 
 [www.d-programming-language.org](http://www.d-programming-language.org 
-"www.d-programming-language.org"). Then download CTLmapping and run 'compile.bat' 
-or 'compile.sh' from a terminal / command line:
+"www.d-programming-language.org"). Run 'make' from a terminal / command line:
 
-    $ git clone git://github.com/DannyArends/CTLmapping.git  # Download the repository
-    $ cd CTLmapping/D                                        # Goto the D folder
-    $ compile                                                # Compile the executable
+    $ make versionD                                          # Compile the executable
 
 Optionally you can use a provided binary by downloading your operating system.
 
-Starting
---------
+Starting in R
+-------------
 Load the library in the R interface by the following command (in R):
 
 ```R
@@ -114,4 +126,5 @@ Danny Arends
 
 Disclaimer
 ----------
-Copyright (c) 2010-2012 Danny Arends
+Copyright (c) 2010-2012 GBIC: Danny Arends, Ritsert C Jansen, Pjotr Prins
+
