@@ -11,7 +11,7 @@ LDFLAGS = -lm
 SOURCES    = $(srcdir)/vector.c $(srcdir)/matrix.c $(srcdir)/sort.c $(srcdir)/structs.c \
              $(srcdir)/ctlio.c $(srcdir)/correlation.c $(srcdir)/permutation.c $(srcdir)/mapctl.c
 OBJECTS    = $(SOURCES:.c=.o)
-EXECUTABLE = mapctl.exe
+EXECUTABLE = mapctl
 STATIC     = libctl.a
 SHARED     = libctl.so
 
