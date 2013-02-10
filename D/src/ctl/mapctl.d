@@ -7,11 +7,10 @@
  * First written May, 2011<br>
  * Written in the D Programming Language (http://www.digitalmars.com/d)
  **********************************************************************/
-import std.stdio, std.math, std.conv, std.getopt, std.file, std.datetime, core.memory, std.c.stdlib, std.string;
+import std.stdio, std.conv, std.getopt, std.file, std.datetime, core.memory, std.string;
 import std.algorithm, std.array;
 import ctl.core.array.matrix, ctl.core.ctl.utils;
-import ctl.io.reader;
-import ctl.io.csv.write, ctl.io.csv.parse;
+import ctl.io.reader, ctl.io.csv.write, ctl.io.csv.parse;
 
 extern (C){
   struct Phenotypes{
