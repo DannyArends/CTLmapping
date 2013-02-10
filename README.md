@@ -24,7 +24,8 @@ genetic / protein network underlying QTL and CTL.
 
 Download the package
 --------------------
-Prepare your environment by download and moving to the folder:
+Prepare your environment by download and 'moving' to the folder:
+
     $ git clone git://github.com/DannyArends/CTLmapping.git  # Download the repository
     $ cd CTLmapping                                          # Goto the folder
 
@@ -58,7 +59,8 @@ Prepare your environment by download and installing the DMD 2.0 compiler from
 
     $ make versionD                                          # Compile the executable
 
-Optionally you can use a provided binary by downloading your operating system.
+Optionally you can use a provided binary by downloading the approriate one for your 
+operating system.
 
 Starting in R
 -------------
