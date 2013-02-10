@@ -1,4 +1,6 @@
 *~
+C/mapctl
+D/mapctl
 *.obj
 *.so
 *.rds
