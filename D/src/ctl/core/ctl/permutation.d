@@ -10,7 +10,7 @@
 module ctl.core.ctl.permutation;
 
 import std.stdio, std.math, std.datetime, std.random, std.conv;
-import ctl.core.array.ranges, ctl.io.terminal, core.memory;
+import ctl.core.array.ranges, core.memory;
 import ctl.core.array.matrix, ctl.core.ctl.mapping;
 import ctl.core.stats.basic;
 import ctl.io.csv.write, ctl.io.csv.parse;
@@ -42,6 +42,6 @@ double[][] permutation(in double[][] phenotypes, in int[][] genotypes, in int[][
     GC.minimize();
   }
   if(verbose) writeln();
-  if(verbose) MSG("Permutations took: (%s secs)", (Clock.currTime()-stime).total!"seconds"());
+  if(verbose) writefln("Permutations took: (%s secs)", (Clock.currTime()-stime).total!"seconds"());
   return perms;
 }

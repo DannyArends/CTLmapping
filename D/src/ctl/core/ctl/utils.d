@@ -9,9 +9,21 @@
  **********************************************************************/
 module ctl.core.ctl.utils;
 
-import std.stdio, std.conv, std.string;
+import std.stdio, std.conv, std.string, std.c.stdlib;
 import ctl.core.array.matrix;
 import ctl.core.stats.correlation;
+
+/* Write an error string to stderr */
+void error(in string s){
+  stderr.writeln();
+  stderr.writefln("-Error: %s\n", s);
+}
+
+/* Abort with error code, default: -1 */
+void abort(in string s, int exitcode = -1){
+  error(s);
+  exit(exitcode);
+}
 
 pure size_t[] which(T)(in T[] marker,in T type = 0){
   size_t[] indices;

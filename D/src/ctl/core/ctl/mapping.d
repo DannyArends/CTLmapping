@@ -10,7 +10,7 @@
 module ctl.core.ctl.mapping;
 
 import std.stdio, std.math, std.datetime;
-import ctl.core.array.matrix, ctl.io.terminal;
+import ctl.core.array.matrix;
 import ctl.core.ctl.utils, ctl.core.array.search;
 import ctl.core.stats.correlation;
 
@@ -22,7 +22,7 @@ int[][] getEncodings(in int[][] genotypes, bool verbose = true){
     foreach(int geno; genotypes[m]){ if(geno != int.max && !searchArray(d,geno)) d ~= geno; }
     r ~= d;
   }
-  if(verbose) MSG("Scan of encoded genotype took: (%s msecs)\n",(Clock.currTime()-stime).total!"msecs"());
+  if(verbose) writefln("Scan of encoded genotype took: (%s msecs)\n",(Clock.currTime()-stime).total!"msecs"());
   return r;
 }
 
@@ -56,6 +56,6 @@ double[][] mapping(in double[][] phenotypes, in int[][] genotypes, in int[][] en
       }
     }
   }
-  if(verbose) MSG("CTL mapping took: (%s msecs)",(Clock.currTime()-stime).total!"msecs"());
+  if(verbose) writefln("CTL mapping took: (%s msecs)",(Clock.currTime()-stime).total!"msecs"());
   return difcormatrix;
 }

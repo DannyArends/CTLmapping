@@ -10,7 +10,7 @@
 module ctl.io.csv.write;
 
 import std.stdio, std.string, std.file, std.conv;
-import ctl.core.array.matrix, ctl.io.terminal;
+import ctl.core.array.matrix;
 
 void writeFile(T)(T[][] m, string filename, string[] rownames, bool overwrite = false, bool verbose = false){
   if(exists(filename)){
@@ -38,7 +38,6 @@ void writeFile(T)(T[][] m, string filename, string[] rownames, bool overwrite = 
 
 void addToFile(T)(T[][] m, string filename){
   try{
-    MSG("addToFile");
     auto fp = new File(filename,"a");
     string      buffer;
     for (int r=0; r<m.length; r++) {

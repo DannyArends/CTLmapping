@@ -7,109 +7,123 @@
  * First written May, 2011<br>
  * Written in the D Programming Language (http://www.digitalmars.com/d)
  **********************************************************************/
-import std.stdio, std.math, std.conv, std.file, std.datetime, core.memory;
-import ctl.core.array.matrix, ctl.core.stats.basic, ctl.core.stats.tolod, ctl.core.analysis, ctl.core.ctl.utils;
-import ctl.core.ctl.mapping, ctl.core.ctl.permutation, ctl.io.reader, ctl.io.terminal, ctl.io.cmdline.parse;
+import std.stdio, std.math, std.conv, std.getopt, std.file, std.datetime, core.memory, std.c.stdlib, std.string;
+import std.algorithm, std.array;
+import ctl.core.array.matrix, ctl.core.stats.basic, ctl.core.stats.tolod, ctl.core.ctl.utils;
+import ctl.core.ctl.mapping, ctl.core.ctl.permutation, ctl.io.reader, ctl.io.cmdline.parse;
 import ctl.io.csv.write, ctl.io.csv.parse;
 
-extern (C) void call_from_d(int x);
+extern (C){
+
+  struct Phenotypes{
+    double** data;
+    size_t   nphenotypes;
+    size_t   nindividuals;
+  };
+
+  struct Genotypes{
+    int**    data;
+    size_t   nmarkers;
+    size_t   nindividuals;
+  };
+
+  void call_from_d(int x);
+  double** diffcor(const Phenotypes phe, const Genotypes geno, size_t p, int a, int b);
+  double*  permute(const Phenotypes phe, const Genotypes geno, size_t p, int a, int b, size_t np, int verbose);
+  double** toLOD(double** scores, double* permutations, size_t nmar, size_t nphe, size_t nperms);
+}
+
+T** toPP(T)(T[][] X){
+  T*[] X_c; //= X.map!(d => d.ptr).array;
+  foreach (slice; X) {
+    X_c ~= slice.ptr;
+  }
+  return X_c.ptr;
+}
+
+T[][] fromPP(T)(T** X, size_t d1, size_t d2){
+  T[][] r = new T[][](d1, d2);
+  for (size_t row = 0; row != d1; ++row) {
+    for (size_t column = 0; column != d2; ++column) {
+      r[row][column] = X[row][column];
+    }
+  }
+  return r;
+}
 
 void main(string[] args){
   SysTime stime = Clock.currTime();
-  MSG("Correlated Trait Locus (CTL) mapping in D");
-	call_from_d(15);
-  MSG("(c) 2012 written by Danny Arends in the D programming language");
-  CTLsettings settings   = parseCmd(args);
-  MSG("Command line arguments parsed");
-  Reader ireader  = initialize(settings);
-  bool verbose    = settings.getBool("--verbose");
-  bool overwrite  = settings.getBool("--redo");
-  string output   = settings.getString("--output");
-  if(output[($-1)]=='/') output = output[0..($-1)];
-  string input_p  = settings.getString("--phenotypes");
-  string input_g  = settings.getString("--genotypes");
+  writeln("Correlated Trait Locus (CTL) mapping in D");
+  writeln("(c) 2012 written by Danny Arends in the D programming language");
+	bool help      = false;
+  bool verbose   = false;
+  bool overwrite = false;
+	uint alpha     = 1;
+	uint beta      = 1;
+	uint nperms    = 100;
+  string outdir  = "ctlout";
+  string genofilename  = "./test/data/genotypes.csv";
+  string phenofilename = "./test/data/phenotypes.csv";
+	string format        = "csv";
 
-  if(overwrite) WARN("Overwriting files in on");
-  if(verbose){ MSG("Verbose mode on"); MSG("Output saved to: " ~ output); }
-  if(!settings.displayHelp()){
-    MSG("Start loading input files (%s, %s)",  input_p, input_g);
-    double[][]  phenotypes = ireader.loadphenotypes(input_p);
-    string[]    phenonames = ireader.loadphenonames(input_p);
-    int[][]     genotypes  = ireader.loadgenotypes(input_g);
-    if(verbose){
-      MSG("Dataset: %s geno- and %s phenotypes", genotypes.length, phenotypes.length);
-      if(genotypes.length == 0){ ERR("No genotypes loaded, analysis aborted"); return; }
-      if(phenotypes.length == 0){ ERR("No phenotypes loaded, analysis aborted"); return; }
-      MSG("Dataset: Measurements on %s and %s individuals", genotypes[0].length, phenotypes[0].length);
+  getopt(args, "help|h"     , &help
+             , "verbose|v"  , &verbose
+             , "redo|r"     , &overwrite
+             , "alpha"      , &alpha
+             , "beta"       , &beta
+             , "nperms|n"   , &nperms
+             , "out|o"      , &outdir
+             , "geno|g"     , &genofilename
+             , "pheno|p"    , &phenofilename
+             , "format|f"   , &format);
+
+  Reader ireader  = initialize(format);
+
+  if(overwrite) writefln("Overwriting files in on");
+  if(verbose){ writefln("Verbose mode on"); writefln("Output saved to: " ~ outdir); }
+  if(!help){
+    writefln("Start loading input files (%s, %s)",  phenofilename, genofilename);
+    double[][]  phenotypes = ireader.loadphenotypes(phenofilename);
+    string[]    phenonames = ireader.loadphenonames(phenofilename);
+    int[][]     genotypes  = ireader.loadgenotypes(genofilename);
+    if(verbose) writefln("Dataset: %s geno- and %s phenotypes", genotypes.length, phenotypes.length);
+    if(genotypes.length == 0) abort("No genotypes loaded, analysis aborted"); 
+    if(phenotypes.length == 0) abort("No phenotypes loaded, analysis aborted");
+    if(verbose) writefln("Dataset: %s and %s individuals", genotypes[0].length, phenotypes[0].length);
+    if(genotypes[0].length != phenotypes[0].length){
+      abort(xformat("Mismatch between individuals %s != %s", genotypes[0].length, phenotypes[0].length));
     }
-    if(genotypes[0].length != phenotypes[0].length){ ERR("Mismatch between individuals %s != %s", genotypes[0].length, phenotypes[0].length); return; }
-    
-    int[][] encodings = getEncodings(genotypes);
-    //We need an output path default to ./ ??
-    if(!exists(output)) mkdirRecurse(output);
+    Genotypes  geno;
+    Phenotypes pheno;
 
-    double[][] effects, qtllod, ctllod, score, perms;
+    geno.data = toPP!int(genotypes);                             // Fill the genotype structure for C
+    geno.nmarkers     = genotypes.length;
+    geno.nindividuals = genotypes[0].length;
 
-    Analysis analysis;
-    //Start by mapping all QTL
-    if(needanalysis(output ~ "/effects.txt",overwrite)){
-      analysis = getanalysis("effect",settings);
-      effects = analysis.analyse(genotypes, phenotypes, [], verbose);
-      if(effects != null) writeFile(effects, output ~ "/effects.txt", null, overwrite, verbose);
-    }else{ WARN("Skipped effect scan"); }
+    pheno.data = toPP!double(phenotypes);                        // Fill the phenotype structure for C
+    pheno.nphenotypes  = phenotypes.length;
+    pheno.nindividuals = phenotypes[0].length;
 
-    //Start by mapping all QTL
-    if(needanalysis(output ~ "/qtls.txt",overwrite)){
-      analysis = getanalysis("qtl",settings);
-      qtllod = analysis.analyse(genotypes, phenotypes, [], verbose);
-      if(qtllod != null) writeFile(qtllod, output ~ "/qtls.txt", null, overwrite, verbose);
-    }else{ WARN("Skipped QTL mapping"); }
+    if(!exists(outdir)) mkdir(outdir);
 
-    for(size_t p=settings.getInt("--start"); p < phenotypes.length; p++){ //Main CTL mapping loop
-      if(verbose) MSG("- Phenotype %s -",p);
-      string fn_ctl  = output ~ "/ctl"~to!string(p)~".txt";
-      string fn_perm = output ~ "/perms"~to!string(p)~".txt";
-      string fn_lods = output ~ "/lodscores"~to!string(p)~".txt";
+    for(size_t p = 0; p < phenotypes.length; p++){               // Main CTL mapping loop
+      if(verbose) writefln("- Phenotype %s -",p);
+      string fnctl    = outdir ~ "/ctls"~to!string(p)~".out";
+      string fnlods   = outdir ~ "/lods"~to!string(p)~".out";
 
-      if(needanalysis(fn_ctl,overwrite)){
-        score = mapping(phenotypes,  genotypes, encodings, p, true);
-        score = translate(score);
-        writeFile(score,  fn_ctl, null, overwrite, verbose);
-      }else{ //Reload the scores
-        score = parseFile!double(fn_ctl, false, false);
-        MSG("Skipped CTL mapping, file %s exists", fn_ctl); }  
-        
-     if(settings.getBool("--sp") && p > 0){
-        MSG("Reusing trait 0 permutations");
-      }else{
-        if(settings.getBool("--ap") || needanalysis(fn_perm,overwrite)){
-          perms = permutation(phenotypes, genotypes, encodings, p, settings.getInt("--nperms"), verbose);
-          if(settings.getBool("--ap")){
-            addToFile(perms, fn_perm);
-          }else{
-            writeFile(perms,  fn_perm, null, overwrite, verbose);
-          }
-        }else{ //Reload the permutations
-          perms = parseFile!double(fn_perm, false, false);
-          MSG("Skipped permutations, file %s exists", fn_perm); }
-      }
-      if(needanalysis(fn_lods,overwrite)){
-        double[] permlist    = doMatrixMax(absmatrix(perms));
-        MSG("Number of permutations: %s", permlist.length);
-        MSG("Number of phenotypes scored: %s", score.length);
-        permlist.sort;
-        double   cutoff      = getCutoff(permlist, settings.getDouble("--minlod"));
-        size_t[] significant = getSignificant(score, cutoff);
-        ctllod = tolod(score, permlist, significant, phenonames, verbose);
-        if(ctllod.length > 0){
-          writeFile(ctllod, fn_lods, get(phenonames,significant), overwrite, verbose);
-        }
-      }else{ MSG("Skipped LOD transformation, file %s exists", fn_lods); }
-      GC.collect();
-      GC.minimize();
+      double**   ctlp = diffcor(pheno, geno, p, alpha, beta);
+      double[][] ctls = translate(fromPP(ctlp, pheno.nphenotypes, geno.nmarkers));
+      writeFile(ctls, fnctl, null, overwrite, verbose);
+
+      double*   permp = permute(pheno, geno, p, alpha, beta, nperms, verbose);
+
+      double**   lodp = toLOD(ctlp, permp, geno.nmarkers, pheno.nphenotypes, nperms);
+      double[][] lods = translate(fromPP(lodp, pheno.nphenotypes, geno.nmarkers));
+      writeFile(lods, fnlods, null, overwrite, verbose);
     }
-    writeln();
-    MSG("CTL mapping finished in %s seconds",(Clock.currTime()-stime).total!"seconds"()," seconds");
-    MSG("Continue by starting R and loading the results:\n library(ctl)\n ctls <- ctl.load(\"%s\", \"%s\", \"%s\")\n image(ctls)",input_g, input_p,output);
+    writefln("CTL mapping finished in %s seconds",(Clock.currTime()-stime).total!"seconds"()," seconds");
+    writeln("Continue by starting R and loading the results:\n library(ctl)\n");
+    writefln(" ctls <- ctl.load(\"%s\", \"%s\", \"%s/\")\n image(ctls)", genofilename, phenofilename, outdir);
   }
 }
+

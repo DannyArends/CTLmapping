@@ -10,7 +10,7 @@
 module ctl.io.csv.parse;
 
 import std.stdio, std.string, std.file, std.conv, std.datetime;
-import ctl.io.reader, ctl.io.terminal, ctl.core.array.matrix;
+import ctl.io.reader, ctl.core.array.matrix, ctl.core.ctl.utils;
 
 class CSVreader : Reader{
   override double[][] loadphenotypes(string filename = "phenotypes.csv"){
@@ -43,7 +43,7 @@ struct D{
 string[] parseNames(string filename){
   string[] data;
   if(!exists(filename) || !isFile(filename)){
-    ERR("No such file %s",filename);
+    abort(xformat("No such file %s", filename));
   }else{
     try{
       SysTime stime = Clock.currTime();
@@ -52,7 +52,7 @@ string[] parseNames(string filename){
         string[] splitted = chomp(buffer).split("\t");
         if(splitted.length > 0){ data ~= splitted[0]; }
       }
-    }catch(Throwable e){ ERR("File %s read exception %s", filename,e); }
+    }catch(Throwable e){ abort(xformat("File %s read exception %s", filename, e)); }
   }
   return data;
 }
@@ -61,7 +61,7 @@ string[] parseNames(string filename){
 T[][] parseFile(T)(string filename, bool verbose = false ,bool hasRowHeader = true, T nullval = T.max){
   T[][] data;
   if(!exists(filename) || !isFile(filename)){
-    ERR("No such file %s",filename);
+    abort(xformat("No such file %s", filename));
   }else{
     try{
       SysTime stime = Clock.currTime();
@@ -87,9 +87,9 @@ T[][] parseFile(T)(string filename, bool verbose = false ,bool hasRowHeader = tr
       }
       freevector(content);
       freevector(inputbuffer);
-      if(verbose) MSG("Parsed %s imports from file: %s",data.length, filename);
-      MSG("Loading took: (%s msecs)",(Clock.currTime()-stime).total!"msecs"());
-    }catch(Throwable e){ ERR("File %s read exception %s", filename,e); }
+      if(verbose) writefln("Parsed %s imports from file: %s",data.length, filename);
+      writefln("Loading took: (%s msecs)",(Clock.currTime()-stime).total!"msecs"());
+    }catch(Throwable e){ abort(xformat("File %s read exception %s", filename, e)); }
   }
   return data;
 }

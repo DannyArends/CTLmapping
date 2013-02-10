@@ -48,7 +48,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   if(permtype){
     if(verbose) info(", Row-wise permutation");
     updateR(1);
-    double** permutations = permuteRowWise(phenotypes, genotypes, phenotype, alpha, gamma, npermutations, 0);
+    double** permutations = permuteRW(phenotypes, genotypes, phenotype, alpha, gamma, npermutations, 0);
     for(ph=0; ph < (nphenotypes); ph++){ // SEND PERMUTATIONS TO R
       for(perm=0; perm < (npermutations); perm++){
         perms[(ph*npermutations)+perm] = permutations[ph][perm];

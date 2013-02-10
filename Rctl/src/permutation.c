@@ -19,44 +19,44 @@ Genotypes permutegenotypes(Genotypes genotypes){
   return g;
 }
 
-double* permute(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, int alpha, int gamma, size_t nperms, int verbose){
-  size_t p,ph;
-  double* scores = newdvector(nperms);
-  if(alpha == 1 && gamma == 1){ return scores; }
-  for(p = 0; p < nperms; p++){
-    Genotypes g = permutegenotypes(genotypes);
-    double** ctls  = diffcor(phenotypes, g, phenotype, alpha, gamma);
-    scores[p] = fabs(matrixmax(ctls, genotypes.nmarkers, phenotypes.nphenotypes));
+double* permute(const Phenotypes phe, const Genotypes geno, size_t p, int a, int b, size_t np, int verbose){
+  size_t perm, ph;
+  double* scores = newdvector(np);
+  if(a == 1 && b == 1){ return scores; }
+  for(perm = 0; perm < np; perm++){
+    Genotypes g = permutegenotypes(geno);
+    double** ctls  = diffcor(phe, g, p, a, b);
+    scores[p] = fabs(matrixmax(ctls, geno.nmarkers, phe.nphenotypes));
 
-    freematrix((void**)ctls   , genotypes.nmarkers);
-    freematrix((void**)g.data , genotypes.nmarkers);
-    if(verbose) info("Done with permutation %d\n", p);
+    freematrix((void**)ctls   , geno.nmarkers);
+    freematrix((void**)g.data , geno.nmarkers);
+    if(verbose) info("Done with permutation %d\n", perm);
     updateR(0);
   }
-  qsort(scores, nperms, sizeof(double), d_cmp);
+  qsort(scores, np, sizeof(double), d_cmp);
   return scores;
 }
 
-double** permuteRowWise(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, int alpha, int gamma, size_t nperms, int verbose){
-  size_t p,ph;
-  double** scores = newdmatrix(phenotypes.nphenotypes, nperms);
-  if(alpha == 1 && gamma == 1){ return scores; }
-  for(p = 0; p < nperms; p++){
-    Genotypes g = permutegenotypes(genotypes);
-    double** ctls  = diffcor(phenotypes, g, phenotype, alpha, gamma);
-    double** tctls = transpose(ctls, genotypes.nmarkers, phenotypes.nphenotypes);
-    for(ph = 0; ph <  phenotypes.nphenotypes; ph++){
-      scores[ph][p] = fabs(vectormax(tctls[ph], genotypes.nmarkers));
+double** permuteRW(const Phenotypes phe, const Genotypes geno, size_t p, int a, int b, size_t np, int verbose){
+  size_t perm,ph;
+  double** scores = newdmatrix(phe.nphenotypes, np);
+  if(a == 1 && b == 1){ return scores; }
+  for(perm = 0; perm < np; perm++){
+    Genotypes g = permutegenotypes(geno);
+    double** ctls  = diffcor(phe, g, p, a, b);
+    double** tctls = transpose(ctls, geno.nmarkers, phe.nphenotypes);
+    for(ph = 0; ph <  phe.nphenotypes; ph++){
+      scores[ph][p] = fabs(vectormax(tctls[ph], geno.nmarkers));
     }
-    freematrix((void**)ctls   , genotypes.nmarkers);
-    freematrix((void**)tctls  , phenotypes.nphenotypes);
-    freematrix((void**)g.data , genotypes.nmarkers);
-    if(verbose) info("Done with permutation %d\n", p);
+    freematrix((void**)ctls   , geno.nmarkers);
+    freematrix((void**)tctls  , phe.nphenotypes);
+    freematrix((void**)g.data , geno.nmarkers);
+    if(verbose) info("Done with permutation %d\n", perm);
     updateR(0);
   }
-  for(ph = 0; ph <  phenotypes.nphenotypes; ph++){
-    double* ph_s =  scores[ph];   
-    qsort(ph_s, nperms, sizeof(double), d_cmp);
+  for(ph = 0; ph <  phe.nphenotypes; ph++){
+    double* ph_s =  scores[ph];
+    qsort(ph_s, np, sizeof(double), d_cmp);
     scores[ph] = ph_s;
   }
   return scores;

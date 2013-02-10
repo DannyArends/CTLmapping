@@ -15,8 +15,8 @@ version(QTAB){
 }
 import ctl.io.cmdline.parse;
 
-Reader initialize(CTLsettings settings){
-  switch(settings.getString("--format")){
+Reader initialize(string format = "csv"){
+  switch(format){
 version(QTAB){
     case "qtab":
      return new QTABreader();
