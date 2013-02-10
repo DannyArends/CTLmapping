@@ -13,7 +13,6 @@ import ctl.io.csv.parse;
 version(QTAB){
   import ctl.io.qtab.wrapper;
 }
-import ctl.io.cmdline.parse;
 
 Reader initialize(string format = "csv"){
   switch(format){

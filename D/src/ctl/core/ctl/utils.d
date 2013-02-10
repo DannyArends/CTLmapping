@@ -11,7 +11,6 @@ module ctl.core.ctl.utils;
 
 import std.stdio, std.conv, std.string, std.c.stdlib;
 import ctl.core.array.matrix;
-import ctl.core.stats.correlation;
 
 /* Write an error string to stderr */
 void error(in string s){
@@ -39,23 +38,22 @@ pure T[] get(T)(in T[] phenotype, size_t[] r){
 }
 
 unittest{
-  import ctl.io.terminal;
-  MSG("Unit test: %s", __FILE__);
+  writefln("Unit test: %s", __FILE__);
   string test_fun;
   try{
     test_fun = "pure size_t[] which(in int[] marker, int type = 0)";
     assert(which([3,4],4) == [1],                     "\n"~test_fun~" Test 1");
     assert(which([3,4,6,7,8,3,4],4) == [1,6],         "\n"~test_fun~" Test 2");
-    OK("Tests: %s",test_fun);
+    writefln("Tests: %s",test_fun);
 
     test_fun = "pure double[] get(in double[] phenotype, size_t[] r)";
     assert(get([2.0, 4.0, 5.0],[1,2]) == [4.0,5.0],   "\n"~test_fun~" Test 1");
     assert(get([2.0, 4.0, 5.0],[0,2]) == [2.0,5.0],   "\n"~test_fun~" Test 2");
-    OK("Tests: %s",test_fun);
+    writefln("Tests: %s",test_fun);
 
-    MSG("Tested: %s",__FILE__);  
+    writefln("Tested: %s",__FILE__);  
   }catch(Throwable e){
     string err = to!string(e).split("\n")[1];
-    ERR("Reason: %s failed", err);
+    writefln("Reason: %s failed", err);
   }
 }

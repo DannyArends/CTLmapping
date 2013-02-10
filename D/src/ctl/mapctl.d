@@ -9,12 +9,11 @@
  **********************************************************************/
 import std.stdio, std.math, std.conv, std.getopt, std.file, std.datetime, core.memory, std.c.stdlib, std.string;
 import std.algorithm, std.array;
-import ctl.core.array.matrix, ctl.core.stats.basic, ctl.core.stats.tolod, ctl.core.ctl.utils;
-import ctl.core.ctl.mapping, ctl.core.ctl.permutation, ctl.io.reader, ctl.io.cmdline.parse;
+import ctl.core.array.matrix, ctl.core.ctl.utils;
+import ctl.io.reader;
 import ctl.io.csv.write, ctl.io.csv.parse;
 
 extern (C){
-
   struct Phenotypes{
     double** data;
     size_t   nphenotypes;
