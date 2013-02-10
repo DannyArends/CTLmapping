@@ -12,9 +12,12 @@ import ctl.core.array.matrix, ctl.core.stats.basic, ctl.core.stats.tolod, ctl.co
 import ctl.core.ctl.mapping, ctl.core.ctl.permutation, ctl.io.reader, ctl.io.terminal, ctl.io.cmdline.parse;
 import ctl.io.csv.write, ctl.io.csv.parse;
 
+extern (C) void call_from_d(int x);
+
 void main(string[] args){
   SysTime stime = Clock.currTime();
   MSG("Correlated Trait Locus (CTL) mapping in D");
+	call_from_d(15);
   MSG("(c) 2012 written by Danny Arends in the D programming language");
   CTLsettings settings   = parseCmd(args);
   MSG("Command line arguments parsed");

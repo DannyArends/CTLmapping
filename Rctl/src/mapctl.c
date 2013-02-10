@@ -8,6 +8,9 @@ void updateR(int flush){
   #endif
 }
 
+/* Interface test to test calling from D */
+void call_from_d(int x){ info("IN C: %d\n", x); }
+
 /* R interface to perform a CTL scan and permutations on phenotype 'phenotype' */
 void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p, int *nperms, int* a, int* g, int* permt, double* dcor, double* perms, double* res, int* verb){
   int nindividuals  = (int)(*nind);

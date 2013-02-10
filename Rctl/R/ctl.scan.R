@@ -138,16 +138,16 @@ CTLscan.cross <- function(cross, ...){
   if(any(class(cross)=="bc") || any(class(cross)=="riself") || any(class(cross)=="risib")){
     geno.enc <- c(1,2)
   }else{
-    stop("Class of the cross needs to be either: riself,risib or bc")
+    stop("class of cross needs to be either: riself, risib or bc")
   }
   rqtl_pheno <- qtl::pull.pheno(cross)
   rqtl_c     <- NULL;               # R/qtl adds additional columns sex and pgm
-  cond_id    <- which(colnames(rqtl_pheno) %in% c("sex","pgm"))
+  cond_id    <- which(colnames(rqtl_pheno) %in% c("sex", "pgm"))
   if(length(cond_id) > 0){
     rqtl_c     <- rqtl_pheno[, cond_id]                      # Add them as conditions
     rqtl_pheno <- rqtl_pheno[,-cond_id]                      # Remove them as phenotypes
   }  
-  phenotypes <- apply(rqtl_pheno, 2, as.numeric)             # R/qtl phenotypes data.frame (Need matrix)
+  phenotypes <- apply(rqtl_pheno, 2, as.numeric)             # R/qtl phenotypes data.frame (need matrix)
   genotypes  <- pull.geno(cross)
   CTLscan(genotypes=genotypes, phenotypes=phenotypes, geno.enc = geno.enc, conditions = rqtl_c, ...)
 }
