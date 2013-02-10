@@ -1,11 +1,11 @@
 #### Start of system configuration section. ####
 srcdir = ../Rctl/src
-CC = gcc -O -pedantic -w -Wall -Wextra
+CC = gcc
 LINK = ar
 DEFS = -DSTANDALONE
 
-CFLAGS = -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
-LDFLAGS = -lm
+CFLAGS = -O3 -pedantic -w -Wall -Wextra -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
+LDFLAGS = -lm -O3
 #### End of system configuration section. ####
 
 SOURCES    = $(srcdir)/vector.c $(srcdir)/matrix.c $(srcdir)/sort.c $(srcdir)/structs.c \

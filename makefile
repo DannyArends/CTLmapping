@@ -7,43 +7,47 @@ DSRC = ./D
 
 all: static shared installR versionC
 
-# target versionC: standalone version from C source code
+# target: help - Display possible targets
+help:
+	egrep "^# target:" [Mm]akefile
+
+# target: versionC - Standalone version from C source code
 versionC:
 	cd $(CSRC); \
 	$(MAKE); \
 	$(MOVE) mapctl ../mapctl
 
-# target versionD: standalone version from D source code (QTAB and qtlHD integration)
+# target: versionD - Standalone version from D source code
 versionD:
 	cd $(DSRC); \
 	$(MAKE); \
 	$(MOVE) mapctl ../mapctl
 
-# target static: Create the CTL static library
+# target: static - Create the CTL static library
 static:
 	cd $(CSRC); \
 	$(MAKE) static; \
 	$(MOVE) libctl.a ../libctl.a
 
-# target shared: Create the CTL shared library
+# target: shared - Create the CTL shared library
 shared:
 	cd $(CSRC); \
 	$(MAKE) shared; \
 	$(MOVE) libctl.so ../libctl.so
 
-# target checkR: Check the R version
+# target: checkR - Check the R version
 checkR: clean
 	$(RCMD) check Rctl
 	$(MAKE) clean
 
-# target installR: Install the R version
+# target: installR - Install the R version
 installR: clean
 	$(RCMD) INSTALL Rctl
 	$(MAKE) clean
 
-# target clean: cleanup
+# target: clean - Cleanup
 clean:
-	rm -f mapctl *a *.so
+	rm -f mapctl *a *.so q.log
 	rm -rf Rctl/src/*o
 	rm -rf Rctl.Rcheck
 
