@@ -30,24 +30,6 @@ extern (C){
   double** toLOD(double** scores, double* permutations, size_t nmar, size_t nphe, size_t nperms);
 }
 
-T** toPP(T)(T[][] X){
-  T*[] X_c; //= X.map!(d => d.ptr).array;
-  foreach (slice; X) {
-    X_c ~= slice.ptr;
-  }
-  return X_c.ptr;
-}
-
-T[][] fromPP(T)(T** X, size_t d1, size_t d2){
-  T[][] r = new T[][](d1, d2);
-  for (size_t row = 0; row != d1; ++row) {
-    for (size_t column = 0; column != d2; ++column) {
-      r[row][column] = X[row][column];
-    }
-  }
-  return r;
-}
-
 void main(string[] args){
   SysTime stime = Clock.currTime();
   writeln("Correlated Trait Locus (CTL) mapping in D");
@@ -119,11 +101,10 @@ void main(string[] args){
         double**   lodp = toLOD(ctlp, permp, geno.nmarkers, pheno.nphenotypes, nperms);
         double[][] lods = translate(fromPP(lodp, pheno.nphenotypes, geno.nmarkers));
         writeFile(lods, fnlods, null, overwrite, verbose);
-      }else{ writeln(""); }
+      }else{ if(verbose) writeln(""); }
     }
-    writefln("CTL mapping finished in %s seconds",(Clock.currTime()-stime).total!"seconds"()," seconds");
-    writeln("Continue by starting R and loading the results:\n library(ctl)\n");
-    writefln(" ctls <- ctl.load(\"%s\", \"%s\", \"%s/\")\n image(ctls)", genofilename, phenofilename, outdir);
+    writefln("\nDone after %s seconds. Thank you for using mapctl", (Clock.currTime()-stime).total!"seconds"());
+    writeln("Please cite: CTL mapping - Journal - Arends et al. [2013]");
   }
 }
 

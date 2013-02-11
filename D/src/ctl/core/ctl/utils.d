@@ -24,3 +24,23 @@ void abort(in string s, int exitcode = -1){
   exit(exitcode);
 }
 
+/* Transforms a T[][] to a T** */
+T** toPP(T)(T[][] X){
+  T*[] X_c; //= X.map!(d => d.ptr).array;
+  foreach (slice; X) {
+    X_c ~= slice.ptr;
+  }
+  return X_c.ptr;
+}
+
+/* Transforms a T** to a T[][] */
+T[][] fromPP(T)(T** X, size_t d1, size_t d2){
+  T[][] r = new T[][](d1, d2);
+  for (size_t row = 0; row != d1; ++row) {
+    for (size_t column = 0; column != d2; ++column) {
+      r[row][column] = X[row][column];
+    }
+  }
+  return r;
+}
+

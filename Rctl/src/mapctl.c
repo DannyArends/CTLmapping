@@ -42,33 +42,30 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
     dcor[i] = dcors[m][p];
   }
 
-  if(!(alpha == 1 && beta == 1)){
-    if(permtype){
-      if(verbose) info(", RW permutation");
-      updateR(1);
-      double** permutations = permuteRW(phenotypes, genotypes, phenotype, alpha, beta, npermutations, 0);
-      for(ph=0; ph < (nphenotypes); ph++){ // SEND PERMUTATIONS TO R
-        for(perm=0; perm < (npermutations); perm++){
-          perms[(ph*npermutations)+perm] = permutations[ph][perm];
-        }
+  if(permtype){
+    if(verbose) info(", RW permutation");
+    updateR(1);
+    double** permutations = permuteRW(phenotypes, genotypes, phenotype, alpha, beta, npermutations, 0);
+    for(ph=0; ph < (nphenotypes); ph++){ // SEND PERMUTATIONS TO R
+      for(perm=0; perm < (npermutations); perm++){
+        perms[(ph*npermutations)+perm] = permutations[ph][perm];
       }
-      if(verbose) info(", toLOD\n");
-      updateR(1);
-      ctls = toLODRW(dcors, permutations, genotypes.nmarkers, phenotypes.nphenotypes, npermutations);
-    }else{
-      if(verbose) info(", Permutation");
-      updateR(1);
-      double* permutations = permute(phenotypes, genotypes, phenotype, alpha, beta, npermutations, 0);
-      for(i=0; i < npermutations; i++){ // SEND PERMUTATIONS TO R
-        perms[i] = permutations[i];
-      }
-      if(verbose) info(", toLOD\n");
-      updateR(1);
-      ctls = toLOD(dcors, permutations, genotypes.nmarkers, phenotypes.nphenotypes, npermutations);
     }
-  }else{ // alpha == 1 && beta == 1
-    ctls = dcors;
-    info("\n");
+    if(verbose) info(", toLOD\n");
+    updateR(1);
+    ctls = toLODRW(dcors, permutations, genotypes.nmarkers, phenotypes.nphenotypes, npermutations);
+    freematrix((void**)permutations, nphenotypes);
+  }else{
+    if(verbose) info(", Permutation");
+    updateR(1);
+    double* permutations = permute(phenotypes, genotypes, phenotype, alpha, beta, npermutations, 0);
+    for(i=0; i < npermutations; i++){ // SEND PERMUTATIONS TO R
+      perms[i] = permutations[i];
+    }
+    if(verbose) info(", toLOD\n");
+    updateR(1);
+    ctls = toLOD(dcors, permutations, genotypes.nmarkers, phenotypes.nphenotypes, npermutations);
+    free(permutations);
   }
   for(i=0; i < (nphenotypes*nmarkers); i++){
     int m = i % nmarkers;
@@ -82,7 +79,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
 
 /* Perform a CTL scan and permutations on phenotype 'phenotype' */
 double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, int alpha, int beta, int nperms){
-  info("Phenotype %d:", (phenotype+1));
+  info("Phenotype %d: Mapping", (phenotype+1));
   double** scores = ctleffects(phenotypes, genotypes, phenotype, alpha, beta);
   if((alpha == 1 && beta == 1)){
     info("\n");
