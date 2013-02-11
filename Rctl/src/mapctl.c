@@ -36,7 +36,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
 
   if(verbose) info("Phenotype %d: Mapping", (phenotype+1));  
   updateR(1);
-  dcors = diffcor(phenotypes, genotypes, phenotype, alpha, beta);
+  dcors = ctleffects(phenotypes, genotypes, phenotype, alpha, beta);
   for(i=0; i < (nphenotypes*nmarkers); i++){
     int m = i % nmarkers; int p = i / nmarkers;
     dcor[i] = dcors[m][p];
@@ -54,7 +54,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
       }
       if(verbose) info(", toLOD\n");
       updateR(1);
-      ctls = toLODRowWise(dcors, permutations, genotypes.nmarkers, phenotypes.nphenotypes, npermutations);
+      ctls = toLODRW(dcors, permutations, genotypes.nmarkers, phenotypes.nphenotypes, npermutations);
     }else{
       if(verbose) info(", Permutation");
       updateR(1);
@@ -82,8 +82,8 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
 
 /* Perform a CTL scan and permutations on phenotype 'phenotype' */
 double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, int alpha, int beta, int nperms){
-  info("Phenotype %d: Mapping", (phenotype+1));
-  double** scores = diffcor(phenotypes, genotypes, phenotype, alpha, beta);
+  info("Phenotype %d:", (phenotype+1));
+  double** scores = ctleffects(phenotypes, genotypes, phenotype, alpha, beta);
   if((alpha == 1 && beta == 1)){
     info("\n");
     return scores;
@@ -106,8 +106,24 @@ double stderror(size_t df1, size_t df2){
 /* Transform a correlation coeficient into a Zscore */
 double zscore(double cor){ return(.5*log((1.0 + cor)/(1.0 - cor))); }
 
+
+double ctleff(double* phe1, double* phe2, int* m, int nind, int alpha, int beta, int doZ){
+  clvector indAA  = which(m, nind, 0);
+  clvector indBB  = which(m, nind, 1);
+  double* phe1AA = get(phe1, indAA);
+  double* phe1BB = get(phe1, indBB);
+  double* phe2AA = get(phe2, indAA);
+  double* phe2BB = get(phe2, indBB);
+  double  cAA = correlation(phe1AA, phe2AA, indAA.nelements);
+  double  cBB = correlation(phe1BB, phe2BB, indBB.nelements);
+  if(doZ && alpha == 1 && beta == 1){
+    return (zscore(cAA) - zscore(cBB)) / stderror(indAA.nelements, indBB.nelements);
+  }
+  return pow(0.5*(pow(cAA, alpha) - pow(cBB, alpha)), beta);
+}
+
 /* Calculate the difference in correlation matrix for phenotype 'phenotype' */
-double** diffcor(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, int alpha, int beta){
+double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, int alpha, int beta){
   size_t m,p,debug = 0;
   double** difcormatrix = newdmatrix(genotypes.nmarkers, phenotypes.nphenotypes);
   for(m = 0; m < genotypes.nmarkers; m++){
@@ -127,9 +143,8 @@ double** diffcor(const Phenotypes phenotypes, const Genotypes genotypes, size_t 
         if(debug) info(", correlation done");
         if(alpha == 1 && beta == 1){// DEFAULT No permutations, just exact calculations
           difcormatrix[m][p] = (zscore(cor_aa) - zscore(cor_bb)) / stderror(ind_aa.nelements, ind_bb.nelements);
-          //info("Score: %f %f %f -> %f\n",z1,z2,se,difcormatrix[m][p]);
         }else{
-          difcormatrix[m][p] = pow(.5*(pow(cor_aa, alpha) - pow(cor_bb, alpha)), beta);
+          difcormatrix[m][p] = pow(0.5*(pow(cor_aa, alpha) - pow(cor_bb, alpha)), beta);
         }
         if(debug) info(", cleanup\n");
         free(pheno_aa2);

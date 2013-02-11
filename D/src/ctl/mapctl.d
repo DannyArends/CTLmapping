@@ -25,7 +25,7 @@ extern (C){
     size_t   nindividuals;
   };
 
-  double** diffcor(const Phenotypes phe, const Genotypes geno, size_t p, int a, int b);
+  double** ctleffects(const Phenotypes phe, const Genotypes geno, size_t p, int a, int b);
   double*  permute(const Phenotypes phe, const Genotypes geno, size_t p, int a, int b, size_t np, int verbose);
   double** toLOD(double** scores, double* permutations, size_t nmar, size_t nphe, size_t nperms);
 }
@@ -104,19 +104,22 @@ void main(string[] args){
     if(!exists(outdir)) mkdir(outdir);
 
     for(size_t p = 0; p < phenotypes.length; p++){               // Main CTL mapping loop
-      if(verbose) writefln("- Phenotype %s -",p);
+      if(verbose) writef("- Phenotype %s: Mapping",p);
       string fnctl    = outdir ~ "/ctls"~to!string(p)~".out";
       string fnlods   = outdir ~ "/lods"~to!string(p)~".out";
 
-      double**   ctlp = diffcor(pheno, geno, p, alpha, beta);
+      double**   ctlp = ctleffects(pheno, geno, p, alpha, beta);
       double[][] ctls = translate(fromPP(ctlp, pheno.nphenotypes, geno.nmarkers));
       writeFile(ctls, fnctl, null, overwrite, verbose);
+      if(!(alpha ==1 && beta == 1)){
+        write(", Permutation");
+        double*   permp = permute(pheno, geno, p, alpha, beta, nperms, false);
 
-      double*   permp = permute(pheno, geno, p, alpha, beta, nperms, verbose);
-
-      double**   lodp = toLOD(ctlp, permp, geno.nmarkers, pheno.nphenotypes, nperms);
-      double[][] lods = translate(fromPP(lodp, pheno.nphenotypes, geno.nmarkers));
-      writeFile(lods, fnlods, null, overwrite, verbose);
+        writeln(", toLOD");
+        double**   lodp = toLOD(ctlp, permp, geno.nmarkers, pheno.nphenotypes, nperms);
+        double[][] lods = translate(fromPP(lodp, pheno.nphenotypes, geno.nmarkers));
+        writeFile(lods, fnlods, null, overwrite, verbose);
+      }else{ writeln(""); }
     }
     writefln("CTL mapping finished in %s seconds",(Clock.currTime()-stime).total!"seconds"()," seconds");
     writeln("Continue by starting R and loading the results:\n library(ctl)\n");

@@ -25,7 +25,7 @@ double* permute(const Phenotypes phe, const Genotypes geno, size_t p, int a, int
   if(a == 1 && b == 1){ return scores; }
   for(perm = 0; perm < np; perm++){
     Genotypes g = permutegenotypes(geno);
-    double** ctls  = diffcor(phe, g, p, a, b);
+    double** ctls  = ctleffects(phe, g, p, a, b);
     scores[p] = fabs(matrixmax(ctls, geno.nmarkers, phe.nphenotypes));
 
     freematrix((void**)ctls   , geno.nmarkers);
@@ -43,7 +43,7 @@ double** permuteRW(const Phenotypes phe, const Genotypes geno, size_t p, int a, 
   if(a == 1 && b == 1){ return scores; }
   for(perm = 0; perm < np; perm++){
     Genotypes g = permutegenotypes(geno);
-    double** ctls  = diffcor(phe, g, p, a, b);
+    double** ctls  = ctleffects(phe, g, p, a, b);
     double** tctls = transpose(ctls, geno.nmarkers, phe.nphenotypes);
     for(ph = 0; ph <  phe.nphenotypes; ph++){
       scores[ph][p] = fabs(vectormax(tctls[ph], geno.nmarkers));
@@ -86,7 +86,7 @@ double** toLOD(double** scores, double* permutations, size_t nmar, size_t nphe, 
   return ctls;
 }
 
-double** toLODRowWise(double** scores, double** permutations, size_t nmar, size_t nphe, size_t nperms){
+double** toLODRW(double** scores, double** permutations, size_t nmar, size_t nphe, size_t nperms){
   double** ctls = newdmatrix(nmar, nphe);
   size_t p,m;
   for(m = 0; m < nmar; m++){

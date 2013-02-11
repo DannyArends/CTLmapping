@@ -14,8 +14,9 @@
                       double* perms, double* res, int* verb);
 
     double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, int alpha, int beta, int nperms);
-    double** diffcor(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, int alpha, int beta);
+    double** ctleffects(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, int alpha, int beta);
 
+    double   ctleff(double* phe1, double* phe2, int* m, int nind, int alpha, int beta, int doZ);
   #endif //__MAPCTL_H__
 #ifdef __cplusplus
   }

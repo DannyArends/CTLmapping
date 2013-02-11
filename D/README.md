@@ -35,12 +35,19 @@ Commandline options
 
     -[-h]elp        - Show the help file
     -[-v]erbose     - Verbose mode
-    -[-o]verwrite   - Overwrite previous output files
-    -[-n]perms      - Number of permutations
+
     -[-p]henotypes  - File containing phenotypes
     -[-g]enotypes   - File containing genotypes
     -[-f]ormat      - File format
 
+    -[-o]ut         - Name of the output folder
+    -[-r]edo        - Overwrite previous output files
+    -[-n]perms      - Number of permutations
+
+    --alpha         - Set Alpha (Default: 1)
+    --beta          - Set Beta (Default: 1)
+
 Disclaimer
 ----------
-Copyright (c) 2010 Danny Arends
+Copyright (c) 2010-2012 GBIC: Danny Arends, Ritsert C Jansen, Pjotr Prins
+
