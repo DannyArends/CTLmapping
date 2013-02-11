@@ -8,11 +8,10 @@ Prepare your environment by download and 'moving' to the folder:
     $ git clone git://github.com/DannyArends/CTLmapping.git  # Download the repository
     $ cd CTLmapping                                          # Goto the folder
 
-Compile the standalone
--------------------------
-Prepare your environment by download and installing the DMD 2.0 compiler from 
-[www.d-programming-language.org](http://www.d-programming-language.org 
-"www.d-programming-language.org"). Run 'make' from a terminal / command line:
+Compilation
+-----------
+Prepare your environment by download and installing a C compiler. Run 'make' from a 
+terminal / command line to build either the executable, shared or static library:
 
     $ make                                                   # Compile the executable
     $ make static                                            # Compile the static library
@@ -20,6 +19,7 @@ Prepare your environment by download and installing the DMD 2.0 compiler from
 
 Commandline options
 -------------------
+The executable supports the following command line options:
 
     -h          - Show the help file
 
