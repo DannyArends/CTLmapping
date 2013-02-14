@@ -136,50 +136,8 @@ double ctleff(double* phe1, double* phe2, int* m, int nind, int alpha, int beta,
 }
 
 /* Calculate the difference in correlation matrix for phenotype 'phenotype' */
-double** ctleffects_OLD(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, size_t ngenotypes, int alpha, int beta){
-  size_t g, m, p,debug = 0;
-  double** difcormatrix = newdmatrix(genotypes.nmarkers, phenotypes.nphenotypes);
-  for(m = 0; m < genotypes.nmarkers; m++){
-    if(debug) info("Search and allocation marker %d\n", p);
-    clvector ind_aa  = which(genotypes.data[m], phenotypes.nindividuals, 0);
-    clvector ind_bb  = which(genotypes.data[m], phenotypes.nindividuals, 1);
-    double* pheno_aa1 = get(phenotypes.data[phenotype],ind_aa);
-    double* pheno_bb1 = get(phenotypes.data[phenotype],ind_bb);
-    for(p = 0; p < phenotypes.nphenotypes; p++){
-      if(p!=phenotype){
-        if(debug) info("Search and allocation phenotype %d", p);
-        double* pheno_aa2 = get(phenotypes.data[p],ind_aa);
-        double* pheno_bb2 = get(phenotypes.data[p],ind_bb);
-        if(debug) info(", done");
-        double cor_aa = correlation(pheno_aa1, pheno_aa2, ind_aa.nelements);
-        double cor_bb = correlation(pheno_bb1, pheno_bb2, ind_bb.nelements);
-        if(debug) info(", correlation done");
-        if(alpha == 1 && beta == 1){// DEFAULT No permutations, just exact calculations
-          difcormatrix[m][p] = (zscore(cor_aa) - zscore(cor_bb)) / stderror(ind_aa.nelements, ind_bb.nelements);
-        }else{
-          difcormatrix[m][p] = pow(0.5*(pow(cor_aa, alpha) - pow(cor_bb, alpha)), beta);
-        }
-        if(debug) info(", cleanup\n");
-        free(pheno_aa2);
-        free(pheno_bb2);
-        updateR(0);
-      }
-    }
-    if(debug) info("Marker done\n");
-    free(pheno_aa1);
-    free(pheno_bb1);
-    free(ind_aa.data);
-    free(ind_bb.data);
-  }
-  return difcormatrix;
-}
-
-/* Calculate the difference in correlation matrix for phenotype 'phenotype' */
 double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, size_t ngenotypes, int* genoenc, int alpha, int beta){
   size_t g, m, p,debug = 0;
-  clvector ind;
-  double* P1;
-  double* P2;
   double** difcormatrix = newdmatrix(genotypes.nmarkers, phenotypes.nphenotypes);
   for(p = 0; p < phenotypes.nphenotypes; p++){  
     if(p!=phenotype){
@@ -188,11 +146,13 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
       double* cors  = newdvector(ngenotypes);
       int* nsamples = newivector(ngenotypes);
       for(g = 0; g < ngenotypes; g++){
-        ind    = which(genotypes.data[m], phenotypes.nindividuals, genoenc[g]);
-        P1     = get(phenotypes.data[phenotype], ind);
-        P2     = get(phenotypes.data[p], ind);
-        cors[g]     = correlation(P1, P2, ind.nelements);
-        nsamples[g] = ind.nelements;
+        clvector ind = which(genotypes.data[m], phenotypes.nindividuals, genoenc[g]);
+        double* P1   = get(phenotypes.data[phenotype], ind);
+        double* P2   = get(phenotypes.data[p], ind);
+        cors[g]      = correlation(P1, P2, ind.nelements);
+        nsamples[g]  = ind.nelements;
+        free(P1); free(P2);       // Clear the data we allocated
+        free(ind.data);
         updateR(0);
       }
       difcormatrix[m][p] = chiSQ(ngenotypes, cors, nsamples);
@@ -201,8 +161,6 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
     }
     }
   }
-  free(P1); free(P2);       // Clear the data we allocated
-  free(ind.data);
   return difcormatrix;
 }
 

@@ -26,8 +26,7 @@ double* permute(const Phenotypes phe, const Genotypes geno, size_t p, int ngenot
   for(perm = 0; perm < np; perm++){
     Genotypes g = permutegenotypes(geno);
     double** ctls  = ctleffects(phe, g, p, ngenotypes, genoenc, a, b);
-    scores[p] = fabs(matrixmax(ctls, geno.nmarkers, phe.nphenotypes));
-
+    scores[perm] = fabs(matrixmax(ctls, geno.nmarkers, phe.nphenotypes));
     freematrix((void**)ctls   , geno.nmarkers);
     freematrix((void**)g.data , geno.nmarkers);
     if(verbose) info("Done with permutation %d\n", perm);
@@ -46,7 +45,7 @@ double** permuteRW(const Phenotypes phe, const Genotypes geno, size_t p, int nge
     double** ctls  = ctleffects(phe, g, p, ngenotypes, genoenc, a, b);
     double** tctls = transpose(ctls, geno.nmarkers, phe.nphenotypes);
     for(ph = 0; ph <  phe.nphenotypes; ph++){
-      scores[ph][p] = fabs(vectormax(tctls[ph], geno.nmarkers));
+      scores[ph][perm] = fabs(vectormax(tctls[ph], geno.nmarkers));
     }
     freematrix((void**)ctls   , geno.nmarkers);
     freematrix((void**)tctls  , phe.nphenotypes);
