@@ -19,13 +19,13 @@ Genotypes permutegenotypes(Genotypes genotypes){
   return g;
 }
 
-double* permute(const Phenotypes phe, const Genotypes geno, size_t p, int a, int b, size_t np, int verbose){
+double* permute(const Phenotypes phe, const Genotypes geno, size_t p, int ngenotypes,int* genoenc, int a, int b, size_t np, int verbose){
   size_t perm, ph;
   double* scores = newdvector(np);
   if(a == 1 && b == 1){ return scores; }
   for(perm = 0; perm < np; perm++){
     Genotypes g = permutegenotypes(geno);
-    double** ctls  = ctleffects(phe, g, p, a, b);
+    double** ctls  = ctleffects(phe, g, p, ngenotypes, genoenc, a, b);
     scores[p] = fabs(matrixmax(ctls, geno.nmarkers, phe.nphenotypes));
 
     freematrix((void**)ctls   , geno.nmarkers);
@@ -37,13 +37,13 @@ double* permute(const Phenotypes phe, const Genotypes geno, size_t p, int a, int
   return scores;
 }
 
-double** permuteRW(const Phenotypes phe, const Genotypes geno, size_t p, int a, int b, size_t np, int verbose){
+double** permuteRW(const Phenotypes phe, const Genotypes geno, size_t p, int ngenotypes,int* genoenc, int a, int b, size_t np, int verbose){
   size_t perm,ph;
   double** scores = newdmatrix(phe.nphenotypes, np);
   if(a == 1 && b == 1){ return scores; }
   for(perm = 0; perm < np; perm++){
     Genotypes g = permutegenotypes(geno);
-    double** ctls  = ctleffects(phe, g, p, a, b);
+    double** ctls  = ctleffects(phe, g, p, ngenotypes, genoenc, a, b);
     double** tctls = transpose(ctls, geno.nmarkers, phe.nphenotypes);
     for(ph = 0; ph <  phe.nphenotypes; ph++){
       scores[ph][p] = fabs(vectormax(tctls[ph], geno.nmarkers));

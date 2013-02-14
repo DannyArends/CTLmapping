@@ -9,10 +9,13 @@ void updateR(int flush){
 }
 
 /* R interface to perform a CTL scan and permutations on phenotype 'phenotype' */
-void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p, int *nperms, int* a, int* b, int* permt, double* dcor, double* perms, double* res, int* verb){
+void R_mapctl(int* nind, int* nmar, int* nphe, int* ngeno, int* geno, double* pheno, int* genoenc,
+                      int* p, int *nperms, int* a, int* b, int* permt, double* dcor, 
+                      double* perms, double* res, int* verb){
   int nindividuals  = (int)(*nind);
   int nmarkers      = (int)(*nmar);
   int nphenotypes   = (int)(*nphe);
+  int ngenotypes    = (int)(*ngeno);
   int phenotype     = (int)(*p);
   int npermutations = (int)(*nperms);
   int alpha         = (int)(*a);
@@ -36,7 +39,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
 
   if(verbose) info("Phenotype %d: Mapping", (phenotype+1));  
   updateR(1);
-  dcors = ctleffects(phenotypes, genotypes, phenotype, alpha, beta);
+  dcors = ctleffects(phenotypes, genotypes, phenotype, ngenotypes, genoenc, alpha, beta);
   for(i=0; i < (nphenotypes*nmarkers); i++){
     int m = i % nmarkers; int p = i / nmarkers;
     dcor[i] = dcors[m][p];
@@ -45,7 +48,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   if(permtype){
     if(verbose) info(", RW permutation");
     updateR(1);
-    double** permutations = permuteRW(phenotypes, genotypes, phenotype, alpha, beta, npermutations, 0);
+    double** permutations = permuteRW(phenotypes, genotypes, phenotype, ngenotypes, genoenc, alpha, beta, npermutations, 0);
     for(ph=0; ph < (nphenotypes); ph++){ // SEND PERMUTATIONS TO R
       for(perm=0; perm < (npermutations); perm++){
         perms[(ph*npermutations)+perm] = permutations[ph][perm];
@@ -58,7 +61,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   }else{
     if(verbose) info(", Permutation");
     updateR(1);
-    double* permutations = permute(phenotypes, genotypes, phenotype, alpha, beta, npermutations, 0);
+    double* permutations = permute(phenotypes, genotypes, phenotype, ngenotypes, genoenc, alpha, beta, npermutations, 0);
     for(i=0; i < npermutations; i++){ // SEND PERMUTATIONS TO R
       perms[i] = permutations[i];
     }
@@ -78,15 +81,15 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
 }
 
 /* Perform a CTL scan and permutations on phenotype 'phenotype' */
-double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, int alpha, int beta, int nperms){
+double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, size_t ngenotypes, int* genoenc, int alpha, int beta, int nperms){
   info("Phenotype %d: Mapping", (phenotype+1));
-  double** scores = ctleffects(phenotypes, genotypes, phenotype, alpha, beta);
+  double** scores = ctleffects(phenotypes, genotypes, phenotype, ngenotypes, genoenc, alpha, beta);
   if((alpha == 1 && beta == 1)){
     info("\n");
     return scores;
   }
   info(", Permutation");
-  double* permutations = permute(phenotypes, genotypes, phenotype, alpha, beta, nperms, 0);
+  double* permutations = permute(phenotypes, genotypes, phenotype, ngenotypes, genoenc, alpha, beta, nperms, 0);
   info(", toLOD\n");
   double** ctls = toLOD(scores, permutations, genotypes.nmarkers, phenotypes.nphenotypes, nperms);
 
@@ -102,6 +105,19 @@ double stderror(size_t df1, size_t df2){
 
 /* Transform a correlation coeficient into a Zscore */
 double zscore(double cor){ return(.5*log((1.0 + cor)/(1.0 - cor))); }
+
+double chiSQ(size_t nr, double* r, int* nsamples){
+  size_t i;
+  double sumOfSquares = 0;
+  double squaresOfSum = 0;
+  size_t denominator = 0;
+  for(i = 0; i < nr; i++){
+    sumOfSquares += (nsamples[i]-3) * pow(zscore(r[i]), 2.0);
+    squaresOfSum += (nsamples[i]-3) * zscore(r[i]);
+    denominator  += (nsamples[i]-3);
+  }
+  return(sumOfSquares-(pow(squaresOfSum, 2.0) / denominator));
+}
 
 
 double ctleff(double* phe1, double* phe2, int* m, int nind, int alpha, int beta, int doZ){
@@ -120,8 +136,8 @@ double ctleff(double* phe1, double* phe2, int* m, int nind, int alpha, int beta,
 }
 
 /* Calculate the difference in correlation matrix for phenotype 'phenotype' */
-double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, int alpha, int beta){
-  size_t m,p,debug = 0;
+double** ctleffects_OLD(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, size_t ngenotypes, int alpha, int beta){
+  size_t g, m, p,debug = 0;
   double** difcormatrix = newdmatrix(genotypes.nmarkers, phenotypes.nphenotypes);
   for(m = 0; m < genotypes.nmarkers; m++){
     if(debug) info("Search and allocation marker %d\n", p);
@@ -157,4 +173,37 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
   }
   return difcormatrix;
 }
+
+/* Calculate the difference in correlation matrix for phenotype 'phenotype' */
+double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, size_t ngenotypes, int* genoenc, int alpha, int beta){
+  size_t g, m, p,debug = 0;
+  clvector ind;
+  double* P1;
+  double* P2;
+  double** difcormatrix = newdmatrix(genotypes.nmarkers, phenotypes.nphenotypes);
+  for(p = 0; p < phenotypes.nphenotypes; p++){  
+    if(p!=phenotype){
+    for(m = 0; m < genotypes.nmarkers; m++){
+      if(debug) info("Search and allocation marker %d\n", p);
+      double* cors  = newdvector(ngenotypes);
+      int* nsamples = newivector(ngenotypes);
+      for(g = 0; g < ngenotypes; g++){
+        ind    = which(genotypes.data[m], phenotypes.nindividuals, genoenc[g]);
+        P1     = get(phenotypes.data[phenotype], ind);
+        P2     = get(phenotypes.data[p], ind);
+        cors[g]     = correlation(P1, P2, ind.nelements);
+        nsamples[g] = ind.nelements;
+        updateR(0);
+      }
+      difcormatrix[m][p] = chiSQ(ngenotypes, cors, nsamples);
+      free(cors); free(nsamples);       // Clear the data we allocated
+      if(debug) info("Marker done\n");
+    }
+    }
+  }
+  free(P1); free(P2);       // Clear the data we allocated
+  free(ind.data);
+  return difcormatrix;
+}
+
 

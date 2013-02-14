@@ -7,8 +7,8 @@
     #include "mapctl.h"
     #include "sort.h"
     
-    double*   permute(const Phenotypes phe, const Genotypes geno, size_t p, int a, int b, size_t np, int verbose);
-    double**  permuteRW(const Phenotypes phe, const Genotypes geno, size_t p, int a, int b, size_t np, int verbose);
+    double*   permute(const Phenotypes phe, const Genotypes geno, size_t p, int ngenotypes,int* genoenc, int a, int b, size_t np, int verbose);
+    double**  permuteRW(const Phenotypes phe, const Genotypes geno, size_t p,int ngenotypes,int* genoenc, int a, int b, size_t np, int verbose);
 
     double**  toLOD(double** scores, double* permutations, size_t nmar, size_t nphe, size_t nperms);
     double**  toLODRW(double** scores, double** permutations, size_t nmar, size_t nphe, size_t nperms);

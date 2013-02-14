@@ -9,12 +9,13 @@
     #include "permutation.h"    
     #include "sort.h"
     void     updateR(int flush);
-    void     R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno,
-                      int* p, int *nperms, int* a, int* g, int* permt, double* dcor, 
+    void     R_mapctl(int* nind, int* nmar, int* nphe, int* ngeno, int* geno, double* pheno, int* genoenc,
+                      int* p, int *nperms, int* a, int* b, int* permt, double* dcor, 
                       double* perms, double* res, int* verb);
 
-    double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, int alpha, int beta, int nperms);
-    double** ctleffects(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, int alpha, int beta);
+    double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, size_t ngenotypes, int* genoenc, int alpha, int beta, int nperms);
+    double** ctleffects2(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, int alpha, int beta);
+    double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, size_t ngenotypes, int* genoenc, int alpha, int beta);
 
     double   ctleff(double* phe1, double* phe2, int* m, int nind, int alpha, int beta, int doZ);
   #endif //__MAPCTL_H__
