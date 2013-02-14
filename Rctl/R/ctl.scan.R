@@ -57,8 +57,6 @@ CTLscan <- function(genotypes, phenotypes, pheno.col, method = c("Exact", "Power
 CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, method = c("Exact","Power","Adjacency"), n.perms = 100, strategy = c("Full", "Pairwise"), have.qtls = NULL, geno.enc = c(1,2), verbose = FALSE){
   if(missing(genotypes) || is.null(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
-  if(geno.enc[1] != 0) genotypes[genotypes==geno.enc[1]] <- 0
-  if(geno.enc[2] != 1) genotypes[genotypes==geno.enc[2]] <- 1
 
   n.ind = nrow(genotypes); n.mar = ncol(genotypes); n.phe = ncol(phenotypes)
   res <- list()
@@ -84,14 +82,14 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, method = c("Exact",
     perm.type = 1
     perms = as.double(rep(0,n.perms * n.phe))
   }
-
+  n.geno <- length(geno.enc)
   #Setup ALPHA & GAMMA
   alpha <- 1; gamma <- 1
   if(method[1] != "Exact") gamma <- 2
   if(method[1] == "Adjacency") alpha <- 2
 
-	result <- .C("R_mapctl",as.integer(n.ind), as.integer(n.mar), as.integer(n.phe),
-                    			as.integer(unlist(genotypes)), as.double(unlist(phenotypes)),
+	result <- .C("R_mapctl",as.integer(n.ind), as.integer(n.mar), as.integer(n.phe), as.integer(n.geno),
+                    			as.integer(unlist(genotypes)), as.double(unlist(phenotypes)), as.integer(geno.enc),
                           as.integer((pheno.col-1)), as.integer(n.perms),
                           as.integer(alpha),as.integer(gamma),
                           as.integer(perm.type),
@@ -110,7 +108,8 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, method = c("Exact",
   if(method[1] != "Exact"){ # When not Exact, likelihoods are computed in C by permutation
     res$ctl   <- matrix(result$ctl, n.mar, n.phe)
   }else{  # Exact version needs to use single trait bonferonni correction
-    res$ctl   <- (2*dnorm(matrix(result$dcor, n.mar, n.phe))) * (n.mar * n.phe) 
+#    res$ctl   <- (2*dnorm()) * (n.mar * n.phe) 
+    res$ctl   <- pchisq(matrix(result$dcor, n.mar, n.phe), (n.geno-1),lower.tail=FALSE) * (n.mar * n.phe) 
     res$ctl[res$ctl > 1] <- 1
     res$ctl   <- -log10(res$ctl)
   }
