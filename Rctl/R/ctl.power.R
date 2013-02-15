@@ -127,6 +127,8 @@ test.power.test <- function(){
   boxplot(sample400, at=as.numeric(colnames(sample400)), boxwex=0.02, add=T, col="orange")
   points(as.numeric(colnames(sample400)), apply(sample400,2,median), col='orange',t='l')
 
+  legend("bottomright",c("100","200","300"),col=c("black","blue","orange"),lwd=1,title="Sample size")
+
   ratios <-  100*c(getRatio(0.95), getRatio(0.9), getRatio(0.8), getRatio(0.7),  getRatio(0.6))
   res2 <- CTLpowerAnalysis(1000, effects=c(0.3), individuals = c(30, 40, 50, 75, 100, 150, 200, 500, 1000),ratios=ratios, method="Exact")
 #  res2 <- CTLpowerAnalysis(100, individuals = c(100), method="Power")
