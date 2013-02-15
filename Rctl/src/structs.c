@@ -1,5 +1,23 @@
 #include "structs.h"
 
+clvector getGenotypes(const Genotypes g){
+  size_t m,i;
+  clvector clv;
+  clv.nelements = 0;
+  clv.data = newivector(clv.nelements);
+  for(m = 0; m < g.nmarkers; m++){
+    for(i = 0; i < g.nindividuals; i++){
+      if(!in(clv, g.data[m][i])){
+        int* t = addtoivector(clv.data, clv.nelements, g.data[m][i]); 
+        free(clv.data);
+        clv.data = t;
+        clv.nelements++;
+      }
+    }
+  }
+  return clv;
+}
+
 /* Creates the phenotype struct from a string */
 Phenotypes tophenotypes(const char* content){
   char*    num    = newcvector(0);

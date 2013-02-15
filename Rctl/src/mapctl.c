@@ -98,43 +98,6 @@ double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, si
   return ctls;
 }
 
-/* Calculate the standard error */
-double stderror(size_t df1, size_t df2){
-  return(sqrt((1.0 / ((double)(df1-3)) + (1.0 / (double)(df2-3)))));
-}
-
-/* Transform a correlation coeficient into a Zscore */
-double zscore(double cor){ return(.5*log((1.0 + cor)/(1.0 - cor))); }
-
-double chiSQ(size_t nr, double* r, int* nsamples){
-  size_t i;
-  double sumOfSquares = 0;
-  double squaresOfSum = 0;
-  size_t denominator = 0;
-  for(i = 0; i < nr; i++){
-    sumOfSquares += (nsamples[i]-3) * pow(zscore(r[i]), 2.0);
-    squaresOfSum += (nsamples[i]-3) * zscore(r[i]);
-    denominator  += (nsamples[i]-3);
-  }
-  return(sumOfSquares-(pow(squaresOfSum, 2.0) / denominator));
-}
-
-
-double ctleff(double* phe1, double* phe2, int* m, int nind, int alpha, int beta, int doZ){
-  clvector indAA  = which(m, nind, 0);
-  clvector indBB  = which(m, nind, 1);
-  double* phe1AA = get(phe1, indAA);
-  double* phe1BB = get(phe1, indBB);
-  double* phe2AA = get(phe2, indAA);
-  double* phe2BB = get(phe2, indBB);
-  double  cAA = correlation(phe1AA, phe2AA, indAA.nelements);
-  double  cBB = correlation(phe1BB, phe2BB, indBB.nelements);
-  if(doZ && alpha == 1 && beta == 1){
-    return (zscore(cAA) - zscore(cBB)) / stderror(indAA.nelements, indBB.nelements);
-  }
-  return pow(0.5*(pow(cAA, alpha) - pow(cBB, alpha)), beta);
-}
-
 /* Calculate the difference in correlation matrix for phenotype 'phenotype' */
 double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, size_t ngenotypes, int* genoenc, int alpha, int beta){
   size_t g, m, p,debug = 0;

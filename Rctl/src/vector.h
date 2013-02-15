@@ -32,7 +32,7 @@
 
     clvector which(const int*  v, size_t dim, int type);
     double*  get(const double* v, clvector idxs);
-
+    int      in(const clvector vector, int val);
   #endif //__VECTOR_H__
 #ifdef __cplusplus
   }

@@ -132,3 +132,11 @@ double* get(const double* v, clvector idxs){
   return v1;
 }
 
+int in(const clvector vector, int val){
+  size_t i;
+  for(i =0; i< vector.nelements; i++){
+    if(val == vector.data[i] && val != -999) return 1;
+  }
+  return 0;
+}
+

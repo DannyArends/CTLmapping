@@ -1,26 +1,37 @@
 #include "correlation.h"
  
 double correlation(double* x, double* y, size_t dim){
-  double XiYi = 0.0;
-  double Xi   = 0.0;
-  double Yi   = 0.0;
-  double XiP2 = 0.0;
-  double YiP2 = 0.0;
+  KahanAccumulator XiYi = createAccumulator();
+  KahanAccumulator Xi   = createAccumulator();
+  KahanAccumulator Yi   = createAccumulator();
+  KahanAccumulator XiP2 = createAccumulator();
+  KahanAccumulator YiP2 = createAccumulator();
   size_t i    = 0;
   for(i = 0; i < dim; i++){
     if(x[i] != -999 && y[i] != -999){
-      XiYi += x[i] * y[i];
-      Xi   += x[i];
-      Yi   += y[i];
-      XiP2 += x[i] * x[i];
-      YiP2 += y[i] * y[i];
+      XiYi = KahanSum(XiYi, x[i] * y[i]);
+      Xi   = KahanSum(Xi, x[i]);
+      Yi   = KahanSum(Yi, y[i]);
+      XiP2 = KahanSum(XiP2, x[i] * x[i]);
+      YiP2 = KahanSum(YiP2, y[i] * y[i]);
     }
   }
   double onedivn = 1.0 / dim;
-  return (XiYi - (onedivn*Xi*Yi)) / (sqrt(XiP2 - onedivn * pow(Xi, 2)) * sqrt(YiP2 - onedivn * pow(Yi, 2)));
+  return (XiYi.sum - (onedivn*Xi.sum*Yi.sum)) / (sqrt(XiP2.sum - onedivn * pow(Xi.sum, 2.0)) * sqrt(YiP2.sum - onedivn * pow(Yi.sum, 2.0)));
 }
 
-int isNaN(double d){ return(d != d); }
+double chiSQ(size_t nr, double* r, int* nsamples){
+  size_t i;
+  KahanAccumulator sumOfSquares = createAccumulator();
+  KahanAccumulator squaresOfSum = createAccumulator();
+  size_t denominator = 0;
+  for(i = 0; i < nr; i++){
+    sumOfSquares = KahanSum(sumOfSquares, (nsamples[i]-3) * pow(zscore(r[i]), 2.0));
+    squaresOfSum = KahanSum(squaresOfSum, (nsamples[i]-3) * zscore(r[i]));
+    denominator  += (nsamples[i]-3);
+  }
+  return(sumOfSquares.sum - (pow(squaresOfSum.sum, 2.0) / denominator));
+}
 
 double tstat(double cor, int dim){
   double n = (1.0 - pow(cor,2));
