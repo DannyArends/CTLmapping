@@ -23,33 +23,21 @@ int* newivector(size_t dim){
 
 /* Adds a new integer element n to vector v */
 int* addtoivector(const int* v, size_t dim, int n){
-  int* v1 = newivector(dim+1);
-  size_t i;
-  for(i = 0;i < dim;i++){
-    v1[i] = v[i];
-  }
+  int* v1 = (int*)realloc((void*)v, (dim+1) * sizeof(int));
   v1[dim] = n;
   return v1;
 }
 
 /* Adds a new double element n to vector v */
 double* addtodvector(const double* v, size_t dim, double n){
-  double* v1 = newdvector(dim+1);
-  size_t i;
-  for(i = 0;i < dim;i++){
-    v1[i] = v[i];
-  }
+  double* v1 = (double*)realloc((void*)v, (dim+1) * sizeof(double));
   v1[dim] = n;
   return v1;
 }
 
 /* Adds a new character element n to vector v */
 char* addtocvector(const char* v, size_t dim, char n){
-  char* v1 = newcvector(dim+1);
-  size_t i;
-  for(i = 0;i < dim;i++){
-    v1[i] = v[i];
-  }
+  char* v1 = (char*)realloc((void*)v, (dim+1) * sizeof(char));
   v1[dim] = n;
   return v1;
 }
@@ -102,41 +90,5 @@ int* swap(int* idx, int i1, int i2){
 int* randomizeivector(int* idx, size_t max){
   if(max==2) return idx;
   return randomizeivector(swap(idx, (int)(randnum()*(max-2)), max-1),(max-1));
-}
-
-/* Which integer elements in v are equal to type, returns a clvector of indices */
-clvector which(const int* v, size_t dim, int type){
-  size_t i;
-  size_t length  = 0;
-  clvector clv;
-  clv.data = newivector(length);
-  for(i = 0; i < dim; i++){ 
-    if(v[i] == type){
-      int* t = addtoivector(clv.data, length, i); 
-      free(clv.data);
-      clv.data = t;
-      length++;
-    }
-  }  
-  clv.nelements = length;
-  return clv;
-}
-
-/* Get the double elements in v, specified by the indexes in the clvector idxs */
-double* get(const double* v, clvector idxs){
-  size_t i;
-  double* v1 = newdvector(idxs.nelements);
-  for(i = 0; i < idxs.nelements; i++){
-    v1[i] = v[idxs.data[i]]; 
-  }
-  return v1;
-}
-
-int in(const clvector vector, int val){
-  size_t i;
-  for(i =0; i< vector.nelements; i++){
-    if(val == vector.data[i] && val != -999) return 1;
-  }
-  return 0;
 }
 

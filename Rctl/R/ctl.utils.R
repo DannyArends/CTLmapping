@@ -7,21 +7,26 @@
 # 
 # check.genotypes, getRVM, lodscorestoscanone, getCorrelatedPhenotypes, gcLoop
 
-check.genotypes <- function(genotypes, geno.enc=c(1,2), verbose=FALSE){
+check.genotypes <- function(genotypes, geno.enc=c(1,2), minAmount = 20, verbose=FALSE){
   if(verbose) cat("check.genotypes: ", ncol(genotypes)," markers, ", nrow(genotypes)," individuals\n")
-  if(length(geno.enc)!=2) stop("argument 'geno.enc' length is incorrect, provide two genotype.values")
+  if(length(geno.enc) < 2) stop("argument 'geno.enc' length is incorrect, provide at least two genotype.values")
   
   toremove <- NULL
   idx <- 1
   checks <- apply(genotypes,2,function(geno){
     #We need at least 3 markers of a certain genotype
-    if(length(which(geno==geno.enc[1])) <= 2 | length(which(geno==geno.enc[2])) <= 2){
-      if(verbose) cat("Severe: Empty group, removing marker",idx,"\n")
-      toremove <<- c(idx,toremove)
+    for(x in geno.enc){
+      if(length(which(geno==x)) <= minAmount){
+        if(verbose) cat("Severe: Small/Empty group", x ," (size:",length(which(geno==x)),"), removing marker",idx,"\n")
+        toremove <<- c(toremove, idx)
+      }
     }
     idx <<- idx+1
   })
-  if(length(toremove) > 0) cat("check.genotypes: Removing", length(toremove), "markers\n")
+  if(length(toremove) > 0){
+    cat("check.genotypes: Removing", length(toremove),"/",ncol(genotypes), "markers\n")
+    cat(toremove, "\n")
+  }
   invisible(toremove)
 }
 

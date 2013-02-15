@@ -25,7 +25,7 @@ double* permute(const Phenotypes phe, const Genotypes geno, size_t p, int ngenot
   if(a == 1 && b == 1){ return scores; }
   for(perm = 0; perm < np; perm++){
     Genotypes g = permutegenotypes(geno);
-    double** ctls  = ctleffects(phe, g, p, ngenotypes, genoenc, a, b);
+    double** ctls  = ctleffects(phe, g, p, ngenotypes, genoenc, a, b, FALSE);
     scores[perm] = fabs(matrixmax(ctls, geno.nmarkers, phe.nphenotypes));
     freematrix((void**)ctls   , geno.nmarkers);
     freematrix((void**)g.data , geno.nmarkers);
@@ -42,7 +42,7 @@ double** permuteRW(const Phenotypes phe, const Genotypes geno, size_t p, int nge
   if(a == 1 && b == 1){ return scores; }
   for(perm = 0; perm < np; perm++){
     Genotypes g = permutegenotypes(geno);
-    double** ctls  = ctleffects(phe, g, p, ngenotypes, genoenc, a, b);
+    double** ctls  = ctleffects(phe, g, p, ngenotypes, genoenc, a, b, FALSE);
     double** tctls = transpose(ctls, geno.nmarkers, phe.nphenotypes);
     for(ph = 0; ph <  phe.nphenotypes; ph++){
       scores[ph][perm] = fabs(vectormax(tctls[ph], geno.nmarkers));

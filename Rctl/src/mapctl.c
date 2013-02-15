@@ -39,7 +39,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* ngeno, int* geno, double* ph
 
   if(verbose) info("Phenotype %d: Mapping", (phenotype+1));  
   updateR(1);
-  dcors = ctleffects(phenotypes, genotypes, phenotype, ngenotypes, genoenc, alpha, beta);
+  dcors = ctleffects(phenotypes, genotypes, phenotype, ngenotypes, genoenc, alpha, beta, verbose);
   for(i=0; i < (nphenotypes*nmarkers); i++){
     int m = i % nmarkers; int p = i / nmarkers;
     dcor[i] = dcors[m][p];
@@ -81,9 +81,9 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* ngeno, int* geno, double* ph
 }
 
 /* Perform a CTL scan and permutations on phenotype 'phenotype' */
-double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, size_t ngenotypes, int* genoenc, int alpha, int beta, int nperms){
+double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, size_t ngenotypes, int* genoenc, int alpha, int beta, int nperms, int verbose){
   info("Phenotype %d: Mapping", (phenotype+1));
-  double** scores = ctleffects(phenotypes, genotypes, phenotype, ngenotypes, genoenc, alpha, beta);
+  double** scores = ctleffects(phenotypes, genotypes, phenotype, ngenotypes, genoenc, alpha, beta, verbose);
   if((alpha == 1 && beta == 1)){
     info("\n");
     return scores;
@@ -99,13 +99,13 @@ double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, si
 }
 
 /* Calculate the difference in correlation matrix for phenotype 'phenotype' */
-double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, size_t ngenotypes, int* genoenc, int alpha, int beta){
+double** ctleffects_old(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, size_t ngenotypes, int* genoenc, int alpha, int beta, int verbose){
   size_t g, m, p,debug = 0;
   double** difcormatrix = newdmatrix(genotypes.nmarkers, phenotypes.nphenotypes);
   for(p = 0; p < phenotypes.nphenotypes; p++){  
     if(p!=phenotype){
     for(m = 0; m < genotypes.nmarkers; m++){
-      if(debug) info("Search and allocation marker %d\n", p);
+      if(debug) info("Search and allocation marker %d\n", m);
       double* cors  = newdvector(ngenotypes);
       int* nsamples = newivector(ngenotypes);
       for(g = 0; g < ngenotypes; g++){
@@ -123,8 +123,49 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
       if(debug) info("Marker done\n");
     }
     }
+    if(verbose) info("Done %d/%d\n", p, phenotypes.nphenotypes);
   }
   return difcormatrix;
 }
+
+
+/* Calculate the difference in correlation matrix for phenotype 'phenotype' */
+double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, size_t ngenotypes, int* genoenc, int alpha, int beta, int verbose){
+  size_t g, m, p,debug = 0;
+  double** difcormatrix = newdmatrix(genotypes.nmarkers, phenotypes.nphenotypes);
+
+  for(m = 0; m < genotypes.nmarkers; m++){
+    clvector* splits = (clvector*) calloc(ngenotypes, sizeof(clvector));
+    double**  pheno1 = (double**) calloc(ngenotypes, sizeof(double*));
+    for(g = 0; g < ngenotypes; g++){
+      splits[g] = which(genotypes.data[m], phenotypes.nindividuals, genoenc[g]);
+      pheno1[g] = get(phenotypes.data[phenotype], splits[g]);
+    }
+    for(p = 0; p < phenotypes.nphenotypes; p++){
+      if(p!=phenotype){
+        double* cors  = newdvector(ngenotypes);
+        int* nsamples = newivector(ngenotypes);
+        for(g = 0; g < ngenotypes; g++){
+          double* P2   = get(phenotypes.data[p], splits[g]);
+          cors[g]      = correlation(pheno1[g], P2, splits[g].nelements);
+          nsamples[g]  = splits[g].nelements;
+          free(P2);                       // Clear phenotype data we allocated
+          updateR(0);
+        }
+        difcormatrix[m][p] = chiSQ(ngenotypes, cors, nsamples);
+        free(cors); free(nsamples);       // Clear correlation and samples data we allocated
+      }
+    }
+    if(verbose) info("Done marker %d/%d\n", m, genotypes.nmarkers);
+    for(g = 0; g < ngenotypes; g++){      // Clear splits and pheno1
+      free(splits[g].data);
+    }
+    freematrix((void*)pheno1, ngenotypes);
+    free(splits);
+  }
+  return difcormatrix;
+}
+
+
 
 

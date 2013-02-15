@@ -87,9 +87,45 @@ CTLpowerAnalysis <- function(n, effects=seq(0, 1, 0.05), individuals=c(20, 40, 6
   return(output)
 }
 
+
+CTLpowerAnalysis <- function(n=100, perms=50, effects=seq(0, 1, 0.05), ind = 100, ratio=50, ...){
+  output <- NULL
+  for(eff in effects){
+  catout <- NULL
+  for(p in 1:perms){
+    sign_cnt = 0
+    for(x in 1:n){
+      input   <- dcor.create(eff, ind, ratio)
+      ctl_res <- CTLscan(input[[2]], input[[1]], ... , verbose=FALSE)
+      if(!is.nan(ctl_res[[1]]$ctl[2])){
+      if(ctl_res[[1]]$ctl[2] > -log10(0.05)){ 
+        sign_cnt = sign_cnt + 1; 
+      }
+      }
+    }
+    catout <- c(catout, (sign_cnt/n))
+    cat("Done ",p,"/",perms,"\n")
+  }
+  output <- cbind(output, catout)
+  }
+  colnames(output) <- effects
+  return(output)
+}
+
 test.power.test <- function(){
   require(ctl)
-  res1 <- CTLpowerAnalysis(1000, effects=c(0.1, 0.25, 0.5, 0.75, 1.0, 1.5), individuals = c(30, 40, 50, 75, 100, 150, 200, 500, 1000),ratios=c(50), method="Exact")
+
+  sample100 <- CTLpowerAnalysis(effects=c(0.02, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.75, 1.0), ind=100, method="Exact")
+  sample200 <- CTLpowerAnalysis(effects=c(0.02, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.75, 1.0), ind=200, method="Exact")
+  sample400 <- CTLpowerAnalysis(effects=c(0.02, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.75, 1.0), ind=400, method="Exact")
+  
+  plot(c(0,1),c(0,1),t='n',xlab="Simulated effect size",ylab="Power", xaxt="n")
+  boxplot(sample100, at=as.numeric(colnames(sample100)), boxwex=0.02, add=T)
+  points(as.numeric(colnames(sample100)), apply(sample100,2,median), t='l')
+  boxplot(sample200, at=as.numeric(colnames(sample200)), boxwex=0.02, add=T, col="blue")
+  points(as.numeric(colnames(sample200)), apply(sample200,2,median), t='l', col="blue")
+  boxplot(sample400, at=as.numeric(colnames(sample400)), boxwex=0.02, add=T, col="orange")
+  points(as.numeric(colnames(sample400)), apply(sample400,2,median), col='orange',t='l')
 
   ratios <-  100*c(getRatio(0.95), getRatio(0.9), getRatio(0.8), getRatio(0.7),  getRatio(0.6))
   res2 <- CTLpowerAnalysis(1000, effects=c(0.3), individuals = c(30, 40, 50, 75, 100, 150, 200, 500, 1000),ratios=ratios, method="Exact")
