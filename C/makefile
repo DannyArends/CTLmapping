@@ -4,7 +4,7 @@ CC = gcc
 LINK = ar
 DEFS = -DSTANDALONE
 
-CFLAGS = -O3 -pedantic -w -Wall -Wextra -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
+CFLAGS = -std=gnu99 -O3 -pedantic -w -Wall -Wextra -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
 LDFLAGS = -lm -O3
 #### End of system configuration section. ####
 
