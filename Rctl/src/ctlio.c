@@ -10,7 +10,7 @@ void writeout(double** ctls, size_t phenotype, size_t nmar, size_t nphe){
   sprintf(buf,"%i",phenotype);
   strcat(filename, buf);
   strcat(filename,".o");
-  file = fopen(filename,"a+");
+  file = fopen(filename,"w+");
   for(p = 0; p < nphe; p++){
     for(m = 0; m < nmar; m++){
       if(m > 0) fprintf(file, "\t");
