@@ -24,14 +24,16 @@ int main(int argc, char **argv){
   size_t alpha   = 1;
   size_t beta    = 1;
   bool   doperms = false;
+  bool   verbose = false;
   char   ch;
 
   srand(time(NULL));
-  while((ch = getopt(argc, argv, "g:p:n:a:b:hd")) != -1){
+  while((ch = getopt(argc, argv, "g:p:n:a:b:hdv")) != -1){
     switch(ch){
       case 'g': genofilename  = optarg;  break;
       case 'p': phenofilename = optarg; break;
       case 'd': doperms       = true;  break;
+      case 'v': verbose       = true;  break;
       case 'n': nperms        = atoi(optarg);  break;
       case 'h': printhelp(); return 0;  break;
       default: break;
@@ -51,12 +53,31 @@ int main(int argc, char **argv){
   }else{
     clvector genoenc = getGenotypes(genotypes);
     info("Num genotypes: %d\n", genoenc.nelements);
-    size_t p = 0;
-    for(p = 0; p < phenotypes.nphenotypes;p++){
-      double** ctls = mapctl(phenotypes, genotypes, p, genoenc.nelements, genoenc.data, doperms, nperms, false);
-      writeout(ctls, p, genotypes.nmarkers, phenotypes.nphenotypes);
+    size_t phenotype  = 0;
+    size_t ngenos = genoenc.nelements;
+    for(phenotype = 0; phenotype < phenotypes.nphenotypes; phenotype++){
+      info("Phenotype %d: Mapping", (phenotype+1));
+
+      double** ctls;
+      double*  perms;
+      double** scores = ctleffects(phenotypes, genotypes, phenotype, ngenos, genoenc.data, alpha, beta, verbose);
+      if(!doperms){
+        info(", toLOD\n");  // Exact calculation can be used
+        ctls = toLODexact(scores, ngenos, genotypes.nmarkers, phenotypes.nphenotypes);
+      }else{
+        info(", Permutation");
+        fflush(stdout);
+        perms = permute(phenotypes, genotypes, phenotype, ngenos, genoenc.data, alpha, beta, nperms, false);
+        info(", toLOD\n");
+        ctls = toLOD(scores, perms, genotypes.nmarkers, phenotypes.nphenotypes, nperms);
+        free(perms);
+      }
+      writeout(ctls, phenotype, genotypes.nmarkers, phenotypes.nphenotypes);
+      writesummary(ctls, scores, phenotype, genotypes.nmarkers, phenotypes.nphenotypes, 0.05);
+      freematrix((void**)scores, genotypes.nmarkers);
       freematrix((void**)ctls, genotypes.nmarkers);
     }
+    info("%.8f\n",1-chiSQtoP(1,80.798));
     freematrix((void**)phenotypes.data, phenotypes.nphenotypes);
     freematrix((void**)genotypes.data, genotypes.nmarkers);
   }

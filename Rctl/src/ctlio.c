@@ -23,6 +23,25 @@ void writeout(double** ctls, size_t phenotype, size_t nmar, size_t nphe){
   fclose(file);
 }
 
+/* Writes the significant elements to the summary file */
+void writesummary(double** ctls, double** scores, size_t phenotype, size_t nmar, size_t nphe, double cutoff){
+  size_t p, m;
+  FILE* file;
+  if(phenotype == 0){ 
+    file = fopen("summary.txt","w+");
+    fprintf(file, "Trait\tMarker\tTrait\tScore\tLOD\n");
+  }else{ file = fopen("summary.txt","a+"); }
+  for(p = 0; p < nphe; p++){
+    for(m = 0; m < nmar; m++){
+      if(ctls[m][p] >= -log10(cutoff)){
+        fprintf(file, "%d\t%d\t%d\t%f\t%f\n", phenotype, m, p, scores[m][p], ctls[m][p]);
+      }
+    }
+  }
+  fclose(file);
+}
+
+
 /* File size of a file */
 size_t filesize(char* name){
   char ch;
@@ -40,7 +59,7 @@ size_t filesize(char* name){
   return cnt;
 }
 
-/* Get the whole string content of a file */
+/* Get the whole content of a file as a char[] (Ensures the file is \n terminated) */
 char* getfilecontent(char* name){
   size_t fsize   = filesize(name);
   char*  content = newcvector((fsize+1));

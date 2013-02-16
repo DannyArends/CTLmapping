@@ -4,12 +4,13 @@ CC = gcc
 LINK = ar
 DEFS = -DSTANDALONE
 
-CFLAGS = -std=gnu99 -g -O3 -pedantic -w -Wall -Wextra -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
-LDFLAGS = -lm -O3
+CFLAGS = -I/usr/share/R/include -std=gnu99 -g -O3 -pedantic -w -Wall -Wextra -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
+LDFLAGS = -lm -L/usr/lib/R/lib -lR -O3
 #### End of system configuration section. ####
 
 SOURCES    = $(srcdir)/vector.c $(srcdir)/matrix.c $(srcdir)/sort.c $(srcdir)/structs.c \
-             $(srcdir)/ctlio.c $(srcdir)/correlation.c $(srcdir)/permutation.c $(srcdir)/mapctl.c
+             $(srcdir)/ctlio.c $(srcdir)/correlation.c $(srcdir)/permutation.c \
+             $(srcdir)/mapctl.c $(srcdir)/rmapctl.c
 OBJECTS    = $(SOURCES:.c=.o)
 EXECUTABLE = mapctl
 STATIC     = libctl.a
@@ -50,6 +51,6 @@ $(SHARED): $(OBJECTS)
 
 # target: clean - Cleanup
 clean:
-	rm -rf *o *.so *.a *exe
+	rm -rf *o *.so *.a *exe summary.txt
 	rm -rf ../Rctl/src/*o
 
