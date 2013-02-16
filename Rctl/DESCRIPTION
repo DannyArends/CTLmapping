@@ -4,6 +4,6 @@ Date: 18 Oct 2011
 Title: Correlated Trait Locus (CTL) mapping in R
 Author: Danny Arends <Danny.Arends@gmail.com>
 Maintainer: Danny Arends <Danny.Arends@gmail.com>
-Depends: R (>= 2.10), Matrix, qtl, parallel, POT, mvtnorm
+Depends: R (>= 2.10), qtl, parallel, POT, mvtnorm
 Description: Analysis of genetical genomic data to identify genetic loci associated with correlation changes in quantitative traits (CTL)
 License: GPL-3

@@ -16,7 +16,7 @@
     double   ctleff(double* phe1, double* phe2, int* m, int nind, int alpha, int beta, int doZ);
     double   chiSQ(size_t nr, double* r, int* nsamples);
 
-    double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, size_t ngenotypes, int* genoenc, int alpha, int beta, int nperms, bool verbose);
+    double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, size_t ngenotypes, int* genoenc, bool doperms, int nperms, bool verbose);
     double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, size_t ngenotypes, int* genoenc, int alpha, int beta, bool verbose);
 
   #endif //__MAPCTL_H__

@@ -9,7 +9,7 @@
 #
 
 #-- CTLscan main function --#
-CTLscan <- function(genotypes, phenotypes, pheno.col, method = c("Exact", "Power", "Adjacency"), n.perms = 100, strategy = c("Full", "Pairwise"), conditions = NULL, have.qtls = NULL, n.cores = 1, geno.enc = c(1,2), verbose = FALSE){
+CTLscan <- function(genotypes, phenotypes, pheno.col, n.perms = 100, strategy = c("Exact", "Full", "Pairwise"), conditions = NULL, have.qtls = NULL, n.cores = 1, geno.enc = c(1,2), verbose = FALSE){
   if(missing(genotypes) || is.null(genotypes))  stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   if(missing(pheno.col)) pheno.col = 1:ncol(phenotypes)
@@ -34,7 +34,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col, method = c("Exact", "Power
   if(n.cores==1){
     idx <- 1
     for(phe in pheno.col){
-      results[[idx]] <- CTLmapping(genotypes, phenotypes, pheno.col=phe, method=method, n.perms=n.perms,
+      results[[idx]] <- CTLmapping(genotypes, phenotypes, pheno.col=phe, n.perms=n.perms,
                              strategy=strategy, have.qtls=have.qtls, geno.enc=geno.enc, verbose=verbose)
       idx <- idx + 1
     }
@@ -44,7 +44,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col, method = c("Exact", "Power
     cl <- parallel::makeCluster(rep("localhost", min.cores))
     parallel::clusterEvalQ(cl, library(ctl))
     results <- parallel::parLapply(cl, pheno.col, function(x, have.qtls){
-      CTLmapping(genotypes, phenotypes, pheno.col=x, method=method, n.perms=n.perms, strategy=strategy,
+      CTLmapping(genotypes, phenotypes, pheno.col=x, n.perms=n.perms, strategy=strategy,
                  have.qtls = have.qtls, geno.enc=geno.enc, verbose=verbose)
     },have.qtls)
     parallel::stopCluster(cl)
@@ -54,7 +54,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col, method = c("Exact", "Power
   invisible(results)
 }
 
-CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, method = c("Exact","Power","Adjacency"), n.perms = 100, strategy = c("Full", "Pairwise"), have.qtls = NULL, geno.enc = c(1,2), verbose = FALSE){
+CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, n.perms = 100, strategy = c("Exact", "Full", "Pairwise"), have.qtls = NULL, geno.enc = c(1,2), verbose = FALSE){
   if(missing(genotypes) || is.null(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
 
@@ -64,10 +64,11 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, method = c("Exact",
   if(!is.null(have.qtls)){
     res$qtl <- have.qtls[,pheno.col]
   }else{
-    tryCatch( #Maps QTL profile using a 'slow' approach
-      res$qtl <- apply(genotypes, 2, function(x){
-                   -log10(anova(lm(phenotypes[,pheno.col] ~ x))[[5]][1])
-                 }), error = function(e) e)
+    res$qtl <- rep(0,ncol(genotypes))
+    #tryCatch( #Maps QTL profile using a 'slow' approach
+    #  res$qtl <- apply(genotypes, 2, function(x){
+    #               -log10(anova(lm(phenotypes[,pheno.col] ~ x))[[5]][1])
+    #             }), error = function(e) e)
   }
 
   #In C we use -999 for missing genotype data
@@ -77,21 +78,20 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, method = c("Exact",
 
   #Setup return structures for the permutations
   perm.type = 0
-  perms     = as.double(rep(0, n.perms))
-  if(strategy[1] == "Pairwise"){
+  perms = as.double(rep(0, n.perms))
+  if(strategy[1] == "Full"){
     perm.type = 1
+  }
+  if(strategy[1] == "Pairwise"){
+    perm.type = 2
     perms = as.double(rep(0,n.perms * n.phe))
   }
   n.geno <- length(geno.enc)
-  #Setup ALPHA & GAMMA
-  alpha <- 1; gamma <- 1
-  if(method[1] != "Exact") gamma <- 2
-  if(method[1] == "Adjacency") alpha <- 2
 
 	result <- .C("R_mapctl",as.integer(n.ind), as.integer(n.mar), as.integer(n.phe), as.integer(n.geno),
                     			as.integer(unlist(genotypes)), as.double(unlist(phenotypes)), as.integer(geno.enc),
                           as.integer((pheno.col-1)), as.integer(n.perms),
-                          as.integer(alpha),as.integer(gamma),
+                          as.integer(1),as.integer(1),  #Setup ALPHA & GAMMA
                           as.integer(perm.type),
                           dcor =as.double(rep(0,n.mar*n.phe)),
                           perms=as.double(perms),
@@ -102,22 +102,11 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, method = c("Exact",
   #Store the DCOR/Z scores, Permutations, CTLs
   res$dcor  <- matrix(result$dcor, n.mar, n.phe)
   res$perms <- result$perms
-  if(perm.type==1){
+  if(perm.type == 1){
     res$perms <- matrix(result$perms, n.perms, n.phe)
   }
-  if(method[1] != "Exact"){ # When not Exact, likelihoods are computed in C by permutation
-    res$ctl   <- matrix(result$ctl, n.mar, n.phe)
-  }else{  # Exact version needs to use single trait bonferonni correction
-#    res$ctl   <- (2*dnorm()) * (n.mar * n.phe) 
-    res$ctl   <- pchisq(matrix(result$dcor, n.mar, n.phe), (n.geno-1),lower.tail=FALSE) * (n.mar * n.phe) 
-    res$ctl[res$ctl > 1] <- 1
-    res$ctl   <- -log10(res$ctl)
-  }
-  if(any(is.na(res$dcor))){
-    warning("Differential correlation: NaN scores, no variance ?")
-    #res$ctl[is.na(res$dcor)] <- 0
-  }
-  res$ctl  <- Matrix(res$ctl); res$dcor <- Matrix(res$dcor) # Use sparse matrix package to save memory
+  res$ctl   <- matrix(result$ctl, n.mar, n.phe)
+  if(any(is.na(res$dcor))) warning("Differential correlation: NaN scores, no variance ?")
   rownames(res$dcor) <- colnames(genotypes); colnames(res$dcor) <- colnames(phenotypes)
   rownames(res$ctl)  <- colnames(genotypes); colnames(res$ctl)  <- colnames(phenotypes)
   attr(res,"name") <- colnames(phenotypes)[pheno.col]

@@ -20,6 +20,7 @@
     static inline double zscore(double cor){ return(.5*log((1.0 + cor)/(1.0 - cor))); }
 
     double chiSQ(size_t nr, double* r, int* nsamples);
+    double chiSQtoP(int Dof, double Cv);
     double tstat(double cor, int dim);
   #endif //__CORRELATION_H__
 #ifdef __cplusplus

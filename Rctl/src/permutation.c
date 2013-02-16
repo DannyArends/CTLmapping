@@ -22,7 +22,7 @@ Genotypes permutegenotypes(Genotypes genotypes){
 double* permute(const Phenotypes phe, const Genotypes geno, size_t p, int ngenotypes,int* genoenc, int a, int b, size_t np, bool verbose){
   size_t perm, ph;
   double* scores = newdvector(np);
-  if(a == 1 && b == 1){ return scores; }
+//  if(a == 1 && b == 1){ return scores; }
   for(perm = 0; perm < np; perm++){
     Genotypes g = permutegenotypes(geno);
     double** ctls  = ctleffects(phe, g, p, ngenotypes, genoenc, a, b, false);
@@ -39,7 +39,7 @@ double* permute(const Phenotypes phe, const Genotypes geno, size_t p, int ngenot
 double** permuteRW(const Phenotypes phe, const Genotypes geno, size_t p, int ngenotypes,int* genoenc, int a, int b, size_t np, bool verbose){
   size_t perm,ph;
   double** scores = newdmatrix(phe.nphenotypes, np);
-  if(a == 1 && b == 1){ return scores; }
+//  if(a == 1 && b == 1){ return scores; }
   for(perm = 0; perm < np; perm++){
     Genotypes g = permutegenotypes(geno);
     double** ctls  = ctleffects(phe, g, p, ngenotypes, genoenc, a, b, false);
@@ -71,6 +71,22 @@ double getidx(double val, double* permutations, size_t nperms){
 
 double estimate(double val, double* permutations, size_t nperms){
   return -log10(1.0 - (getidx(val, permutations, nperms)/(double)nperms));
+}
+
+double** toLODexact(double** scores, size_t ngenotypes, size_t nmar, size_t nphe){
+  double** ctls = newdmatrix(nmar, nphe);
+  size_t p,m;
+  double pval;
+  for(m = 0; m < nmar; m++){
+    for(p = 0; p < nphe; p++){
+      pval = chiSQtoP(ngenotypes-1, scores[m][p]);
+      pval *= nmar*nphe;
+      if(pval > 1) pval = 1.0;
+      ctls[m][p] = fabs(log10(pval));
+    }
+    updateR(0);
+  }
+  return ctls;
 }
 
 double** toLOD(double** scores, double* permutations, size_t nmar, size_t nphe, size_t nperms){

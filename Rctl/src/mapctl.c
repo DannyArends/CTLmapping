@@ -45,8 +45,19 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* ngeno, int* geno, double* ph
     dcor[i] = dcors[m][p];
   }
 
-  if(permtype){
-    if(verbose) info(", RW permutation");
+  if(permtype == 1){
+    if(verbose) info(", Full permutation");
+    updateR(1);
+    double* permutations = permute(phenotypes, genotypes, phenotype, ngenotypes, genoenc, alpha, beta, npermutations, false);
+    for(i=0; i < npermutations; i++){ // SEND PERMUTATIONS TO R
+      perms[i] = permutations[i];
+    }
+    if(verbose) info(", toLOD\n");
+    updateR(1);
+    ctls = toLOD(dcors, permutations, genotypes.nmarkers, phenotypes.nphenotypes, npermutations);
+    free(permutations);
+  }else if(permtype == 2){
+    if(verbose) info(", Pairwise permutation");
     updateR(1);
     double** permutations = permuteRW(phenotypes, genotypes, phenotype, ngenotypes, genoenc, alpha, beta, npermutations, 0);
     for(ph=0; ph < (nphenotypes); ph++){ // SEND PERMUTATIONS TO R
@@ -55,20 +66,12 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* ngeno, int* geno, double* ph
       }
     }
     if(verbose) info(", toLOD\n");
-    updateR(1);
     ctls = toLODRW(dcors, permutations, genotypes.nmarkers, phenotypes.nphenotypes, npermutations);
     freematrix((void**)permutations, nphenotypes);
   }else{
-    if(verbose) info(", Permutation");
-    updateR(1);
-    double* permutations = permute(phenotypes, genotypes, phenotype, ngenotypes, genoenc, alpha, beta, npermutations, 0);
-    for(i=0; i < npermutations; i++){ // SEND PERMUTATIONS TO R
-      perms[i] = permutations[i];
-    }
     if(verbose) info(", toLOD\n");
     updateR(1);
-    ctls = toLOD(dcors, permutations, genotypes.nmarkers, phenotypes.nphenotypes, npermutations);
-    free(permutations);
+    ctls = toLODexact(dcors, ngenotypes, genotypes.nmarkers, phenotypes.nphenotypes);
   }
   for(i=0; i < (nphenotypes*nmarkers); i++){
     int m = i % nmarkers;
@@ -81,20 +84,23 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* ngeno, int* geno, double* ph
 }
 
 /* Perform a CTL scan and permutations on phenotype 'phenotype' */
-double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, size_t ngenotypes, int* genoenc, int alpha, int beta, int nperms, bool verbose){
+double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, size_t ngenotypes, int* genoenc, bool doperms, int nperms, bool verbose){
   info("Phenotype %d: Mapping", (phenotype+1));
-  double** scores = ctleffects(phenotypes, genotypes, phenotype, ngenotypes, genoenc, alpha, beta, verbose);
-  if((alpha == 1 && beta == 1)){
-    info("\n");
-    return scores;
+  double** ctls;
+  double*  perms;
+  double** scores = ctleffects(phenotypes, genotypes, phenotype, ngenotypes, genoenc, 1, 1, verbose);
+  if(!doperms){
+    info(", toLOD\n");  // Exact calculation can be used
+    ctls = toLODexact(scores, ngenotypes, genotypes.nmarkers, phenotypes.nphenotypes);
+  }else{
+    info(", Permutation");
+    fflush(stdout);
+    perms = permute(phenotypes, genotypes, phenotype, ngenotypes, genoenc, 1, 1, nperms, false);
+    info(", toLOD\n");
+    ctls = toLOD(scores, perms, genotypes.nmarkers, phenotypes.nphenotypes, nperms);
+    free(perms);
   }
-  info(", Permutation");
-  double* permutations = permute(phenotypes, genotypes, phenotype, ngenotypes, genoenc, alpha, beta, nperms, 0);
-  info(", toLOD\n");
-  double** ctls = toLOD(scores, permutations, genotypes.nmarkers, phenotypes.nphenotypes, nperms);
-
   freematrix((void**)scores, genotypes.nmarkers);
-  free(permutations);
   return ctls;
 }
 
@@ -156,7 +162,7 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
         free(cors); free(nsamples);       // Clear correlation and samples data we allocated
       }
     }
-    if(verbose) info("Done marker %d/%d\n", m, genotypes.nmarkers);
+//    if(verbose) info("Done marker %d/%d\n", m, genotypes.nmarkers);
     for(g = 0; g < ngenotypes; g++){      // Clear splits and pheno1
       free(splits[g].data);
     }

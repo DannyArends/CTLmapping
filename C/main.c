@@ -20,18 +20,19 @@ int main(int argc, char **argv){
   printf("Number of command line arguments passed: %d\n", (argc-1));
   char*  genofilename = "../D/test/data/genotypes.csv";
   char*  phenofilename= "../D/test/data/phenotypes.csv";
-  size_t nperms = 100;
-  size_t alpha  = 1;
-  size_t beta   = 1;
+  size_t nperms  = 100;
+  size_t alpha   = 1;
+  size_t beta    = 1;
+  bool   doperms = false;
   char   ch;
+
   srand(time(NULL));
-  while((ch = getopt(argc, argv, "g:p:n:a:b:h")) != -1){
+  while((ch = getopt(argc, argv, "g:p:n:a:b:hd")) != -1){
     switch(ch){
       case 'g': genofilename  = optarg;  break;
       case 'p': phenofilename = optarg; break;
+      case 'd': doperms       = true;  break;
       case 'n': nperms        = atoi(optarg);  break;
-      case 'a': alpha         = atoi(optarg);  break;
-      case 'b': beta          = atoi(optarg);  break;
       case 'h': printhelp(); return 0;  break;
       default: break;
     }
@@ -52,7 +53,7 @@ int main(int argc, char **argv){
     info("Num genotypes: %d\n", genoenc.nelements);
     size_t p = 0;
     for(p = 0; p < phenotypes.nphenotypes;p++){
-      double** ctls = mapctl(phenotypes, genotypes, p, genoenc.nelements, genoenc.data, alpha, beta, nperms, false);
+      double** ctls = mapctl(phenotypes, genotypes, p, genoenc.nelements, genoenc.data, doperms, nperms, false);
       writeout(ctls, p, genotypes.nmarkers, phenotypes.nphenotypes);
       freematrix((void**)ctls, genotypes.nmarkers);
     }
