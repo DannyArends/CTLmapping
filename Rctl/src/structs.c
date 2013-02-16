@@ -26,19 +26,6 @@ bool checkRow(int ccol, int nrows, int* colcnt){
   return true;
 }
 
-double** addPhenotypeRow(double** matrix, char* num, double* row, int ccol,int nrows, int l){
-  num = addtocvector(num, l, '\0');
-  row = addtodvector(row, ccol-3, atof(num));
-  return addtodmatrix(matrix, nrows, ccol-3, row);
-}
-
-int** addGenotypeRow(int** matrix, char* num, int* row, int ccol,int nrows, int l){
-  num = addtocvector(num, l, '\0');
-  row = addtoivector(row, ccol-3, atoi(num));
-  return addtoimatrix(matrix, nrows, ccol-3, row);
-}
-
-
 /* Creates the phenotype struct from a string */
 Phenotypes tophenotypes(char* content){
   char*    num    = newcvector(0);
@@ -61,7 +48,9 @@ Phenotypes tophenotypes(char* content){
     }
     if(content[0] == '\n' || content[0] == '\0'){
       if(checkRow(ccol, nrows, &colcnt)){
-        matrix = addPhenotypeRow(matrix, num, row, ccol, nrows, l);
+        num = addtocvector(num, l, '\0');
+        row = addtodvector(row, ccol-3, atof(num));
+        matrix = addtodmatrix(matrix, nrows, ccol-3, row);
         free(num);
         num  = newcvector(0);
         row  = newdvector(0);
@@ -77,7 +66,9 @@ Phenotypes tophenotypes(char* content){
     content++;
   }while(content[0] != '\0');
   if(checkRow(ccol, nrows, &colcnt)){
-    matrix = addPhenotypeRow(matrix, num, row, ccol, nrows, l);
+    num = addtocvector(num, l, '\0');
+    row = addtodvector(row, ccol-3, atof(num));
+    matrix = addtodmatrix(matrix, nrows, ccol-3, row);
     free(num);
     nrows++;
   }
@@ -111,7 +102,9 @@ Genotypes togenotypes(char* content){
     }
     if(content[0] == '\n' || content[0] == '\0'){
       if(checkRow(ccol, nrows, &colcnt)){
-        matrix = addGenotypeRow(matrix, num, row, ccol, nrows, l);
+        num = addtocvector(num, l, '\0');
+        row = addtoivector(row, ccol-3, atoi(num));
+        matrix = addtoimatrix(matrix, nrows, ccol-3, row);
         free(num);
         num  = newcvector(0);
         row  = newivector(0);
@@ -127,7 +120,9 @@ Genotypes togenotypes(char* content){
     content++;
   }while(content[0] != '\0');
   if(checkRow(ccol, nrows, &colcnt)){
-    matrix = addGenotypeRow(matrix, num, row, ccol, nrows, l);
+    num = addtocvector(num, l, '\0');
+    row = addtoivector(row, ccol-3, atoi(num));
+    matrix = addtoimatrix(matrix, nrows, ccol-3, row);
     free(num);
     nrows++;
   }
