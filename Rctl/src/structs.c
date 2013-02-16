@@ -15,6 +15,30 @@ clvector getGenotypes(const Genotypes g){
   return clv;
 }
 
+bool checkRow(int ccol, int nrows, int* colcnt){
+  if(!(*colcnt)){
+    (*colcnt) = ccol;
+    return true;
+  }else if(ccol != (*colcnt)){
+    info("Wrong number of columns on line %d\n",nrows);
+    return false;
+  }
+  return true;
+}
+
+double** addPhenotypeRow(double** matrix, char* num, double* row, int ccol,int nrows, int l){
+  num = addtocvector(num, l, '\0');
+  row = addtodvector(row, ccol-3, atof(num));
+  return addtodmatrix(matrix, nrows, ccol-3, row);
+}
+
+int** addGenotypeRow(int** matrix, char* num, int* row, int ccol,int nrows, int l){
+  num = addtocvector(num, l, '\0');
+  row = addtoivector(row, ccol-3, atoi(num));
+  return addtoimatrix(matrix, nrows, ccol-3, row);
+}
+
+
 /* Creates the phenotype struct from a string */
 Phenotypes tophenotypes(char* content){
   char*    num    = newcvector(0);
@@ -23,7 +47,6 @@ Phenotypes tophenotypes(char* content){
   int      nrows  = 0;
   double** matrix = newdmatrix(0, 0);
   double*  row    = newdvector(0);
-  int      rowok  = 0;
   int      l      = 0;
   do{//    info("%d %d %c\n", ccol, l, content[0]);
     if(content[0] == '\t'){
@@ -37,23 +60,12 @@ Phenotypes tophenotypes(char* content){
       ccol++;
     }
     if(content[0] == '\n' || content[0] == '\0'){
-      if(!colcnt){
-        colcnt = ccol;
-        rowok = 1;
-      }else if(ccol != colcnt){
-        info("Wrong number of columns on line %d\n",nrows);
-        rowok = 0;
-      }else{
-        rowok = 1;
-      }
-      if(rowok){
-        num = addtocvector(num, l, '\0');
-        row = addtodvector(row, ccol-3, atof(num));
+      if(checkRow(ccol, nrows, &colcnt)){
+        matrix = addPhenotypeRow(matrix, num, row, ccol, nrows, l);
         free(num);
-        num = newcvector(0);
-        l = 0;
-        matrix = addtodmatrix(matrix, nrows, ccol-3, row);
-        row = newdvector(0);
+        num  = newcvector(0);
+        row  = newdvector(0);
+        l    = 0;
         ccol = 0;
         nrows++;
       }
@@ -64,6 +76,11 @@ Phenotypes tophenotypes(char* content){
     }
     content++;
   }while(content[0] != '\0');
+  if(checkRow(ccol, nrows, &colcnt)){
+    matrix = addPhenotypeRow(matrix, num, row, ccol, nrows, l);
+    free(num);
+    nrows++;
+  }
   info("Parsed into %dx%d matrix\n",nrows,colcnt-2);
   Phenotypes p;
   p.nindividuals = colcnt-2;
@@ -80,7 +97,6 @@ Genotypes togenotypes(char* content){
   int     nrows  = 0;
   int**   matrix = newimatrix(0, 0);
   int*    row    = newivector(0);
-  int     rowok  = 0;
   int     l      = 0;
   do{//    info("%d %d %c\n", ccol, l, content[0]);
     if(content[0] == '\t'){
@@ -94,23 +110,12 @@ Genotypes togenotypes(char* content){
       ccol++;
     }
     if(content[0] == '\n' || content[0] == '\0'){
-      if(!colcnt){
-        colcnt = ccol;
-        rowok = 1;
-      }else if(ccol != colcnt){
-        info("Wrong number of columns on line %d\n",nrows);
-        rowok = 0;
-      }else{
-        rowok = 1;
-      }
-      if(rowok){
-        num = addtocvector(num, l, '\0');
-        row = addtoivector(row, ccol-3, atoi(num));
+      if(checkRow(ccol, nrows, &colcnt)){
+        matrix = addGenotypeRow(matrix, num, row, ccol, nrows, l);
         free(num);
-        num = newcvector(0);
-        l = 0;
-        matrix = addtoimatrix(matrix, nrows, ccol-3, row);
-        row = newivector(0);
+        num  = newcvector(0);
+        row  = newivector(0);
+        l    = 0;
         ccol = 0;
         nrows++;
       }
@@ -121,6 +126,11 @@ Genotypes togenotypes(char* content){
     }
     content++;
   }while(content[0] != '\0');
+  if(checkRow(ccol, nrows, &colcnt)){
+    matrix = addGenotypeRow(matrix, num, row, ccol, nrows, l);
+    free(num);
+    nrows++;
+  }
   info("Parsed into %dx%d matrix\n",nrows,colcnt-2);
   Genotypes g;
   g.nindividuals = colcnt-2;
