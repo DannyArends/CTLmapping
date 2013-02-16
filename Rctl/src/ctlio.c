@@ -43,7 +43,7 @@ size_t filesize(char* name){
 /* Get the whole string content of a file */
 char* getfilecontent(char* name){
   size_t fsize   = filesize(name);
-  char*  content = newcvector(fsize);
+  char*  content = newcvector((fsize+1));
   FILE*  file    = fopen(name, "r");
   size_t cnt     = 0;
   char   ch;
@@ -57,6 +57,7 @@ char* getfilecontent(char* name){
   }while(ch != EOF);
   fclose(file);
   if(content[cnt] != '\n') content = addtocvector(content,cnt,'\n');
+  content = addtocvector(content,cnt,'\0');
   info("File '%s' loaded: %d bytes\n", name, fsize);
   return content;
 }

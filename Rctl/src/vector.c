@@ -2,77 +2,111 @@
 
 /* Allocate a new character vector of length dim */
 char* newcvector(size_t dim){
-  char* v = (char*) calloc(dim, sizeof(char));
+  char* v =  calloc(dim, sizeof(char));
   if(v==NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
   return v;
 }
 
 /* Allocate a new double vector of length dim */
 double* newdvector(size_t dim){
-  double* v = (double*) calloc(dim, sizeof(double));
+  double* v = calloc(dim, sizeof(double));
   if(v==NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
   return v;
 }
 
+/* Allocate a new custom length integer vector of length dim */
+clvector newclvector(size_t dim){
+  clvector clv;
+  clv.nelements = 0;
+  clv.data = newivector(dim);
+  return clv;
+}
+
 /* Allocate a new integer vector of length dim */
 int* newivector(size_t dim){
-  int* v = (int*) calloc(dim, sizeof(int));
+  int* v = calloc(dim, sizeof(int));
   if(v==NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
   return v;
 }
 
 /* Adds a new integer element n to vector v */
-int* addtoivector(const int* v, size_t dim, int n){
-  int* v1 = (int*)realloc((void*)v, (dim+1) * sizeof(int));
+int* addtoivector(int* v, size_t dim, int n){
+  int* v1 = realloc((void*)v, (dim+1) * sizeof(int));
+  if(v1 == NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
   v1[dim] = n;
   return v1;
 }
 
 /* Adds a new double element n to vector v */
-double* addtodvector(const double* v, size_t dim, double n){
-  double* v1 = (double*)realloc((void*)v, (dim+1) * sizeof(double));
+double* addtodvector(double* v, size_t dim, double n){
+  double* v1 = realloc((void*)v, (dim+1) * sizeof(double));
+  if(v1 == NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
   v1[dim] = n;
   return v1;
 }
 
 /* Adds a new character element n to vector v */
-char* addtocvector(const char* v, size_t dim, char n){
-  char* v1 = (char*)realloc((void*)v, (dim+1) * sizeof(char));
+char* addtocvector(char* v, size_t dim, char n){
+  char* v1 = realloc((void*)v, (dim+1));
+  if(v1 == NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
   v1[dim] = n;
   return v1;
 }
 
 /* Print a custom length vector to the output */
-void printclvector(clvector v){
+void printclvector(const clvector v){
   size_t r;
-  for(r = 0; r < v.nelements; r++){
-    info("%d, ",v.data[r]);
-  }
+  for(r = 0; r < v.nelements; r++){ info("%d, ",v.data[r]); }
   info("\n");
 }
 
 void printcvector(const char* v, size_t dim){
   size_t r;
-  for(r = 0; r < dim; r++){
-    info("%c, ",v[r]);
-  }
+  for(r = 0; r < dim; r++){ info("%c, ",v[r]); }
   info("\n");
 }
 
 void printdvector(const double* v, size_t dim){
   size_t r;
-  for(r = 0; r < dim; r++){
-    info("%f, ",v[r]);
-  }
+  for(r = 0; r < dim; r++){ info("%f, ",v[r]); }
   info("\n");
 }
 
 void printivector(const int* v, size_t dim){
   size_t r;
-  for(r = 0; r < dim; r++){
-    info("%d, ",v[r]);
-  }
+  for(r = 0; r < dim; r++){ info("%d, ",v[r]); }
   info("\n");
+}
+
+clvector which(const int* v, size_t dim, int type){
+  size_t i  = 0;
+  clvector clv = newclvector(0);
+  for(i = 0; i < dim; i++){ 
+    if(v[i] == type){
+      clv.data = addtoivector(clv.data, clv.nelements, i);
+      clv.nelements++;
+    }
+  }
+  return clv;
+}
+
+/* Get the double elements in v, specified by the indexes in the clvector idxs */
+double* get(const double* v, clvector idxs){
+  size_t i;
+  double* v1 = newdvector(idxs.nelements);
+  for(i = 0; i < idxs.nelements; i++){
+    v1[i] = v[idxs.data[i]]; 
+  }
+  return v1;
+}
+
+/* Does the clvector contain val */
+bool in(const clvector vector, int val){
+  size_t i;
+  for(i =0; i< vector.nelements; i++){
+    if(val == vector.data[i] && val != -999) return true;
+  }
+  return false;
 }
 
 /* A random double between 0 and 1 */

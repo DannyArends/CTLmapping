@@ -2,15 +2,12 @@
 
 clvector getGenotypes(const Genotypes g){
   size_t m,i;
-  clvector clv;
-  clv.nelements = 0;
-  clv.data = newivector(clv.nelements);
+  clvector clv = newclvector(0);
   for(m = 0; m < g.nmarkers; m++){
     for(i = 0; i < g.nindividuals; i++){
       if(!in(clv, g.data[m][i])){
-        int* t = addtoivector(clv.data, clv.nelements, g.data[m][i]); 
-        free(clv.data);
-        clv.data = t;
+        // info("Found genotype: %d\n",g.data[m][i]);        
+        clv.data = addtoivector(clv.data, clv.nelements, g.data[m][i]); 
         clv.nelements++;
       }
     }
@@ -19,7 +16,7 @@ clvector getGenotypes(const Genotypes g){
 }
 
 /* Creates the phenotype struct from a string */
-Phenotypes tophenotypes(const char* content){
+Phenotypes tophenotypes(char* content){
   char*    num    = newcvector(0);
   int      colcnt = 0;
   int      ccol   = 0;
@@ -28,13 +25,13 @@ Phenotypes tophenotypes(const char* content){
   double*  row    = newdvector(0);
   int      rowok  = 0;
   int      l      = 0;
-  do{
+  do{//    info("%d %d %c\n", ccol, l, content[0]);
     if(content[0] == '\t'){
       if(ccol > 2){
-        double* t = addtodvector(row, ccol-3, atof(num));
-        free(row);
-        row = t;
+        num = addtocvector(num, l, '\0');
+        row = addtodvector(row, ccol-3, atof(num));
       }
+      free(num);
       num = newcvector(0);
       l = 0;
       ccol++;
@@ -50,7 +47,9 @@ Phenotypes tophenotypes(const char* content){
         rowok = 1;
       }
       if(rowok){
+        num = addtocvector(num, l, '\0');
         row = addtodvector(row, ccol-3, atof(num));
+        free(num);
         num = newcvector(0);
         l = 0;
         matrix = addtodmatrix(matrix, nrows, ccol-3, row);
@@ -60,7 +59,7 @@ Phenotypes tophenotypes(const char* content){
       }
     }
     if(content[0] != ' '){
-      num = addtocvector(num,l,content[0]);
+      num = addtocvector(num, l, content[0]);
       l++;
     }
     content++;
@@ -74,7 +73,7 @@ Phenotypes tophenotypes(const char* content){
 }
 
 /* Creates the genotype struct from a string */
-Genotypes togenotypes(const char* content){
+Genotypes togenotypes(char* content){
   char*   num = newcvector(0);
   int     colcnt = 0;
   int     ccol   = 0;
@@ -83,13 +82,13 @@ Genotypes togenotypes(const char* content){
   int*    row    = newivector(0);
   int     rowok  = 0;
   int     l      = 0;
-  do{
+  do{//    info("%d %d %c\n", ccol, l, content[0]);
     if(content[0] == '\t'){
       if(ccol > 2){
-        int* t = addtoivector(row, ccol-3, atoi(num));
-        free(row);
-        row = t;
+        num = addtocvector(num, l, '\0');
+        row = addtoivector(row, ccol-3, atoi(num));
       }
+      free(num);
       num = newcvector(0);
       l = 0;
       ccol++;
@@ -105,9 +104,9 @@ Genotypes togenotypes(const char* content){
         rowok = 1;
       }
       if(rowok){
-        int* t = addtoivector(row, ccol-3, atoi(num));
-        free(row);
-        row = t;
+        num = addtocvector(num, l, '\0');
+        row = addtoivector(row, ccol-3, atoi(num));
+        free(num);
         num = newcvector(0);
         l = 0;
         matrix = addtoimatrix(matrix, nrows, ccol-3, row);

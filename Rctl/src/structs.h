@@ -48,8 +48,8 @@
     }
 
     clvector getGenotypes(const Genotypes g);
-    Phenotypes tophenotypes(const char* content);
-    Genotypes  togenotypes(const char* content);
+    Phenotypes tophenotypes(char* content);
+    Genotypes  togenotypes(char* content);
 
   #endif //__STRUCTS_H__
 #ifdef __cplusplus

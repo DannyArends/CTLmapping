@@ -1,7 +1,7 @@
 #include "mapctl.h"
 
 /* Function to 'update' R, checks user input and can flushes console */
-void updateR(int flush){
+void updateR(bool flush){
   #ifdef USING_R
     R_CheckUserInterrupt();
     if(flush) R_FlushConsole();
@@ -81,7 +81,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* ngeno, int* geno, double* ph
 }
 
 /* Perform a CTL scan and permutations on phenotype 'phenotype' */
-double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, size_t ngenotypes, int* genoenc, int alpha, int beta, int nperms, int verbose){
+double** mapctl(Phenotypes phenotypes, Genotypes genotypes, size_t phenotype, size_t ngenotypes, int* genoenc, int alpha, int beta, int nperms, bool verbose){
   info("Phenotype %d: Mapping", (phenotype+1));
   double** scores = ctleffects(phenotypes, genotypes, phenotype, ngenotypes, genoenc, alpha, beta, verbose);
   if((alpha == 1 && beta == 1)){
@@ -130,7 +130,7 @@ double** ctleffects_old(const Phenotypes phenotypes, const Genotypes genotypes, 
 
 
 /* Calculate the difference in correlation matrix for phenotype 'phenotype' */
-double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, size_t ngenotypes, int* genoenc, int alpha, int beta, int verbose){
+double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, size_t ngenotypes, int* genoenc, int alpha, int beta, bool verbose){
   size_t g, m, p,debug = 0;
   double** difcormatrix = newdmatrix(genotypes.nmarkers, phenotypes.nphenotypes);
 

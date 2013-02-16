@@ -40,9 +40,10 @@ int main(int argc, char **argv){
   char* phenocontent    = getfilecontent(phenofilename);
   char* genocontent     = getfilecontent(genofilename);
   Phenotypes phenotypes = tophenotypes(phenocontent);
-  Genotypes genotypes   = togenotypes(genocontent);
   free(phenocontent);
+  Genotypes genotypes   = togenotypes(genocontent);
   free(genocontent);
+
   if(phenotypes.nindividuals != genotypes.nindividuals){
     printf("Individuals doesn't match between genotypes and phenotypes");
     return -1;
@@ -51,7 +52,7 @@ int main(int argc, char **argv){
     info("Num genotypes: %d\n", genoenc.nelements);
     size_t p = 0;
     for(p = 0; p < phenotypes.nphenotypes;p++){
-      double** ctls = mapctl(phenotypes, genotypes, p, genoenc.nelements, genoenc.data, alpha, beta, nperms);
+      double** ctls = mapctl(phenotypes, genotypes, p, genoenc.nelements, genoenc.data, alpha, beta, nperms, false);
       writeout(ctls, p, genotypes.nmarkers, phenotypes.nphenotypes);
       freematrix((void**)ctls, genotypes.nmarkers);
     }

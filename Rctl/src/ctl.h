@@ -4,6 +4,8 @@
   #ifndef __CTL_H__
     #define __CTL_H__
 
+    #include <stdbool.h>
+
     #ifdef STANDALONE
       #define info(format, ...) { \
         printf(format, ## __VA_ARGS__);}
