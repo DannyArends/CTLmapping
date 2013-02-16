@@ -31,6 +31,8 @@
 
     int*     randomizeivector(int* idx, size_t dim);
 
+    double* torank(double* v, size_t dim);
+
     clvector which(const int* v, size_t dim, int type);
     double*  get(const double* v, clvector idxs);
     bool     in(const clvector vector, int val);

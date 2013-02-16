@@ -6,6 +6,8 @@
 
     #include <stdbool.h>
 
+    #define MISSING -999
+
     #ifdef STANDALONE
       #define info(format, ...) { \
         printf(format, ## __VA_ARGS__);}

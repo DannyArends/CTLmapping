@@ -11,7 +11,7 @@ double correlation(double* x, double* y, size_t dim){
   KahanAccumulator YiP2 = createAccumulator();
 
   for(i = 0; i < dim; i++){
-    if(x[i] != -999 && y[i] != -999){
+    if(x[i] != MISSING && y[i] != MISSING){
       XiYi = KahanSum(XiYi, x[i] * y[i]);
       Xi   = KahanSum(Xi, x[i]);
       Yi   = KahanSum(Yi, y[i]);
