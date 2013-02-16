@@ -80,14 +80,15 @@ double estimate(double val, double* permutations, size_t nperms){
 double** toLODexact(double** scores, size_t ngenotypes, size_t nmar, size_t nphe){
   double** ctls = newdmatrix(nmar, nphe);
   size_t p,m;
-  long double pval;
+  double pval;
+  size_t Dof = (ngenotypes-1);
   for(m = 0; m < nmar; m++){
     for(p = 0; p < nphe; p++){
-      pval = chiSQtoP(ngenotypes-1, scores[m][p]);
+      pval = chiSQtoP(Dof, scores[m][p]);
       pval *= nmar*nphe;
-      if(pval > 1) pval = 1.0;
-      if(pval <= 0.0) info("Pvalue: %f\n", pval);
-      ctls[m][p] = fabs(log10(pval));
+      if(pval >= 1){
+        ctls[m][p] = 0.0;
+      }else{ ctls[m][p] = fabs(log10(pval)); }
     }
     updateR(0);
   }

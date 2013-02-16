@@ -49,6 +49,7 @@ installR: clean
 # target: clean - Cleanup
 clean:
 	rm -f mapctl *a *.so q.log
+	rm -f C/*o C/summary.txt 
 	rm -rf Rctl/src/*o
 	rm -rf Rctl.Rcheck
 

@@ -77,7 +77,6 @@ int main(int argc, char **argv){
       freematrix((void**)scores, genotypes.nmarkers);
       freematrix((void**)ctls, genotypes.nmarkers);
     }
-    info("%.8f\n",1-chiSQtoP(1,80.798));
     freematrix((void**)phenotypes.data, phenotypes.nphenotypes);
     freematrix((void**)genotypes.data, genotypes.nmarkers);
   }

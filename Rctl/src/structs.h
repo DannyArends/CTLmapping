@@ -1,4 +1,4 @@
-    #ifdef __cplusplus
+#ifdef __cplusplus
   extern "C" {
 #endif
   #ifndef __STRUCTS_H__
@@ -29,7 +29,8 @@
       double cor;
     } KahanAccumulator;
 
-    /* KahanAccumulator - Helper function to create an empty Accumulator: see http://en.wikipedia.org/wiki/Kahan_summation_algorithm */
+    /* KahanAccumulator - Helper function to create an empty Accumulator. 
+       See http://en.wikipedia.org/wiki/Kahan_summation_algorithm */
     static inline KahanAccumulator createAccumulator(){
       KahanAccumulator t;
       t.sum = 0.0;
@@ -37,7 +38,8 @@
       return t;
     }
 
-    /* KahanAccumulator - Using the Kahan summation algorithm: see http://en.wikipedia.org/wiki/Kahan_summation_algorithm */
+    /* KahanAccumulator - Using the Kahan summation algorithm. 
+       See http://en.wikipedia.org/wiki/Kahan_summation_algorithm */
     static inline KahanAccumulator KahanSum(KahanAccumulator accumulation, double value){
       KahanAccumulator result;
       double y = value - accumulation.cor;
