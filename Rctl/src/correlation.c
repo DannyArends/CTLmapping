@@ -40,28 +40,6 @@ double chiSQ(size_t nr, double* r, int* nsamples){
   return(sumOfSquares.sum - (pow(squaresOfSum.sum, 2.0) / denom));
 }
 
-/* Inverse Gamma function */
-double igf(double S, double Z){
-  if(Z < 0.0) return 0.0;
-
-  long double Sc = (1.0 / S);
-  Sc *= pow(Z, S);
-  Sc *= exp(-Z);
- 
-  KahanAccumulator sum = createAccumulator();//= 1.0;
-  sum.sum = 1.0;
-  long double nom = 1.0;
-  long double denom = 1.0;
-  size_t i;
-  for(i = 0; i < 1000; i++){
-    nom *= Z;
-	  S++;
-	  denom *= S;
-	  sum = KahanSum(sum, (nom / denom));
-  }
-  return sum.sum * Sc;
-}
-
 /* Transforms a chi square critical value (Cv) to a p-value */
 double chiSQtoP(int Dof, double Cv){
   if(Cv <= 0 || Dof < 1) return 1.0;
