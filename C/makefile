@@ -33,7 +33,6 @@ debug: all
 test: debug
 	./mapctl -h
 	./mapctl
-	./mapctl -d -n 25
 
 # target: shared - CTL as shared library
 shared: DEFS += -fPIC

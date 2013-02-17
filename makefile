@@ -43,7 +43,7 @@ checkR: clean
   $(RCMD) Sweave manual.Rnw; \
   pdflatex manual.tex;\
   rm -f manual.aux manual.log manual.tex
-	$(RCMD) check Rctl
+	$(RCMD) check --no-tests Rctl
 	$(MAKE) clean
 
 # target: installR - Install the R version

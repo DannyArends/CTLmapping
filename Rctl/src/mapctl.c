@@ -6,6 +6,7 @@ double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t p
 
   info("Phenotype %d: Mapping", (phenotype+1));
   clvector* genoenc = getGenotypes(genotypes, false);
+  size_t i;  
   double** ctls;
   double*  perms;
   double** scores = ctleffects(phenotypes, genotypes, phenotype, genoenc, 1, 1, verbose);
@@ -19,6 +20,8 @@ double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t p
     ctls = toLOD(scores, perms, genotypes.nmarkers, phenotypes.nphenotypes, nperms);
     free(perms);
   }
+  for(i = 0; i < genotypes.nmarkers; i++){ free(genoenc[i].data); }
+  free(genoenc);
   freematrix((void**)scores, genotypes.nmarkers);
   return ctls;
 }

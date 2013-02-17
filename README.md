@@ -7,7 +7,7 @@ the D 2.0 programming language.
 CTL mapping is a novel approach to detect genetic regulation of phenotypes in 
 natural and experimental populations. It is a method which complements classical 
 QTL analysis, providing additional insights overlooked by the classical QTL 
-approach. 
+approach.
 
 ### Algorithm
 
@@ -16,7 +16,7 @@ determined at each genetic marker. Phenotypes are assigned to genotype groups
 and a single phenotype is used to scan all other phenotypes for a loss or gain 
 of correlation. The likelihood profiles (~ QTL profiles) of this 'loss of 
 correlation' measurement shows a very high degree of overlap with classical 
-QTL profiles, BUT additional information is available from phenotype x 
+QTL profiles. However additional information is available from phenotype x 
 phenotype interactions. With the right dataset (ideally a combination of: 
 classical phenotypes, protein abundance and gene expression) CTL shows the 
 genetic wiring of the classical phenotypes and identify key players in the 
@@ -28,7 +28,6 @@ Prepare your environment by download and 'moving' to the folder:
 
     $ git clone git://github.com/DannyArends/CTLmapping.git  # Download the repository
     $ cd CTLmapping                                          # Goto the folder
-
 
 ### Use the R library
 
@@ -76,16 +75,14 @@ Load the library in the R interface by the following command (in R):
     ?ctl                                    # Show the help
 ```
 
-Examples
-### 
+### Examples
+
 Scan your data
 
 ```R
     library(ctl)
     data(multitrait)
-    multitrait = fill.geno(multitrait)      # Fill missing genotype values
-    ?CTLscan                                # Show the CTLscan function help
-    ctl_result <- CTLscan.cross(multitrait)
+    ctlres <- CTLscan.cross(multitrait)
 ```
 
 Plot a single phenotype, the profile is comparable to the QTL profile. However using 
@@ -93,7 +90,7 @@ CTL mapping we know which phenotypes are differentially correlated underneath th
 This additional information adds to the already known QTL information.
 
 ```R
-    plot(ctl_result, pheno.col=12)
+    plot(ctlres, pheno.col=12)
 ```
 
 Create an image of the phenotypes to marker relation strength, this matrix is 'comparable' 
@@ -101,21 +98,21 @@ to a heat map of QTL scans on many phenotypes, the underlying model assumptions 
 from QTL mapping but comparable, thus the output is not shockingly different from QTL mapping.
 
 ```R
-    r1 <- image(ctl_result,against="markers")
+    r1 <- image(ctlres,against="markers")
 ```
 
 Create an image of the phenotypes to phenotypes relation strength, this is the additional 
 information matrix, which is not available in classical QTL mapping.
 
 ```R
-    r2 <- image(ctl_result,against="phenotypes")
+    r2 <- image(ctlres,against="phenotypes")
 ```
 
 Reconstruct the network and write two sif files. One sif file contains the full network, the other 
 holds the edge summary network.
 
 ```R
-    CTLnetwork(ctl_result)
+    CTLnetwork(ctlres)
 ```
 
 We can use Cytoscape to visualize the created network (available from [www.cytoscape.org](http://www.cytoscape.org// "www.cytoscape.org") )

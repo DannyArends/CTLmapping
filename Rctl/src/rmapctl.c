@@ -84,6 +84,8 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
     int p = i / nmarkers;
     res[i] = ctls[m][p];
   }
+  for(i = 0; i < nmarkers; i++){ free(genoenc[i].data); }
+  free(genoenc);
   freematrix((void**)dcors, genotypes.nmarkers);
   freematrix((void**)ctls, genotypes.nmarkers);
   return;
