@@ -4,6 +4,7 @@
   #ifndef __PERMUTATION_H__
     #define __PERMUTATION_H__
 
+    #include "ctl.h"
     #include "mapctl.h"
     #include "sort.h"
     

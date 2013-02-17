@@ -4,10 +4,6 @@
   #ifndef __STRUCTS_H__
     #define __STRUCTS_H__
 
-    #include <stdio.h>
-    #include <stdlib.h>
-    #include <math.h>
-    #include <float.h>
     #include "ctl.h"
     #include "vector.h"
     #include "matrix.h"

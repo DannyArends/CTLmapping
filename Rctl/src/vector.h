@@ -4,10 +4,6 @@
   #ifndef __VECTOR_H__
     #define __VECTOR_H__
 
-    #include <stdio.h>
-    #include <stdlib.h>
-    #include <math.h>
-    #include <float.h>
     #include "ctl.h"
 
     //Custom length index vector

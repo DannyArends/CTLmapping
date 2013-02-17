@@ -14,7 +14,6 @@ double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t p
     ctls = toLODexact(scores, genoenc, genotypes.nmarkers, phenotypes.nphenotypes);
   }else{
     info(", Permutation");
-    fflush(stdout);
     perms = permute(phenotypes, genotypes, phenotype, genoenc, 1, 1, nperms, false);
     info(", toLOD\n");
     ctls = toLOD(scores, perms, genotypes.nmarkers, phenotypes.nphenotypes, nperms);
