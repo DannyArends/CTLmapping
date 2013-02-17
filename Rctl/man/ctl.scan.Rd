@@ -5,7 +5,7 @@
   Scan for Correlated Trait Locus (CTL) in populations
 }
 \usage{
-CTLscan(genotypes, phenotypes, pheno.col, method = c("Exact","Power","Adjacency"), n.perms=100, strategy = c("Full", "Pairwise"), 
+CTLscan(genotypes, phenotypes, pheno.col, n.perms=100, strategy = c("Exact", "Full", "Pairwise"), 
         conditions = NULL, have.qtls=NULL, n.cores = 1, geno.enc = c(1,2), verbose = FALSE)
 }
 
@@ -13,26 +13,20 @@ CTLscan(genotypes, phenotypes, pheno.col, method = c("Exact","Power","Adjacency"
   \item{genotypes}{   Matrix of genotypes. (individuals x markers) }
   \item{phenotypes}{  Matrix of phenotypes. (individuals x phenotypes) }
   \item{pheno.col}{   Which phenotype column(s) should we analyse. Default analyse all phenotypes. }
-  \item{method}{      We provide 3 ways of mapping correlation differences across the genome:
+  \item{n.perms}{     Number of permutations to perform. This parameter is not used when method="Exact". }
+  \item{strategy}{    The permutation strategy to use, either 
                       \itemize{
-                        \item Exact: Uses a Correlation to Z score transformation to calculate the
-                              likelihood of a difference in correlation: 
-                              Cor(AA) - Cor(BB)
-                        \item Power: More powerful analysis method using the squared difference in     
-                              correlation:
-                              (Cor(AA) - Cor(BB))^2
-                        \item Adjacency: Adjacency method which using the squared difference in squared   
-                              correlation, but keeping the sign of correlation:
-                              (sign*Cor(AA)^2 - sign*Cor(BB)^2)^2
+                        \item Exact: Uses exact calculations to calculate the likelihood of a difference 
+                              in correlation: Cor(AA) - Cor(BB). Using a Bonferroni correction.
+                        \item Full: Most powerful analysis method - Compensate for marker and trait 
+                              correlation structure (Breitling et al.).
+                        \item Pairwise: Suitable when we have a lot of markers and only a few 
+                              traits (< 50) (human GWAS)- Compensates only for marker correlation structure.
                       }
                       Note: Exact is the default and fastest option it uses a normal distribution for 
                       estimating p-values and uses bonferoni correction. It has however the least power to 
-                      detect CTLs, the two other methods (Power and Adjacency) perform permutations to
+                      detect CTLs, the two other methods (Full and Pairwise) perform permutations to
                       assign significance. }
-  \item{n.perms}{     Number of permutations to perform. This parameter is not used when method="Exact". }
-  \item{strategy}{    The permutation strategy to use, either Full (Compensate for marker and trait 
-                      correlation structure) or Pairwise (Compensate only for marker correlation
-                      structure). This parameter is not used when method="Exact". }
   \item{conditions}{  A vector of experimental conditions applied during the experiment. These conditions 
                       are used as covariates in the QTL modeling step. }
   \item{have.qtls}{   Used to provide QTL results, when external QTL results are available. }
@@ -42,11 +36,13 @@ CTLscan(genotypes, phenotypes, pheno.col, method = c("Exact","Power","Adjacency"
 }
 
 \details{
+By default the algorithm will not do QTL mapping, the qtl component of the output is an vector of 0 scores 
+for LOD. This is to remove some computational burden, please use the have.qtls parameter to provide QTL data. 
 Some computational bottleneck of the algorithm are:
 \itemize{
-  \item RAM available to the system
-  \item Computational time with large sample sizes and/or huge amount of phenotype data
-  \item Huge amounts of genotype markers
+  \item RAM available to the system with large number of markers (100K+) and/or  phenotypes (100K+).
+  \item Computational time with large sample sizes (5000+) and/or huge amount of phenotype data (100K+).
+  \item Very very huge amounts of genotype markers (1M+)
 }
 Some way of avoiding these problems are: CTL mapping using only a single chromosome at a time and/or selecting a smaller subsets of phenotype data for analysis.
 }

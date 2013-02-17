@@ -8,6 +8,11 @@
 \alias{check.marker}
 \alias{check.pheno}
 \alias{create.marker}
+\alias{CTLpowerAnalysis}
+\alias{dcor.create}
+\alias{getRatio}
+\alias{plot.CTLnetwork}
+\alias{test.power.test}
 
 %ctl.circle.r
 \alias{mapinfotomarkerlocs}
