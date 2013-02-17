@@ -3,7 +3,7 @@
 Prepare your environment by download and 'moving' to the folder:
 
     $ git clone git://github.com/DannyArends/CTLmapping.git  # Download the repository
-    $ cd CTLmapping                                          # Goto the folder
+    $ cd CTLmapping/C                                        # Go to the C folder
 
 ### Compilation
 
