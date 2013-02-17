@@ -31,7 +31,7 @@
 
     /* KahanAccumulator - Helper function to create an empty Accumulator. 
        See http://en.wikipedia.org/wiki/Kahan_summation_algorithm */
-    static inline KahanAccumulator createAccumulator(){
+    inline KahanAccumulator createAccumulator(){
       KahanAccumulator t;
       t.sum = 0.0;
       t.cor = 0.0;
@@ -40,7 +40,7 @@
 
     /* KahanAccumulator - Using the Kahan summation algorithm. 
        See http://en.wikipedia.org/wiki/Kahan_summation_algorithm */
-    static inline KahanAccumulator KahanSum(KahanAccumulator accumulation, double value){
+    inline KahanAccumulator KahanSum(KahanAccumulator accumulation, double value){
       KahanAccumulator result;
       double y = value - accumulation.cor;
       double t = accumulation.sum + y;

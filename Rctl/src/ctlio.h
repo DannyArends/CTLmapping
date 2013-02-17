@@ -6,10 +6,12 @@
     
     #include <string.h>
     #include "ctl.h"
+    #include "correlation.h"
     #include "structs.h"
   
     void   writeout(double** ctls, size_t phenotype, size_t nmar, size_t nphe);
-    void   writesummary(double** ctls, double** scores, size_t phenotype, size_t nmar, size_t nphe, double cutoff);
+/*    void   writesummary(const Phenotypes phenotypes, const Genotypes genotypes, double** ctls, 
+                  size_t phenotype, size_t nmar, size_t nphe, size_t ngeno, int* genoenc, double cutoff); */
 
     size_t filesize(char* name);
     char*  getfilecontent(char* name);

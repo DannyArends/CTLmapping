@@ -68,8 +68,9 @@ void printcvector(const char* v, size_t dim){
 
 void printdvector(const double* v, size_t dim){
   size_t r;
+  info("[");
   for(r = 0; r < dim; r++){ info("%f, ",v[r]); }
-  info("\n");
+  info("]\n");
 }
 
 void printivector(const int* v, size_t dim){

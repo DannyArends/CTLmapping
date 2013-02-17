@@ -1,7 +1,7 @@
 #include "correlation.h"
 
 /* Calculates pearsons correlation between x and y (Ranked input for non-parametric testing) */
-double correlation(double* x, double* y, size_t dim){
+double correlation(const double* x, const double* y, size_t dim, bool verbose){
   size_t i;
   double onedivn = 1.0 / dim;
   KahanAccumulator XiYi = createAccumulator();
@@ -21,7 +21,11 @@ double correlation(double* x, double* y, size_t dim){
   }
   double nom = (XiYi.sum - (onedivn*Xi.sum*Yi.sum));
   double denom = sqrt(XiP2.sum - onedivn * pow(Xi.sum, 2.0)) * sqrt(YiP2.sum - onedivn * pow(Yi.sum, 2.0));
-  return nom / denom;
+  double cor = nom/denom;
+  if(isNaN(cor) || isinf(cor) || cor < -1 || cor > 1){ 
+    err("Correlation '%.4f' not in range [-1, 1]\n", cor); 
+  }
+  return(cor);
 }
 
 /* Calculate the chi square test statistic based on N seggregating correlations */

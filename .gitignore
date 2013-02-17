@@ -2,6 +2,7 @@
 C/mapctl
 D/mapctl
 *.obj
+*summary.txt
 *.so
 *.rds
 *.Rout

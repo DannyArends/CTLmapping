@@ -8,7 +8,7 @@
     #include "ctl.h"
     #include "structs.h"
     
-    double correlation(double* x, double* y, size_t dim);
+    double correlation(const double* x, const double* y, size_t dim, bool verbose);
 
     /* test if a double in NaN */
     static inline int isNaN(double d){ return(d != d); }

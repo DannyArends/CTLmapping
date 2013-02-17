@@ -44,7 +44,7 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
         int* nsamples = newivector(ngenotypes);
         for(g = 0; g < ngenotypes; g++){
           double* P2   = get(phenotypes.data[p], splits[g]);
-          cors[g]      = correlation(pheno1[g], P2, splits[g].nelements);
+          cors[g]      = correlation(pheno1[g], P2, splits[g].nelements, false);
           nsamples[g]  = splits[g].nelements;
           free(P2);                       // Clear phenotype data we allocated
           updateR(0);
