@@ -1,3 +1,11 @@
+/******************************************************************//**
+ * \file C/main.c
+ * \brief Main entry point for the C standalone version
+ *
+ * <i>Copyright (c) 2010-2013</i> GBIC - Danny Arends<br>
+ * Last modified Feb, 2013<br>
+ * First written 2011<br>
+ **********************************************************************/
 #include "structs.h"
 #include "vector.h"
 #include "ctlio.h"

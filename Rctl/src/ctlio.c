@@ -2,7 +2,7 @@
  * \file Rctl/src/ctlio.c
  * \brief I/O functions for the standalone C application
  *
- * <i>Copyright (c) 2010-2013</i>GBIC - Danny Arends<br>
+ * <i>Copyright (c) 2010-2013</i> GBIC - Danny Arends<br>
  * Last modified Feb, 2013<br>
  * First written 2011<br>
  **********************************************************************/

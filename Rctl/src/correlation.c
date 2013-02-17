@@ -2,7 +2,7 @@
  * \file Rctl/src/correlation.c
  * \brief Implementation of functions related to correlation
  *
- * <i>Copyright (c) 2010-2013</i>GBIC - Danny Arends<br>
+ * <i>Copyright (c) 2010-2013</i> GBIC - Danny Arends<br>
  * Last modified Feb, 2013<br>
  * First written 2011<br>
  **********************************************************************/

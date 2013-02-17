@@ -2,7 +2,7 @@
  * \file Rctl/src/rmapctl.h
  * \brief Definition of the interfaces to R, and the updateR helper function
  *
- * <i>Copyright (c) 2010-2013</i>GBIC - Danny Arends<br>
+ * <i>Copyright (c) 2010-2013</i> GBIC - Danny Arends<br>
  * Last modified Feb, 2013<br>
  * First written 2011<br>
  **********************************************************************/

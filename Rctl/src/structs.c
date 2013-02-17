@@ -2,7 +2,7 @@
  * \file Rctl/src/structs.c
  * \brief Implementation of functions related to the Genotype and Phenotype structures
  *
- * <i>Copyright (c) 2010-2013</i>GBIC - Danny Arends<br>
+ * <i>Copyright (c) 2010-2013</i> GBIC - Danny Arends<br>
  * Last modified Feb, 2013<br>
  * First written 2011<br>
  **********************************************************************/

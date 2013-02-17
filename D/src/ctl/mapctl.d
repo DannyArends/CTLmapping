@@ -2,8 +2,8 @@
  * \file ctl/mapctl.d
  * \brief Function holding the main mapctl workflow
  *
- * <i>Copyright (c) 2012</i>GBIC - Danny Arends<br>
- * Last modified May, 2012<br>
+ * <i>Copyright (c) 2012</i> GBIC - Danny Arends<br>
+ * Last modified Feb, 2013<br>
  * First written May, 2011<br>
  * Written in the D Programming Language (http://www.digitalmars.com/d)
  **********************************************************************/
