@@ -24,8 +24,13 @@ int main(int argc, char **argv){
   printf("Correlated Trait Locus (CTL) mapping\n");
   printf("(c) 2012 GBIC, written by Danny Arends\n");
   printf("Number of command line arguments passed: %d\n", (argc-1));
+#ifdef TEST
   char*  genofilename  = "../D/test/data/genotypes.csv";
   char*  phenofilename = "../D/test/data/phenotypes.csv";
+#else
+  char*  genofilename  = "genotypes.csv";
+  char*  phenofilename = "phenotypes.csv";
+#endif
   char*  outfilename   = "summary.txt";
   size_t nperms        = 100;
   size_t alpha         = 1;

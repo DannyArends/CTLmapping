@@ -4,7 +4,7 @@ CC = gcc
 LINK = ar
 DEFS = -DSTANDALONE
 
-CFLAGS = -I/usr/share/R/include -std=gnu99 -g -O3 -pedantic -w -Wall -Wextra -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
+CFLAGS = -I/usr/share/R/include -std=gnu99 -O3 -pedantic -w -Wall -Wextra -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
 LDFLAGS = -lm -L/usr/lib/R/lib -lR -O3
 #### End of system configuration section. ####
 
@@ -16,22 +16,24 @@ EXECUTABLE = mapctl
 STATIC     = libctl.a
 SHARED     = libctl.so
 
+all: clean $(SOURCES) $(EXECUTABLE)
+
 # target: help - Display possible targets
 help:
 	egrep "^# target:" [Mm]akefile
-
-all: clean $(SOURCES) $(EXECUTABLE)
 
 # target: static - CTL as static library
 static: clean $(SOURCES) $(STATIC)
 
 # target: test - Debug build
-debug: CFLAGS += -g
+debug: CFLAGS += -g -DTEST
 debug: all
 
 # target: test - Test by executing CTL mapping
-test: all
+test: debug
+	./mapctl -h
 	./mapctl
+	./mapctl -d -n 25
 
 # target: shared - CTL as shared library
 shared: DEFS += -fPIC

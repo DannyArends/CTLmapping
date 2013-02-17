@@ -133,5 +133,5 @@ Danny Arends
 
 ### Disclaimer
 
-Copyright (c) 2010-2012 GBIC: Danny Arends, Ritsert C Jansen, Pjotr Prins
+Copyright (c) 2010-2013 GBIC: Danny Arends, Ritsert C Jansen, Pjotr Prins
 
