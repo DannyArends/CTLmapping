@@ -1,5 +1,5 @@
-Correlated Trait Locus (CTL) mapping
-------------------------------------
+## Correlated Trait Locus (CTL) mapping
+
 In this repository implementations of the novel Correlated Trait Locus (CTL) 
 mapping algorithm. Provided as package for the statistical language R and in 
 the D 2.0 programming language.
@@ -9,8 +9,8 @@ natural and experimental populations. It is a method which complements classical
 QTL analysis, providing additional insights overlooked by the classical QTL 
 approach. 
 
-Algorithm
----------
+### Algorithm
+
 Differences in correlations between traits within an inbred population are 
 determined at each genetic marker. Phenotypes are assigned to genotype groups 
 and a single phenotype is used to scan all other phenotypes for a loss or gain 
@@ -22,37 +22,42 @@ classical phenotypes, protein abundance and gene expression) CTL shows the
 genetic wiring of the classical phenotypes and identify key players in the 
 genetic / protein network underlying QTL and CTL.
 
-Download the package
---------------------
+### Download the package
+
 Prepare your environment by download and 'moving' to the folder:
 
     $ git clone git://github.com/DannyArends/CTLmapping.git  # Download the repository
     $ cd CTLmapping                                          # Goto the folder
 
 
-Installation of R version
--------------------------
+### Use the R library
+
 Prepare your environment by download and installing the R environment from 
 [www.r-project.org](http://www.r-project.org/ "www.r-project.org"). Then 
 download CTLmapping and install into R by using (from a terminal / command 
 line):
 
-    $ make installR                                          # Install into R
     $ R CMD INSTALL Rctl                                     # Install the package
 
-Optionally you can install the pre-build packages by downloading the appropriate 
-package for your operating system. 
+or use the 'installR' makefile target:
 
-Compile the C version
----------------------
+    $ make installR                                          # Install into R
+
+Infuture packages will be on CRAN, and optionally installing a pre-build packages 
+by downloading the appropriate package for your R version and operating system. 
+
+### Compile the standalone executable
+
+#### (C version)
+
 Just run 'make' from a terminal / command line:
 
     $ make versionC                                          # Compile the executable
     $ make static                                            # Compile the static library
     $ make shared                                            # Compile the shared library
 
-Compile the D 2.0 version
--------------------------
+#### (D 2.0 version)
+
 Prepare your environment by download and installing the DMD 2.0 compiler from 
 [www.d-programming-language.org](http://www.d-programming-language.org 
 "www.d-programming-language.org"). Run 'make' from a terminal / command line:
@@ -62,8 +67,8 @@ Prepare your environment by download and installing the DMD 2.0 compiler from
 Optionally you can use a provided binary by downloading the approriate one for your 
 operating system.
 
-Starting in R
--------------
+### Starting in R
+
 Load the library in the R interface by the following command (in R):
 
 ```R
@@ -72,7 +77,7 @@ Load the library in the R interface by the following command (in R):
 ```
 
 Examples
---------
+### 
 Scan your data
 
 ```R
@@ -115,18 +120,18 @@ holds the edge summary network.
 
 We can use Cytoscape to visualize the created network (available from [www.cytoscape.org](http://www.cytoscape.org// "www.cytoscape.org") )
 
-Contributing and TODO
----------------------
+### Contributing and TODO
+
 Want to contribute? Great!
 
-See inst/TODO.txt
+See Rctl/inst/TODO.txt or submit a Github issue or pull request
 
-Just post comments on code / commits.
+Its also possible to just post comments on code / commits.
 Or be a maintainer, and adopt a function
 
 Danny Arends
 
-Disclaimer
-----------
+### Disclaimer
+
 Copyright (c) 2010-2012 GBIC: Danny Arends, Ritsert C Jansen, Pjotr Prins
 
