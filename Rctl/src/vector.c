@@ -56,8 +56,9 @@ char* addtocvector(char* v, size_t dim, char n){
 /* Print a custom length vector to the output */
 void printclvector(const clvector v){
   size_t r;
+  size_t dim = v.nelements;
   info("[");
-  for(r = 0; r < v.nelements; r++){ info("%d",v.data[r]); if(r != (dim-1)) info(", "); }
+  for(r = 0; r < dim; r++){ info("%d",v.data[r]); if(r != (dim-1)) info(", "); }
   info("]\n");
 }
 

@@ -11,10 +11,10 @@
     #include "sort.h"
 
     double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
-                    size_t ngenotypes, int* genoenc, bool doperms, int nperms, bool verbose);
+                    bool doperms, int nperms, bool verbose);
 
     double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
-                    size_t ngenotypes, int* genoenc, int alpha, int beta, bool verbose);
+                    clvector* genoenc, int alpha, int beta, bool verbose);
 
   #endif //__MAPCTL_H__
 #ifdef __cplusplus

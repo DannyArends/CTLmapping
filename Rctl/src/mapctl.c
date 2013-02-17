@@ -2,20 +2,20 @@
 
 /* Perform a CTL scan and permutations on phenotype 'phenotype' */
 double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
-                size_t ngenotypes, int* genoenc, bool doperms, int nperms, bool verbose){
+                bool doperms, int nperms, bool verbose){
 
   info("Phenotype %d: Mapping", (phenotype+1));
-
+  clvector* genoenc = getGenotypes(genotypes, false);
   double** ctls;
   double*  perms;
-  double** scores = ctleffects(phenotypes, genotypes, phenotype, ngenotypes, genoenc, 1, 1, verbose);
+  double** scores = ctleffects(phenotypes, genotypes, phenotype, genoenc, 1, 1, verbose);
   if(!doperms){
     info(", toLOD\n");  // Exact calculation can be used
-    ctls = toLODexact(scores, ngenotypes, genotypes.nmarkers, phenotypes.nphenotypes);
+    ctls = toLODexact(scores, genoenc, genotypes.nmarkers, phenotypes.nphenotypes);
   }else{
     info(", Permutation");
     fflush(stdout);
-    perms = permute(phenotypes, genotypes, phenotype, ngenotypes, genoenc, 1, 1, nperms, false);
+    perms = permute(phenotypes, genotypes, phenotype, genoenc, 1, 1, nperms, false);
     info(", toLOD\n");
     ctls = toLOD(scores, perms, genotypes.nmarkers, phenotypes.nphenotypes, nperms);
     free(perms);
@@ -26,16 +26,18 @@ double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t p
 
 /* Calculate the difference in correlation matrix for phenotype 'phenotype' */
 double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
-                    size_t ngenotypes, int* genoenc, int alpha, int beta, bool verbose){
+                    clvector* genoenc, int alpha, int beta, bool verbose){
 
   size_t g, m, p,debug = 0;
   double** difcormatrix = newdmatrix(genotypes.nmarkers, phenotypes.nphenotypes);
 
   for(m = 0; m < genotypes.nmarkers; m++){
-    clvector* splits = (clvector*) calloc(ngenotypes, sizeof(clvector));
-    double**  pheno1 = (double**) calloc(ngenotypes, sizeof(double*));
+    size_t ngenotypes = genoenc[m].nelements;
+
+    clvector*  splits = (clvector*) calloc(ngenotypes, sizeof(clvector));
+    double**   pheno1 = (double**)  calloc(ngenotypes, sizeof(double*));
     for(g = 0; g < ngenotypes; g++){
-      splits[g] = which(genotypes.data[m], phenotypes.nindividuals, genoenc[g]);
+      splits[g] = which(genotypes.data[m], phenotypes.nindividuals, genoenc[m].data[g]);
       pheno1[g] = get(phenotypes.data[phenotype], splits[g]);
     }
     for(p = 0; p < phenotypes.nphenotypes; p++){

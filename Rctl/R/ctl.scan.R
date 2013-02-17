@@ -86,10 +86,9 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, n.perms = 100, stra
     perm.type = 2
     perms = as.double(rep(0,n.perms * n.phe))
   }
-  n.geno <- length(geno.enc)
 
-	result <- .C("R_mapctl",as.integer(n.ind), as.integer(n.mar), as.integer(n.phe), as.integer(n.geno),
-                    			as.integer(unlist(genotypes)), as.double(unlist(phenotypes)), as.integer(geno.enc),
+	result <- .C("R_mapctl",as.integer(n.ind), as.integer(n.mar), as.integer(n.phe),
+                    			as.integer(unlist(genotypes)), as.double(unlist(phenotypes)),
                           as.integer((pheno.col-1)), as.integer(n.perms),
                           as.integer(1),as.integer(1),  #Setup ALPHA & GAMMA
                           as.integer(perm.type),

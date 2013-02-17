@@ -9,7 +9,7 @@
     #include "permutation.h"    
     #include "sort.h"
     void     updateR(bool flush);
-    void     R_mapctl(int* nind, int* nmar, int* nphe, int* ngeno, int* geno, double* pheno, int* genoenc,
+    void     R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno,
                       int* p, int *nperms, int* a, int* b, int* permt, double* dcor, 
                       double* perms, double* res, int* verb);
 

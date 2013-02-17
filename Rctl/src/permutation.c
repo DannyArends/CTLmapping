@@ -19,14 +19,14 @@ Genotypes permutegenotypes(Genotypes genotypes){
   return g;
 }
 
-double* permute(const Phenotypes phe, const Genotypes geno, size_t p, int ngenotypes, 
-                int* genoenc, int a, int b, size_t np, bool verbose){
+double* permute(const Phenotypes phe, const Genotypes geno, size_t p, clvector* genoenc, 
+                int a, int b, size_t np, bool verbose){
   size_t perm, ph;
   double* scores = newdvector(np);
 
   for(perm = 0; perm < np; perm++){
     Genotypes g = permutegenotypes(geno);
-    double** ctls  = ctleffects(phe, g, p, ngenotypes, genoenc, a, b, false);
+    double** ctls  = ctleffects(phe, g, p, genoenc, a, b, false);
     scores[perm] = fabs(matrixmax(ctls, geno.nmarkers, phe.nphenotypes));
     freematrix((void**)ctls   , geno.nmarkers);
     freematrix((void**)g.data , geno.nmarkers);
@@ -37,14 +37,14 @@ double* permute(const Phenotypes phe, const Genotypes geno, size_t p, int ngenot
   return scores;
 }
 
-double** permuteRW(const Phenotypes phe, const Genotypes geno, size_t p, int ngenotypes, 
-                   int* genoenc, int a, int b, size_t np, bool verbose){
+double** permuteRW(const Phenotypes phe, const Genotypes geno, size_t p, clvector* genoenc, 
+                   int a, int b, size_t np, bool verbose){
   size_t perm,ph;
   double** scores = newdmatrix(phe.nphenotypes, np);
 
   for(perm = 0; perm < np; perm++){
     Genotypes g = permutegenotypes(geno);
-    double** ctls  = ctleffects(phe, g, p, ngenotypes, genoenc, a, b, false);
+    double** ctls  = ctleffects(phe, g, p, genoenc, a, b, false);
     double** tctls = transpose(ctls, geno.nmarkers, phe.nphenotypes);
     for(ph = 0; ph <  phe.nphenotypes; ph++){
       scores[ph][perm] = fabs(vectormax(tctls[ph], geno.nmarkers));
@@ -77,12 +77,12 @@ double estimate(double val, double* permutations, size_t nperms){
 }
 
 /* Use exact calculations and bonferonni correction for LOD / p-value calculation */
-double** toLODexact(double** scores, size_t ngenotypes, size_t nmar, size_t nphe){
+double** toLODexact(double** scores, clvector* genoenc, size_t nmar, size_t nphe){
   double** ctls = newdmatrix(nmar, nphe);
   size_t p,m;
   double pval;
-  size_t Dof = (ngenotypes-1);
   for(m = 0; m < nmar; m++){
+    size_t Dof = (genoenc[m].nelements-1);
     for(p = 0; p < nphe; p++){
       pval = chiSQtoP(Dof, scores[m][p]);
       pval *= nmar*nphe;

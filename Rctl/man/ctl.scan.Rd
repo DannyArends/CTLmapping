@@ -84,7 +84,7 @@ CTLobject, a list with at each index (i) an CTLscan object:
   library(ctl)
   data(ath.metabolites)                 # Arabidopsis Thaliana data set
 
-  ctlscan <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, pheno.col=1:4, method="Power")
+  ctlscan <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, pheno.col=1:4)
   ctlscan
 
   summary <- CTLsignificant(ctlscan)    # Matrix of Trait, Marker, Trait interactions 

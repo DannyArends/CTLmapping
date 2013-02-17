@@ -9,13 +9,13 @@ void updateR(bool flush){
 }
 
 /* R interface to perform a CTL scan and permutations on phenotype 'phenotype' */
-void R_mapctl(int* nind, int* nmar, int* nphe, int* ngeno, int* geno, double* pheno, int* genoenc, int* p, 
+void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p, 
               int *nperms, int* a, int* b, int* permt, double* dcor,  double* perms, double* res, int* verb){
 
   int nindividuals  = (int)(*nind);
   int nmarkers      = (int)(*nmar);
   int nphenotypes   = (int)(*nphe);
-  int ngenotypes    = (int)(*ngeno);
+//  int ngenotypes    = (int)(*ngeno);
   int phenotype     = (int)(*p);
   int npermutations = (int)(*nperms);
   int alpha         = (int)(*a);
@@ -37,9 +37,11 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* ngeno, int* geno, double* ph
   genotypes.nmarkers = nmarkers;
   genotypes.nindividuals = nindividuals;
 
+  clvector* genoenc = getGenotypes(genotypes, false);
+
   if(verbose) info("Phenotype %d: Mapping", (phenotype+1));  
   updateR(1);
-  dcors = ctleffects(phenotypes, genotypes, phenotype, ngenotypes, genoenc, alpha, beta, verbose);
+  dcors = ctleffects(phenotypes, genotypes, phenotype, genoenc, alpha, beta, verbose);
 
   for(i=0; i < (nphenotypes*nmarkers); i++){    // Send scores to R
     int m = i % nmarkers; int p = i / nmarkers;
@@ -49,7 +51,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* ngeno, int* geno, double* ph
   if(permtype == 1){
     if(verbose) info(", Full permutation");
     updateR(1);
-    double* permutations = permute(phenotypes, genotypes, phenotype, ngenotypes, genoenc, 
+    double* permutations = permute(phenotypes, genotypes, phenotype, genoenc, 
                                    alpha, beta, npermutations, false);
     for(i=0; i < npermutations; i++){           // Send permutations to R
       perms[i] = permutations[i];
@@ -61,7 +63,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* ngeno, int* geno, double* ph
   }else if(permtype == 2){
     if(verbose) info(", Pairwise permutation");
     updateR(1);
-    double** permutations = permuteRW(phenotypes, genotypes, phenotype, ngenotypes, genoenc, 
+    double** permutations = permuteRW(phenotypes, genotypes, phenotype, genoenc, 
                                       alpha, beta, npermutations, 0);
 
     for(ph=0; ph < (nphenotypes); ph++){         // Send permutations to R
@@ -75,7 +77,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* ngeno, int* geno, double* ph
   }else{
     if(verbose) info(", toLOD\n");
     updateR(1);
-    ctls = toLODexact(dcors, ngenotypes, genotypes.nmarkers, phenotypes.nphenotypes);
+    ctls = toLODexact(dcors, genoenc, genotypes.nmarkers, phenotypes.nphenotypes);
   }
   for(i=0; i < (nphenotypes*nmarkers); i++){
     int m = i % nmarkers;

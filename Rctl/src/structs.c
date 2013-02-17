@@ -1,18 +1,20 @@
 #include "structs.h"
 
-clvector getGenotypes(const Genotypes g, bool verbose){
-  size_t m,i;
-  clvector clv = newclvector(0);
-  for(m = 0; m < g.nmarkers; m++){
-    for(i = 0; i < g.nindividuals; i++){
-      if(g.data[m][i] != MISSING && !in(clv, g.data[m][i])){
-        if(verbose) info("Found genotype: %d\n",g.data[m][i]);
-        clv.data = addtoivector(clv.data, clv.nelements, g.data[m][i]); 
-        clv.nelements++;
+clvector* getGenotypes(const Genotypes geno, bool verbose){
+  size_t m, i;
+  size_t nmar = geno.nmarkers;
+  clvector* genoenc = calloc(nmar, sizeof(clvector));
+  for(m = 0; m < nmar; m++){
+    genoenc[m] = newclvector(0);
+    for(i = 0; i < geno.nindividuals; i++){
+      if(geno.data[m][i] != MISSING && !in(genoenc[m], geno.data[m][i])){
+        if(verbose) info("Found genotype: %d at marker %d ind %d\n",geno.data[m][i], m, i);
+        genoenc[m].data = addtoivector(genoenc[m].data, genoenc[m].nelements, geno.data[m][i]); 
+        genoenc[m].nelements++;
       }
     }
   }
-  return clv;
+  return genoenc;
 }
 
 bool checkRow(int ccol, int nrows, int* colcnt){

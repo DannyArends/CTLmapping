@@ -48,21 +48,21 @@ double* getCorrelations(const Phenotypes phenotypes, const Genotypes genotypes, 
 
 /* Writes the significant elements to the summary file */
 void writesummary(const Phenotypes phenotypes, const Genotypes genotypes, const char* fn, double** ctls, 
-                  size_t phenotype, size_t nmar, size_t nphe, clvector genoenc, double cutoff){
+                  size_t phenotype, size_t nmar, size_t nphe, clvector* genoenc, double cutoff){
   size_t p, m, i;
   FILE* file;
   if(phenotype == 0){ 
     file = fopen(fn,"w+");
     fprintf(file, "Trait\tMarker\tTrait\tLOD");
-    for(i = 0; i < genoenc.nelements; i++){ fprintf(file, "\tCor_%d", i); }
+    for(i = 0; i < genoenc[0].nelements; i++){ fprintf(file, "\tCor_%d", i); }
     fprintf(file, "\n");
   }else{ file = fopen("summary.txt","a+"); }
   for(p = 0; p < nphe; p++){
     for(m = 0; m < nmar; m++){
       if(ctls[m][p] >= -log10(cutoff)){
         fprintf(file, "%d\t%d\t%d\t%.2f", phenotype, m, p, ctls[m][p]);
-        double* cors = getCorrelations(phenotypes, genotypes, phenotype, genoenc, m, p, false);
-        for(i = 0; i < genoenc.nelements; i++){ fprintf(file,"\t%.3f", cors[i]); }
+        double* cors = getCorrelations(phenotypes, genotypes, phenotype, genoenc[m], m, p, false);
+        for(i = 0; i < genoenc[m].nelements; i++){ fprintf(file,"\t%.3f", cors[i]); }
         fprintf(file, "\n");
         free(cors);
       }
