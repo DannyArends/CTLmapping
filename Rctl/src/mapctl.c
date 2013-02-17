@@ -1,3 +1,11 @@
+/******************************************************************//**
+ * \file Rctl/src/mapctl.c
+ * \brief Implementation of functions related to CTLmapping
+ *
+ * <i>Copyright (c) 2010-2013</i>GBIC - Danny Arends<br>
+ * Last modified Feb, 2013<br>
+ * First written 2011<br>
+ **********************************************************************/
 #include "mapctl.h"
 
 /* Perform a CTL scan and permutations on phenotype 'phenotype' */

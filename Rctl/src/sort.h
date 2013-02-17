@@ -1,3 +1,11 @@
+/******************************************************************//**
+ * \file Rctl/src/sort.h
+ * \brief Definition of helper functions related to sorting of 2D vectors
+ *
+ * <i>Copyright (c) 2010-2013</i>GBIC - Danny Arends<br>
+ * Last modified Feb, 2013<br>
+ * First written 2011<br>
+ **********************************************************************/
 #ifdef __cplusplus
   extern "C" {
 #endif

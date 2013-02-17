@@ -1,3 +1,11 @@
+/******************************************************************//**
+ * \file Rctl/src/matrix.c
+ * \brief Implementation of functions related to 3D matrices
+ *
+ * <i>Copyright (c) 2010-2013</i>GBIC - Danny Arends<br>
+ * Last modified Feb, 2013<br>
+ * First written 2011<br>
+ **********************************************************************/
 #include "matrix.h"
 
 double** newdmatrix(size_t rows, size_t cols){

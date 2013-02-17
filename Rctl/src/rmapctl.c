@@ -1,4 +1,12 @@
-#include "mapctl.h"
+/******************************************************************//**
+ * \file Rctl/src/rmapctl.c
+ * \brief Implementation of the interfaces to R, and the updateR helper function
+ *
+ * <i>Copyright (c) 2010-2013</i>GBIC - Danny Arends<br>
+ * Last modified Feb, 2013<br>
+ * First written 2011<br>
+ **********************************************************************/
+#include "rmapctl.h"
 
 /* Function to 'update' R, checks user input and can flushes console */
 void updateR(bool flush){
@@ -63,9 +71,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   }else if(permtype == 2){
     if(verbose) info(", Pairwise permutation");
     updateR(1);
-    double** permutations = permuteRW(phenotypes, genotypes, phenotype, genoenc, 
-                                      alpha, beta, npermutations, 0);
-
+    double** permutations = permuteRW(phenotypes, genotypes, phenotype, genoenc, alpha, beta, npermutations, false);
     for(ph=0; ph < (nphenotypes); ph++){         // Send permutations to R
       for(perm=0; perm < (npermutations); perm++){
         perms[(ph*npermutations)+perm] = permutations[ph][perm];
