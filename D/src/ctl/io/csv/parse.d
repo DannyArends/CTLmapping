@@ -58,7 +58,7 @@ string[] parseNames(string filename){
 }
 
 
-T[][] parseFile(T)(string filename, bool verbose = false ,bool hasRowHeader = true, T nullval = T.max){
+T[][] parseFile(T)(string filename, bool verbose = false ,bool hasRowHeader = true, T nullval = -999){
   T[][] data;
   if(!exists(filename) || !isFile(filename)){
     abort(xformat("No such file %s", filename));

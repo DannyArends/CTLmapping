@@ -12,8 +12,9 @@ help:
 	egrep "^# target:" [Mm]akefile
 
 # target: buildD - Build the D executable (DEFAULT)
+# We need to load the R shared library so we link with -L-ldl -L-lR
 buildD: libctl
-	$(CC) -Isrc/ -Llibctl.a src/ctl/mapctl.d
+	$(CC) -Isrc/ -Llibctl.a -L-ldl -L-lR src/ctl/mapctl.d
 	$(MOVE) src/ctl/mapctl mapctl
 
 # target: libctl - Create the CTL static library

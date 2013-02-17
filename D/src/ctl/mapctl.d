@@ -19,15 +19,27 @@ extern (C){
     size_t   nindividuals;
   };
 
+  struct clvector{
+    int*   data;
+    size_t nelements;
+  }
+
   struct Genotypes{
     int**    data;
     size_t   nmarkers;
     size_t   nindividuals;
   };
 
-  double** ctleffects(const Phenotypes phe, const Genotypes geno, size_t p, int a, int b);
-  double*  permute(const Phenotypes phe, const Genotypes geno, size_t p, int a, int b, size_t np, int verbose);
-  double** toLOD(double** scores, double* permutations, size_t nmar, size_t nphe, size_t nperms);
+  clvector* getGenotypes(const Genotypes geno, bool verbose);
+
+  double**  ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
+                       clvector* genoenc, int alpha, int beta, bool verbose);
+
+  double*   permute(const Phenotypes phe, const Genotypes geno, size_t p, clvector* genoenc, 
+                    int a, int b, size_t np, bool verbose);
+
+  double**  toLODexact(double** scores, clvector* genoenc, size_t nmar, size_t nphe);
+  double**  toLOD(double** scores, double* permutations, size_t nmar, size_t nphe, size_t nperms);
 }
 
 void main(string[] args){
@@ -39,6 +51,7 @@ void main(string[] args){
   bool overwrite = false;
 	uint alpha     = 1;
 	uint beta      = 1;
+  bool doperms   = false;
 	uint nperms    = 100;
   string outdir  = "ctlout";
   string genofilename  = "./test/data/genotypes.csv";
@@ -84,24 +97,30 @@ void main(string[] args){
     pheno.nindividuals = phenotypes[0].length;
 
     if(!exists(outdir)) mkdir(outdir);
-
+    clvector* genoenc = getGenotypes(geno, false);
+  
     for(size_t p = 0; p < phenotypes.length; p++){               // Main CTL mapping loop
       if(verbose) writef("- Phenotype %s: Mapping",p);
       string fnctl    = outdir ~ "/ctls"~to!string(p)~".out";
       string fnlods   = outdir ~ "/lods"~to!string(p)~".out";
 
-      double**   ctlp = ctleffects(pheno, geno, p, alpha, beta);
+      double**   ctlp = ctleffects(pheno, geno, p, genoenc, alpha, beta, false);
       double[][] ctls = translate(fromPP(ctlp, pheno.nphenotypes, geno.nmarkers));
       writeFile(ctls, fnctl, null, overwrite, verbose);
-      if(!(alpha ==1 && beta == 1)){
+      double[][] lods;
+      if(doperms){
         write(", Permutation");
-        double*   permp = permute(pheno, geno, p, alpha, beta, nperms, false);
+        double*   permp = permute(pheno, geno, p, genoenc, alpha, beta, nperms, false);
 
         writeln(", toLOD");
         double**   lodp = toLOD(ctlp, permp, geno.nmarkers, pheno.nphenotypes, nperms);
-        double[][] lods = translate(fromPP(lodp, pheno.nphenotypes, geno.nmarkers));
+        lods = translate(fromPP(lodp, pheno.nphenotypes, geno.nmarkers));
+        
+      }else{
+        double**   lodp = toLODexact(ctlp, genoenc, geno.nmarkers, pheno.nphenotypes);
+        lods = translate(fromPP(lodp, pheno.nphenotypes, geno.nmarkers));
         writeFile(lods, fnlods, null, overwrite, verbose);
-      }else{ if(verbose) writeln(""); }
+      }
     }
     writefln("\nDone after %s seconds. Thank you for using mapctl", (Clock.currTime()-stime).total!"seconds"());
     writeln("Please cite: CTL mapping - Journal - Arends et al. [2013]");

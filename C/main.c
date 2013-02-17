@@ -1,6 +1,8 @@
 #include "structs.h"
+#include "vector.h"
 #include "ctlio.h"
 #include "mapctl.h"
+#include "permutation.h"
 #include <getopt.h>
 
 /* Print the help, listing all possible command line switches */
@@ -60,25 +62,26 @@ int main(int argc, char **argv){
     printf("Individuals doesn't match between genotypes and phenotypes");
     return -1;
   }else{
-    clvector genoenc = getGenotypes(genotypes, verbose);
-    if(verbose) info("# of genotypes: %d\n", genoenc.nelements);
+    clvector* genoenc = getGenotypes(genotypes, verbose);
+
     size_t nmar = genotypes.nmarkers;
     size_t nphe = phenotypes.nphenotypes;
     size_t phenotype  = 0;
-    size_t ngenos = genoenc.nelements;
+    size_t m;
+
     for(phenotype = 0; phenotype < phenotypes.nphenotypes; phenotype++){
       info("Phenotype %d: Mapping", (phenotype+1));
 
       double** ctls;
       double*  perms;
-      double** scores = ctleffects(phenotypes, genotypes, phenotype, ngenos, genoenc.data, alpha, beta, verbose);
+      double** scores = ctleffects(phenotypes, genotypes, phenotype, genoenc, alpha, beta, verbose);
       if(!doperms){
         info(", toLOD\n");  // Exact calculation can be used
-        ctls = toLODexact(scores, ngenos, nmar, nphe);
+        ctls = toLODexact(scores, genoenc, nmar, nphe);
       }else{
         info(", Permutation");
         fflush(stdout);
-        perms = permute(phenotypes, genotypes, phenotype, ngenos, genoenc.data, alpha, beta, nperms, false);
+        perms = permute(phenotypes, genotypes, phenotype, genoenc, alpha, beta, nperms, false);
         info(", toLOD\n");
         ctls = toLOD(scores, perms, nmar, nphe, nperms);
         free(perms);
@@ -88,7 +91,9 @@ int main(int argc, char **argv){
       freematrix((void**)scores, genotypes.nmarkers);
       freematrix((void**)ctls, genotypes.nmarkers);
     }
-    free(genoenc.data);
+
+    for(m = 0; m < nmar; m++){ free(genoenc[m].data); }
+    free(genoenc);
     freematrix((void**)phenotypes.data, nphe);
     freematrix((void**)genotypes.data, nmar);
   }
