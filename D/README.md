@@ -1,23 +1,20 @@
-mapCTL: Correlated Trait Locus (CTL) mapping in D
-=================================================
+## mapCTL: Correlated Trait Locus (CTL) mapping in D
 
-Download the package
---------------------
 Prepare your environment by download and 'moving' to the folder:
 
     $ git clone git://github.com/DannyArends/CTLmapping.git  # Download the repository
-    $ cd CTLmapping                                          # Goto the folder
+    $ cd CTLmapping/D                                        # Go to the D folder
 
-Compile the D 2.0 version
--------------------------
+### Compile the D 2.0 version
+
 Prepare your environment by download and installing the DMD 2.0 compiler from 
 [www.d-programming-language.org](http://www.d-programming-language.org 
 "www.d-programming-language.org"). Run 'make' from a terminal / command line:
 
-    $ make versionD                                          # Compile the executable
+    $ make                                                   # Compile the executable
 
-Additional tools
-----------------
+### Additional tools
+
 Additionally we provide support for the QTAB file format available with 
 qtlHD. To use QTAB files as input clone the qtlHD directory in the same 
 folder as the CTLmapping repository and use rake to compile, the QTAB 
@@ -30,8 +27,7 @@ library is build and wrapped automatically:
     $
     $ ./mapctl -f=qtab -p=test/data/multi_phenotypes.qtab -g=test/data/multi
 
-Commandline options
--------------------
+### Commandline options
 
     -[-h]elp        - Show the help file
     -[-v]erbose     - Verbose mode
@@ -47,7 +43,7 @@ Commandline options
     --alpha         - Set Alpha (Default: 1)
     --beta          - Set Beta (Default: 1)
 
-Disclaimer
-----------
+### Disclaimer
+
 Copyright (c) 2010-2012 GBIC: Danny Arends, Ritsert C Jansen, Pjotr Prins
 
