@@ -49,7 +49,7 @@
       return result;
     }
 
-    clvector getGenotypes(const Genotypes g);
+    clvector getGenotypes(const Genotypes g, bool verbose);
     Phenotypes tophenotypes(char* content);
     Genotypes  togenotypes(char* content);
 

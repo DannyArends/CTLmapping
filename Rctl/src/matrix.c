@@ -4,9 +4,7 @@ double** newdmatrix(size_t rows, size_t cols){
   size_t i;
   double** m = (double**) calloc(rows, sizeof(double*));
   if(m==NULL) err("Not enough memory for new double matrix [%ix%i]\n", rows, cols);
-  for(i = 0; i<rows; i++) {
-    m[i]= newdvector(cols);
-  }
+  for(i = 0; i<rows; i++){ m[i]= newdvector(cols); }
   return m;
 }
 
@@ -15,9 +13,7 @@ double** asdmatrix(int rows, int cols, double* data){
   double** m = (double**) calloc(rows, sizeof(double*));
   if(m==NULL) err("Not enough memory for new double matrix [%ix%i]\n", rows, cols);
   m[0] = data;
-  for(i=1; i< rows; i++) 
-    m[i] = m[i-1] + cols;
-
+  for(i=1; i< rows; i++){ m[i] = m[i-1] + cols; }
   return m;
 }
 

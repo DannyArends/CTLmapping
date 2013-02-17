@@ -56,27 +56,30 @@ char* addtocvector(char* v, size_t dim, char n){
 /* Print a custom length vector to the output */
 void printclvector(const clvector v){
   size_t r;
-  for(r = 0; r < v.nelements; r++){ info("%d, ",v.data[r]); }
-  info("\n");
+  info("[");
+  for(r = 0; r < v.nelements; r++){ info("%d",v.data[r]); if(r != (dim-1)) info(", "); }
+  info("]\n");
 }
 
 void printcvector(const char* v, size_t dim){
   size_t r;
-  for(r = 0; r < dim; r++){ info("%c, ",v[r]); }
-  info("\n");
+  info("[");
+  for(r = 0; r < dim; r++){ info("%c",v[r]); if(r != (dim-1)) info(", "); }
+  info("]");
 }
 
 void printdvector(const double* v, size_t dim){
   size_t r;
   info("[");
-  for(r = 0; r < dim; r++){ info("%f, ",v[r]); }
-  info("]\n");
+  for(r = 0; r < dim; r++){ info("%.2f",v[r]); if(r != (dim-1)) info(", "); }
+  info("]");
 }
 
 void printivector(const int* v, size_t dim){
   size_t r;
-  for(r = 0; r < dim; r++){ info("%d, ",v[r]); }
-  info("\n");
+  info("[");
+  for(r = 0; r < dim; r++){ info("%d",v[r]); if(r != (dim-1)) info(", "); }
+  info("]");
 }
 
 clvector which(const int* v, size_t dim, int type){
@@ -105,7 +108,7 @@ double* get(const double* v, clvector idxs){
 bool in(const clvector vector, int val){
   size_t i;
   for(i =0; i< vector.nelements; i++){
-    if(val == vector.data[i] && val != -999) return true;
+    if(val == vector.data[i]) return true;
   }
   return false;
 }

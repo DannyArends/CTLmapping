@@ -1,12 +1,12 @@
 #include "structs.h"
 
-clvector getGenotypes(const Genotypes g){
+clvector getGenotypes(const Genotypes g, bool verbose){
   size_t m,i;
   clvector clv = newclvector(0);
   for(m = 0; m < g.nmarkers; m++){
     for(i = 0; i < g.nindividuals; i++){
-      if(!in(clv, g.data[m][i])){
-        // info("Found genotype: %d\n",g.data[m][i]);        
+      if(g.data[m][i] != MISSING && !in(clv, g.data[m][i])){
+        if(verbose) info("Found genotype: %d\n",g.data[m][i]);
         clv.data = addtoivector(clv.data, clv.nelements, g.data[m][i]); 
         clv.nelements++;
       }

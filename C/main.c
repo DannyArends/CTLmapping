@@ -60,8 +60,8 @@ int main(int argc, char **argv){
     printf("Individuals doesn't match between genotypes and phenotypes");
     return -1;
   }else{
-    clvector genoenc = getGenotypes(genotypes);
-    info("Num genotypes: %d\n", genoenc.nelements);
+    clvector genoenc = getGenotypes(genotypes, verbose);
+    if(verbose) info("# of genotypes: %d\n", genoenc.nelements);
     size_t nmar = genotypes.nmarkers;
     size_t nphe = phenotypes.nphenotypes;
     size_t phenotype  = 0;
