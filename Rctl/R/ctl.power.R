@@ -129,56 +129,56 @@ test.power.test <- function(){
 
   legend("bottomright",c("100","200","300"),col=c("black","blue","orange"),lwd=1,title="Sample size")
 
-  ratios <-  100*c(getRatio(0.95), getRatio(0.9), getRatio(0.8), getRatio(0.7),  getRatio(0.6))
-  res2 <- CTLpowerAnalysis(1000, effects=c(0.3), individuals = c(30, 40, 50, 75, 100, 150, 200, 500, 1000),ratios=ratios, method="Exact")
+ # ratios <-  100*c(getRatio(0.95), getRatio(0.9), getRatio(0.8), getRatio(0.7),  getRatio(0.6))
+ # res2 <- CTLpowerAnalysis(1000, effects=c(0.3), individuals = c(30, 40, 50, 75, 100, 150, 200, 500, 1000),ratios=ratios, method="Exact")
 #  res2 <- CTLpowerAnalysis(100, individuals = c(100), method="Power")
  # res3 <- CTLpowerAnalysis(100, individuals = c(100), method="Adjacency")
 
-  setwd("~/Github/Articles/CTLpaper/nar/img")
-  postscript("power_analysis.eps",width=12, height=6,paper="special", horizontal=FALSE)
+ # setwd("~/Github/Articles/CTLpaper/nar/img")
+ # postscript("power_analysis.eps",width=12, height=6,paper="special", horizontal=FALSE)
 
-  op <- par(mfrow=c(1,2))
-  plot(c(0,1000),c(0,1),t='n', ylab="Power", xlab="Sample size", sub="(Major allele frequency: 50%)")
-  cnt <- 1
-  for(x in unique(res1[,2])){
-    idx <- which(res1[,2] == x)
-    points(res1[idx,3], res1[idx,4], t='o', col = cnt,pch=20)
-    cnt <- cnt + 1
-  }
-  legend("bottomright",legend= as.character(round(unique(res1[,2]),d=2)),col=c(1:cnt),lwd=1,title="Effect size",pch=20)
+ # op <- par(mfrow=c(1,2))
+ # plot(c(0,1000),c(0,1),t='n', ylab="Power", xlab="Sample size", sub="(Major allele frequency: 50%)")
+ # cnt <- 1
+ # for(x in unique(res1[,2])){
+ #   idx <- which(res1[,2] == x)
+ #   points(res1[idx,3], res1[idx,4], t='o', col = cnt,pch=20)
+ #   cnt <- cnt + 1
+ # }
+ # legend("bottomright",legend= as.character(round(unique(res1[,2]),d=2)),col=c(1:cnt),lwd=1,title="Effect size",pch=20)
 
-  plot(c(0,1000),c(0,1),t='n', ylab="Power", xlab="Sample size", sub="(Effect size: 0.3)")
-  cnt <- 1
-  for(x in unique(res2[,1])){
-    idx <- which(res2[,1] == x)
-    points(res2[idx,3], res2[idx,4], t='o', col = cnt,pch=20)
-    cnt <- cnt + 1
-  }
-  legend("bottomright",legend=(100-unique(res2[,1])), col=c(1:cnt),lwd=1,title="Major allele frequency",pch=20)
+ # plot(c(0,1000),c(0,1),t='n', ylab="Power", xlab="Sample size", sub="(Effect size: 0.3)")
+ # cnt <- 1
+ # for(x in unique(res2[,1])){
+ #   idx <- which(res2[,1] == x)
+ #   points(res2[idx,3], res2[idx,4], t='o', col = cnt,pch=20)
+ #   cnt <- cnt + 1
+ # }
+ # legend("bottomright",legend=(100-unique(res2[,1])), col=c(1:cnt),lwd=1,title="Major allele frequency",pch=20)
 
 
-  dev.off()
+ # dev.off()
 
-  plot(c(5,55),c(0,1),t='n', ylab="Effect Size", xlab="Genotype ratio")
-  xdist <- 5; ydist <- 0.05
-  for(x in 1:nrow(res1)){ 
-    x0 <- res1[x,1]-(xdist/2); y0 <- res1[x,2]-(ydist/2)
-    x1 <- res1[x,1]+(xdist/2); y1 <- res1[x,2]+(ydist/2)
-    rect(x0, y0, x1, y1, col=rgb(1-res1[x,4], res1[x,4], 0), border="white"); 
-  }
-  box()
-  plot(c(5,55),c(0,1),t='n', ylab="Effect Size", xlab="Genotype ratio")
-  xdist <- 5; ydist <- 0.05
-  for(x in 1:nrow(res2)){ 
-    rect(res2[x,1]-(xdist/2), res2[x,2]-(ydist/2), res2[x,1]+(xdist/2), res2[x,2]+(ydist/2),col=rgb(1-res2[x,4], res2[x,4], 0), border="white"); 
-  }
-  box()
-  plot(c(5,55),c(0,1),t='n', ylab="Effect Size", xlab="Genotype ratio")
-  xdist <- 5; ydist <- 0.05
-  for(x in 1:nrow(res3)){ 
-    rect(res3[x,1]-(xdist/2), res3[x,2]-(ydist/2), res3[x,1]+(xdist/2), res3[x,2]+(ydist/2),col=rgb(1-res3[x,4], res3[x,4], 0), border="white"); 
-  }
-  box()
+ # plot(c(5,55),c(0,1),t='n', ylab="Effect Size", xlab="Genotype ratio")
+ # xdist <- 5; ydist <- 0.05
+ # for(x in 1:nrow(res1)){ 
+ #   x0 <- res1[x,1]-(xdist/2); y0 <- res1[x,2]-(ydist/2)
+ #   x1 <- res1[x,1]+(xdist/2); y1 <- res1[x,2]+(ydist/2)
+ #   rect(x0, y0, x1, y1, col=rgb(1-res1[x,4], res1[x,4], 0), border="white"); 
+ # }
+ # box()
+ # plot(c(5,55),c(0,1),t='n', ylab="Effect Size", xlab="Genotype ratio")
+ # xdist <- 5; ydist <- 0.05
+ # for(x in 1:nrow(res2)){ 
+ #   rect(res2[x,1]-(xdist/2), res2[x,2]-(ydist/2), res2[x,1]+(xdist/2), res2[x,2]+(ydist/2),col=rgb(1-res2[x,4], res2[x,4], 0), border="white"); 
+ # }
+ # box()
+ # plot(c(5,55),c(0,1),t='n', ylab="Effect Size", xlab="Genotype ratio")
+ # xdist <- 5; ydist <- 0.05
+ # for(x in 1:nrow(res3)){ 
+ #   rect(res3[x,1]-(xdist/2), res3[x,2]-(ydist/2), res3[x,1]+(xdist/2), res3[x,2]+(ydist/2),col=rgb(1-res3[x,4], res3[x,4], 0), border="white"); 
+ # }
+ # box()
 }
 
 # end of ctl.power.R

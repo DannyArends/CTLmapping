@@ -4,6 +4,7 @@ MAKE = make
 MOVE = mv
 CSRC = ./C
 DSRC = ./D
+RDOC = ./Rctl/inst/doc
 #### End of system configuration section. ####
 
 all: static shared installR versionC
@@ -38,6 +39,10 @@ shared:
 
 # target: checkR - Check the R version
 checkR: clean
+	cd $(RDOC); \
+  $(RCMD) Sweave manual.Rnw; \
+  pdflatex manual.tex;\
+  rm -f manual.aux manual.log manual.tex
 	$(RCMD) check Rctl
 	$(MAKE) clean
 
@@ -52,4 +57,5 @@ clean:
 	rm -f C/*o C/summary.txt 
 	rm -rf Rctl/src/*o
 	rm -rf Rctl.Rcheck
-
+	cd $(RDOC); \
+  rm -f manual.aux manual.log manual.tex

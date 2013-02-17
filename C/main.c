@@ -80,7 +80,6 @@ int main(int argc, char **argv){
         ctls = toLODexact(scores, genoenc, nmar, nphe);
       }else{
         info(", Permutation");
-        fflush(stdout);
         perms = permute(phenotypes, genotypes, phenotype, genoenc, alpha, beta, nperms, false);
         info(", toLOD\n");
         ctls = toLOD(scores, perms, nmar, nphe, nperms);
