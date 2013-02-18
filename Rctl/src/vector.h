@@ -41,6 +41,8 @@
     double*  get(const double* v, clvector idxs);
     bool     in(const clvector vector, int val);
 
+    double vectormax(double* v, size_t dim);
+
   #endif //__VECTOR_H__
 #ifdef __cplusplus
   }

@@ -78,6 +78,19 @@ void printimatrix(int** m, size_t rows, size_t cols){
   }
 }
 
+/* Get the double elements in v, specified by the indexes in the clvector idxs */
+double* getM(const double** v, clvector idxs, size_t length){
+  size_t i, p;
+  double** v1 = (double**) calloc(idxs.nelements, sizeof(double*));
+  for(p = 0; p < length; p++){
+    v1[p] = newdvector(idxs.nelements);
+    for(i = 0; i < idxs.nelements; i++){
+      v1[p][i] = v[p][idxs.data[i]];
+    }
+  }
+  return v1;
+}
+
 /* Get the maximum value in matrix m */
 double matrixmax(double** m, size_t rows, size_t cols){
   size_t r,c;
@@ -100,16 +113,6 @@ double** transpose(double** m, size_t rows, size_t cols){
     }
   }
   return nm;
-}
-
-/* Get the maximum value in vector v */
-double vectormax(double* v, size_t dim){
-  size_t i;
-  double max = -DBL_MAX;
-  for(i = 0; i < dim; i++){
-    if(v[i] > max) max = v[i];
-  }
-  return max;
 }
 
 void freematrix(void** m, size_t rows){

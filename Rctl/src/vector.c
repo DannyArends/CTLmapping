@@ -122,6 +122,17 @@ bool in(const clvector vector, int val){
   return false;
 }
 
+/* Get the maximum value in vector v */
+double vectormax(double* v, size_t dim){
+  size_t i;
+  double max = -DBL_MAX;
+  for(i = 0; i < dim; i++){
+    if(v[i] > max) max = v[i];
+  }
+  return max;
+}
+
+
 /* A random double between 0 and 1 */
 double randnum(){ return rand() / (RAND_MAX+1.0);}
 

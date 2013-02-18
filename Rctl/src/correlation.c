@@ -36,6 +36,59 @@ double correlation(const double* x, const double* y, size_t dim, bool verbose){
   return(cor);
 }
 
+/* Calculates pearsons correlation between x and y (Ranked input for non-parametric testing) */
+/* TODO: Use the Kahan Accumulator */
+double* cor1toN(const double* x, const double** y, size_t dim, size_t ny, bool verbose){
+  size_t i, j;
+  double  onedivn = 1.0 / dim;
+
+  double  Xi   = 0.0;
+  double  XiP2 = 0.0;
+
+  double* Yi   = newdvector(ny);
+  double* YiP2 = newdvector(ny);
+  double* XiYi = newdvector(ny);
+
+  for(i = 0; i < dim; i++){ if(x[i] != MISSING){ // Loop over the non-missing in the common dimension
+    Xi   += x[i];
+    XiP2 += x[i] * x[i];
+    for(j = 0; j < ny; j++){ if(y[j][i] != MISSING){ // Same for Y
+      XiYi[j] += x[i] * y[j][i];
+      Yi[j]   += y[j][i];
+      YiP2[j] += y[j][i] * y[j][i];
+    }}
+  }}
+  double* cors = newdvector(ny);
+  for(j = 0; j < ny; j++){
+    double nom = (XiYi[j] - (onedivn*Xi*Yi[j]));
+    double denom = sqrt(XiP2 - onedivn * pow(Xi, 2.0)) * sqrt(YiP2[j] - onedivn * pow(Yi[j], 2.0));
+    cors[j] = 1e-6 * (int)((nom / denom) * 1e6);  // TODO: Remove this easy fix for rounding errors
+    if(isNaN(cors[j]) || isinf(cors[j]) || cors[j] < -1.0 || cors[j] > 1.0){ 
+      err("Correlation '%.8f' not in range [-1, 1]\n", cors[j]);
+    }
+  }
+  free(Yi); free(YiP2); free(XiYi);
+  return(cors);
+}
+
+/* Calculate the chi square test statistic based on N seggregating correlations */
+double* chiSQN(size_t nr, double** r, size_t phe, int* nsamples, size_t nphe){
+  size_t p, i;
+  double* ret = newdvector(nphe);
+  for(p = 0; p < nphe; p++){
+    if(phe != p){
+      double* ts = newdvector(nr);
+      for(i = 0; i < nr; i++){
+        ts[i] = r[i][p];
+      }
+      ret[p] = chiSQ(nr, ts, nsamples);
+      free(ts);
+    }
+  }
+  return ret;
+}
+
+
 /* Calculate the chi square test statistic based on N seggregating correlations */
 double chiSQ(size_t nr, double* r, int* nsamples){
   size_t i;
@@ -48,7 +101,7 @@ double chiSQ(size_t nr, double* r, int* nsamples){
     squaresOfSum = KahanSum(squaresOfSum, (nsamples[i]-3) * zscore(r[i]));
     denom  += (nsamples[i]-3);
   }
-  if(denom == 0) info("Divide by 0 groups too small");
+  if(denom == 0) err("Divide by 0 groups too small");
   return(sumOfSquares.sum - (pow(squaresOfSum.sum, 2.0) / denom));
 }
 

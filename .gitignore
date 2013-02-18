@@ -3,6 +3,7 @@ C/mapctl
 D/mapctl
 *.obj
 *summary.txt
+gmon.out
 *.so
 *.rds
 *.Rout

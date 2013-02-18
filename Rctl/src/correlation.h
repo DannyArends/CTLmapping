@@ -17,6 +17,8 @@
     #include "structs.h"
     
     double correlation(const double* x, const double* y, size_t dim, bool verbose);
+    double* cor1toN(const double* x, const double** y, size_t dim, size_t ny, bool verbose);
+
 
     /* test if a double in NaN */
     static inline int isNaN(double d){ return(d != d); }
