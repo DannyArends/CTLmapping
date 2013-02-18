@@ -13,6 +13,8 @@
 \alias{getRatio}
 \alias{plot.CTLnetwork}
 \alias{test.power.test}
+\alias{CTLanalyseRatios}
+\alias{CTLanalyseEffects}
 
 %ctl.circle.r
 \alias{mapinfotomarkerlocs}
