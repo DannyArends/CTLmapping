@@ -18,9 +18,11 @@
     #include "permutation.h"    
     #include "sort.h"
 
+    /** Example function that does CTL mapping, permutation and LOD transformation for a given phenotype. */
     double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
                     bool doperms, int nperms, bool verbose);
 
+    /** Get the CTLeffects matrix (Chi square scores) for a given phenotype. */
     double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
                     clvector* genoenc, int alpha, int beta, bool verbose);
 

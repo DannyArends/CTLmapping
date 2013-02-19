@@ -13,7 +13,7 @@
 #include "permutation.h"
 #include <getopt.h>
 
-/* Print the help, listing all possible command line switches */
+/** Print the help, listing all possible command line switches. */
 void printhelp(){
   printf("Usage:\n");
   printf(" mapctl -g<genotype_file> -p<phenotype_file>\n\n");
@@ -27,7 +27,7 @@ void printhelp(){
   printf(" -h         Shows this help\n");
 }
 
-/* Main function of the command line tool */
+/** Main function of the command line tool. */
 int main(int argc, char **argv){
   printf("Correlated Trait Locus (CTL) mapping\n");
   printf("(c) 2012 GBIC, written by Danny Arends\n");
@@ -109,8 +109,8 @@ int main(int argc, char **argv){
     freematrix((void**)phenotypes.data, nphe);
     freematrix((void**)genotypes.data, nmar);
   }
-  printf("All done. Thank you for using mapctl\n");
-  printf("Please cite: CTL mapping - Journal - Arends et al. [2013]\n");
+  info("All done. Thank you for using mapctl\n");
+  info("Please cite: CTL mapping - Journal - Arends et al. [2013]\n");
   return 0;
 }
 

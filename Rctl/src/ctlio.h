@@ -17,14 +17,14 @@
     #include "correlation.h"
     #include "structs.h"
 
+    /** Writes a full ctl effect matrix to a file. */
     void   writeout(double** ctls, size_t phenotype, size_t nmar, size_t nphe);
-    /** Writes the significant elements to a summary file */
+    /** Writes the significant elements to a summary file. */
     void   writesummary(const Phenotypes phenotypes, const Genotypes genotypes, const char* fn, double** ctls, 
                   size_t phenotype, size_t nmar, size_t nphe, clvector* genoenc, double cutoff);
 
     /** Size in bytes of a file. */
     size_t filesize(char* name);
-
     /** Get the whole content of a file as a char*.
      *  This function ensures the returned char* is '\n' terminated */
     char*  getFilecontent(char* name);

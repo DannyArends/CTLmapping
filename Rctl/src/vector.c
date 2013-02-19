@@ -8,21 +8,24 @@
  **********************************************************************/
 #include "structs.h"
 
-/* Allocate a new character vector of length dim */
 char* newcvector(size_t dim){
   char* v =  calloc(dim, sizeof(char));
   if(v==NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
   return v;
 }
 
-/* Allocate a new double vector of length dim */
 double* newdvector(size_t dim){
   double* v = calloc(dim, sizeof(double));
   if(v==NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
   return v;
 }
 
-/* Allocate a new custom length integer vector of length dim */
+int* newivector(size_t dim){
+  int* v = calloc(dim, sizeof(int));
+  if(v==NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
+  return v;
+}
+
 clvector newclvector(size_t dim){
   clvector clv;
   clv.nelements = 0;
@@ -30,30 +33,6 @@ clvector newclvector(size_t dim){
   return clv;
 }
 
-/* Allocate a new integer vector of length dim */
-int* newivector(size_t dim){
-  int* v = calloc(dim, sizeof(int));
-  if(v==NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
-  return v;
-}
-
-/* Adds a new integer element n to vector v */
-int* addtoivector(int* v, size_t dim, int n){
-  int* v1 = realloc((void*)v, (dim+1) * sizeof(int));
-  if(v1 == NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
-  v1[dim] = n;
-  return v1;
-}
-
-/* Adds a new double element n to vector v */
-double* addtodvector(double* v, size_t dim, double n){
-  double* v1 = realloc((void*)v, (dim+1) * sizeof(double));
-  if(v1 == NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
-  v1[dim] = n;
-  return v1;
-}
-
-/* Adds a new character element n to vector v */
 char* addtocvector(char* v, size_t dim, char n){
   char* v1 = realloc((void*)v, (dim+1));
   if(v1 == NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
@@ -61,13 +40,18 @@ char* addtocvector(char* v, size_t dim, char n){
   return v1;
 }
 
-/* Print a custom length vector to the output */
-void printclvector(const clvector v){
-  size_t r;
-  size_t dim = v.nelements;
-  info("[");
-  for(r = 0; r < dim; r++){ info("%d",v.data[r]); if(r != (dim-1)) info(", "); }
-  info("]\n");
+double* addtodvector(double* v, size_t dim, double n){
+  double* v1 = realloc((void*)v, (dim+1) * sizeof(double));
+  if(v1 == NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
+  v1[dim] = n;
+  return v1;
+}
+
+int* addtoivector(int* v, size_t dim, int n){
+  int* v1 = realloc((void*)v, (dim+1) * sizeof(int));
+  if(v1 == NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
+  v1[dim] = n;
+  return v1;
 }
 
 void printcvector(const char* v, size_t dim){
@@ -91,11 +75,19 @@ void printivector(const int* v, size_t dim){
   info("]");
 }
 
-clvector which(const int* v, size_t dim, int type){
+void printclvector(const clvector v){
+  size_t r;
+  size_t dim = v.nelements;
+  info("[");
+  for(r = 0; r < dim; r++){ info("%d",v.data[r]); if(r != (dim-1)) info(", "); }
+  info("]\n");
+}
+
+clvector which(const int* v, size_t dim, int e){
   size_t i  = 0;
   clvector clv = newclvector(0);
   for(i = 0; i < dim; i++){ 
-    if(v[i] == type){
+    if(v[i] == e){
       clv.data = addtoivector(clv.data, clv.nelements, i);
       clv.nelements++;
     }
@@ -103,7 +95,6 @@ clvector which(const int* v, size_t dim, int type){
   return clv;
 }
 
-/* Get the double elements in v, specified by the indexes in the clvector idxs */
 double* get(const double* v, clvector idxs){
   size_t i;
   double* v1 = newdvector(idxs.nelements);
@@ -113,16 +104,14 @@ double* get(const double* v, clvector idxs){
   return v1;
 }
 
-/* Does the clvector contain val */
-bool in(const clvector vector, int val){
+bool in(const clvector v, int e){
   size_t i;
-  for(i =0; i< vector.nelements; i++){
-    if(val == vector.data[i]) return true;
+  for(i =0; i< v.nelements; i++){
+    if(e == v.data[i]) return true;
   }
   return false;
 }
 
-/* Get the maximum value in vector v */
 double vectormax(double* v, size_t dim){
   size_t i;
   double max = -DBL_MAX;
@@ -132,11 +121,10 @@ double vectormax(double* v, size_t dim){
   return max;
 }
 
-
-/* A random double between 0 and 1 */
+/** A random double between 0 and 1 */
 double randnum(){ return rand() / (RAND_MAX+1.0);}
 
-/* Swap 2 elements in an integer vectoir */
+/** Swap 2 elements in an integer vectoir */
 int* swap(int* idx, int i1, int i2){
   int t = idx[i2];
   idx[i2] = idx[i1];
@@ -144,11 +132,6 @@ int* swap(int* idx, int i1, int i2){
   return idx;
 }
 
-/* Possibly slow implementation to get the ranks in a double vector 
-   Propagates our missing value (-999)
-  e.g.: 5      7    8   3   5
-  to:   1.5    2    3   1   1.5
-*/
 double* torank(double* v, size_t dim){
   size_t  i;
   double* r = newdvector(dim);
@@ -183,7 +166,6 @@ double* torank(double* v, size_t dim){
   return r;
 }
 
-/* Fisher-Yates random-range generation */
 int* randomizeivector(int* idx, size_t max){
   if(max==2) return idx;
   return randomizeivector(swap(idx, (int)(randnum()*(max-2)), max-1),(max-1));

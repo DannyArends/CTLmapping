@@ -8,7 +8,6 @@
  **********************************************************************/
 #include "rmapctl.h"
 
-/* Function to 'update' R, checks user input and can flushes console */
 void updateR(bool flush){
   #ifdef USING_R
     R_CheckUserInterrupt();
@@ -16,7 +15,6 @@ void updateR(bool flush){
   #endif
 }
 
-/* R interface to perform a CTL scan and permutations on phenotype 'phenotype' */
 void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p, 
               int *nperms, int* a, int* b, int* permt, double* dcor,  double* perms, double* res, int* verb){
 

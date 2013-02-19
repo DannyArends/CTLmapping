@@ -16,21 +16,27 @@
     #include "vector.h"
     #include "matrix.h"
 
+    /** Holds all phenotype related information. */
     typedef struct{
-      double** data;          /*! Holds the phenotype data as a double** */
-      size_t   nphenotypes;   /*! Length of the first dimension of data */
-      size_t   nindividuals;  /*! Length of the second dimension of data */
+      double** data;          /*!< Holds the phenotype data as a double**  */
+      size_t   nphenotypes;   /*!< Length of the first dimension of data   */
+      size_t   nindividuals;  /*!< Length of the second dimension of data  */
     } Phenotypes;
 
+    /** Holds all genotype related information. */
     typedef struct{
-      int**    data;          /*! Holds the genotype data as a int** */
-      size_t   nmarkers;      /*! Length of the first dimension of data */
-      size_t   nindividuals;  /*! Length of the second dimension of data */
+      int**    data;          /*!< Holds the genotype data as a int**      */
+      size_t   nmarkers;      /*!< Length of the first dimension of data   */
+      size_t   nindividuals;  /*!< Length of the second dimension of data  */
     } Genotypes;
 
+    /** Used to correct floating point precision. When we do repeated 
+     *  summation of floating point numbers the precision errors add up. 
+     *  A Kahanaccumulator is used to correct these errors.
+     *  See http://en.wikipedia.org/wiki/Kahan_summation_algorithm */
     typedef struct{
-      double sum;
-      double cor;
+      double sum;             /*!< Current value of the accumulator        */
+      double cor;             /*!< Correction factor applied to next +=    */
     } KahanAccumulator;
 
     /** Create an empty Accumulator. 
@@ -59,11 +65,11 @@
     clvector* getGenotypes(const Genotypes geno, bool verbose);
 
     /** Create the Phenotypes object.
-     *  This function creates the Phenotypes struct from a \0 terminated character array */
+     *  This function creates the Phenotypes struct from a '\\0' terminated character array */
     Phenotypes toPhenotypes(char* content);
 
     /** Create the Genotypes object.
-     *  This function creates the Genotypes struct from a \0 terminated character array */
+     *  This function creates the Genotypes struct from a '\\0' terminated character array */
     Genotypes  toGenotypes(char* content);
 
   #endif //__STRUCTS_H__

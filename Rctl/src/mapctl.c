@@ -8,7 +8,6 @@
  **********************************************************************/
 #include "mapctl.h"
 
-/* Perform a CTL scan and permutations on phenotype 'phenotype' */
 double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
                 bool doperms, int nperms, bool verbose){
 
@@ -34,7 +33,6 @@ double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t p
   return ctls;
 }
 
-/* Calculate the difference in correlation matrix for phenotype 'phenotype' */
 double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
                     clvector* genoenc, int alpha, int beta, bool verbose){
 
@@ -62,7 +60,7 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
   return dcors;
 }
 
-/* Calculate the difference in correlation matrix for phenotype 'phenotype' */
+/** Calculate the difference in correlation matrix for phenotype 'phenotype' (OLD VERSION). */
 double** ctleffectsOLD(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
                     clvector* genoenc, int alpha, int beta, bool verbose){
 

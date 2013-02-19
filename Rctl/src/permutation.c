@@ -71,6 +71,7 @@ double** permuteRW(const Phenotypes phe, const Genotypes geno, size_t p, clvecto
   return scores;
 }
 
+/* Get the index in a permutation row for which permutation[i] >= val. */
 double getidx(double val, double* permutations, size_t nperms){
   size_t i;
   for(i=0; i < nperms; i++){
@@ -79,12 +80,10 @@ double getidx(double val, double* permutations, size_t nperms){
   return (nperms-1);
 }
 
-/* Estimate a p-value based on permutations */
 double estimate(double val, double* permutations, size_t nperms){
   return -log10(1.0 - (getidx(val, permutations, nperms)/(double)nperms));
 }
 
-/* Use exact calculations and bonferonni correction for LOD / p-value calculation */
 double** toLODexact(double** scores, clvector* genoenc, size_t nmar, size_t nphe){
   double** ctls = newdmatrix(nmar, nphe);
   size_t p,m;
@@ -103,7 +102,6 @@ double** toLODexact(double** scores, clvector* genoenc, size_t nmar, size_t nphe
   return ctls;
 }
 
-/* Use Full permutations for LOD / p-value calculation */
 double** toLOD(double** scores, double* permutations, size_t nmar, size_t nphe, size_t nperms){
   double** ctls = newdmatrix(nmar, nphe);
   size_t p,m;
@@ -116,7 +114,6 @@ double** toLOD(double** scores, double* permutations, size_t nmar, size_t nphe, 
   return ctls;
 }
 
-/* Use pair-wise permutations for LOD / p-value calculation */
 double** toLODRW(double** scores, double** permutations, size_t nmar, size_t nphe, size_t nperms){
   double** ctls = newdmatrix(nmar, nphe);
   size_t p,m;

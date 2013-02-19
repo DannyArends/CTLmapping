@@ -14,8 +14,11 @@
 
     #include "ctl.h"
 
+    /** Qsort char / char* comparison function */
     int c_cmp(const void *a, const void *b);
+    /** Qsort double comparison function */
     int d_cmp(const void *a, const void *b);
+    /** Qsort int comparison function */
     int i_cmp(const void *a, const void *b);
 
   #endif //__SORT_H__

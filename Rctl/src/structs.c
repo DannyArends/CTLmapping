@@ -89,7 +89,7 @@ Phenotypes toPhenotypes(char* content){
   return p;
 }
 
-Genotypes togenotypes(char* content){
+Genotypes toGenotypes(char* content){
   char*   num = newcvector(0);
   int     colcnt = 0;
   int     ccol   = 0;

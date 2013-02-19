@@ -16,24 +16,6 @@ double** newdmatrix(size_t rows, size_t cols){
   return m;
 }
 
-double** asdmatrix(int rows, int cols, double* data){
-  int i;
-  double** m = (double**) calloc(rows, sizeof(double*));
-  if(m==NULL) err("Not enough memory for new double matrix [%ix%i]\n", rows, cols);
-  m[0] = data;
-  for(i=1; i< rows; i++){ m[i] = m[i-1] + cols; }
-  return m;
-}
-
-int** asimatrix(int rows, int cols, int* data){
-  int i;
-  int** m = (int**) calloc(rows, sizeof(int*));
-  if(m==NULL) err("Not enough memory for new integer matrix [%ix%i]\n", rows, cols);
-  m[0] = data;
-  for(i=1; i< rows; i++){ m[i] = m[i-1] + cols; }
-  return m;
-}
-
 int** newimatrix(size_t rows, size_t cols){
   size_t x;
   int** m = (int**) calloc(rows, sizeof(int*));
@@ -53,6 +35,24 @@ int** addtoimatrix(int** matrix, size_t size, size_t cols, int* n){
   int** m = realloc(matrix, (size+1) * cols * sizeof(int));
   if(m==NULL) err("Not enough memory for new integer matrix [%ix%i]\n", size+1, cols);
   m[size] = n;
+  return m;
+}
+
+double** asdmatrix(int rows, int cols, double* data){
+  int i;
+  double** m = (double**) calloc(rows, sizeof(double*));
+  if(m==NULL) err("Not enough memory for new double matrix [%ix%i]\n", rows, cols);
+  m[0] = data;
+  for(i=1; i< rows; i++){ m[i] = m[i-1] + cols; }
+  return m;
+}
+
+int** asimatrix(int rows, int cols, int* data){
+  int i;
+  int** m = (int**) calloc(rows, sizeof(int*));
+  if(m==NULL) err("Not enough memory for new integer matrix [%ix%i]\n", rows, cols);
+  m[0] = data;
+  for(i=1; i< rows; i++){ m[i] = m[i-1] + cols; }
   return m;
 }
 
@@ -78,20 +78,18 @@ void printimatrix(int** m, size_t rows, size_t cols){
   }
 }
 
-/* Get the double elements in v, specified by the indexes in the clvector idxs */
-double** getM(double** v, clvector idxs, size_t length){
+double** getM(double** m, clvector idxs, size_t length){
   size_t i, p;
   double** v1 = calloc(length, sizeof(double*));
   for(p = 0; p < length; p++){
     v1[p] = newdvector(idxs.nelements);
     for(i = 0; i < idxs.nelements; i++){
-      v1[p][i] = v[p][idxs.data[i]];
+      v1[p][i] = m[p][idxs.data[i]];
     }
   }
   return v1;
 }
 
-/* Get the maximum value in matrix m */
 double matrixmax(double** m, size_t rows, size_t cols){
   size_t r,c;
   double max = -DBL_MAX;
@@ -103,7 +101,6 @@ double matrixmax(double** m, size_t rows, size_t cols){
   return max;
 }
 
-/* Transpose matrix M */
 double** transpose(double** m, size_t rows, size_t cols){
   double** nm = newdmatrix(cols,rows);
   int r, c;
