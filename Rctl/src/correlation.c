@@ -80,7 +80,7 @@ double* getCorrelations(const Phenotypes phenotypes, const Genotypes genotypes, 
       double* P2  = get(phenotypes.data[phe2], inds);
       cors[i]    = correlation(P1, P2, inds.nelements, false);
       if(verbose){
-        info("Significant: %d %d %d | %d [%d] -> %f\n", phe1, mar, phe2, genoenc.data[i], inds.nelements, cors[i]);
+        info("CTL: %d %d %d | %d [%d] -> %f\n", phe1, mar, phe2, genoenc.data[i], inds.nelements, cors[i]);
       }
       free(P1), free(P2); // Clear phenotypes
       free(inds.data);    // Clear index data
@@ -93,16 +93,16 @@ double* getCorrelations(const Phenotypes phenotypes, const Genotypes genotypes, 
 double* chiSQN(size_t nr, double** r, size_t phe, int* nsamples, size_t nphe){
   size_t p, i;
   double* ret = newdvector(nphe);
+  double* ts  = newdvector(nr);
   for(p = 0; p < nphe; p++){
     if(phe != p){
-      double* ts = newdvector(nr);
       for(i = 0; i < nr; i++){
         ts[i] = r[i][p];
       }
       ret[p] = chiSQ(nr, ts, nsamples);
-      free(ts);
     }
   }
+  free(ts);
   return ret;
 }
 

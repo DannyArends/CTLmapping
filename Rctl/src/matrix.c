@@ -48,7 +48,7 @@ double** asdmatrix(int rows, int cols, double* data){
 }
 
 int** asimatrix(int rows, int cols, int* data){
-  int i;
+  size_t i;
   int** m = (int**) calloc(rows, sizeof(int*));
   if(m==NULL) err("Not enough memory for new integer matrix [%ix%i]\n", rows, cols);
   m[0] = data;
@@ -91,7 +91,7 @@ double** getM(double** m, clvector idxs, size_t length){
 }
 
 double matrixmax(double** m, size_t rows, size_t cols){
-  size_t r,c;
+  size_t r, c;
   double max = -DBL_MAX;
   for(r = 0; r < rows; r++){
     for(c = 0; c < cols; c++){
@@ -102,7 +102,7 @@ double matrixmax(double** m, size_t rows, size_t cols){
 }
 
 double** transpose(double** m, size_t rows, size_t cols){
-  int r, c;
+  size_t r, c;
   double** nm = newdmatrix(cols,rows);
   for(r = 0; r < rows; r++){
     for(c = 0; c < cols; c++){
