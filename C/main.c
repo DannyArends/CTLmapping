@@ -46,16 +46,18 @@ int main(int argc, char **argv){
   bool   doperms       = false;
   bool   verbose       = false;
   bool   fulloutput    = false;
+  bool   nooutput      = false;
   double threshold     = 0.01;
   char   ch;
 
   srand(time(NULL));
-  while((ch = getopt(argc, argv, "g:p:n:a:b:t:hdvf")) != -1){
+  while((ch = getopt(argc, argv, "g:p:n:a:b:t:hdvfs")) != -1){
     switch(ch){
       case 'g': genofilename  = optarg;  break;
       case 'p': phenofilename = optarg; break;
       case 'd': doperms       = true;  break;
       case 'f': fulloutput    = true;  break;
+      case 's': nooutput      = true;  break;
       case 'v': verbose       = true;  break;
       case 't': threshold     = atof(optarg);  break;
       case 'n': nperms        = atoi(optarg);  break;
@@ -98,8 +100,10 @@ int main(int argc, char **argv){
         ctls = toLOD(scores, perms, nmar, nphe, nperms);
         free(perms);
       }
-      if(fulloutput) writeout(ctls, phenotype, nmar, nphe);
-      writesummary(phenotypes, genotypes, outfilename, ctls, phenotype, nmar, nphe, genoenc, threshold);
+      if(!nooutput){
+        if(fulloutput) writeout(ctls, phenotype, nmar, nphe);
+        writesummary(phenotypes, genotypes, outfilename, ctls, phenotype, nmar, nphe, genoenc, threshold);
+      }  
       freematrix((void**)scores, genotypes.nmarkers);
       freematrix((void**)ctls, genotypes.nmarkers);
     }

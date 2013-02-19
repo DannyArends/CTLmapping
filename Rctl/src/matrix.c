@@ -11,29 +11,29 @@
 double** newdmatrix(size_t rows, size_t cols){
   size_t i;
   double** m = (double**) calloc(rows, sizeof(double*));
-  if(m==NULL) err("Not enough memory for new double matrix [%ix%i]\n", rows, cols);
-  for(i = 0; i<rows; i++){ m[i]= newdvector(cols); }
+  if(m == NULL) err("Not enough memory for new double matrix [%ix%i]\n", rows, cols);
+  for(i = 0; i < rows; i++){ m[i]= newdvector(cols); }
   return m;
 }
 
 int** newimatrix(size_t rows, size_t cols){
-  size_t x;
+  size_t i;
   int** m = (int**) calloc(rows, sizeof(int*));
-  if(m==NULL) err("Not enough memory for new integer matrix [%ix%i]\n", rows, cols);
-  for(x = 0; x<rows; x++){ m[x]= newivector(cols); }
+  if(m == NULL) err("Not enough memory for new integer matrix [%ix%i]\n", rows, cols);
+  for(i = 0; i < rows; i++){ m[i]= newivector(cols); }
   return m;
 }
 
 double** addtodmatrix(double** matrix, size_t size, size_t cols, double* n){
   double** m = realloc(matrix, (size+1) * cols * sizeof(double));
-  if(m==NULL) err("Not enough memory for new double matrix [%ix%i]\n", size+1, cols);
+  if(m == NULL) err("Not enough memory for new double matrix [%ix%i]\n", size+1, cols);
   m[size] = n;
   return m;
 }
 
 int** addtoimatrix(int** matrix, size_t size, size_t cols, int* n){
   int** m = realloc(matrix, (size+1) * cols * sizeof(int));
-  if(m==NULL) err("Not enough memory for new integer matrix [%ix%i]\n", size+1, cols);
+  if(m == NULL) err("Not enough memory for new integer matrix [%ix%i]\n", size+1, cols);
   m[size] = n;
   return m;
 }
@@ -43,7 +43,7 @@ double** asdmatrix(int rows, int cols, double* data){
   double** m = (double**) calloc(rows, sizeof(double*));
   if(m==NULL) err("Not enough memory for new double matrix [%ix%i]\n", rows, cols);
   m[0] = data;
-  for(i=1; i< rows; i++){ m[i] = m[i-1] + cols; }
+  for(i = 1; i < rows; i++){ m[i] = m[i-1] + cols; }
   return m;
 }
 
@@ -52,12 +52,12 @@ int** asimatrix(int rows, int cols, int* data){
   int** m = (int**) calloc(rows, sizeof(int*));
   if(m==NULL) err("Not enough memory for new integer matrix [%ix%i]\n", rows, cols);
   m[0] = data;
-  for(i=1; i< rows; i++){ m[i] = m[i-1] + cols; }
+  for(i = 1; i < rows; i++){ m[i] = m[i-1] + cols; }
   return m;
 }
 
 void printdmatrix(double** m, size_t rows, size_t cols){
-  size_t r,c;
+  size_t r, c;
   for(r = 0; r < rows; r++){
     for(c = 0; c < cols; c++){
       if(c > 0) info("\t");
@@ -68,7 +68,7 @@ void printdmatrix(double** m, size_t rows, size_t cols){
 }
 
 void printimatrix(int** m, size_t rows, size_t cols){
-  size_t r,c;
+  size_t r, c;
   for(r = 0; r < rows; r++){
     for(c = 0; c < cols; c++){
       if(c > 0) info("\t");
@@ -102,8 +102,8 @@ double matrixmax(double** m, size_t rows, size_t cols){
 }
 
 double** transpose(double** m, size_t rows, size_t cols){
-  double** nm = newdmatrix(cols,rows);
   int r, c;
+  double** nm = newdmatrix(cols,rows);
   for(r = 0; r < rows; r++){
     for(c = 0; c < cols; c++){
       nm[c][r] = m[r][c];
@@ -114,9 +114,7 @@ double** transpose(double** m, size_t rows, size_t cols){
 
 void freematrix(void** m, size_t rows){
   size_t i;
-  for(i = 0; i < rows; i++){
-    free(m[i]);
-  }
+  for(i = 0; i < rows; i++){ free(m[i]); }
   free(m);
 }
 

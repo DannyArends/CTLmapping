@@ -167,7 +167,7 @@ double* torank(double* v, size_t dim){
 }
 
 int* randomizeivector(int* idx, size_t max){
-  if(max==2) return idx;
+  if(max == 2) return idx;
   return randomizeivector(swap(idx, (int)(randnum()*(max-2)), max-1),(max-1));
 }
 

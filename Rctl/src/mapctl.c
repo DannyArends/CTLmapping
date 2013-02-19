@@ -36,7 +36,7 @@ double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t p
 double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
                     clvector* genoenc, int alpha, int beta, bool verbose){
 
-  size_t g, m, p,debug = 0;
+  size_t g, m;
   double** dcors = newdmatrix(genotypes.nmarkers, phenotypes.nphenotypes);
   for(m = 0; m < genotypes.nmarkers; m++){
     size_t ngenotypes = genoenc[m].nelements;

@@ -18,7 +18,7 @@
     #include "permutation.h"    
     #include "sort.h"
 
-    /** Example function that does CTL mapping, permutation and LOD transformation for a given phenotype. */
+    /** Example function that does CTL mapping permutation for a given phenotype. */
     double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
                     bool doperms, int nperms, bool verbose);
 
