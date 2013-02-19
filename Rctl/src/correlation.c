@@ -46,10 +46,12 @@ double* cor1toN(const double* x, double** y, size_t dim, size_t ny, bool verbose
   double* YiP2 = newdvector(ny);
   double* XiYi = newdvector(ny);
 
-  for(i = 0; i < dim; i++){ if(x[i] != MISSING){ // Loop over the non-missing in the common dimension
-    Xi   += x[i];
-    XiP2 += x[i] * x[i];
-    for(j = 0; j < ny; j++){ if(y[j][i] != MISSING){ // Same for Y
+  for(j = 0; j < ny; j++){ if(y[j][i] != MISSING){ // Same for Y
+    for(i = 0; i < dim; i++){ if(x[i] != MISSING){ // Loop over the non-missing in the common dimension
+      if(j==0){
+        Xi   += x[i];
+        XiP2 += x[i] * x[i];
+      }
       XiYi[j] += x[i] * y[j][i];
       Yi[j]   += y[j][i];
       YiP2[j] += y[j][i] * y[j][i];
@@ -57,8 +59,8 @@ double* cor1toN(const double* x, double** y, size_t dim, size_t ny, bool verbose
   }}
   double* cors = newdvector(ny);
   for(j = 0; j < ny; j++){
-    double nom = (XiYi[j] - (onedivn*Xi*Yi[j]));
-    double denom = sqrt(XiP2 - onedivn * pow(Xi, 2.0)) * sqrt(YiP2[j] - onedivn * pow(Yi[j], 2.0));
+    double nom   = (XiYi[j] - (onedivn*Xi*Yi[j]));
+    double denom = sqrt(XiP2 - (onedivn * Xi * Xi)) * sqrt(YiP2[j] - (onedivn * Yi[j] * Yi[j]));
     cors[j] = 1e-6 * (int)((nom / denom) * 1e6);  // TODO: Remove this easy fix for rounding errors
     if(isNaN(cors[j]) || isinf(cors[j]) || cors[j] < -1.0 || cors[j] > 1.0){ 
       err("Correlation '%.8f' not in range [-1, 1]\n", cors[j]);

@@ -14,6 +14,7 @@
 
     #include "ctl.h"
     #include "structs.h"
+    #include "rmapctl.h"
 
     /** Calculates pearsons correlation between vector x and vector y.  Use ranked 
      *  input for non-parametric testing */
