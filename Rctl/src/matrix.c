@@ -79,9 +79,9 @@ void printimatrix(int** m, size_t rows, size_t cols){
 }
 
 /* Get the double elements in v, specified by the indexes in the clvector idxs */
-double* getM(const double** v, clvector idxs, size_t length){
+double** getM(double** v, clvector idxs, size_t length){
   size_t i, p;
-  double** v1 = (double**) calloc(idxs.nelements, sizeof(double*));
+  double** v1 = calloc(length, sizeof(double*));
   for(p = 0; p < length; p++){
     v1[p] = newdvector(idxs.nelements);
     for(i = 0; i < idxs.nelements; i++){

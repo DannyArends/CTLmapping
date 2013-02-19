@@ -28,7 +28,7 @@
     double** asdmatrix(int rows, int cols, double* data);
     int**    asimatrix(int rows, int cols, int* data);
 
-    double* getM(const double** v, clvector idxs, size_t length);
+    double** getM(double** v, clvector idxs, size_t length);
 
     double matrixmax(double** m, size_t rows, size_t cols);
     
