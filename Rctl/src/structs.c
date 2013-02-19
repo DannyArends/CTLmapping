@@ -36,8 +36,7 @@ bool checkRow(int ccol, int nrows, int* colcnt){
   return true;
 }
 
-/* Creates the phenotype struct from a string */
-Phenotypes tophenotypes(char* content){
+Phenotypes toPhenotypes(char* content){
   char*    num    = newcvector(0);
   int      colcnt = 0;
   int      ccol   = 0;
@@ -90,7 +89,6 @@ Phenotypes tophenotypes(char* content){
   return p;
 }
 
-/* Creates the genotype struct from a string */
 Genotypes togenotypes(char* content){
   char*   num = newcvector(0);
   int     colcnt = 0;

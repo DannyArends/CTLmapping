@@ -64,11 +64,11 @@ int main(int argc, char **argv){
     }
   }
   
-  char* phenocontent    = getfilecontent(phenofilename);
-  char* genocontent     = getfilecontent(genofilename);
-  Phenotypes phenotypes = tophenotypes(phenocontent);
+  char* phenocontent    = getFilecontent(phenofilename);
+  char* genocontent     = getFilecontent(genofilename);
+  Phenotypes phenotypes = toPhenotypes(phenocontent);
   free(phenocontent);
-  Genotypes genotypes   = togenotypes(genocontent);
+  Genotypes genotypes   = toGenotypes(genocontent);
   free(genocontent);
 
   if(phenotypes.nindividuals != genotypes.nindividuals){

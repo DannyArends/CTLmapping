@@ -52,11 +52,11 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
       cors[g]       = cor1toN(P1, P2M, idx.nelements, phenotypes.nphenotypes, false);
       nsamples[g]   = idx.nelements;
       free(idx.data); free(P1);                 // Clear the indexes and phenotype1 data
-      freematrix(P2M, phenotypes.nphenotypes);  // Clear phenotype2M data
+      freematrix((void**)P2M, phenotypes.nphenotypes);  // Clear phenotype2M data
       updateR(0);
     }
     dcors[m] = chiSQN(ngenotypes, cors, phenotype, nsamples, phenotypes.nphenotypes);
-    freematrix(cors, ngenotypes);         // Clear correlation and samples data 
+    freematrix((void**)cors, ngenotypes);         // Clear correlation and samples data 
     free(nsamples);
   }
   return dcors;

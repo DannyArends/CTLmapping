@@ -32,8 +32,8 @@ debug: all
 
 # target: test - Test by executing CTL mapping
 test: debug
-	./mapctl -h
-	./mapctl
+#	./mapctl -h
+#	./mapctl
 
 # target: shared - CTL as shared library
 shared: DEFS += -fPIC
