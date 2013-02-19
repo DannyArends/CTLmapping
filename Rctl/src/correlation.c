@@ -8,7 +8,6 @@
  **********************************************************************/
 #include "correlation.h"
 
-/* Calculates pearsons correlation between x and y (Ranked input for non-parametric testing) */
 double correlation(const double* x, const double* y, size_t dim, bool verbose){
   size_t i;
   double onedivn = 1.0 / dim;
@@ -36,9 +35,7 @@ double correlation(const double* x, const double* y, size_t dim, bool verbose){
   return(cor);
 }
 
-/* Calculates pearsons correlation between x and y (Ranked input for non-parametric testing) */
-/* TODO: Use the Kahan Accumulator */
-double* cor1toN(const double* x, const double** y, size_t dim, size_t ny, bool verbose){
+double* cor1toN(const double* x, double** y, size_t dim, size_t ny, bool verbose){
   size_t i, j;
   double  onedivn = 1.0 / dim;
 
@@ -71,7 +68,28 @@ double* cor1toN(const double* x, const double** y, size_t dim, size_t ny, bool v
   return(cors);
 }
 
-/* Calculate the chi square test statistic based on N seggregating correlations */
+double* getCorrelations(const Phenotypes phenotypes, const Genotypes genotypes, size_t phe1, 
+                        clvector genoenc, size_t mar, size_t phe2, bool verbose){
+
+  size_t  i;
+  double* cors  = newdvector(genoenc.nelements);
+  if(phe1 != phe2){
+    for(i = 0; i < genoenc.nelements; i++){
+      clvector inds = which(genotypes.data[mar], phenotypes.nindividuals, genoenc.data[i]);
+      double* P1  = get(phenotypes.data[phe1], inds);
+      double* P2  = get(phenotypes.data[phe2], inds);
+      cors[i]    = correlation(P1, P2, inds.nelements, false);
+      if(verbose){
+        info("Significant: %d %d %d | %d [%d] -> %f\n", phe1, mar, phe2, genoenc.data[i], inds.nelements, cors[i]);
+      }
+      free(P1), free(P2); // Clear phenotypes
+      free(inds.data);    // Clear index data
+      updateR(0);
+    }
+  }
+  return cors;
+}
+
 double* chiSQN(size_t nr, double** r, size_t phe, int* nsamples, size_t nphe){
   size_t p, i;
   double* ret = newdvector(nphe);
@@ -88,8 +106,6 @@ double* chiSQN(size_t nr, double** r, size_t phe, int* nsamples, size_t nphe){
   return ret;
 }
 
-
-/* Calculate the chi square test statistic based on N seggregating correlations */
 double chiSQ(size_t nr, double* r, int* nsamples){
   size_t i;
   size_t denom = 0;
@@ -105,7 +121,6 @@ double chiSQ(size_t nr, double* r, int* nsamples){
   return(sumOfSquares.sum - (pow(squaresOfSum.sum, 2.0) / denom));
 }
 
-/* Transforms a chi square critical value (Cv) to a p-value */
 double chiSQtoP(int Dof, double Cv){
   if(Cv <= 0 || Dof < 1) return 1.0;
   return dchisq(Cv,(double)Dof, 0);

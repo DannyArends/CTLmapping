@@ -18,14 +18,16 @@
     #include "structs.h"
 
     void   writeout(double** ctls, size_t phenotype, size_t nmar, size_t nphe);
+    /** Writes the significant elements to a summary file */
     void   writesummary(const Phenotypes phenotypes, const Genotypes genotypes, const char* fn, double** ctls, 
                   size_t phenotype, size_t nmar, size_t nphe, clvector* genoenc, double cutoff);
 
-    double* getCorrelations(const Phenotypes phenotypes, const Genotypes genotypes, size_t phe1, 
-                            clvector genoenc, size_t mar, size_t phe2, bool verbose);
-
+    /** Size in bytes of a file. */
     size_t filesize(char* name);
-    char*  getfilecontent(char* name);
+
+    /** Get the whole content of a file as a char*.
+     *  This function ensures the returned char* is '\n' terminated */
+    char*  getFilecontent(char* name);
 
   #endif //__CTLIO_H__
 #ifdef __cplusplus
