@@ -30,7 +30,7 @@
                             clvector genoenc, size_t mar, size_t phe2, bool verbose);
 
     /** Test if a double in NaN. */
-    static inline int isNaN(double d){ return(d != d); }
+    static inline bool isNaN(double d){ return(d != d); }
 
     /** Calculate the standard error. */
     static inline double stderror(size_t df1, size_t df2){ 
