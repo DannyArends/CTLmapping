@@ -123,7 +123,7 @@ double chiSQ(size_t nr, double* r, int* nsamples){
   return(sumOfSquares.sum - (pow(squaresOfSum.sum, 2.0) / denom));
 }
 
-double chiSQtoP(int Dof, double Cv){
+double chiSQtoP(double Cv, int Dof){
   if(Cv <= 0 || Dof < 1) return 1.0;
   return dchisq(Cv,(double)Dof, 0);
 }
