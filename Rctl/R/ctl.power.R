@@ -88,7 +88,7 @@ CTLpowerAnalysis <- function(n, effects=seq(0, 1, 0.05), individuals=c(20, 40, 6
 }
 
 
-CTLanalyseEffects <- function(n=100, perms=50, effects=seq(0, 1, 0.05), ind = 100, ratio=50, ...){
+CTLanalyseEffects <- function(n=1000, perms=100, effects=seq(0, 1, 0.05), ind = 100, ratio=50, ...){
   output <- NULL
   for(eff in effects){
   catout <- NULL
@@ -114,7 +114,7 @@ CTLanalyseEffects <- function(n=100, perms=50, effects=seq(0, 1, 0.05), ind = 10
 
 
 
-CTLanalyseRatios <- function(n=100, perms=50, effect=0.4, ind = 200, ratios=c(5, 10, 20, 30, 40, 50), ...){
+CTLanalyseRatios <- function(n=1000, perms=100, effect=0.4, ind = 200, ratios=c(5, 10, 20, 30, 40, 50), ...){
   output <- NULL
   for(ratio in ratios){
   catout <- NULL
@@ -142,36 +142,38 @@ CTLanalyseRatios <- function(n=100, perms=50, effect=0.4, ind = 200, ratios=c(5,
 test.power.test <- function(){
   require(ctl)
 
-  sample100 <- CTLanalyseEffects(effects=c(0.02, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.75), ind=100, method="Exact")
-  sample200 <- CTLanalyseEffects(effects=c(0.02, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.75), ind=200, method="Exact")
-  sample400 <- CTLanalyseEffects(effects=c(0.02, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.75), ind=400, method="Exact")
+  sample100 <- CTLanalyseEffects(effects=c(0.02, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.75), ind=100)
+  sample200 <- CTLanalyseEffects(effects=c(0.02, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.75), ind=200)
+  sample400 <- CTLanalyseEffects(effects=c(0.02, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.75), ind=400)
   
-  sample100r <- CTLanalyseRatios(ind=100, method="Exact")
-  sample200r <- CTLanalyseRatios(ind=200, method="Exact")
-  sample400r <- CTLanalyseRatios(ind=400, method="Exact")
+  sample100r <- CTLanalyseRatios(ind=100)
+  sample200r <- CTLanalyseRatios(ind=200)
+  sample400r <- CTLanalyseRatios(ind=400)
 
+  setwd("~/Github/Articles/CTLpaper/nar/img")
+  postscript("power_analysis.eps",width=12, height=6,paper="special", horizontal=FALSE)
   op <- par(mfrow=c(1,2))
 
-  plot(c(0, 1),c(0, 1),t='n',xlab="Simulated effect size",ylab="Power", xaxt="n")
-  boxplot(sample100, at=as.numeric(colnames(sample100)), boxwex=0.02, add=T)
+  plot(c(0, 0.8),c(0, 1),t='n',xlab="Simulated effect size",ylab="Power", xaxt="n")
+  boxplot(sample100, at=as.numeric(colnames(sample100)), boxwex=0.02, add=T,pch=20)
   points(as.numeric(colnames(sample100)), apply(sample100,2,median), t='l')
-  boxplot(sample200, at=as.numeric(colnames(sample200)), boxwex=0.02, add=T, col="blue")
+  boxplot(sample200, at=as.numeric(colnames(sample200)), boxwex=0.02, add=T, col="blue",pch=20)
   points(as.numeric(colnames(sample200)), apply(sample200,2,median), t='l', col="blue")
-  boxplot(sample400, at=as.numeric(colnames(sample400)), boxwex=0.02, add=T, col="orange")
+  boxplot(sample400, at=as.numeric(colnames(sample400)), boxwex=0.02, add=T, col="orange",pch=20)
   points(as.numeric(colnames(sample400)), apply(sample400,2,median), col='orange',t='l')
 
   legend("bottomright",c("100","200","300"),col=c("black","blue","orange"),lwd=1,title="Sample size")
 
   plot(c(0, 50),c(0, 1),t='n',xlab="Minor allele frequency",ylab="Power", xaxt="n")
-  boxplot(sample100r, at=as.numeric(colnames(sample100r)), boxwex=1, add=T)
+  boxplot(sample100r, at=as.numeric(colnames(sample100r)), boxwex=1, add=T,pch=20)
   points(as.numeric(colnames(sample100r)), apply(sample100r,2,median), t='l')
-  boxplot(sample200r, at=as.numeric(colnames(sample200r)), boxwex=1, add=T, col="blue")
+  boxplot(sample200r, at=as.numeric(colnames(sample200r)), boxwex=1, add=T, col="blue",pch=20)
   points(as.numeric(colnames(sample200r)), apply(sample200r,2,median), t='l', col="blue")
-  boxplot(sample400r, at=as.numeric(colnames(sample400r)), boxwex=1, add=T, col="orange")
+  boxplot(sample400r, at=as.numeric(colnames(sample400r)), boxwex=1, add=T, col="orange",pch=20)
   points(as.numeric(colnames(sample400r)), apply(sample400r,2,median), col='orange',t='l')
 
   legend("bottomright",c("100","200","300"),col=c("black","blue","orange"),lwd=1,title="Sample size")
-
+  dev.off()
 
  # ratios <-  100*c(getRatio(0.95), getRatio(0.9), getRatio(0.8), getRatio(0.7),  getRatio(0.6))
  # res2 <- CTLpowerAnalysis(1000, effects=c(0.3), individuals = c(30, 40, 50, 75, 100, 150, 200, 500, 1000),ratios=ratios, method="Exact")
