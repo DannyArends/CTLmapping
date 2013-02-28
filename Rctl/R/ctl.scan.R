@@ -14,7 +14,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col, n.perms = 100, strategy = 
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   if(missing(pheno.col)) pheno.col = 1:ncol(phenotypes)
   st <- proc.time()
-  toremove   <- check.genotypes(genotypes, geno.enc, verbose)
+  toremove   <- check.genotypes(genotypes, geno.enc, verbose=verbose)
   phenotypes <- apply(phenotypes, 2, rank) # Always use non-parametric statistics
   results    <- vector("list",length(pheno.col))
   n.phe      <- ncol(phenotypes); n.ind1 <- nrow(phenotypes)

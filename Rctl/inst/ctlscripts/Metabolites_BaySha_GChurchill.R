@@ -41,7 +41,7 @@ library(ctl)
 #source("Helper_Functions.r")
 #source("Basic_QC.R",local=TRUE,echo=TRUE)
 #ctls <- CTLscan(genotypes, metabolites, geno.enc=c("1","2"), n.perm = 1250)
-ctls <- CTLscan(genotypes, metabo_order[,c(1,3,5)], geno.enc=c("1","2"), n.perm = 50000)
+ctls <- CTLscan(genotypes, metabolites[,c(1,3,5)], geno.enc=c("1","2"),verbose=TRUE)
 
 png("3.png", width=900, height=900, bg=rgb(0,0,0,0))
 op <- par(cex=2)

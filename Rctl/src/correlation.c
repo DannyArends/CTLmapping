@@ -62,6 +62,7 @@ double* cor1toN(const double* x, double** y, size_t dim, size_t ny, bool verbose
     double nom   = (XiYi[j] - (onedivn*Xi*Yi[j]));
     double denom = sqrt(XiP2 - (onedivn * Xi * Xi)) * sqrt(YiP2[j] - (onedivn * Yi[j] * Yi[j]));
     cors[j] = 1e-6 * (int)((nom / denom) * 1e6);  // TODO: Remove this easy fix for rounding errors
+    if(denom == 0) err("Empty denominator in correlation (Too few samples in a genotype)\n");
     if(isNaN(cors[j]) || isinf(cors[j]) || cors[j] < -1.0 || cors[j] > 1.0){ 
       err("Correlation '%.8f' not in range [-1, 1]\n", cors[j]);
     }

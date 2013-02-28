@@ -13,7 +13,8 @@ check.genotypes <- function(genotypes, geno.enc=c(1,2), minAmount = 20, verbose=
   
   toremove <- NULL
   idx <- 1
-  checks <- apply(genotypes,2,function(geno){
+  geno.encNaN <- c(geno.enc, NaN, NA)
+  checks <- apply(genotypes,2 , function(geno){
     #We need at least 3 markers of a certain genotype
     for(x in geno.enc){
       if(length(which(geno==x)) <= minAmount){
@@ -21,8 +22,13 @@ check.genotypes <- function(genotypes, geno.enc=c(1,2), minAmount = 20, verbose=
         toremove <<- c(toremove, idx)
       }
     }
+    if(any((geno %in% geno.encNaN) == FALSE)){
+      if(verbose) cat("Severe: Unknown genotypes, removing marker",idx,"\n")
+      toremove <<- c(toremove, idx)
+    }
     idx <<- idx+1
   })
+  toremove <- unique(toremove)
   if(length(toremove) > 0){
     cat("check.genotypes: Removing", length(toremove),"/",ncol(genotypes), "markers\n")
     cat(toremove, "\n")
