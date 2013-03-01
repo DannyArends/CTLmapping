@@ -92,7 +92,9 @@ CTLnetwork <- function(CTLobject, mapinfo, significance = 0.05, LODdrop = 2, wha
       for(p in all_p){ cat(p,"\tPHENOTYPE\n", sep="", file=nodefile, append=TRUE); }
     }
   }
-  class(results) <- c(class(results),"CTLnetwork")
+  if(!is.null(results)){
+    class(results) <- c(class(results),"CTLnetwork")
+  }
   invisible(results)
 }
 
