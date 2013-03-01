@@ -46,7 +46,7 @@
     /** Calculate the chi square test statistic based on N seggregating correlations. */
     double  chiSQ(size_t nr, double* r, int* nsamples);
     /** Transforms a chi square critical value (Cv) to a p-value. */
-    double  chiSQtoP(int Dof, double Cv);
+    double  chiSQtoP(double Cv, int Dof);
 
   #endif //__CORRELATION_H__
 #ifdef __cplusplus
