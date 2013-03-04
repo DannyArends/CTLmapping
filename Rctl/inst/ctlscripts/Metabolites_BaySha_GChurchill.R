@@ -22,6 +22,8 @@ ids <- match(rownames(metabolites),rownames(genotypes))
 genotypes <- genotypes[ids,]
 genotypes <- apply(genotypes,2,function(x){as.numeric(as.factor(x))})
 
+genotypes[genotypes > 2] <- NA # Remove the annoying 3s and 4s
+
 #Take only the mean expressions.
 #How can we use the StdDev?
 metab_means <- grep("Mean",colnames(metabolites))
