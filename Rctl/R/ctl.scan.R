@@ -65,10 +65,10 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, n.perms = 100, stra
     res$qtl <- have.qtls[,pheno.col]
   }else{
     res$qtl <- rep(0,ncol(genotypes))
-    #tryCatch( #Maps QTL profile using a 'slow' approach
-    #  res$qtl <- apply(genotypes, 2, function(x){
-    #               -log10(anova(lm(phenotypes[,pheno.col] ~ x))[[5]][1])
-    #             }), error = function(e) e)
+    tryCatch( #Maps QTL profile using a relatively 'slow' approach
+      res$qtl <- apply(genotypes, 2, function(x){
+                   -log10(anova(lm(phenotypes[,pheno.col] ~ x))[[5]][1])
+                 }), error = function(e) e)
   }
 
   #In C we use -999 for missing genotype data

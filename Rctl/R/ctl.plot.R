@@ -108,39 +108,65 @@ plot.CTLscan2 <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance
   invisible(CTLmatrix)
 }
 
-plot.CTLscan <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance = 0.05, do.legend=TRUE, cex.legend=1.0, ...){
+plot.CTLscan <- function(x, mapinfo = NULL, addQTL = TRUE, onlySignificant = TRUE, significance = 0.05, do.legend=TRUE, cex.legend=1.0, ...){
   if(missing(x)) stop("argument 'x' is missing, with no default")
   mysign <- as.numeric(which(apply(abs(x$ctl),2,max) > -log10(significance)))
   if(length(mysign) ==0 || onlySignificant == FALSE){
     mysign <- 1:ncol(x$ctl)
     do.legend=FALSE
   }
+  if(is.null(mapinfo)){
+    maxX <- nrow(x$ctl)
+    pointsx <- 1:nrow(x$ctl)
+  }else{
+    maxX <- chr_total_length(mapinfo)
+    loc <- NULL
+    for(y in 1:nrow(mapinfo)){loc <- c(loc,m_loc(mapinfo,y))}
+    pointsx <- loc
+  }
   CTLmatrix <- matrix(x$ctl[,mysign],nrow(x$ctl),length(mysign))
   summarized <- apply(CTLmatrix,1,sum)
   x$qtl[is.infinite(x$qtl)] <- max(x$qtl[is.finite(x$qtl)])
-  cat("MAX:",max(c(5,summarized)),"\n")
-  plot(c(0,nrow(x$ctl)),c(min(c(summarized,x$qtl)),max(c(5,summarized,x$qtl))), type='n',xlab="Marker", ylab="-log10(P-value)", main=paste("Phenotype contribution to CTL of",ctl.name(x)), ...)
-  p <- rep(0,nrow(x$ctl))
+  maxY <- max(c(5, x$qtl))
+  minY <- max(c(5, summarized))
+  plot(c(0, maxX),c(-minY, maxY), type='n',xlab="Marker", ylab="-log10(P-value)", main=paste("Phenotype contribution to CTL of",ctl.name(x)), ...)
+
   i <- 1;
   mycolors <- topo.colors(ncol(CTLmatrix))
+  p <- rep(0,nrow(x$ctl))
   apply(CTLmatrix,2,
     function(d){
      for(idx in 1:length(d)){
-        rect(idx-0.5,p[idx],idx+0.5,p[idx]+d[idx],col=mycolors[i],lwd=0,lty=0)
+        if(is.null(mapinfo)){
+          mx <- idx
+        }else{
+          mx <- pointsx[idx]
+        }
+        rect(mx-0.5,-p[idx],mx+0.5,-(p[idx]+d[idx]),col=mycolors[i],lwd=0,lty=0)
       }
       p <<- p + d
       i <<- i + 1
-    }
-  )
+    } )
   if(!is.null(x$ctl)){
-    abline(h=-log10(c(0.05,0.01,0.001)),col=c("red","orange","green"),lty=2)
-    legend("topright",as.character(paste("CTL-FDR:",c(0.05,0.01,0.001),"%")),col=c("red","orange","green"),lty=rep(2,3),lwd=1,cex=cex.legend)
+    n <- dim(x$ctl)[2]
+    abline(h=-log10(c(0.05/n, 0.01/n, 0.001/n)),col=c("red","orange","green"),lty=2)
+    abline(h=log10(c(0.05, 0.01, 0.001)),col=c("red","orange","green"),lty=2)
+    legend("topright",as.character(paste("FDR:",c(0.05,0.01,0.001),"%")),col=c("red","orange","green"),lty=rep(2,3),lwd=1,cex=cex.legend)
   }
   if(do.legend){
     legend("topleft",colnames(x$ctl)[mysign],col=mycolors,lwd=1,cex=cex.legend)
   }
-  points(summarized,type='l',lwd=1)
-  points(as.numeric(x$qtl),type='l',lwd=2,col="red")
+  if(is.null(mapinfo)){
+    points(pointsx, -summarized,type='l',lwd=1)
+    points(pointsx, as.numeric(x$qtl),type='l',lwd=2,col="red")
+  }else{
+    for(chr in unique(mapinfo[,"Chr"])){
+      idxes <- which(mapinfo[,"Chr"] == chr)
+      points(pointsx[idxes], -summarized[idxes],type='l',lwd=1)
+      points(pointsx[idxes], as.numeric(x$qtl)[idxes],type='l',lwd=2,col="red")
+    }
+  }
+  
   colnames(CTLmatrix) <- colnames(x$ctl)[mysign]
   invisible(CTLmatrix)
 }
