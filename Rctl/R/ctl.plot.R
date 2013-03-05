@@ -108,7 +108,7 @@ plot.CTLscan2 <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance
   invisible(CTLmatrix)
 }
 
-plot.CTLscan <- function(x, mapinfo = NULL, addQTL = TRUE, onlySignificant = TRUE, significance = 0.05, do.legend=TRUE, cex.legend=1.0, ...){
+plot.CTLscan <- function(x, mapinfo = NULL, addQTL = TRUE, onlySignificant = TRUE, significance = 0.05, barwidth = 0.5, do.legend=TRUE, cex.legend=1.0, ...){
   if(missing(x)) stop("argument 'x' is missing, with no default")
   mysign <- as.numeric(which(apply(abs(x$ctl),2,max) > -log10(significance)))
   if(length(mysign) ==0 || onlySignificant == FALSE){
@@ -142,7 +142,7 @@ plot.CTLscan <- function(x, mapinfo = NULL, addQTL = TRUE, onlySignificant = TRU
         }else{
           mx <- pointsx[idx]
         }
-        rect(mx-0.5,-p[idx],mx+0.5,-(p[idx]+d[idx]),col=mycolors[i],lwd=0,lty=0)
+        rect(mx-barwidth,-p[idx],mx+barwidth,-(p[idx]+d[idx]),col=mycolors[i],lwd=0,lty=0)
       }
       p <<- p + d
       i <<- i + 1
