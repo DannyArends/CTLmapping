@@ -38,7 +38,9 @@ plot.CTLobject <- function(x, pheno.col=1:length(x), ...){
   return(image.CTLobject(x,...))
 }
 
-plotExpression <- function(genotypes, phenotypes, traits=c("X3.Hydroxypropyl", "X3.Methylthiopropyl"), markers=1, method = c("pearson", "kendall", "spearman"), do.plot = TRUE, verbose = FALSE){
+plotExpression <- function(genotypes, phenotypes, traits=c("X3.Hydroxypropyl", "X3.Methylthiopropyl"),
+          markers=1, method = c("pearson", "kendall", "spearman"), do.plot = TRUE, verbose = FALSE){
+
   if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   if(length(traits) != 2) stop("argument 'traits' needs to be of length 2")
@@ -47,7 +49,9 @@ plotExpression <- function(genotypes, phenotypes, traits=c("X3.Hydroxypropyl", "
   result <- NULL
   
   for(m in markers){
-    if(do.plot && length(markers)==1) plot(x=phenotypes[,ids[1]],y=phenotypes[,ids[2]],col=genotypes[,m],pch=20,xlab=traits[1],ylab=traits[2])
+    if(do.plot && length(markers)==1){
+      plot(x=phenotypes[,ids[1]],y=phenotypes[,ids[2]],col=genotypes[,m],pch=20,xlab=traits[1],ylab=traits[2])
+    }
     idx1 <- which(genotypes[,m]==1)
     idx2 <- which(genotypes[,m]==2)
     a   <- cor(phenotypes[idx1,ids[1]],phenotypes[idx1,ids[2]],use="pair",method = method[1])
@@ -66,133 +70,124 @@ plotExpression <- function(genotypes, phenotypes, traits=c("X3.Hydroxypropyl", "
   return(result)
 }
 
-plot.CTLscan2 <- function(x, addQTL = TRUE, onlySignificant = TRUE, significance = 0.05, do.legend=TRUE, ...){
-  if(missing(x)) stop("argument 'x' is missing, with no default")
-  if(!is.null(x$perms) && !is.nan(getPermuteThresholds(x,significance)[1])){
-    mysign <- as.numeric(which(apply(abs(x$ctl),1,max) > getPermuteThresholds(x,significance)[1]))
-  }else{
-    mysign <- as.numeric(which(apply(abs(x$ctl),1,max) > -log10(significance)))
-  }
-  if(length(mysign) ==0 || onlySignificant == FALSE){
-    mysign <- 1:nrow(x$ctl)
-    do.legend=FALSE
-  }
-  if(is.null(x$ctl)){
-    CTLmatrix <- matrix(abs(x$ctl[mysign, ]),length(mysign),ncol(x$ctl))
-  }else{
-    CTLmatrix <- matrix(sign(x$ctl[mysign, ]) * x$ctl[mysign, ],length(mysign),ncol(x$ctl))
-  }
-  summarized <- apply(CTLmatrix,2,sum)
-  plot(c(0,ncol(x$ctl)),c(min(c(summarized,x$qtl)),max(c(summarized,x$qtl))), type='n',xlab="Marker", ylab="-log10(P-value)", main=paste("Phenotype contribution to CTL of",ctl.name(x)),...)
-  p <- rep(0,ncol(x$ctl))
-  i <- 1;
-  mycolors <- rep("black",nrow(CTLmatrix))
-  apply(CTLmatrix,1,
-    function(d){
-      points(d,type='b',col=mycolors[i],pch=i,lwd=2)
-      p <<- p + d
-      i <<- i + 1
-    }
-  )
-  if(do.legend){
-    legend("topleft",c("QTL",paste("CTL",rownames(x$ctl)[mysign])),col=c("red",mycolors),lwd=2,pch=c(NA,1:length(mycolors)),cex=1.2)
-  }
-  if(!is.null(x$ctl)){
-    n <- dim(x$ctl)[2]
-    abline(h=-log10(c(0.05/n,0.01/n,0.001/n)),col=c("red","orange","green"),lty=2)
-    abline(h=log10(c(0.05/n,0.01/n,0.001/n)),col=c("red","orange","green"),lty=2)
-    legend("topright",as.character(paste("CTL-FDR:",c(0.05,0.01,0.001),"%")),col=c("red","orange","green"),lty=rep(2,3),lwd=1,cex=1.2)
-  }
-  points(as.numeric(x$qtl),type='l',lwd=2,col="red")
-  rownames(CTLmatrix) <- rownames(x$ctl)[mysign]
-  invisible(CTLmatrix)
-}
+plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), addQTL = TRUE,
+                onlySignificant = TRUE, significance = 0.05, plot.cutoff = FALSE, do.legend=TRUE,
+                cex.legend=1.0, ...){
 
-plot.CTLscan <- function(x, mapinfo = NULL, addQTL = TRUE, onlySignificant = TRUE, significance = 0.05, barwidth = 0.5, do.legend=TRUE, cex.legend=1.0, ...){
   if(missing(x)) stop("argument 'x' is missing, with no default")
-  mysign <- as.numeric(which(apply(abs(x$ctl),2,max) > -log10(significance)))
-  if(length(mysign) ==0 || onlySignificant == FALSE){
-    mysign <- 1:ncol(x$ctl)
-    do.legend=FALSE
-  }
+
+  significant <- as.numeric(which(apply(abs(x$ctl), 2, max) > -log10(significance)))
+
+  if(length(significant) ==0 || onlySignificant == FALSE){ significant <- 1:ncol(x$ctl) }
+
   if(is.null(mapinfo)){
     maxX <- nrow(x$ctl)
     pointsx <- 1:nrow(x$ctl)
   }else{
     maxX <- chr_total_length(mapinfo)
-    loc <- NULL
-    for(y in 1:nrow(mapinfo)){loc <- c(loc,m_loc(mapinfo,y))}
-    pointsx <- loc
+    pointsx <- a_loc(mapinfo)
+    pointsx <- c(pointsx, max(pointsx))
   }
-  CTLmatrix <- matrix(x$ctl[,mysign],nrow(x$ctl),length(mysign))
-  summarized <- apply(CTLmatrix,1,sum)
+  
+  ctlsubset <- matrix(x$ctl[, significant], nrow(x$ctl), length(significant))
+  colnames(ctlsubset) <- colnames(x$ctl)[significant]
+
+  summarized <- apply(ctlsubset, 1, sum)
   x$qtl[is.infinite(x$qtl)] <- max(x$qtl[is.finite(x$qtl)])
-  maxY <- max(c(5, x$qtl))
-  minY <- max(c(5, summarized))
-  plot(c(0, maxX),c(-minY, maxY), type='n',xlab="Marker", ylab="-log10(P-value)", main=paste("Phenotype contribution to CTL of",ctl.name(x)), ...)
+  maxY <- max(c(7.5, x$qtl))
+  if(type=="boxplot"){
+    minY <- max(c(7.5, summarized))
+  }else{
+    minY <- max(c(7.5, ctlsubset))
+  }
+  main <- paste("Phenotype contribution to CTL of",ctl.name(x))
+  plot(c(0, maxX),c(-minY, maxY), type='n',xlab="Marker", ylab="-log10(P-value)", main=main, ...)
+  points(pointsx, rep(0, length(pointsx)), lwd = 1, pch="|",cex = 0.2)
 
   i <- 1;
-  mycolors <- topo.colors(ncol(CTLmatrix))
-  p <- rep(0,nrow(x$ctl))
-  apply(CTLmatrix,2,
-    function(d){
-     for(idx in 1:length(d)){
-        if(is.null(mapinfo)){
-          mx <- idx
-        }else{
-          mx <- pointsx[idx]
+  ntraits  <- ncol(ctlsubset)
+  nmarkers <- nrow(ctlsubset)
+  ltype = 'l'
+  if(type[1]=="gwas") ltype = 'h'
+  mycolors <- topo.colors(ncol(ctlsubset))
+
+  p  <- rep(0,nrow(ctlsubset))
+  mx <- 0 
+  apply(ctlsubset, 2, function(d){
+     if(type[1]=="barplot"){        # Summarized bar plot
+       for(idx in 1:length(d)){
+          if(is.null(mapinfo)){
+            mx   <- idx; lbar <- 0.5; rbar <- 0.5;
+          }else{
+            mp <- mx; mx <- pointsx[idx]
+            lbar <- abs(mp - mx)/2; rbar <- abs(pointsx[idx+1] - mx)/2;
+          }
+          rect(mx-lbar, -p[idx],mx+rbar, -(p[idx]+d[idx]), col=mycolors[i], lwd = 0, lty = 0)
         }
-        rect(mx-barwidth,-p[idx],mx+barwidth,-(p[idx]+d[idx]),col=mycolors[i],lwd=0,lty=0)
+      }else{
+        # Line or GWAS plot
+        if(is.null(mapinfo)){
+          points(pointsx, -p, type = ltype, lwd = 1, col = mycolors[i])
+        }else{
+          for(chr in unique(mapinfo[,"Chr"])){
+            idxes <- which(mapinfo[,"Chr"] == chr)
+            points(pointsx[idxes], -d[idxes], type = ltype, lwd = 2, col = mycolors[i])
+          }
+        }
       }
       p <<- p + d
       i <<- i + 1
     } )
-  if(!is.null(x$ctl)){
-    n <- dim(x$ctl)[2]
-    abline(h=-log10(c(0.05/n, 0.01/n, 0.001/n)),col=c("red","orange","green"),lty=2)
-    abline(h=log10(c(0.05, 0.01, 0.001)),col=c("red","orange","green"),lty=2)
-    legend("topright",as.character(paste("FDR:",c(0.05,0.01,0.001),"%")),col=c("red","orange","green"),lty=rep(2,3),lwd=1,cex=cex.legend)
+
+  # Plot the cut-off line at -log10(significance)
+  if(plot.cutoff){
+    abline(h=-log10(c(significance / nmarkers)), col=c("green"), lty=2)
+    abline(h= log10(c(significance)), col=c("green"), lty=2)
+    mleg <- as.character(paste("FDR:",c(significance),"%"))
   }
+  # Plot the legend(s)
   if(do.legend){
-    legend("topleft",colnames(x$ctl)[mysign],col=mycolors,lwd=1,cex=cex.legend)
+    if(plot.cutoff) legend("topright", mleg, col=c("green"), lty=rep(2), lwd=1, cex=cex.legend)
+    legend("topleft", colnames(ctlsubset), col=mycolors, lwd=1, cex=cex.legend)
   }
+  # Plot the summarized lines and QTLs
   if(is.null(mapinfo)){
-    points(pointsx, -summarized,type='l',lwd=1)
-    points(pointsx, as.numeric(x$qtl),type='l',lwd=2,col="red")
+    if(type[1] == "barplot") points(pointsx, -summarized,type='l',lwd=1)
+    points(pointsx, as.numeric(x$qtl),type=ltype,lwd=2,col="red")
   }else{
     for(chr in unique(mapinfo[,"Chr"])){
       idxes <- which(mapinfo[,"Chr"] == chr)
-      points(pointsx[idxes], -summarized[idxes],type='l',lwd=1)
-      points(pointsx[idxes], as.numeric(x$qtl)[idxes],type='l',lwd=2,col="red")
+      if(type[1] == "barplot") points(pointsx[idxes], -summarized[idxes],type = ltype,lwd=1)
+      points(pointsx[idxes], as.numeric(x$qtl)[idxes],type = ltype,lwd=2,col="red")
     }
   }
-  
-  colnames(CTLmatrix) <- colnames(x$ctl)[mysign]
-  invisible(CTLmatrix)
+  invisible(ctlsubset)
 }
 
-chr_length <- function(map_info, chr = 1){ max(map_info[which(map_info[,1]==chr),2]) }
+chr_length <- function(mapinfo, chr = 1){ 
+  max(mapinfo[which(mapinfo[, "Chr"]==chr), 2]) 
+}
 
-chr_total_length <- function(map_info, gap = 25){
+chr_total_length <- function(mapinfo, gap = 25){
   l <- 0
-  for(x in unique(map_info[,1])){ l <- l + chr_length(map_info,x) + gap }
+  for(x in unique(mapinfo[, "Chr"])){ l <- l + chr_length(mapinfo,x) + gap }
   (l-gap) #Gaps are between, so we don't need the last gap
 }
 
-a_loc <- function(map_info, id=1, gap = 25){
+a_loc <- function(mapinfo, gap = 25){
   res <- NULL
-  for(x in 1:nrow(map_info)){ res <- c(res, m_loc(map_info,x)) }
+  for(x in 1:nrow(mapinfo)){ res <- c(res, m_loc(mapinfo,x)) }
   res
 }
 
-m_loc <- function(map_info, id=1, gap = 25){
-  chr <- map_info[id,1]
+m_loc <- function(mapinfo, id = 1, gap = 25){
+  chr <- mapinfo[id, "Chr"]
   l <- 0
   while((chr-1) > 0){
-   l <- l + chr_length(map_info, (chr-1))+gap
+   l <- l + chr_length(mapinfo, (chr-1)) + gap
    chr <- chr - 1
   }
-  l + map_info[id,2]
+  l + mapinfo[id, 2]
 }
 
 plot.CTLscan3 <- function(x, map_info, ...){
@@ -209,7 +204,7 @@ plot.CTLscan3 <- function(x, map_info, ...){
     }
   }
   traitnamez <- gsub(".Mean","", colnames(x$ctl))
-  legend("topleft",c(paste("QTL",gsub(".Mean","",ctl.name(x))),paste("CTL",traitnamez[1]),paste("CTL",traitnamez[2]),paste("CTL",traitnamez[3])),lwd=c(2, 2, 2, 2), lty=c(1,4,4,4),col=c("black",2,3,4))
+  legend("topleft", c(paste("QTL", gsub(".Mean","",ctl.name(x))),paste("CTL",traitnamez[1]),paste("CTL",traitnamez[2]),paste("CTL",traitnamez[3])),lwd=c(2, 2, 2, 2), lty=c(1,4,4,4),col=c("black",2,3,4))
 }
 
 plot.CTLpermute <- function(x, type="s", ...){
