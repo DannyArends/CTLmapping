@@ -70,15 +70,13 @@ plotExpression <- function(genotypes, phenotypes, traits=c("X3.Hydroxypropyl", "
   return(result)
 }
 
-plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), addQTL = TRUE,
-                onlySignificant = TRUE, significance = 0.05, plot.cutoff = FALSE, do.legend=TRUE,
-                cex.legend=1.0, ...){
+plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), onlySignificant = TRUE, significance = 0.05, plot.cutoff = FALSE, do.legend=TRUE, cex.legend=1.0, ...){
 
   if(missing(x)) stop("argument 'x' is missing, with no default")
 
   significant <- as.numeric(which(apply(abs(x$ctl), 2, max) > -log10(significance)))
 
-  if(length(significant) ==0 || onlySignificant == FALSE){ significant <- 1:ncol(x$ctl) }
+  if(length(significant) ==0 || onlySignificant == FALSE){ significant <- 1:ncol(x$ctl); do.legend = FALSE }
 
   if(is.null(mapinfo)){
     maxX <- nrow(x$ctl)
@@ -131,11 +129,11 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), a
         if(is.null(mapinfo)){
           points(pointsx, -p, type = ltype, lwd = 1, col = mycolors[i])
         }else{
-          for(chr in unique(mapinfo[,"Chr"])){
-            idxes <- which(mapinfo[,"Chr"] == chr)
+          for(chr in unique(mapinfo[, 1])){
+            idxes <- which(mapinfo[, 1] == chr)
             if(type[1]=="gwas"){
               lty   <- 1
-              col <- c("black","orange")[(chr %% 2)+1]
+              col <- c("black","orange")[(as.numeric(chr) %% 2)+1]
             }else{
               lty <- i
               col <- mycolors[i]
@@ -167,8 +165,8 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), a
     if(type[1] == "barplot") points(pointsx, -summarized,type='l',lwd=1)
     points(pointsx, as.numeric(x$qtl), type=ltype,lwd=2, col="black")
   }else{
-    for(chr in unique(mapinfo[,"Chr"])){
-      idxes <- which(mapinfo[,"Chr"] == chr)
+    for(chr in unique(mapinfo[, 1])){
+      idxes <- which(mapinfo[, 1] == chr)
       if(type[1] == "barplot") points(pointsx[idxes], -summarized[idxes],type = ltype,lwd=1)
       points(pointsx[idxes], as.numeric(x$qtl)[idxes], type = ltype, lwd=2, col="black")
     }
@@ -177,12 +175,12 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), a
 }
 
 chr_length <- function(mapinfo, chr = 1){ 
-  max(mapinfo[which(mapinfo[, "Chr"]==chr), 2]) 
+  max(mapinfo[which(mapinfo[, 1]==chr), 2]) 
 }
 
 chr_total_length <- function(mapinfo, gap = 25){
   l <- 0
-  for(x in unique(mapinfo[, "Chr"])){ l <- l + chr_length(mapinfo,x) + gap }
+  for(x in unique(mapinfo[, 1])){ l <- l + chr_length(mapinfo,x) + gap }
   (l-gap) #Gaps are between, so we don't need the last gap
 }
 
@@ -193,7 +191,7 @@ a_loc <- function(mapinfo, gap = 25){
 }
 
 m_loc <- function(mapinfo, id = 1, gap = 25){
-  chr <- mapinfo[id, "Chr"]
+  chr <- as.numeric(mapinfo[id, 1])
   l <- 0
   while((chr-1) > 0){
    l <- l + chr_length(mapinfo, (chr-1)) + gap
