@@ -95,7 +95,7 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), a
   summarized <- apply(ctlsubset, 1, sum)
   x$qtl[is.infinite(x$qtl)] <- max(x$qtl[is.finite(x$qtl)])
   maxY <- max(c(7.5, x$qtl))
-  if(type=="boxplot"){
+  if(type[1] == "barplot"){
     minY <- max(c(7.5, summarized))
   }else{
     minY <- max(c(7.5, ctlsubset))
@@ -107,9 +107,11 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), a
   i <- 1;
   ntraits  <- ncol(ctlsubset)
   nmarkers <- nrow(ctlsubset)
-  ltype = 'l'
-  if(type[1]=="gwas") ltype = 'h'
-  mycolors <- topo.colors(ncol(ctlsubset))
+  ltype    <- 'l'
+  if(type[1]=="gwas") ltype <- 'h'
+
+  colfunc  <- colorRampPalette(c("red", "darkgreen", "orange", "blue"))
+  mycolors <- colfunc(ncol(ctlsubset))
 
   p  <- rep(0,nrow(ctlsubset))
   mx <- 0 
@@ -131,7 +133,15 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), a
         }else{
           for(chr in unique(mapinfo[,"Chr"])){
             idxes <- which(mapinfo[,"Chr"] == chr)
-            points(pointsx[idxes], -d[idxes], type = ltype, lwd = 2, col = mycolors[i])
+            if(type[1]=="gwas"){
+              lty   <- 1
+              col <- c("black","orange")[(chr %% 2)+1]
+            }else{
+              lty <- i
+              col <- mycolors[i]
+            }
+
+            points(pointsx[idxes], -d[idxes], type = ltype, lwd = 2, lty = lty, col = col)
           }
         }
       }
@@ -148,17 +158,19 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), a
   # Plot the legend(s)
   if(do.legend){
     if(plot.cutoff) legend("topright", mleg, col=c("green"), lty=rep(2), lwd=1, cex=cex.legend)
-    legend("topleft", colnames(ctlsubset), col=mycolors, lwd=1, cex=cex.legend)
+    lty <- 1:ntraits
+    if(type[1] == "barplot") lty <- 1
+    legend("topleft", colnames(ctlsubset), col=mycolors, lwd=1, lty=lty, cex=cex.legend)
   }
   # Plot the summarized lines and QTLs
   if(is.null(mapinfo)){
     if(type[1] == "barplot") points(pointsx, -summarized,type='l',lwd=1)
-    points(pointsx, as.numeric(x$qtl),type=ltype,lwd=2,col="red")
+    points(pointsx, as.numeric(x$qtl), type=ltype,lwd=2, col="black")
   }else{
     for(chr in unique(mapinfo[,"Chr"])){
       idxes <- which(mapinfo[,"Chr"] == chr)
       if(type[1] == "barplot") points(pointsx[idxes], -summarized[idxes],type = ltype,lwd=1)
-      points(pointsx[idxes], as.numeric(x$qtl)[idxes],type = ltype,lwd=2,col="red")
+      points(pointsx[idxes], as.numeric(x$qtl)[idxes], type = ltype, lwd=2, col="black")
     }
   }
   invisible(ctlsubset)
