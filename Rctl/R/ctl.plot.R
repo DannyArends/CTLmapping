@@ -70,7 +70,7 @@ plotExpression <- function(genotypes, phenotypes, traits=c("X3.Hydroxypropyl", "
   return(result)
 }
 
-plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), onlySignificant = TRUE, significance = 0.05, plot.cutoff = FALSE, do.legend=TRUE, cex.legend=1.0, ...){
+plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), onlySignificant = TRUE, significance = 0.05, gap = 25, plot.cutoff = FALSE, do.legend=TRUE, cex.legend=1.0, ydim=NULL, ylab="-log10(P-value)", ...){
 
   if(missing(x)) stop("argument 'x' is missing, with no default")
 
@@ -92,14 +92,16 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), o
 
   summarized <- apply(ctlsubset, 1, sum)
   x$qtl[is.infinite(x$qtl)] <- max(x$qtl[is.finite(x$qtl)])
-  maxY <- max(c(7.5, x$qtl))
-  if(type[1] == "barplot"){
-    minY <- max(c(7.5, summarized))
-  }else{
-    minY <- max(c(7.5, ctlsubset))
+  if(is.null(ydim)){
+    ydim = c(0, max(c(7.5, x$qtl)))
+    if(type[1] == "barplot"){
+      ydim[1] <- -max(c(7.5, summarized))
+    }else{
+      ydim[1] <- -max(c(7.5, ctlsubset))
+    }
   }
-  main <- paste("Phenotype contribution to CTL of",ctl.name(x))
-  plot(c(0, maxX),c(-minY, maxY), type='n',xlab="Marker", ylab="-log10(P-value)", main=main, ...)
+  main <- "" #paste("Phenotype contribution to CTL of",ctl.name(x))
+  plot(c(0, maxX), ydim, type='n',xlab="", ylab=ylab, main=main, ...)
   points(pointsx, rep(0, length(pointsx)), lwd = 1, pch="|",cex = 0.2)
 
   i <- 1;
@@ -108,11 +110,11 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), o
   ltype    <- 'l'
   if(type[1]=="gwas") ltype <- 'h'
 
-  colfunc  <- colorRampPalette(c("red", "darkgreen", "orange", "blue"))
-  mycolors <- colfunc(ncol(ctlsubset))
+  colfunc  <- c("red", "blue", "darkgreen", "orange")
+  mycolors <- colfunc[1:ncol(ctlsubset)]
 
   p  <- rep(0,nrow(ctlsubset))
-  mx <- 0 
+  mx <- 0
   apply(ctlsubset, 2, function(d){
      if(type[1]=="barplot"){        # Summarized bar plot
        for(idx in 1:length(d)){
@@ -186,7 +188,7 @@ chr_total_length <- function(mapinfo, gap = 25){
 
 a_loc <- function(mapinfo, gap = 25){
   res <- NULL
-  for(x in 1:nrow(mapinfo)){ res <- c(res, m_loc(mapinfo,x)) }
+  for(x in 1:nrow(mapinfo)){ res <- c(res, m_loc(mapinfo,x, gap = gap)) }
   res
 }
 
