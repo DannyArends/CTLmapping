@@ -29,13 +29,13 @@ CTLscan.cross(cross, ...)
                          estimating p-values and uses bonferoni correction. It has however the least power 
                          to detect CTLs, the two other methods (Power and Adjacency) perform permutations to
                          assign significance.
-      \item n.perms    - Number of permutations to perform.
+      \item n.perm     - Number of permutations to perform.
       \item strategy   - The permutation strategy to use, either Full (Compensate for marker and trait
                          correlation structure) or Pairwise (Compensate for marker correlation structure). 
                          This parameter is not used when method="Exact".
       \item conditions - A vector of experimental conditions applied during the experiment. These conditions 
                          will be used as covariates in the QTL modeling step.
-      \item have.qtls  - Can be used to provide QTL results, when external QTL results are available.
+      \item qtls       - Can be used to provide QTL results, when external QTL results are available.
       \item n.cores    - Number of CPU cores to use during the analysis.
       \item verbose    - Be verbose.
     }

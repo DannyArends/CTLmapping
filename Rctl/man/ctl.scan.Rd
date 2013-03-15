@@ -5,7 +5,7 @@
   Scan for Correlated Trait Locus (CTL) in populations
 }
 \usage{
-CTLscan(genotypes, phenotypes, pheno.col, n.perms=100, strategy = c("Exact", "Full", "Pairwise"), 
+CTLscan(genotypes, phenotypes, pheno.col, n.perm=100, strategy = c("Exact", "Full", "Pairwise"), 
         conditions = NULL, have.qtls=NULL, n.cores = 1, geno.enc = c(1,2), verbose = FALSE)
 }
 
@@ -13,7 +13,7 @@ CTLscan(genotypes, phenotypes, pheno.col, n.perms=100, strategy = c("Exact", "Fu
   \item{genotypes}{   Matrix of genotypes. (individuals x markers) }
   \item{phenotypes}{  Matrix of phenotypes. (individuals x phenotypes) }
   \item{pheno.col}{   Which phenotype column(s) should we analyse. Default analyse all phenotypes. }
-  \item{n.perms}{     Number of permutations to perform. This parameter is not used when method="Exact". }
+  \item{n.perm}{      Number of permutations to perform. This parameter is not used when method="Exact". }
   \item{strategy}{    The permutation strategy to use, either 
                       \itemize{
                         \item Exact: Uses exact calculations to calculate the likelihood of a difference 
@@ -29,7 +29,7 @@ CTLscan(genotypes, phenotypes, pheno.col, n.perms=100, strategy = c("Exact", "Fu
                       assign significance. }
   \item{conditions}{  A vector of experimental conditions applied during the experiment. These conditions 
                       are used as covariates in the QTL modeling step. }
-  \item{have.qtls}{   Used to provide QTL results, when external QTL results are available. }
+  \item{qtls}{        Used to provide QTL results, when external QTL results are available. }
   \item{n.cores}{     Number of CPU cores to use during the analysis. }
   \item{geno.enc}{    Specifying the encoding of the genotype matrix. }
   \item{verbose}{     Be verbose. }
