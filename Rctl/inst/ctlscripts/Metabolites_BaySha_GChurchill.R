@@ -33,6 +33,8 @@ colnames(metabolites) <- gsub(".Mean", "", colnames(metabolites))
 
 metabo_order <- apply(metabolites,2,rank)
 
+metabolites <- metabolites[,c("MT4","MSO4","But.3.enyl","OHP3","Allyl","MT3","MSO8","MT7","MT8")]
+
 #Print a piece of the data how does it look?
 metabolites[1:5,1:9]
 metabo_order[1:5,1:9]
@@ -44,7 +46,29 @@ library(ctl)
 #source("Helper_Functions.r")
 #source("Basic_QC.R",local=TRUE,echo=TRUE)
 #ctls <- CTLscan(genotypes, metabolites[,c(1,3,5)], geno.enc=c("1","2"), n.perm = 1250)
+ctls <- CTLscan(genotypes, metabolites[,c(1, 2, 3)], geno.enc=c("1","2"),verbose=TRUE)
+
+setwd("~/Desktop")
+png("out1.png", width=1350, height=450) 
+op <- par(mfrow = c(1,3), mar=c(4, 4, 0.5, 0.5))
+op <- par(cex=1.2)
+plot(ctls[[1]], map_info, ydim=c(-60,60))
+op <- par(mar=c(4, 2, 0.5, 0.5))
+plot(ctls[[2]], map_info, ydim=c(-60,60), ylab="", yaxt='n')
+plot(ctls[[3]], map_info, ydim=c(-60,60), ylab="", yaxt='n')
+dev.off()
+
 ctls <- CTLscan(genotypes, metabolites, geno.enc=c("1","2"),verbose=TRUE)
+
+setwd("~/Desktop")
+png("out2.png", width=1350, height=450) 
+op <- par(mfrow = c(1,3), mar=c(4, 4, 0.5, 0.5))
+op <- par(cex=1.2)
+plot(ctls[[1]], map_info, sign=1e-10, ydim=c(-60,60))
+op <- par(mar=c(4, 2, 0.5, 0.5))
+plot(ctls[[2]], map_info, sign=1e-10, ydim=c(-60,60), ylab="", yaxt='n')
+plot(ctls[[3]], map_info, sign=1e-10, ydim=c(-60,60), ylab="", yaxt='n')
+dev.off()
 
 png("3.png", width=900, height=900, bg=rgb(0,0,0,0))
 op <- par(cex=2)
