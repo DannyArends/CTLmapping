@@ -1,17 +1,15 @@
 \name{plot.CTLscan}
 \alias{plot.CTLscan}
-
 \title{Plot CTL results as bar, line or GWAS plot. }
-
 \description{
   Plot the CTL results for a genome scan (the output of \code{\link{CTLscan}}) as a barplot, curved line 
   or GWAS plot.
 }
-
 \usage{
-\method{plot}{CTLscan}(x, mapinfo, type = c("barplot","gwas","line"), onlySignificant = TRUE, significance = 0.05, gap = 25, plot.cutoff = FALSE, do.legend=TRUE, cex.legend=1.0, ydim=NULL, ylab="-log10(P-value)", \dots)
+\method{plot}{CTLscan}(x, mapinfo, type = c("barplot","gwas","line"), onlySignificant = TRUE, 
+                       significance = 0.05, gap = 25, plot.cutoff = FALSE, do.legend=TRUE, 
+                       cex.legend=1.0, ydim=NULL, ylab="-log10(P-value)", \dots)
 }
-
 \arguments{
   \item{x}{                 An object of class \code{"CTLscan"}, as output by \code{\link{CTLscan}}. }
   \item{mapinfo}{           The mapinfo matrix with 3 columns: "Chr" - the chromosome number, "cM" - the 
@@ -33,11 +31,9 @@
 \value{
   None.
 }
-
 \details{
   None.
 }
-
 \examples{
   library(ctl)
   data(ath.result)       # Arabidopsis thaliana results
@@ -50,7 +46,6 @@
   plot(ath.result[[3]], mapinfo = ath.metab[[3]], type="gwas")
   plot(ath.result[[3]], mapinfo = ath.metab[[3]], type="line")
 }
-
 \seealso{
   \itemize{
     \item \code{\link{CTLscan}} - Scan for CTL
@@ -59,10 +54,8 @@
     \item \code{\link[grDevices]{colors}} - Colors used in plotting
   }
 }
-
 \author{ 
   Danny Arends \email{Danny.Arends@gmail.com}\cr
   Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
 }
-
 \keyword{hplot}

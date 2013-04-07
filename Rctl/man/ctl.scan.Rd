@@ -8,7 +8,6 @@
 CTLscan(genotypes, phenotypes, pheno.col, n.perm=100, strategy = c("Exact", "Full", "Pairwise"), 
         conditions = NULL, qtls = NULL, n.cores = 1, geno.enc = c(1,2), verbose = FALSE)
 }
-
 \arguments{
   \item{genotypes}{   Matrix of genotypes. (individuals x markers) }
   \item{phenotypes}{  Matrix of phenotypes. (individuals x phenotypes) }
@@ -34,47 +33,27 @@ CTLscan(genotypes, phenotypes, pheno.col, n.perm=100, strategy = c("Exact", "Ful
   \item{geno.enc}{    Specifying the encoding of the genotype matrix. }
   \item{verbose}{     Be verbose. }
 }
-
-\details{
-By default the algorithm will not do QTL mapping, the qtl component of the output is an vector of 0 scores 
-for LOD. This is to remove some computational burden, please use the have.qtls parameter to provide QTL data. 
-Some computational bottleneck of the algorithm are:
-\itemize{
-  \item RAM available to the system with large number of markers (100K+) and/or  phenotypes (100K+).
-  \item Computational time with large sample sizes (5000+) and/or huge amount of phenotype data (100K+).
-  \item Very very huge amounts of genotype markers (1M+)
-}
-Some way of avoiding these problems are: CTL mapping using only a single chromosome at a time and/or selecting a smaller subsets of phenotype data for analysis.
-}
-
 \value{
-CTLobject, a list with at each index (i) an CTLscan object:
-\itemize{
-  \item $dcor  - Matrix of Z scores (method=Exact), or Power/Adjacency Z scores or for each trait at each
-                 marker (n.markers x n.phenotypes)
-  \item $perms - Vector of maximum scores obtained during permutations  (n.perms)
-  \item $ctl   - Matrix of LOD scores for CTL likelihood of phenotype i (n.markers x n.phenotypes)
-  \item $qtl   - Vector of LOD scores for QTL likelihood of phenotype i (n.markers)
-}
-}
-\references{ 
-  TODO
-}
-\author{ 
-  Danny Arends \email{Danny.Arends@gmail.com}\cr
-  Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
-}
-\note{
-  TODO
-}
-\seealso{
+  CTLobject, a list with at each index (i) an CTLscan object:
   \itemize{
-    \item \code{\link{CTLscan.cross}} - Use an R/qtl cross object with \code{\link{CTLscan}}
-    \item \code{\link{CTLsignificant}} - Significant interactions from a \code{\link{CTLscan}}
-    \item \code{\link{CTLnetwork}} - Create a CTL network from a \code{\link{CTLscan}}
-    \item \code{\link{image.CTLobject}} - Heatmap overview of a \code{\link{CTLscan}}
-    \item \code{\link{plot.CTLscan}} - Plot the CTL curve for a single trait
+    \item $dcor  - Matrix of Z scores (method=Exact), or Power/Adjacency Z scores or for each trait at each
+                   marker (n.markers x n.phenotypes)
+    \item $perms - Vector of maximum scores obtained during permutations  (n.perms)
+    \item $ctl   - Matrix of LOD scores for CTL likelihood of phenotype i (n.markers x n.phenotypes)
+    \item $qtl   - Vector of LOD scores for QTL likelihood of phenotype i (n.markers)
   }
+}
+\details{
+  By default the algorithm will not do QTL mapping, the qtl component of the output is an vector of 0 scores 
+  for LOD. This is to remove some computational burden, please use the have.qtls parameter to provide QTL data. 
+  Some computational bottleneck of the algorithm are:
+  \itemize{
+    \item RAM available to the system with large number of markers (100K+) and/or  phenotypes (100K+).
+    \item Computational time with large sample sizes (5000+) and/or huge amount of phenotype data (100K+).
+    \item Very very huge amounts of genotype markers (1M+)
+  }
+  Some way of avoiding these problems are: CTL mapping using only a single chromosome at a time and / or
+  selecting a smaller subsets of phenotype data for analysis.
 }
 \examples{
   library(ctl)
@@ -89,5 +68,20 @@ CTLobject, a list with at each index (i) an CTLscan object:
   nodes <- ctl.lineplot(ctlscan, ath.metab$map)  # Line plot the phenotypes
   nodes
 }
-
+\seealso{
+  \itemize{
+    \item \code{\link{CTLscan.cross}} - Use an R/qtl cross object with \code{\link{CTLscan}}
+    \item \code{\link{CTLsignificant}} - Significant interactions from a \code{\link{CTLscan}}
+    \item \code{\link{CTLnetwork}} - Create a CTL network from a \code{\link{CTLscan}}
+    \item \code{\link{image.CTLobject}} - Heatmap overview of a \code{\link{CTLscan}}
+    \item \code{\link{plot.CTLscan}} - Plot the CTL curve for a single trait
+  }
+}
+\references{
+  TODO
+}
+\author{ 
+  Danny Arends \email{Danny.Arends@gmail.com}\cr
+  Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
+}
 \keyword{methods}

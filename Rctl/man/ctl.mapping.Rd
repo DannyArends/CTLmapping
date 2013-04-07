@@ -73,5 +73,4 @@ CTLscan, a list of:
   summary <- CTLsignificant(singlescan)
   summary               # Get a list of significant CTLs
 }
-
 \keyword{methods}

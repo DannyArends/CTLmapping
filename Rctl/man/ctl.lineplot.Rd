@@ -1,16 +1,13 @@
 \name{ctl.lineplot}
 \alias{ctl.lineplot}
-
 \title{Lineplot CTL on multiple traits}
-
 \description{
   Plot the CTL for genome-wide CTL on multiple traits (the output of \code{\link{CTLscan}}).
 }
-
 \usage{
-ctl.lineplot(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, col = "orange", bg.col = "lightgray", cex = 1, verbose = FALSE)
+ctl.lineplot(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, col = "orange", 
+             bg.col = "lightgray", cex = 1, verbose = FALSE)
 }
-
 \arguments{
   \item{CTLobject}{     An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
   \item{mapinfo}{       The mapinfo matrix with 3 columns: "Chr" - the chromosome number, "cM" - the 
@@ -25,15 +22,12 @@ ctl.lineplot(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, col =
   \item{cex}{           Global magnificantion factor for the image elements. }
   \item{verbose}{       Be verbose. }
 }
-
 \details{
   None.
 }
-
 \value{
   None.
 }
-
 \examples{
   require(ctl)
   data(ath.result)       # Arabidopsis Thaliana results
@@ -47,7 +41,6 @@ ctl.lineplot(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, col =
     ctl.lineplot(ath.result, ath.metab$map, x, sign=0.1)
   }
 }
-
 \seealso{
   \itemize{
     \item \code{\link{CTLscan}} - Scan for CTL
@@ -57,10 +50,8 @@ ctl.lineplot(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, col =
     \item \code{\link[grDevices]{colors}} - Colors used in plotting
   }
 }
-
 \author{ 
   Danny Arends \email{Danny.Arends@gmail.com}\cr
   Maintainer: Danny Arends \email{Danny.Arends@gmail.com} 
 }
-
 \keyword{hplot}
