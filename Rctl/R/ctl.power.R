@@ -10,7 +10,7 @@
 
 correlated.phenotype <- function(r = 0.5, nind = 5000, means = c(2,6), sds = c(0.3, 0.2)){
   sigma <- matrix(c(sds[1]^2, r*(sds[1]*sds[2]), r*(sds[1]*sds[2]), sds[2]^2), 2, 2)  
-  invisible(rmvnorm(n=(nind*2), mean = means, sigma = sigma))
+  invisible(mvrnorm(n=(nind*2), mu = means, Sigma = sigma))
 }
 
 check.marker <- function(marker, ratio = 50){
