@@ -80,7 +80,7 @@ Columns: Genetic markers) for the phenotype.
   map    <- qtls[,1:2]                         # Get the genetic map
   qtls   <- qtls[,-(1:2)]                      # Get the LOD scores
 
-  ctls   <- CTLscan.cross(mtrait, pheno.col = 1:4, have.qtls = qtls)
+  ctls   <- CTLscan.cross(mtrait, pheno.col = 1:4, qtls = qtls)
   
   ctl.lineplot(ctls, map, significance = 0.05) # Line plot all the phenotypes
 

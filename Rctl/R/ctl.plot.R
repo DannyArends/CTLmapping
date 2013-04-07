@@ -70,35 +70,30 @@ plotExpression <- function(genotypes, phenotypes, traits=c("X3.Hydroxypropyl", "
   return(result)
 }
 
-plot.CTLscan <- function(x, mapinfo, type = c("barplot","gwas","line"), onlySignificant = TRUE, significance = 0.05, gap = 25, plot.cutoff = FALSE, do.legend=TRUE, cex.legend=1.0, ydim=NULL, ylab="-log10(P-value)", ...){
+plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), onlySignificant = TRUE, significance = 0.05, gap = 25, plot.cutoff = FALSE, do.legend=TRUE, cex.legend=1.0, ydim=NULL, ylab="-log10(P-value)", ...){
 
-  if(missing(x)) stop("argument 'x' is missing, with no default")
+  if(missing(x) || is.null(x)) stop("argument 'x' is missing, with no default")
 
   significant <- as.numeric(which(apply(abs(x$ctl), 2, max) > -log10(significance)))
 
   if(length(significant) ==0 || onlySignificant == FALSE){ significant <- 1:ncol(x$ctl); do.legend = FALSE }
 
   if(is.null(mapinfo)){
-    maxX <- nrow(x$ctl)
-    pointsx <- 1:nrow(x$ctl)
-  }else{
-    maxX <- chr_total_length(mapinfo)
-    pointsx <- a_loc(mapinfo)
-    pointsx <- c(pointsx, max(pointsx))
+    maxX <- nrow(x$ctl) ; pointsx <- 1:nrow(x$ctl)
+  }else{ # We have a mapinfo
+    maxX <- chr_total_length(mapinfo) ; pointsx <- a_loc(mapinfo) ;
+    pointsx <- c(pointsx, max(pointsx)) # Note: Add the max to pointsx
   }
   
   ctlsubset <- matrix(x$ctl[, significant], nrow(x$ctl), length(significant))
   colnames(ctlsubset) <- colnames(x$ctl)[significant]
 
-  summarized <- apply(ctlsubset, 1, sum)
+  summarized <- apply(ctlsubset, 1, sum) # Summarized scores for all significant
   x$qtl[is.infinite(x$qtl)] <- max(x$qtl[is.finite(x$qtl)])
-  if(is.null(ydim)){
-    ydim = c(0, max(c(7.5, x$qtl)))
-    if(type[1] == "barplot"){
-      ydim[1] <- -max(c(7.5, summarized))
-    }else{
-      ydim[1] <- -max(c(7.5, ctlsubset))
-    }
+  if(is.null(ydim)){ 
+    maxy <- max(c(7.5, ctlsubset))
+    ydim <- c(-maxy, maxy)
+    if(type[1] == "barplot") ydim <- c(0, max(c(7.5, summarized))) # Maximum of barplot is summarized
   }
   main <- "" #paste("Phenotype contribution to CTL of",ctl.name(x))
   plot(c(0, maxX), ydim, type='n',xlab="", ylab=ylab, main=main, ...)
@@ -108,7 +103,7 @@ plot.CTLscan <- function(x, mapinfo, type = c("barplot","gwas","line"), onlySign
   ntraits  <- ncol(ctlsubset)
   nmarkers <- nrow(ctlsubset)
   ltype    <- 'l'
-  if(type[1]=="gwas") ltype <- 'h'
+  if(type[1]=="gwas") ltype <- 'h' # GWAS plot uses bars
 
   colfunc  <- c("red", "blue", "darkgreen", "orange")
   mycolors <- colfunc[1:ncol(ctlsubset)]
@@ -126,21 +121,18 @@ plot.CTLscan <- function(x, mapinfo, type = c("barplot","gwas","line"), onlySign
           }
           rect(mx-lbar, -p[idx],mx+rbar, -(p[idx]+d[idx]), col=mycolors[i], lwd = 0, lty = 0)
         }
-      }else{
-        # Line or GWAS plot
-        if(is.null(mapinfo)){
+      }else{ # Line or GWAS plot
+        if(is.null(mapinfo)){ # Without mapinfo coordinated match
           points(pointsx, -p, type = ltype, lwd = 1, col = mycolors[i])
-        }else{
+        }else{ # Go through the chromosomes
           for(chr in unique(mapinfo[, 1])){
             idxes <- which(mapinfo[, 1] == chr)
-            if(type[1]=="gwas"){
+            if(type[1]=="gwas"){  # Plot Gwas, chromosome colors alternate
               lty   <- 1
               col <- c("black","orange")[(as.numeric(chr) %% 2)+1]
             }else{
-              lty <- i
-              col <- mycolors[i]
+              lty <- i ; col <- mycolors[i]
             }
-
             points(pointsx[idxes], -d[idxes], type = ltype, lwd = 2, lty = lty, col = col)
           }
         }
@@ -166,7 +158,7 @@ plot.CTLscan <- function(x, mapinfo, type = c("barplot","gwas","line"), onlySign
   if(is.null(mapinfo)){
     if(type[1] == "barplot") points(pointsx, -summarized,type='l',lwd=1)
     points(pointsx, as.numeric(x$qtl), type=ltype,lwd=2, col="black")
-  }else{
+  }else{ # With mapinfo, plot chromosomes and markers
     for(chr in unique(mapinfo[, 1])){
       idxes <- which(mapinfo[, 1] == chr)
       if(type[1] == "barplot") points(pointsx[idxes], -summarized[idxes],type = ltype,lwd=1)

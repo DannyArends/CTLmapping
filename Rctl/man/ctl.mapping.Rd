@@ -5,15 +5,15 @@
   Scan for correlated trait loci (CTL)
 }
 \usage{
-CTLmapping(genotypes, phenotypes, pheno.col=1, n.perms=100, strategy = c("Exact", "Full", "Pairwise"),
-           have.qtls=NULL, geno.enc=c(1,2), verbose = FALSE)
+CTLmapping(genotypes, phenotypes, pheno.col = 1, n.perm = 100, strategy = c("Exact", "Full", "Pairwise"),
+           qtls=NULL, geno.enc=c(1,2), verbose = FALSE)
 }
 
 \arguments{
   \item{genotypes}{   Matrix of genotypes. (individuals x markers) }
   \item{phenotypes}{  Matrix of phenotypes. (individuals x phenotypes) }
   \item{pheno.col}{   Which phenotype column(s) should we analyse. Default analyse all phenotypes. }
-  \item{n.perms}{     Number of permutations to perform. This parameter is not used when method="Exact". }
+  \item{n.perm}{      Number of permutations to perform. This parameter is not used when method="Exact". }
   \item{strategy}{    The permutation strategy to use, either 
                       \itemize{
                         \item Exact: Uses exact calculations to calculate the likelihood of a difference 
@@ -27,7 +27,7 @@ CTLmapping(genotypes, phenotypes, pheno.col=1, n.perms=100, strategy = c("Exact"
                       estimating p-values and uses bonferoni correction. It has however the least power to 
                       detect CTLs, the two other methods (Full and Pairwise) perform permutations to
                       assign significance. }
-  \item{have.qtls}{   Can be used to provide QTL results, when external QTL results are available. }
+  \item{qtls}{        Can be used to provide QTL results, when external QTL results are available. }
   \item{geno.enc}{    Specifying the encoding of the genotype matrix. }
   \item{verbose}{     Be verbose. }
 }

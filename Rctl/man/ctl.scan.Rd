@@ -6,7 +6,7 @@
 }
 \usage{
 CTLscan(genotypes, phenotypes, pheno.col, n.perm=100, strategy = c("Exact", "Full", "Pairwise"), 
-        conditions = NULL, have.qtls=NULL, n.cores = 1, geno.enc = c(1,2), verbose = FALSE)
+        conditions = NULL, qtls = NULL, n.cores = 1, geno.enc = c(1,2), verbose = FALSE)
 }
 
 \arguments{

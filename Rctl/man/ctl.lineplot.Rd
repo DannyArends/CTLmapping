@@ -12,18 +12,18 @@ ctl.lineplot(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, col =
 }
 
 \arguments{
-  \item{CTLobject}{ An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
-  \item{mapinfo}{ The mapinfo matrix with 3 columns: "Chr" - the chromosome number, "cM" - the 
-    location of the marker in centiMorgans and the 3rd column "Mbp" - The location of the marker 
-    in Mega basepairs. If supplied the marker names (rownames) should match those in the 
-    CTLobject (only significant markers will be annotated). }
-  \item{pheno.col}{ Which phenotype results to plot. Defaults to plot all phenotypes. } 
-  \item{significance}{ Significance threshold to set a genome wide False Discovery Rate (FDR). }
-  \item{gap}{ Gap between chromosomes in cM. }
-  \item{col}{ Line color. }
-  \item{bg.col}{ Node background color. }
-  \item{cex}{ Global magnificantion factor for the image elements. }
-  \item{verbose}{ Be verbose. }
+  \item{CTLobject}{     An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
+  \item{mapinfo}{       The mapinfo matrix with 3 columns: "Chr" - the chromosome number, "cM" - the 
+                        location of the marker in centiMorgans and the 3rd column "Mbp" - The location 
+                        of the marker in Mega basepairs. If supplied the marker names (rownames) 
+                        should match those in the CTLobject (only significant markers will be annotated). }
+  \item{pheno.col}{     Which phenotype results to plot. Defaults to plot all phenotypes. } 
+  \item{significance}{  Significance threshold to set a genome wide False Discovery Rate (FDR). }
+  \item{gap}{           The gap between chromosomes in cM. }
+  \item{col}{           Line color used. }
+  \item{bg.col}{        Node background color. }
+  \item{cex}{           Global magnificantion factor for the image elements. }
+  \item{verbose}{       Be verbose. }
 }
 
 \details{
