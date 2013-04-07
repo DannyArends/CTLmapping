@@ -16,11 +16,11 @@ CTLscan(genotypes, phenotypes, pheno.col, n.perm=100, strategy = c("Exact", "Ful
   \item{n.perm}{      Number of permutations to perform. This parameter is not used when method="Exact". }
   \item{strategy}{    The permutation strategy to use, either 
                       \itemize{
-                        \item Exact: Uses exact calculations to calculate the likelihood of a difference 
+                        \item Exact - Uses exact calculations to calculate the likelihood of a difference 
                               in correlation: Cor(AA) - Cor(BB). Using a Bonferroni correction.
-                        \item Full: Most powerful analysis method - Compensate for marker and trait 
+                        \item Full - Most powerful analysis method - Compensate for marker and trait 
                               correlation structure (Breitling et al.).
-                        \item Pairwise: Suitable when we have a lot of markers and only a few 
+                        \item Pairwise - Suitable when we have a lot of markers and only a few 
                               traits (< 50) (human GWAS)- Compensates only for marker correlation structure.
                       }
                       Note: Exact is the default and fastest option it uses a normal distribution for 

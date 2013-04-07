@@ -13,18 +13,22 @@
 }
 
 \arguments{
-  \item{x}{ An object of class \code{"CTLscan"}, as output by \code{\link{CTLscan}}. }
-  \item{mapinfo}{ mapinfo object, a matrix with in each row a marker information line with at least: Chromosome information in column 1, and cMorgan locations in column 2. }
-  \item{type}{ Type of plot: Summed barplot, GWAS style plot or a basic line plot. }
-  \item{onlySignificant}{ Plot only the significant contributions to the CTL profile. }
-  \item{significance}{ Significance threshold for setting a genomewide FDR. }
-  \item{gap}{ Gap in Cm between chromosomes. }
-  \item{plot.cutoff}{ Adds a line at -log10(significance) and adds a legend showing the significance level. }
-  \item{do.legend}{ Adds a legend showing which phenotypes contribute to the CTL profile. }
-  \item{cex.legend}{ Maginification of the text in the legend. }
-  \item{ydim}{ Dimension of the y-axis, if NULL then it will be calculated. }
-  \item{ylab}{ Label for the y-axis. }
-  \item{\dots}{ Passed to the function \code{\link[graphics]{plot}} when it is called. }
+  \item{x}{                 An object of class \code{"CTLscan"}, as output by \code{\link{CTLscan}}. }
+  \item{mapinfo}{           The mapinfo matrix with 3 columns: "Chr" - the chromosome number, "cM" - the 
+                            location of the marker in centiMorgans and the 3rd column "Mbp" - The location 
+                            of the marker in Mega basepairs. If supplied the marker names (rownames) 
+                            should match those in the CTLobject. }
+  \item{type}{              Type of plot: Summed barplot, GWAS style plot or a basic line plot. }
+  \item{onlySignificant}{   Plot only the significant contributions to the CTL profile. }
+  \item{significance}{      Significance threshold for setting a genomewide FDR. }
+  \item{gap}{               Gap in Cm between chromosomes. }
+  \item{plot.cutoff}{       Adds a line at -log10(significance) and adds a legend showing the 
+                            significance level. }
+  \item{do.legend}{         Adds a legend showing which phenotypes contribute to the CTL profile. }
+  \item{cex.legend}{        Maginification of the text in the legend. }
+  \item{ydim}{              Dimension of the y-axis, if NULL then it will be calculated. }
+  \item{ylab}{              Label for the y-axis. }
+  \item{\dots}{             Passed to the function \code{\link[graphics]{plot}} when it is called. }
 }
 \value{
   None.

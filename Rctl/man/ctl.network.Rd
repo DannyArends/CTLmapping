@@ -8,21 +8,21 @@
 CTLnetwork(CTLobject, mapinfo, significance = 0.05, LODdrop = 2, what = c("names", "ids"), short = FALSE, add.qtls = FALSE, file = "", verbose = TRUE)
 }
 \arguments{
-  \item{CTLobject}{ An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
-  \item{mapinfo}{ The mapinfo matrix with 3 columns: "Chr" - the chromosome number, "cM" - the 
-    location of the marker in centiMorgans and the 3rd column "Mbp" - The location of the marker 
-    in Mega basepairs. If supplied the marker names (rownames) should match those in the 
-    CTLobject (only significant markers will be annotated). }
-  \item{significance}{ Significance threshold for a genome wide false discovery rate (FDR). }
-  \item{LODdrop}{ Drop in LOD score needed before we assign an edge type. }
-  \item{what}{ Return trait and marker names or column numbers (for indexing). }
-  \item{short}{ Edges are markers when TRUE, otherwise markers are nodes (default). }
-  \item{add.qtls}{ Should marker QTL trait interactions be added to the generated sif network 
-    file, QTLs are included when they are above -log10(significance/n.markers). }
-  \item{file}{ A connection, or a character string naming the file to print to. If "" (the 
-    default), CTLnetwork prints to the standard output connection, the console unless redirected 
-    by sink. }
-  \item{verbose}{ Be verbose. }
+  \item{CTLobject}{     An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
+  \item{mapinfo}{       The mapinfo matrix with 3 columns: "Chr" - the chromosome number, "cM" - the 
+                        location of the marker in centiMorgans and the 3rd column "Mbp" - The location 
+                        of the marker in Mega basepairs. If supplied the marker names (rownames) should 
+                        match those in the CTLobject (only significant markers will be annotated). }
+  \item{significance}{  Significance threshold for a genome wide false discovery rate (FDR). }
+  \item{LODdrop}{       Drop in LOD score needed before we assign an edge type. }
+  \item{what}{          Return trait and marker names or column numbers (for indexing). }
+  \item{short}{         Edges are markers when TRUE, otherwise markers are nodes (default). }
+  \item{add.qtls}{      Should marker QTL trait interactions be added to the generated sif network file, 
+                        QTLs are included when they are above -log10(significance/n.markers). }
+  \item{file}{          A connection, or a character string naming the file to print to. If "" 
+                        (the default), CTLnetwork prints to the standard output connection, the console 
+                        unless redirected by sink. }
+  \item{verbose}{       Be verbose. }
 }
 \details{
 Outputs a sif network file, and a node attribute file:

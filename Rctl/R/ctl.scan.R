@@ -24,7 +24,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col, n.perm = 100, strategy = c
     cat("Data: genotypes:", n.mar ," markers, ", n.ind2, " individuals\n")
   }
   if(!is.null(qtls) && ncol(qtls) != length(pheno.col)) stop("Number of QTLs doesn't match")
-  if(n.ind1 != n.ind2) stop("Number of individuals doesn't match")
+  if(n.ind1 != n.ind2) stop("Number of individuals doesn't match between genotypes & phenotypes")
   if(!is.null(toremove)){
     if(length(toremove) == n.mar) stop("Analysis would remove all markers\n")
     warning(paste("Removing genotype markers (", length(toremove),"/", n.mar, ")")) 
@@ -46,7 +46,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col, n.perm = 100, strategy = c
     results <- parallel::parLapply(cl, pheno.col, function(x, qtls){
       CTLmapping(genotypes, phenotypes, pheno.col=x, n.perm=n.perm, strategy=strategy,
                  qtls = qtls, geno.enc=geno.enc, verbose=verbose)
-    },qtls)
+    }, qtls)
     parallel::stopCluster(cl)
   }
   if(verbose) cat("Done after: ",(proc.time()-st)[3]," seconds\n")
@@ -77,14 +77,11 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, n.perm = 100, strat
   e1 <- proc.time()
 
   #Setup return structures for the permutations
-  perm.type = 0
-  perms = as.double(rep(0, n.perm))
-  if(strategy[1] == "Full"){
-    perm.type = 1
-  }
+  perm.type <- 0
+  perms     <- as.double(rep(0, n.perm))
+  if(strategy[1] == "Full"){ perm.type <- 1; }
   if(strategy[1] == "Pairwise"){
-    perm.type = 2
-    perms = as.double(rep(0,n.perm * n.phe))
+    perm.type = 2; perms = as.double(rep(0,n.perm * n.phe))
   }
 
 	result <- .C("R_mapctl",as.integer(n.ind), as.integer(n.mar), as.integer(n.phe),
@@ -101,9 +98,8 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, n.perm = 100, strat
   #Store the DCOR/Z scores, Permutations, CTLs
   res$dcor  <- matrix(result$dcor, n.mar, n.phe)
   res$perms <- result$perms
-  if(perm.type == 1){
-    res$perms <- matrix(result$perms, n.perm, n.phe)
-  }
+  if(perm.type == 1){ res$perms <- matrix(result$perms, n.perm, n.phe); }
+
   res$ctl   <- matrix(result$ctl, n.mar, n.phe)
   if(any(is.na(res$dcor))) warning("Differential correlation: NaN scores, no variance ?")
   rownames(res$dcor) <- colnames(genotypes); colnames(res$dcor) <- colnames(phenotypes)
@@ -111,9 +107,8 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, n.perm = 100, strat
   attr(res,"name") <- colnames(phenotypes)[pheno.col]
   class(res) <- c(class(res),"CTLscan")
   if(verbose){
-     t1 <- as.numeric(e2[3]-e1[3])
-     t2 <- as.numeric(e1[3]-ss[3])
-     cat("Phenotype ",pheno.col,": Done after ", t1," ", t2," seconds\n", sep="")
+    t1 <- as.numeric(e2[3]-e1[3]) ; t2 <- as.numeric(e1[3]-ss[3])
+    cat("Phenotype ",pheno.col,": Done after ", t1," ", t2," seconds\n", sep="")
   }
   invisible(res)
 }
@@ -124,7 +119,7 @@ CTLscan.cross <- function(cross, ...){
   geno.enc <- NULL
   if(any(class(cross)=="bc") || any(class(cross)=="riself") || any(class(cross)=="risib")){
     geno.enc <- c(1,2)
-  }else{
+  }else{ # TODO: use C to sort out the correct genotypes
     stop("class of cross needs to be either: riself, risib or bc")
   }
   rqtl_pheno <- qtl::pull.pheno(cross)
