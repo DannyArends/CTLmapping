@@ -10,6 +10,9 @@
 
 #-- CTLscan main function --#
 CTLscan <- function(genotypes, phenotypes, pheno.col, n.perm = 100, strategy = c("Exact", "Full", "Pairwise"), conditions = NULL, qtls = NULL, n.cores = 1, geno.enc = c(1,2), verbose = FALSE){
+  if(any(class(genotypes)=="cross")){
+    CTLscan.cross(genotypes, pheno.col=pheno.col, n.perm=n.perm, strategy=strategy, conditions=conditions, qtls=qtls, n.cores=n.cores, verbose=verbose)
+  }
   if(missing(genotypes) || is.null(genotypes))  stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   if(missing(pheno.col)) pheno.col = 1:ncol(phenotypes)
@@ -133,10 +136,14 @@ CTLscan.cross <- function(cross, ...){
   if(length(cond_id) > 0){
     rqtl_c     <- rqtl_pheno[, cond_id]                      # Add them as conditions
     rqtl_pheno <- rqtl_pheno[,-cond_id]                      # Remove them as phenotypes
-  }  
-  phenotypes <- apply(rqtl_pheno, 2, as.numeric)             # R/qtl phenotypes data.frame (need matrix)
-  genotypes  <- pull.geno(cross)
-  CTLscan(genotypes=genotypes, phenotypes=phenotypes, geno.enc = geno.enc, conditions = rqtl_c, ...)
+  }
+  if(ncol(rqtl_pheno) > 1){
+    phenotypes <- apply(rqtl_pheno, 2, as.numeric)             # R/qtl phenotypes data.frame (need matrix)
+    genotypes  <- pull.geno(cross)
+    CTLscan(genotypes=genotypes, phenotypes=phenotypes, geno.enc = geno.enc, conditions = rqtl_c, ...)
+  }else{
+    stop("Not enough phenotypes in cross object (",ncol(rqtl_pheno), "< 2)")
+  }
 }
 
 # end of ctl.scan.R

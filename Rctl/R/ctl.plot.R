@@ -157,10 +157,10 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), o
   }
   # Plot the legend(s)
   if(do.legend){
-    if(plot.cutoff) legend("topright", mleg, col=c("green"), lty=rep(2), lwd=1, cex=cex.legend)
+    if(plot.cutoff) legend("topright", mleg, col=c("green"), lty=rep(2), lwd=1, cex=cex.legend, bty='n')
     lty <- 1:ntraits
     if(type[1] == "barplot") lty <- 1
-    legend("topleft", colnames(ctlsubset), col=mycolors, lwd=1, lty=lty, cex=cex.legend)
+    legend("topleft", colnames(ctlsubset), col=mycolors, lwd=1, lty=lty, cex=cex.legend, bty='n')
   }
   # Plot the summarized lines and QTLs
   if(is.null(mapinfo)){
