@@ -23,7 +23,7 @@ check.genotypes <- function(genotypes, geno.enc=c(1,2), minAmount = 20, verbose=
       }
     }
     if(any((geno %in% geno.encNaN) == FALSE)){
-      if(verbose) cat("Severe: Unknown genotypes, removing marker",idx,"\n")
+      if(verbose) cat("Severe: Unknown genotype, removing marker",idx,"\n")
       toremove <<- c(toremove, idx)
     }
     idx <<- idx+1

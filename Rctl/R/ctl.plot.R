@@ -91,9 +91,9 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), o
   summarized <- apply(ctlsubset, 1, sum) # Summarized scores for all significant
   x$qtl[is.infinite(x$qtl)] <- max(x$qtl[is.finite(x$qtl)])
   if(is.null(ydim)){ 
-    maxy <- max(c(7.5, ctlsubset))
+    maxy <- max(c(7.5, ctlsubset, x$qtl))
+    if(type[1] == "barplot") maxy <- max(c(7.5, summarized, x$qtl)) # Maximum of barplot is summarized
     ydim <- c(-maxy, maxy)
-    if(type[1] == "barplot") ydim <- c(0, max(c(7.5, summarized))) # Maximum of barplot is summarized
   }
   main <- "" #paste("Phenotype contribution to CTL of",ctl.name(x))
   plot(c(0, maxX), ydim, type='n',xlab="", ylab=ylab, main=main, ...)
@@ -104,9 +104,8 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), o
   nmarkers <- nrow(ctlsubset)
   ltype    <- 'l'
   if(type[1]=="gwas") ltype <- 'h' # GWAS plot uses bars
-
-  colfunc  <- c("red", "blue", "darkgreen", "orange")
-  mycolors <- colfunc[1:ncol(ctlsubset)]
+  colfunc <- colorRampPalette(c("red", "blue", "darkgreen", "orange"))
+  mycolors <- colfunc(ncol(ctlsubset))
 
   p  <- rep(0,nrow(ctlsubset))
   mx <- 0
@@ -123,7 +122,7 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), o
         }
       }else{ # Line or GWAS plot
         if(is.null(mapinfo)){ # Without mapinfo coordinated match
-          points(pointsx, -p, type = ltype, lwd = 1, col = mycolors[i])
+          points(pointsx, -d, type = ltype, lwd = 1, col = mycolors[i])
         }else{ # Go through the chromosomes
           for(chr in unique(mapinfo[, 1])){
             idxes <- which(mapinfo[, 1] == chr)
