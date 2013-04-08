@@ -9,9 +9,9 @@ CTLsignificant(CTLobject, significance = 0.05, what = c("names","ids"))
 }
 
 \arguments{
-  \item{CTLobject}{ An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
+  \item{CTLobject}{    An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
   \item{significance}{ Significance threshold to set a genome wide False Discovery Rate (FDR). }
-  \item{what}{ Return trait and marker names or column numbers (for indexing). }
+  \item{what}{         Return trait and marker names or column numbers (for indexing). }
 }
 \details{
   TODO
