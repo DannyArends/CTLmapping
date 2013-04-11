@@ -96,7 +96,7 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), o
     ydim <- c(-maxy, maxy)
   }
   main <- "" #paste("Phenotype contribution to CTL of",ctl.name(x))
-  plot(c(0, maxX), ydim, type='n',xlab="", ylab=ylab, main=main, ...)
+  plot(c(0.5, maxX+0.5), ydim, type='n',xlab="", ylab=ylab, main=main, ...)
   points(pointsx, rep(0, length(pointsx)), lwd = 1, pch="|",cex = 0.2)
 
   i <- 1;
