@@ -29,7 +29,19 @@
 \alias{CTLscantoScanone}
 \alias{CTLtoLODvector}
 
+%ctl.sd.R
+\alias{deltaSD}
+
+%ctl.slope.R
+\alias{stdSlopeEstimate}
+\alias{stdSlopeIntercept}
+\alias{stdSlopeError}
+\alias{stdSlopeBeta}
+\alias{stdSlopeTest}
+\alias{stdSlopeToP}
+
 %ctl.utils.R
+\alias{munique}
 \alias{check.genotypes}
 \alias{getRVM}
 \alias{lodscorestoscanone}

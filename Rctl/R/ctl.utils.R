@@ -36,6 +36,13 @@ check.genotypes <- function(genotypes, geno.enc=c(1,2), minAmount = 20, verbose=
   invisible(toremove)
 }
 
+#Adds a na.rm = TRUE switch to unique
+munique <- function(x, ... , na.rm=TRUE){
+  res <- unique(x, ...)
+  if(na.rm && any(is.na(res))) res <- res[-which(is.na(res))]
+  return(res)
+}
+
 #Create a matrix with row length = n.perms, filled with random numbers 1..n.rows
 getRVM <- function(n.perms, n.rows){
   rvm <- NULL
