@@ -4,7 +4,7 @@
 # (C) 2012 Danny Arends - GBIC - University of Groningen
 #   - Files are distributed with the Rctl package in Rctl/tests
 # Start by: 
-# setwd("~/Github/Rpackages/CTLmapping/Rctl/inst/ctlscripts")
+# setwd("~/Github/Rpackages/CTLmapping/OLD/ctlscripts")
 
 metabolites <- read.table("Metabolites_BaySha_GChurchill.txt",sep="\t",row.names=1,header=TRUE)
 genotypes   <- read.table("Genotypes_BaySha.txt",row.names=1,header=TRUE)
@@ -43,10 +43,8 @@ map_info[1:10,1:3]
 
 #Load the library and scan the data
 library(ctl)
-#source("Helper_Functions.r")
-#source("Basic_QC.R",local=TRUE,echo=TRUE)
-#ctls <- CTLscan(genotypes, metabolites[,c(1,3,5)], geno.enc=c("1","2"), n.perm = 1250)
-ctls <- CTLscan(genotypes, metabolites[,c(1, 2, 3)], geno.enc=c("1","2"),verbose=TRUE)
+
+ctls <- CTLscan(genotypes, metabolites[,c(1, 2, 3)],verbose=TRUE)
 
 setwd("~/Desktop")
 png("out1.png", width=1350, height=450,type="cairo", antialias="subpixel") 
@@ -59,7 +57,7 @@ plot(ctls[[2]], map_info, ydim=c(-20,60), ylab="", yaxt='n', type='line')
 plot(ctls[[3]], map_info, ydim=c(-20,60), ylab="", yaxt='n', type='line')
 dev.off()
 
-ctls <- CTLscan(genotypes, metabolites, geno.enc=c("1","2"),verbose=TRUE)
+ctls <- CTLscan(genotypes, metabolites,verbose=TRUE)
 
 setwd("~/Desktop")
 png("out2.png", width=1350, height=450,type="cairo", antialias="subpixel") 
