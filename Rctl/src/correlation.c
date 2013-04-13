@@ -57,13 +57,14 @@ double* cor1toN(const double* x, double** y, size_t dim, size_t ny, bool verbose
       YiP2[j] += y[j][i] * y[j][i];
     }}
   }}
+  double nom, denom;
   double* cors = newdvector(ny);
   for(j = 0; j < ny; j++){
-    double nom   = (XiYi[j] - (onedivn*Xi*Yi[j]));
-    double denom = sqrt(XiP2 - (onedivn * Xi * Xi)) * sqrt(YiP2[j] - (onedivn * Yi[j] * Yi[j]));
-    cors[j] = 1e-6 * (int)((nom / denom) * 1e6);  // TODO: Remove this easy fix for rounding errors
+    nom   = (XiYi[j] - (onedivn*Xi*Yi[j]));
+    denom = sqrt(XiP2 - (onedivn * Xi * Xi)) * sqrt(YiP2[j] - (onedivn * Yi[j] * Yi[j]));
     if(denom == 0) err("Empty denominator in correlation (Too few samples in a genotype)\n");
-    if(isNaN(cors[j]) || isinf(cors[j]) || cors[j] < -1.0 || cors[j] > 1.0){ 
+    cors[j] = nom / denom;
+    if(isNaN(cors[j]) || isinf(cors[j]) || cors[j] < -1.0 + EPSILON || cors[j] > 1.0 + EPSILON){ 
       err("Correlation '%.8f' not in range [-1, 1]\n", cors[j]);
     }
   }
@@ -94,18 +95,24 @@ double* getCorrelations(const Phenotypes phenotypes, const Genotypes genotypes, 
 }
 
 double* chiSQN(size_t nr, double** r, size_t phe, int* nsamples, size_t nphe){
-  size_t p, i;
+  size_t p, i, denom;
+  double sumOfSquares, squaresOfSum, df;
   double* ret = newdvector(nphe);  /*!< Returned Chi^2 values for phenotype phe against the other phenotypes */
-  double* ts  = newdvector(nr);    /*!< Holds the N-correlations to pass to chiSQ function */
   for(p = 0; p < nphe; p++){
     if(phe != p){
+      denom = 0; sumOfSquares = 0.0; squaresOfSum = 0.0; // Reset for next calculation
       for(i = 0; i < nr; i++){
-        ts[i] = r[i][p];
+        df = nsamples[i]-3;
+        if(df > 0){
+          sumOfSquares += df * pow(zscore(r[i][p]), 2.0);
+          squaresOfSum += df * zscore(r[i][p]);
+          denom += df;
+        }else{ err("Correlation '%d' between %d and %d has too few observations", i, p, phe); }
       }
-      ret[p] = chiSQ(nr, ts, nsamples);
+      if(denom == 0) err("Divide by 0 groups too small");
+      ret[p] = sumOfSquares - (pow(squaresOfSum, 2.0) / denom);
     }
   }
-  free(ts);
   return ret;
 }
 
@@ -116,7 +123,7 @@ double chiSQ(size_t nr, double* r, int* nsamples){
   KahanAccumulator squaresOfSum = createAccumulator();
 
   for(i = 0; i < nr; i++){
-    if(nsamples > 3){
+    if(nsamples[i] > 3){
       sumOfSquares = KahanSum(sumOfSquares, (nsamples[i]-3) * pow(zscore(r[i]), 2.0));
       squaresOfSum = KahanSum(squaresOfSum, (nsamples[i]-3) * zscore(r[i]));
       denom  += (nsamples[i]-3);

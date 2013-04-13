@@ -16,6 +16,8 @@
     #include "structs.h"
     #include "rmapctl.h"
 
+    #define EPSILON 1e-12
+
     /** Calculates pearsons correlation between vector x and vector y.  Use ranked 
      *  input for non-parametric testing */
     double  correlation(const double* x, const double* y, size_t dim, bool verbose);
