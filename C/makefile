@@ -26,8 +26,8 @@ help:
 static: clean $(SOURCES) $(STATIC)
 
 # target: test - Debug build
-debug: CFLAGS += -pg -DTEST
-debug: LDFLAGS += -pg -DTEST
+debug: CFLAGS += -g -DTEST
+debug: LDFLAGS += -g -DTEST
 debug: all
 
 # target: test - Test by executing CTL mapping
