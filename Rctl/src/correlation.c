@@ -95,8 +95,8 @@ double* getCorrelations(const Phenotypes phenotypes, const Genotypes genotypes, 
 
 double* chiSQN(size_t nr, double** r, size_t phe, int* nsamples, size_t nphe){
   size_t p, i;
-  double* ret = newdvector(nphe);
-  double* ts  = newdvector(nr);
+  double* ret = newdvector(nphe);  /*!< Returned Chi^2 values for phenotype phe against the other phenotypes */
+  double* ts  = newdvector(nr);    /*!< Holds the N-correlations to pass to chiSQ function */
   for(p = 0; p < nphe; p++){
     if(phe != p){
       for(i = 0; i < nr; i++){
@@ -116,9 +116,11 @@ double chiSQ(size_t nr, double* r, int* nsamples){
   KahanAccumulator squaresOfSum = createAccumulator();
 
   for(i = 0; i < nr; i++){
-    sumOfSquares = KahanSum(sumOfSquares, (nsamples[i]-3) * pow(zscore(r[i]), 2.0));
-    squaresOfSum = KahanSum(squaresOfSum, (nsamples[i]-3) * zscore(r[i]));
-    denom  += (nsamples[i]-3);
+    if(nsamples > 3){
+      sumOfSquares = KahanSum(sumOfSquares, (nsamples[i]-3) * pow(zscore(r[i]), 2.0));
+      squaresOfSum = KahanSum(squaresOfSum, (nsamples[i]-3) * zscore(r[i]));
+      denom  += (nsamples[i]-3);
+    }
   }
   if(denom == 0) err("Divide by 0 groups too small");
   return(sumOfSquares.sum - (pow(squaresOfSum.sum, 2.0) / denom));
