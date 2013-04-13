@@ -6,7 +6,7 @@
 }
 \usage{
 CTLmapping(genotypes, phenotypes, pheno.col = 1, n.perm = 100, strategy = c("Exact", "Full", "Pairwise"),
-           qtls=NULL, geno.enc=c(1,2), verbose = FALSE)
+           qtls=NULL, verbose = FALSE)
 }
 
 \arguments{
@@ -28,7 +28,6 @@ CTLmapping(genotypes, phenotypes, pheno.col = 1, n.perm = 100, strategy = c("Exa
                       detect CTLs, the two other methods (Full and Pairwise) perform permutations to
                       assign significance. }
   \item{qtls}{        Can be used to provide QTL results, when external QTL results are available. }
-  \item{geno.enc}{    Specifying the encoding of the genotype matrix. }
   \item{verbose}{     Be verbose. }
 }
 \details{

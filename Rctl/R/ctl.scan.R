@@ -9,7 +9,7 @@
 #
 
 #-- CTLscan main function --#
-CTLscan <- function(genotypes, phenotypes, pheno.col, n.perm = 100, strategy = c("Exact", "Full", "Pairwise"), conditions = NULL, qtls = NULL, n.cores = 1, geno.enc = c(1,2), verbose = FALSE){
+CTLscan <- function(genotypes, phenotypes, pheno.col, n.perm = 100, strategy = c("Exact", "Full", "Pairwise"), conditions = NULL, qtls = NULL, n.cores = 1, verbose = FALSE){
   if(any(class(genotypes)=="cross")){
     CTLscan.cross(genotypes, pheno.col=pheno.col, n.perm=n.perm, strategy=strategy, conditions=conditions, qtls=qtls, n.cores=n.cores, verbose=verbose)
   }
@@ -17,7 +17,6 @@ CTLscan <- function(genotypes, phenotypes, pheno.col, n.perm = 100, strategy = c
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   if(missing(pheno.col)) pheno.col = 1:ncol(phenotypes)
   st <- proc.time()
-  toremove   <- check.genotypes(genotypes, geno.enc, verbose=verbose)
   phenotypes <- apply(phenotypes, 2, rank) # Always use non-parametric statistics
   results    <- vector("list",length(pheno.col))
   n.phe      <- ncol(phenotypes); n.ind1 <- nrow(phenotypes)
@@ -28,17 +27,11 @@ CTLscan <- function(genotypes, phenotypes, pheno.col, n.perm = 100, strategy = c
   }
   if(!is.null(qtls) && ncol(qtls) != length(pheno.col)) stop("Number of QTLs doesn't match")
   if(n.ind1 != n.ind2) stop("Number of individuals doesn't match between genotypes & phenotypes")
-  if(!is.null(toremove)){
-    if(length(toremove) == n.mar) stop("Analysis would remove all markers\n")
-    warning(paste("Removing genotype markers (", length(toremove),"/", n.mar, ")")) 
-    genotypes <- genotypes[,-toremove]
-    n.mar     <- ncol(genotypes); 
-  }
   if(n.cores==1){
     idx <- 1
     for(phe in pheno.col){
       results[[idx]] <- CTLmapping(genotypes, phenotypes, pheno.col=phe, n.perm=n.perm,
-                             strategy=strategy, qtls=qtls, geno.enc=geno.enc, verbose=verbose)
+                             strategy=strategy, qtls=qtls, verbose=verbose)
       idx <- idx + 1
     }
   }else{
@@ -48,7 +41,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col, n.perm = 100, strategy = c
     parallel::clusterEvalQ(cl, library(ctl))
     results <- parallel::parLapply(cl, pheno.col, function(x, qtls){
       CTLmapping(genotypes, phenotypes, pheno.col=x, n.perm=n.perm, strategy=strategy,
-                 qtls = qtls, geno.enc=geno.enc, verbose=verbose)
+                 qtls = qtls, verbose=verbose)
     }, qtls)
     parallel::stopCluster(cl)
   }
@@ -57,7 +50,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col, n.perm = 100, strategy = c
   invisible(results)
 }
 
-CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, n.perm = 100, strategy = c("Exact", "Full", "Pairwise"), qtls = NULL, geno.enc = c(1,2), verbose = FALSE){
+CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, n.perm = 100, strategy = c("Exact", "Full", "Pairwise"), qtls = NULL, verbose = FALSE){
   if(missing(genotypes) || is.null(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
 
@@ -119,12 +112,6 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, n.perm = 100, strat
 #-- R/qtl interface --#
 CTLscan.cross <- function(cross, ...){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
-  geno.enc <- NULL
-  if(any(class(cross)=="bc") || any(class(cross)=="riself") || any(class(cross)=="risib")){
-    geno.enc <- c(1,2)
-  }else{ # TODO: use C to sort out the correct genotypes
-    stop("class of cross needs to be either: riself, risib or bc")
-  }
   rqtl_pheno <- qtl::pull.pheno(cross)
   rqtl_c     <- NULL;               # R/qtl adds additional columns sex and pgm
   cond_id    <- which(colnames(rqtl_pheno) %in% c("sex", "pgm"))
@@ -135,7 +122,7 @@ CTLscan.cross <- function(cross, ...){
   if(ncol(rqtl_pheno) > 1){
     phenotypes <- apply(rqtl_pheno, 2, as.numeric)             # R/qtl phenotypes data.frame (need matrix)
     genotypes  <- pull.geno(cross)
-    CTLscan(genotypes=genotypes, phenotypes=phenotypes, geno.enc = geno.enc, conditions = rqtl_c, ...)
+    CTLscan(genotypes=genotypes, phenotypes=phenotypes, conditions = rqtl_c, ...)
   }else{
     stop("Not enough phenotypes in cross object (",ncol(rqtl_pheno), "< 2)")
   }
