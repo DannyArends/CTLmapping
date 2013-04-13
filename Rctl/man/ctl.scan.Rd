@@ -6,7 +6,7 @@
 }
 \usage{
 CTLscan(genotypes, phenotypes, pheno.col, n.perm=100, strategy = c("Exact", "Full", "Pairwise"), 
-        conditions = NULL, qtls = NULL, n.cores = 1, verbose = FALSE)
+        conditions = NULL, qtls = NULL, n.cores = 1, parametric = FALSE, verbose = FALSE)
 }
 \arguments{
   \item{genotypes}{   Matrix of genotypes. (individuals x markers) }
@@ -30,6 +30,7 @@ CTLscan(genotypes, phenotypes, pheno.col, n.perm=100, strategy = c("Exact", "Ful
                       are used as covariates in the QTL modeling step. }
   \item{qtls}{        Used to provide QTL results, when external QTL results are available. }
   \item{n.cores}{     Number of CPU cores to use during the analysis. }
+  \item{parametric}{  use non-parametric testing (Spearman) or parametric testing (Pearson). }
   \item{verbose}{     Be verbose. }
 }
 \value{
