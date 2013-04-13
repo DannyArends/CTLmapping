@@ -9,34 +9,40 @@
 #
 
 #-- CTLscan main function --#
-CTLscan <- function(genotypes, phenotypes, pheno.col, n.perm = 100, strategy = c("Exact", "Full", "Pairwise"), conditions = NULL, qtls = NULL, n.cores = 1, verbose = FALSE){
-  if(any(class(genotypes)=="cross")){
-    CTLscan.cross(genotypes, pheno.col=pheno.col, n.perm=n.perm, strategy=strategy, conditions=conditions, qtls=qtls, n.cores=n.cores, verbose=verbose)
-  }
+CTLscan <- function(genotypes, phenotypes, pheno.col, n.perm = 100, strategy = c("Exact", "Full", "Pairwise"), conditions = NULL, qtls = NULL, n.cores = 1, parametric = FALSE, verbose = FALSE){
+  st <- proc.time()
   if(missing(genotypes) || is.null(genotypes))  stop("argument 'genotypes' is missing, with no default")
+  if(any(class(genotypes)=="cross")){
+    CTLscan.cross(genotypes, pheno.col=pheno.col, n.perm=n.perm, strategy=strategy, conditions=conditions,
+                  qtls=qtls, n.cores=n.cores, parametric = parametric, verbose=verbose)
+  }
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   if(missing(pheno.col)) pheno.col = 1:ncol(phenotypes)
-  st <- proc.time()
-  phenotypes <- apply(phenotypes, 2, rank) # Always use non-parametric statistics
-  results    <- vector("list",length(pheno.col))
   n.phe      <- ncol(phenotypes); n.ind1 <- nrow(phenotypes)
   n.mar      <- ncol(genotypes);  n.ind2 <- nrow(genotypes)
-  if(verbose){
-    cat("Data: phenotypes:", n.phe ," phenotypes, ", n.ind1, " individuals\n")
-    cat("Data: genotypes:", n.mar ," markers, ", n.ind2, " individuals\n")
-  }
   if(!is.null(qtls) && ncol(qtls) != length(pheno.col)) stop("Number of QTLs doesn't match")
   if(n.ind1 != n.ind2) stop("Number of individuals doesn't match between genotypes & phenotypes")
-  if(n.cores==1){
+  if(n.phe < 2) stop("argument 'phenotypes' needs at least 2 columns")
+  if(verbose){
+    cat("Data", n.phe ,"phenotypes,", paste0(n.ind1, "/", n.ind2), "individuals,", n.mar ,"markers\n")
+    cat("Data checks finished after:",(proc.time()-st)[3],"seconds\n")
+  }
+  if(!parametric){
+    phenotypes <- apply(phenotypes, 2, rank) # Parametric vs Non-Parametric testing
+    if(verbose) cat("Data ranking finished after:",(proc.time()-st)[3],"seconds\n")
+  }
+  results    <- vector("list",length(pheno.col))
+
+  if(n.cores == 1){ # Single core debug call
     idx <- 1
     for(phe in pheno.col){
       results[[idx]] <- CTLmapping(genotypes, phenotypes, pheno.col=phe, n.perm=n.perm,
                              strategy=strategy, qtls=qtls, verbose=verbose)
       idx <- idx + 1
     }
-  }else{
+  }else{ # Normally we would want to use multiple cores
     min.cores <- min(n.cores,length(pheno.col))
-    if(min.cores != n.cores) warning("Reduced n.cores (",n.cores," to ",min.cores,")")
+    if(min.cores != n.cores) warning("Reduced n.cores (",n.cores,"to",min.cores,")")
     cl <- parallel::makeCluster(rep("localhost", min.cores))
     parallel::clusterEvalQ(cl, library(ctl))
     results <- parallel::parLapply(cl, pheno.col, function(x, qtls){
@@ -45,7 +51,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col, n.perm = 100, strategy = c
     }, qtls)
     parallel::stopCluster(cl)
   }
-  if(verbose) cat("Done after: ",(proc.time()-st)[3]," seconds\n")
+  if(verbose) cat("Done after:",(proc.time()-st)[3],"seconds\n")
   class(results) <- c(class(results),"CTLobject")
   invisible(results)
 }
@@ -83,7 +89,7 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, n.perm = 100, strat
 	result <- .C("R_mapctl",as.integer(n.ind), as.integer(n.mar), as.integer(n.phe),
                     			as.integer(unlist(genotypes)), as.double(unlist(phenotypes)),
                           as.integer((pheno.col-1)), as.integer(n.perm),
-                          as.integer(1),as.integer(1),  #Setup ALPHA & GAMMA
+                          as.integer(1),as.integer(1),  # Setup ALPHA & GAMMA
                           as.integer(perm.type),
                           dcor =as.double(rep(0,n.mar*n.phe)),
                           perms=as.double(perms),
@@ -91,12 +97,11 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, n.perm = 100, strat
                           as.integer(verbose), 
                           PACKAGE="ctl")
   e2 <- proc.time()
-  #Store the DCOR/Z scores, Permutations, CTLs
-  res$dcor  <- matrix(result$dcor, n.mar, n.phe)
-  res$perms <- result$perms
+  res$dcor  <- matrix(result$dcor, n.mar, n.phe)   # Store the DCOR/Z scores
+  res$perms <- result$perms                        # Permutations
   if(perm.type == 1){ res$perms <- matrix(result$perms, n.perm, n.phe); }
 
-  res$ctl   <- matrix(result$ctl, n.mar, n.phe)
+  res$ctl   <- matrix(result$ctl, n.mar, n.phe)    # CTL likelihoods
   if(any(is.na(res$dcor))) warning("Differential correlation: NaN scores, no variance ?")
   rownames(res$dcor) <- colnames(genotypes); colnames(res$dcor) <- colnames(phenotypes)
   rownames(res$ctl)  <- colnames(genotypes); colnames(res$ctl)  <- colnames(phenotypes)
@@ -120,7 +125,7 @@ CTLscan.cross <- function(cross, ...){
     rqtl_pheno <- rqtl_pheno[,-cond_id]                      # Remove them as phenotypes
   }
   if(ncol(rqtl_pheno) > 1){
-    phenotypes <- apply(rqtl_pheno, 2, as.numeric)             # R/qtl phenotypes data.frame (need matrix)
+    phenotypes <- apply(rqtl_pheno, 2, as.numeric)           # R/qtl phenotypes data.frame (need matrix)
     genotypes  <- pull.geno(cross)
     CTLscan(genotypes=genotypes, phenotypes=phenotypes, conditions = rqtl_c, ...)
   }else{
