@@ -30,7 +30,8 @@ CTLscan(genotypes, phenotypes, pheno.col, n.perm=100, strategy = c("Exact", "Ful
                       are used as covariates in the QTL modeling step. }
   \item{qtls}{        Used to provide QTL results, when external QTL results are available. }
   \item{n.cores}{     Number of CPU cores to use during the analysis. }
-  \item{parametric}{  use non-parametric testing (Spearman) or parametric testing (Pearson). }
+  \item{parametric}{  Use non-parametric testing (Spearman) or parametric testing (Pearson). The DEFAULT is to 
+                      use non-parametric tests which are less sensitive to outliers in the phenotype data. }
   \item{verbose}{     Be verbose. }
 }
 \value{
