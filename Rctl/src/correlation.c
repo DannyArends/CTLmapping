@@ -35,19 +35,19 @@ double correlation(const double* x, const double* y, size_t dim, bool verbose){
   return(cor);
 }
 
-double* cor1toN(const double* x, double** y, size_t dim, size_t ny, bool verbose){
+double* cor1toN(double* x, double** y, size_t dim, size_t ny, bool verbose){
   size_t i, j;
-  double  onedivn = 1.0 / dim;
+  double onedivn = 1.0 / dim;
+  double Xi      = 0.0;
+  double XiP2    = 0.0;
 
-  double  Xi   = 0.0;
-  double  XiP2 = 0.0;
+  double* Yi     = newdvector(ny);
+  double* YiP2   = newdvector(ny);
+  double* XiYi   = newdvector(ny);
 
-  double* Yi   = newdvector(ny);
-  double* YiP2 = newdvector(ny);
-  double* XiYi = newdvector(ny);
-
-  for(j = 0; j < ny; j++){ if(y[j][i] != MISSING){ // Same for Y
-    for(i = 0; i < dim; i++){ if(x[i] != MISSING){ // Loop over the non-missing in the common dimension
+  // Unrolled 1:N correlation loop
+  for(j = 0; j < ny; j++){   // Loop over all traits
+    for(i = 0; i < dim; i++){ if(y[j][i] != MISSING && x[i] != MISSING){ // If both are available
       if(j==0){
         Xi   += x[i];
         XiP2 += x[i] * x[i];
@@ -56,9 +56,10 @@ double* cor1toN(const double* x, double** y, size_t dim, size_t ny, bool verbose
       Yi[j]   += y[j][i];
       YiP2[j] += y[j][i] * y[j][i];
     }}
-  }}
+  }
   double nom, denom;
   double* cors = newdvector(ny);
+
   for(j = 0; j < ny; j++){
     nom   = (XiYi[j] - (onedivn*Xi*Yi[j]));
     denom = sqrt(XiP2 - (onedivn * Xi * Xi)) * sqrt(YiP2[j] - (onedivn * Yi[j] * Yi[j]));

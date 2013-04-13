@@ -36,26 +36,37 @@ double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t p
 double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
                     clvector* genoenc, int alpha, int beta, bool verbose){
 
-  size_t g, m;
-  double** dcors = newdmatrix(genotypes.nmarkers, phenotypes.nphenotypes);
-  for(m = 0; m < genotypes.nmarkers; m++){
-    size_t ngenotypes = genoenc[m].nelements;
+  size_t g, m, ngenotypes;
+  clvector idx;
+  double*  P1;
+  int* nsamples;
+  double** cors, **dcors, **P2M;
 
-    int* nsamples = newivector(ngenotypes);
-    double** cors = calloc(ngenotypes, sizeof(double*));
-    for(g = 0; g < ngenotypes; g++){
-      clvector idx  = which(genotypes.data[m], phenotypes.nindividuals, genoenc[m].data[g]);
-      double*  P1   = get(phenotypes.data[phenotype], idx);
-      double** P2M  = getM(phenotypes.data, idx, phenotypes.nphenotypes);
-      cors[g]       = cor1toN(P1, P2M, idx.nelements, phenotypes.nphenotypes, false);
-      nsamples[g]   = idx.nelements;
-      free(idx.data); free(P1);                 // Clear the indexes and phenotype1 data
-      freematrix((void**)P2M, phenotypes.nphenotypes);  // Clear phenotype2M data
-      updateR(0);
+  dcors = newdmatrix(genotypes.nmarkers, phenotypes.nphenotypes);
+  for(m = 0; m < genotypes.nmarkers; m++){
+    ngenotypes = genoenc[m].nelements;
+    if(ngenotypes > 1){
+      nsamples   = newivector(ngenotypes);
+      cors       = calloc(ngenotypes, sizeof(double*));
+      for(g = 0; g < ngenotypes; g++){
+        idx = which(genotypes.data[m], phenotypes.nindividuals, genoenc[m].data[g]);
+
+        if(idx.nelements > 3){
+          P1            = get(phenotypes.data[phenotype], idx);
+          P2M           = getM(phenotypes.data, idx, phenotypes.nphenotypes);
+          cors[g]       = cor1toN(P1, P2M, idx.nelements, phenotypes.nphenotypes, true);
+          nsamples[g]   = idx.nelements;
+          free(P1);                                         // Clear the indexes and phenotype1 data
+          freematrix((void**)P2M, phenotypes.nphenotypes);  // Clear phenotype2M data
+        }
+
+        free(idx.data); 
+        updateR(0);
+      }
+      dcors[m] = chiSQN(ngenotypes, cors, phenotype, nsamples, phenotypes.nphenotypes);
+      freematrix((void**)cors, ngenotypes);         // Clear correlation and samples data 
+      free(nsamples);
     }
-    dcors[m] = chiSQN(ngenotypes, cors, phenotype, nsamples, phenotypes.nphenotypes);
-    freematrix((void**)cors, ngenotypes);         // Clear correlation and samples data 
-    free(nsamples);
   }
   return dcors;
 }
