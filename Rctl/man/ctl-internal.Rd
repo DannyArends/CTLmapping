@@ -38,7 +38,6 @@
 \alias{stdSlopeError}
 \alias{stdSlopeBeta}
 \alias{stdSlopeTest}
-\alias{stdSlopeToP}
 
 %ctl.utils.R
 \alias{munique}
