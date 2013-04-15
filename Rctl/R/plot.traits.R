@@ -8,10 +8,10 @@
 # Trait vs Trait scatter plot routine for CTL analysis
 #
 
-plot.traits <- function(genotypes, phenotypes, pheno.col = c(1, 2), marker = 1, doLog = FALSE){
+plotTraits <- function(genotypes, phenotypes, pheno.col = c(1, 2), marker = 1, doRank = FALSE){
   t1 <- phenotypes[, pheno.col[1]]
   t2 <- phenotypes[, pheno.col[2]]
-  if(doLog){ t1 <- log10(t1); t2 <- log10(t2) }
+  if(doRank){ t1 <- rank(t1); t2 <- rank(t2) }
 
   geno  <- genotypes[,marker]
 

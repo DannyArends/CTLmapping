@@ -19,10 +19,12 @@ deltaSD <- function(t1, t2, geno){
 }
 
 #-- Normal interface --#
-scanSD <- function(genotypes, phenotypes, pheno.col=c(1,2)){
+scanSD <- function(genotypes, phenotypes, pheno.col=c(1,2), doRank = FALSE){
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(length(pheno.col) != 2) stop("argument 'pheno.col' needs to select two phenotypes")
+
+  if(doRank) genotypes <- apply(genotypes, 2, rank)
 
   matrix <- NULL
   for(m in 1:ncol(genotypes)){
@@ -36,8 +38,6 @@ scanSD <- function(genotypes, phenotypes, pheno.col=c(1,2)){
 scanSD.cross <- function(cross, pheno.col = c(1,2), doRank = FALSE){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
   if(length(pheno.col) != 2) stop("argument 'pheno.col' needs to select two phenotypes")
-
-  if(doRank) cross$pheno <- apply(pull.pheno(cross),2,rank)
-  scanSD(pull.geno(cross), pull.pheno(cross), pheno.col)
+  scanSD(pull.geno(cross), pull.pheno(cross), pheno.col, doRank)
 }
 

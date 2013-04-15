@@ -104,9 +104,11 @@ stdSlopeTest <- function(t1, t2, geno, verbose = FALSE){
 }
 
 #-- Normal interface --#
-scanSlopes <- function(genotypes, phenotypes, pheno.col = 1, verbose = FALSE){
+scanSlopes <- function(genotypes, phenotypes, pheno.col = 1, doRank = FALSE, verbose = FALSE){
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
+
+  if(doRank) phenotypes <- apply(phenotypes, 2, rank)
 
   matrix <- NULL
   for(m in 1:ncol(genotypes)){
@@ -129,8 +131,7 @@ scanSlopes <- function(genotypes, phenotypes, pheno.col = 1, verbose = FALSE){
 scanSlopes.cross <- function(cross, pheno.col = 1, doRank = FALSE, verbose = FALSE){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
 
-  if(doRank) cross$pheno <- apply(pull.pheno(cross),2,rank)
-  return(scanSlopes(pull.geno(cross), pull.pheno(cross), pheno.col, verbose))
+  return(scanSlopes(pull.geno(cross), pull.pheno(cross), pheno.col, doRank, verbose))
 }
 
 # end of ctl.slope.R
