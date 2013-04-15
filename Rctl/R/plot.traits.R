@@ -34,8 +34,9 @@ plot.traits <- function(genotypes, phenotypes, pheno.col = c(1, 2), marker = 1, 
     cors <- c(cors, cor(t1[idx], t2[idx],use="pair"))
     abline(inter[x], betas[x], col = x, lwd=1.5)
   }
-  legend("topright", title="Correlation", col=unique(geno), legend = round(cors, d=2),lwd=1, cex=0.7)
-  legend("topleft",  title="Slope", col=unique(geno), legend = round(cors, d=2),lwd=1, cex=0.7)
+  legend("topright", title="Correlation", col=unique(geno), legend = round(cors, digits = 2), lwd=1, cex=0.7)
+  legend("topleft",  title="Slope", col=unique(geno), legend = round(betas, digits = 2), lwd=1, cex=0.7)
 }
 
 # end of plot.traits.R
+

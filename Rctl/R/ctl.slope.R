@@ -45,13 +45,15 @@ stdSlopeError <- function(t1, t2, geno, betas){
   group <- 1
   for(g in munique(geno)){
     ind    <- which(geno == g)
+    Nj <- length(ind)
     error  <- 0
     for(x in ind){
       if(!is.na(t1[x]) && !is.na(t2[x])){
-        yhat   <- inters[group] + (betas[group] * t1[x])
+        yhat  <- inters[group] + (betas[group] * t1[x])
         error <- error + (t2[x] - yhat)^2
       }
     }
+    error <- error / (Nj-2)
     errors <- c(errors, error)
     group <- group + 1
   }
@@ -75,11 +77,11 @@ stdSlopeBeta <- function(t1, t2, geno, betas){
   return(nom/denom)
 }
 
-stdSlopeTest <- function(t1, t2, geno){
+stdSlopeTest <- function(t1, t2, geno, verbose = FALSE){
   betas   <- stdSlopeEstimate(t1, t2, geno)       # Slope estimates per genotype
   errors  <- stdSlopeError(t1, t2, geno, betas)   # Squared error
   stdbeta <- stdSlopeBeta(t1, t2, geno, betas)    # Slope on all data
-
+  if(verbose){ cat("Betas", betas, "\n"); cat("Errors", errors, "\n"); cat("STDbeta", stdbeta, "\n") }
   nom <- 0; denom <- 0; group <- 1
   N <- length(t1)
   J <- length(munique(geno))
@@ -95,20 +97,14 @@ stdSlopeTest <- function(t1, t2, geno){
     denom <- denom + ((Nj-2)*errors[group])
     group <- group + 1
   }
+  if(verbose) cat("SlopeTest Nom/Denom:",nom,"/",denom,"\n")
   nom   <- (1/(J-1)) * nom
-  denom <- (1/(N-2)) * denom
+  denom <- (1/(N-2*J)) * denom
   return(nom / denom)
 }
 
-stdSlopeToP <- function(t1, t2, geno){
-  J <- length(munique(geno))
-  N <- length(t1)
-  F <- stdSlopeTest(t1, t2, geno)
-  return(1-pf(F, J-1, N-2*J))
-}
-
 #-- Normal interface --#
-scanSlopes <- function(phenotypes, genotypes, pheno.col=1){
+scanSlopes <- function(genotypes, phenotypes, pheno.col = 1, verbose = FALSE){
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
 
@@ -116,8 +112,12 @@ scanSlopes <- function(phenotypes, genotypes, pheno.col=1){
   for(m in 1:ncol(genotypes)){
     res <- NULL
     for(p in 1:ncol(phenotypes)){
-      if(p != pheno.col){
-        res <- c(res, stdSlopeToP(phenotypes[,pheno.col], phenotypes[,p], genotypes[,m]))
+      if(p != pheno.col){ # Do a stdSlopeTest and convert to P
+          J <- length(munique(genotypes[,m]))
+          N <- length(phenotypes[,pheno.col])
+          F <- stdSlopeTest(phenotypes[,pheno.col], phenotypes[,p], genotypes[,m], verbose)
+          if(verbose) cat("F:", F, "\n")
+          res <- c(res, 1-pf(F, J-1, N-2*J))
       }else{ res <- c(res, 1) } # No chance in hell this will be different for the same trait vs itseld
     }
     matrix <- rbind(matrix, res)
@@ -126,10 +126,11 @@ scanSlopes <- function(phenotypes, genotypes, pheno.col=1){
 }
 
 #-- R/qtl interface --#
-scanSlopes.cross <- function(cross, pheno.col = 1, doRank = FALSE){
+scanSlopes.cross <- function(cross, pheno.col = 1, doRank = FALSE, verbose = FALSE){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
 
   if(doRank) cross$pheno <- apply(pull.pheno(cross),2,rank)
-  scanSlopes(pull.pheno(cross), pull.geno(cross), pheno.col)
+  return(scanSlopes(pull.geno(cross), pull.pheno(cross), pheno.col, verbose))
 }
 
+# end of ctl.slope.R
