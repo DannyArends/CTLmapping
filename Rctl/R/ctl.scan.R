@@ -124,13 +124,11 @@ CTLscan.cross <- function(cross, ...){
     rqtl_c     <- rqtl_pheno[, cond_id]                      # Add them as conditions
     rqtl_pheno <- rqtl_pheno[,-cond_id]                      # Remove them as phenotypes
   }
-  if(ncol(rqtl_pheno) > 1){
-    phenotypes <- apply(rqtl_pheno, 2, as.numeric)           # R/qtl phenotypes data.frame (need matrix)
-    genotypes  <- pull.geno(cross)
-    CTLscan(genotypes=genotypes, phenotypes=phenotypes, conditions = rqtl_c, ...)
-  }else{
-    stop("Not enough phenotypes in cross object (",ncol(rqtl_pheno), "< 2)")
-  }
+  if(ncol(rqtl_pheno) <= 1) stop("Not enough phenotypes in cross object (",ncol(rqtl_pheno), "< 2)")
+  phenotypes <- apply(rqtl_pheno, 2, as.numeric)             # R/qtl phenotypes data.frame (need matrix)
+  genotypes  <- pull.geno(cross)
+  CTLscan(genotypes=genotypes, phenotypes=phenotypes, conditions = rqtl_c, ...)
 }
 
 # end of ctl.scan.R
+
