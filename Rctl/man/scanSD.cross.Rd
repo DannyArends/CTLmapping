@@ -7,7 +7,6 @@
 \usage{
 scanSD.cross(cross, pheno.col = c(1,2), doRank = FALSE)
 }
-
 \arguments{
   \item{cross}{       An object of class \code{cross}. See \code{\link[qtl]{read.cross}} for details. }
   \item{pheno.col}{   Which phenotype column(s) should we analyse. Default analyse all phenotypes. }
@@ -38,12 +37,10 @@ scanSD.cross(cross, pheno.col = c(1,2), doRank = FALSE)
     \item \code{\link{plot.CTLscan}} - Plot the CTL curve for a single trait
   }
 }
-
 \examples{
   library(ctl)
   data(multitrait)      # Arabidopsis Thaliana (R/qtl cross object)
 
   sds <- scanSD.cross(multitrait)
 }
-
 \keyword{methods}

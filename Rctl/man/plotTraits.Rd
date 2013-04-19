@@ -40,12 +40,10 @@ plotTraits(genotypes, phenotypes, pheno.col = c(1, 2), marker = 1, doRank = FALS
     \item \code{\link{plot.CTLscan}} - Plot the CTL curve for a single trait
   }
 }
-
 \examples{
   library(ctl)
   data(ath.metabolites)                 # Arabidopsis Thaliana data set
 
   plotTraits(ath.metab$genotypes, ath.metab$phenotypes, marker=75, doRank = TRUE)
 }
-
 \keyword{methods}
