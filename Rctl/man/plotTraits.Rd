@@ -11,8 +11,8 @@ plotTraits(genotypes, phenotypes, pheno.col = c(1, 2), marker = 1, doRank = FALS
 \arguments{
   \item{genotypes}{   Matrix of genotypes. (individuals x markers) }
   \item{phenotypes}{  Matrix of phenotypes. (individuals x phenotypes) }
-  \item{pheno.col}{   Which phenotype column(s) should we analyse. Default analyse all phenotypes. }
-  \item{marker}{      Which marker should we use to add genotype color the dots. }
+  \item{pheno.col}{   Which phenotype column(s) should be plotted against each other. }
+  \item{marker}{      Which marker (column in genotypes) should be used to add genotype as a color of the dots. }
   \item{doRank}{      Transform quantitative data into ranked data before analyzing the slope. }
 }
 \details{
