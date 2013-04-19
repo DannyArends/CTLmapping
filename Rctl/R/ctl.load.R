@@ -5,7 +5,7 @@
 # last modified Jul, 2012
 # first written Jun, 2012
 # 
-# R functions to do load CTL mapping donw with the D version
+# R functions to do load CTL mapping done with the D version
 #
 
 #-- ctl.load function --#

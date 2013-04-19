@@ -12,15 +12,15 @@ module ctl.io.qtab.wrapper;
 version(QTAB){
 
 import std.stdio, std.conv;
-import ctl.core.array.matrix, ctl.io.reader, ctl.io.terminal;
+import ctl.core.array.matrix, ctl.io.reader;
 import qtl.core.phenotype, qtl.core.genotype, qtl.core.primitives;
 import qtl.plugins.qtab.read_qtab;
 
 class QTABreader : Reader{
   double[][] loadphenotypes(string filename = "phenotype.qtab"){
-    MSG("Starting with qtab phenotypes");
+    writefln("Starting with qtab phenotypes");
     auto res = read_phenotype_qtab!(Phenotype!double)(filename);
-    MSG("Done with qtab phenotypes");
+    writefln("Done with qtab phenotypes");
     Phenotype!double[][] pheno = res[0];
     double[][] phenotypes = newmatrix!double(pheno.length,pheno[0].length, 0.0);
     for(size_t x=0;x< pheno.length;x++){
@@ -30,18 +30,23 @@ class QTABreader : Reader{
     }
     return translate(phenotypes);
   }
+
+  string[] loadphenonames(string filename){
+    string[] ret;
+    return ret;
+  }
     
   int[][] loadgenotypes(string filename = "genotype"){
     string symbol_fn   = filename ~ "_symbols.qtab";  // FIXME: file name conventions are funny
     string genotype_fn = filename ~ "_genotypes.qtab";
-    MSG("Starting with qtab genotypes");
-    MSG("Reading " ~ symbol_fn);
+    writefln("Starting with qtab genotypes");
+    writefln("Reading " ~ symbol_fn);
     auto symbols = read_genotype_symbol_qtab(File(symbol_fn,"r"));
     // assert(to!string(symbols.decode("A")) == "[(0,0)]");
-    MSG("Done with qtab genotypes symbols");
-    MSG("Reading " ~ genotype_fn);
+    writefln("Done with qtab genotypes symbols");
+    writefln("Reading " ~ genotype_fn);
     auto ret = read_genotype_qtab(File(genotype_fn,"r"), symbols);
-    MSG("Done with qtab genotypes");
+    writefln("Done with qtab genotypes");
     auto individuals = ret[0];
     auto genotype_matrix = ret[1];
     
