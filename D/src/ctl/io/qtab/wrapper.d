@@ -43,7 +43,7 @@ class QTABreader : Reader{
     writefln("Reading " ~ symbol_fn);
     auto symbols = read_genotype_symbol_qtab(File(symbol_fn,"r"));
     // assert(to!string(symbols.decode("A")) == "[(0,0)]");
-    writefln("Done with qtab genotypes symbols");
+    writefln("Done with qtab genotypes symbols" ~ to!string(symbols.length));
     writefln("Reading " ~ genotype_fn);
     auto ret = read_genotype_qtab(File(genotype_fn,"r"), symbols);
     writefln("Done with qtab genotypes");
