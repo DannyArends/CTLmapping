@@ -40,25 +40,23 @@ class QTABreader : Reader{
     string symbol_fn   = filename ~ "_symbols.qtab";  // FIXME: file name conventions are funny
     string genotype_fn = filename ~ "_genotypes.qtab";
     writefln("Starting with qtab genotypes");
-    writefln("Reading " ~ symbol_fn);
-    auto symbols = read_genotype_symbol_qtab(File(symbol_fn,"r"));
-    // assert(to!string(symbols.decode("A")) == "[(0,0)]");
-    writefln("Done with qtab genotypes symbols" ~ to!string(symbols.length));
-    writefln("Reading " ~ genotype_fn);
-    auto ret = read_genotype_qtab(File(genotype_fn,"r"), symbols);
+    writefln("Reading %s",symbol_fn);
+    auto symbols = read_genotype_symbol_qtab(symbol_fn);
+    writefln("Done with qtab symbols: found %d symbols", symbols.length);
+
+    if(symbols.length == 0) throw new Exception("No symbols found in %s", symbol_fn);
+
+    writefln("Reading %s", genotype_fn);
+    auto ret = read_genotype_qtab(genotype_fn, symbols);
     writefln("Done with qtab genotypes");
-    auto individuals = ret[0];
+    auto individuals     = ret[0];
     auto genotype_matrix = ret[1];
     
     int[][] genotypes = newmatrix!int(genotype_matrix.length,genotype_matrix[0].length, 0);
-    for(size_t x=0;x< genotype_matrix.length;x++){
-      for(size_t y=0;y< genotype_matrix[0].length;y++){
-      if(genotype_matrix[x][y] == symbols.decode("A")){
-        genotypes[x][y] = 0;
-      }
-      if(genotype_matrix[x][y] == symbols.decode("B")){
-        genotypes[x][y] = 1;
-      }
+    for(size_t x=0; x < genotype_matrix.length; x++){
+      for(size_t y=0; y < genotype_matrix[0].length; y++){
+        if(genotype_matrix[x][y] == symbols.decode("A")){ genotypes[x][y] = 0; }
+        if(genotype_matrix[x][y] == symbols.decode("B")){ genotypes[x][y] = 1; }
       }
     }
     return translate(genotypes);
