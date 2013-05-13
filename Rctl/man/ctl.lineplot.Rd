@@ -5,8 +5,8 @@
   Plot the CTL for genome-wide CTL on multiple traits (the output of \code{\link{CTLscan}}).
 }
 \usage{
-ctl.lineplot(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, col = "orange", 
-             bg.col = "lightgray", cex = 1, verbose = FALSE)
+ctl.lineplot(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, 
+col = "orange", bg.col = "lightgray", cex = 1, verbose = FALSE)
 }
 \arguments{
   \item{CTLobject}{     An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }

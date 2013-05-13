@@ -5,8 +5,8 @@
   Scan for correlated trait loci (CTL)
 }
 \usage{
-CTLmapping(genotypes, phenotypes, pheno.col = 1, n.perm = 100, strategy = c("Exact", "Full", "Pairwise"),
-           qtls=NULL, verbose = FALSE)
+CTLmapping(genotypes, phenotypes, pheno.col = 1, n.perm = 100, 
+strategy = c("Exact", "Full", "Pairwise"), qtls=NULL, verbose = FALSE)
 }
 
 \arguments{

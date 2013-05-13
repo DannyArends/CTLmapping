@@ -5,8 +5,9 @@
   Scan for Correlated Trait Locus (CTL) in populations
 }
 \usage{
-CTLscan(genotypes, phenotypes, pheno.col, n.perm=100, strategy = c("Exact", "Full", "Pairwise"), 
-        conditions = NULL, qtls = NULL, n.cores = 1, parametric = FALSE, verbose = FALSE)
+CTLscan(genotypes, phenotypes, pheno.col, n.perm=100, 
+strategy = c("Exact", "Full", "Pairwise"), conditions = NULL, qtls = NULL, n.cores = 1,
+parametric = FALSE, verbose = FALSE)
 }
 \arguments{
   \item{genotypes}{   Matrix of genotypes. (individuals x markers) }

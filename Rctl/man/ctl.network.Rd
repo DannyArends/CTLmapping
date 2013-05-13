@@ -5,8 +5,8 @@
   Create a file containing the interaction network from a genome-wide CTLscan of multiple traits.
 }
 \usage{
-CTLnetwork(CTLobject, mapinfo, significance = 0.05, LODdrop = 2, what = c("names", "ids"), short = FALSE,
-           add.qtls = FALSE, file = "", verbose = TRUE)
+CTLnetwork(CTLobject, mapinfo, significance = 0.05, LODdrop = 2, 
+what = c("names", "ids"), short = FALSE, add.qtls = FALSE, file = "", verbose = TRUE)
 }
 \arguments{
   \item{CTLobject}{     An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }

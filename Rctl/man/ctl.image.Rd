@@ -5,9 +5,9 @@
   Plot the CTL for genome-wide CTL on multiple traits (the output of \code{\link{CTLscan}}).
 }
 \usage{
-\method{image}{CTLobject}(x, against = c("markers","phenotypes"), significance = 0.05, col=whiteblack,
-                          do.grid=TRUE, grid.col = "white", verbose = FALSE, add=FALSE, 
-                          breaks = c(0, 1, 2, 3, 10, 10000), marker_info, \dots)
+\method{image}{CTLobject}(x, against = c("markers","phenotypes"), significance = 0.05,
+col=whiteblack, do.grid=TRUE, grid.col = "white", verbose = FALSE, add=FALSE, 
+breaks = c(0, 1, 2, 3, 10, 10000), marker_info, \dots)
 }
 \arguments{
   \item{x}{             An object of class \code{"CTLscan"}, as output by \code{\link{CTLscan}}. }

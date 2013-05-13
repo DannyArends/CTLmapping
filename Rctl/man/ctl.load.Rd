@@ -5,8 +5,8 @@
   Load CTLs calculated by the D2.0 version
 }
 \usage{
-  ctl.load(genotypes = "ngenotypes.txt", phenotypes = "nphenotypes.txt", output = "ctlout", from=1, to, 
-           verbose = FALSE)
+ctl.load(genotypes = "ngenotypes.txt", phenotypes = "nphenotypes.txt",
+output = "ctlout", from=1, to, verbose = FALSE)
 }
 \arguments{
   \item{genotypes}{ Original datafile containing the genotypes scanned. }

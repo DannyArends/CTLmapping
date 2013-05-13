@@ -5,7 +5,7 @@
   Plot histogram of CTL permutations (the output of \code{\link{CTLscan}}).
 }
 \usage{
-  \method{hist}{CTLobject}(x, pheno.col=1, \dots)
+\method{hist}{CTLobject}(x, pheno.col=1, \dots)
 }
 \arguments{
   \item{x}{           An object of class \code{"CTLscan"}, as output by \code{\link{CTLscan}}. }

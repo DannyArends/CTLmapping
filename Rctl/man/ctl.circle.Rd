@@ -5,7 +5,8 @@
   Plot the CTL for genome-wide CTL on multiple traits (the output of \code{\link{CTLscan}}).
 }
 \usage{
-ctl.circle(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, cex = 1, verbose = FALSE)
+ctl.circle(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, cex = 1,
+verbose = FALSE)
 }
 \arguments{
   \item{CTLobject}{      An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }

@@ -5,7 +5,7 @@
   Differential correlation versus likelihood plot curves.
 }
 \usage{
-  \method{plot}{CTLpermute}(x, type="s", \dots)
+\method{plot}{CTLpermute}(x, type="s", \dots)
 }
 \arguments{
   \item{x}{       An object of class \code{"CTLscan"}. }
