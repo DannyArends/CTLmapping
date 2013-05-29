@@ -111,7 +111,7 @@ printSignificantSlope <- function(p1, m, p2, pval, slopes, header=FALSE){
     cat("Phe1\tMar\tPh2\tF\tPvalue", paste0("\tSlope", 1:length(slopes$betas)),"\n")
   }
   cat(p1, "\t", m, "\t", p2, "\t", slopes$f ,"\t", pval, paste0("\t", slopes$betas),"\n")
-  return TRUE;
+  return(TRUE);
 }
 
 #-- Normal interface --#
