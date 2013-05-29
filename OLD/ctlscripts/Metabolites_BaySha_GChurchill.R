@@ -6,6 +6,20 @@
 # Start by: 
 # setwd("~/Github/Rpackages/CTLmapping/OLD/ctlscripts")
 
+
+nothing <- function(x){ return(x); }
+dorank <- function(x){ return(rank(x)); }
+
+twoLocus <- function(metabolites, genotypes, phe=c(1,2), mar = c(44,58), FUN = nothing){
+  plot(FUN(metabolites[,phe[1]]), FUN(metabolites[,phe[2]]), col=genotypes[,mar[1]] + (2*genotypes[,mar[2]]),pch=19,xlab=colnames(metabolites)[phe[1]],ylab=colnames(metabolites)[phe[2]])
+  legend("topleft",c("AA,AA","BB,AA","AA,BB","BB,BB"), col=c(3,4,5,6),pch=19)
+}
+
+op <- par(mfrow=c(1,3))
+twoLocus(metabolites, genotypes)
+twoLocus(metabolites, genotypes,c(3,2))
+twoLocus(metabolites, genotypes,c(1,3))
+
 metabolites <- read.table("Metabolites_BaySha_GChurchill.txt",sep="\t",row.names=1,header=TRUE)
 genotypes   <- read.table("Genotypes_BaySha.txt",row.names=1,header=TRUE)
 
