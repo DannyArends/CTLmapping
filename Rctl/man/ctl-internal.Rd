@@ -35,6 +35,7 @@
 %ctl.slope.R
 \alias{stdSlopeEstimate}
 \alias{stdSlopeIntercept}
+\alias{printSignificantSlope}
 \alias{stdSlopeError}
 \alias{stdSlopeBeta}
 \alias{stdSlopeTest}
