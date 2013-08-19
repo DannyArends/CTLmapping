@@ -92,7 +92,7 @@ double** toLODexact(double** scores, clvector* genoenc, size_t nmar, size_t nphe
     size_t Dof = (genoenc[m].nelements-1);
     for(p = 0; p < nphe; p++){
       pval = chiSQtoP(scores[m][p], Dof);
-      pval *= nmar*nphe;
+//      pval *= nmar*nphe;
       if(pval >= 1){
         ctls[m][p] = 0.0;
       }else{ ctls[m][p] = fabs(log10(pval)); }
