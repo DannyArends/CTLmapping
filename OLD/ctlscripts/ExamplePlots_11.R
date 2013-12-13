@@ -8,7 +8,7 @@ pchbb <- 20
 
 ccex <- 1.0
 
-setwd("~/Github/Articles/CTLpaper/nar/img")
+setwd("~/Github/CTLpaper/nar/img")
 #png("CTL_Example.png",width=1024,height=768)
 postscript("CTL_Example_11.eps",width=20, height=20,paper="special", horizontal=FALSE)
   op <- par(mfrow = c(3,3))
