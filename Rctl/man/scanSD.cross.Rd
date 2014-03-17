@@ -1,8 +1,8 @@
 \name{scanSD.cross}
 \alias{scanSD.cross}
-\title{scanSD.cross - Analyze the differences in Standard Deviation between genotypes between two traits (R/qtl cross object) }
+\title{scanSD.cross - Analyze the differences in standard deviation between two traits at a certain genetic marker (R/qtl cross object) }
 \description{
-  Analyze the differences in Standard Deviation between genotypes between two traits
+  Analyze the differences in standard deviation between two traits at a certain genetic marker
 }
 \usage{
 scanSD.cross(cross, pheno.col = c(1,2), doRank = FALSE)
