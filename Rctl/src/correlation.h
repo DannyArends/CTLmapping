@@ -18,6 +18,15 @@
 
     #define EPSILON 1e-12
 
+    /** R interface to correlation function */
+    void R_correlation(double* x, double* y, double* res, int* dim, int* verb);
+
+    /** R interface to cor1toN function */
+    void R_correlation1toN(double* x, double* y, double* res, int* dim, int* numy, int* verb);
+
+    /** R interface to chiSQN function */
+    void R_chiSQN(int* nr, double* r, double* res, int* phe, int* nsamples, int* nphe);
+
     /** Calculates pearsons correlation between vector x and vector y.  Use ranked 
      *  input for non-parametric testing */
     double  correlation(const double* x, const double* y, size_t dim, bool verbose);

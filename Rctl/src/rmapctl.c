@@ -21,7 +21,6 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   int nindividuals  = (int)(*nind);
   int nmarkers      = (int)(*nmar);
   int nphenotypes   = (int)(*nphe);
-//  int ngenotypes    = (int)(*ngeno);
   int phenotype     = (int)(*p);
   int npermutations = (int)(*nperms);
   int alpha         = (int)(*a);

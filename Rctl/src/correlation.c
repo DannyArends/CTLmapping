@@ -8,6 +8,35 @@
  **********************************************************************/
 #include "correlation.h"
 
+void R_correlation(double* x, double* y, double* res, int* dim, int* verb){
+  size_t dimension  = (size_t)(*dim);
+  bool verbose   = (bool)(*verb);
+  res[0] = correlation(x, y, dimension, verbose);
+}
+
+void R_correlation1toN(double* x, double* y, double* res, int* dim, int* numy, int* verb){
+  size_t i = 0;
+  size_t dimension  = (size_t)(*dim);
+  size_t ny    = (size_t)(*numy);
+  bool verbose = (bool)(*verb);
+  double** ynew = asdmatrix(dimension, ny, y);
+  double*  cors = cor1toN(x, ynew, dimension, ny, verbose);
+  for(i = 0; i < ny; i++){ res[i] = cors[i]; }
+  free(cors);
+}
+
+void R_chiSQN(int* nr, double* r, double* res, int* phe, int* nsamples, int* nphe){
+  size_t p = 0;
+  size_t phenotype = (size_t)(*phe);
+  size_t nphenotypes = (size_t)(*nphe);
+  size_t ncorrelations = (size_t)(*nr);
+  double** correlations = asdmatrix(ncorrelations, nphenotypes, r);
+
+  double* chisq = chiSQN(ncorrelations, correlations, phenotype, nsamples, nphenotypes);
+  for(p = 0; p < nphenotypes; p++){ if(phenotype != p){ res[p] = chisq[p]; } }
+  free(chisq);
+}
+
 double correlation(const double* x, const double* y, size_t dim, bool verbose){
   size_t i;
   double XiYi = 0.0, Xi = 0.0, Yi = 0.0, XiP2 = 0.0, YiP2 = 0.0;
@@ -25,7 +54,7 @@ double correlation(const double* x, const double* y, size_t dim, bool verbose){
   double nom = (XiYi - (onedivn *Xi * Yi));
   double denom = sqrt(XiP2 - onedivn * pow(Xi, 2.0)) * sqrt(YiP2 - onedivn * pow(Yi, 2.0));
   double cor = nom / denom;
-  if(isNaN(cor) || isinf(cor) || cor < (-1.0 + EPSILON) || cor > (1.0 + EPSILON)){ 
+  if(isNaN(cor) || isinf(cor) || cor < (-1.0 - EPSILON) || cor > (1.0 + EPSILON)){ 
     err("Correlation '%.4f' not in range [-1, 1]\n", cor); 
   }
   return(cor);
