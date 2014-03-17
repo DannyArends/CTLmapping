@@ -43,7 +43,7 @@ struct D{
 string[] parseNames(string filename){
   string[] data;
   if(!exists(filename) || !isFile(filename)){
-    abort(xformat("No such file %s", filename));
+    abort(std.string.format("No such file %s", filename));
   }else{
     try{
       SysTime stime = Clock.currTime();
@@ -52,7 +52,7 @@ string[] parseNames(string filename){
         string[] splitted = chomp(buffer).split("\t");
         if(splitted.length > 0){ data ~= splitted[0]; }
       }
-    }catch(Throwable e){ abort(xformat("File %s read exception %s", filename, e)); }
+    }catch(Throwable e){ abort(std.string.format("File %s read exception %s", filename, e)); }
   }
   return data;
 }
@@ -61,7 +61,7 @@ string[] parseNames(string filename){
 T[][] parseFile(T)(string filename, bool verbose = false ,bool hasRowHeader = true, T nullval = -999){
   T[][] data;
   if(!exists(filename) || !isFile(filename)){
-    abort(xformat("No such file %s", filename));
+    abort(std.string.format("No such file %s", filename));
   }else{
     try{
       SysTime stime = Clock.currTime();
@@ -89,7 +89,7 @@ T[][] parseFile(T)(string filename, bool verbose = false ,bool hasRowHeader = tr
       freevector(inputbuffer);
       if(verbose) writefln("Parsed %s imports from file: %s",data.length, filename);
       writefln("Loading took: (%s msecs)",(Clock.currTime()-stime).total!"msecs"());
-    }catch(Throwable e){ abort(xformat("File %s read exception %s", filename, e)); }
+    }catch(Throwable e){ abort(std.string.format("File %s read exception %s", filename, e)); }
   }
   return data;
 }

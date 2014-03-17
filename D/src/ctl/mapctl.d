@@ -83,7 +83,7 @@ void main(string[] args){
     if(phenotypes.length == 0) abort("No phenotypes loaded, analysis aborted");
     if(verbose) writefln("Dataset: %s and %s individuals", genotypes[0].length, phenotypes[0].length);
     if(genotypes[0].length != phenotypes[0].length){
-      abort(xformat("Mismatch between individuals %s != %s", genotypes[0].length, phenotypes[0].length));
+      abort(std.string.format("Mismatch between individuals %s != %s", genotypes[0].length, phenotypes[0].length));
     }
     Genotypes  geno;
     Phenotypes pheno;
