@@ -3,7 +3,13 @@
 %ctl.network.R
 \alias{CTLnetwork.addmarker}
 
-%ctl.power.r
+%ctl.correlation.R
+\alias{correlation}
+\alias{chiSQN}
+\alias{test.correlation}
+\alias{test.chiSQN}
+
+%ctl.power.R
 \alias{correlated.phenotype}
 \alias{check.marker}
 \alias{check.pheno}
@@ -16,7 +22,7 @@
 \alias{CTLanalyseRatios}
 \alias{CTLanalyseEffects}
 
-%ctl.circle.r
+%ctl.circle.R
 \alias{mapinfotomarkerlocs}
 \alias{draw.element}
 \alias{draw.spline}
@@ -24,7 +30,7 @@
 \alias{nfrom}
 \alias{nto}
 
-%ctl.statistics.r
+%ctl.statistics.R
 \alias{extrapolateBeyondRange}
 \alias{CTLscantoScanone}
 \alias{CTLtoLODvector}

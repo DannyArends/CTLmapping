@@ -1,26 +1,23 @@
 #
 # ctl.correlation.R
 #
-# copyright (c) 2010-2012 - GBIC, Danny Arends, Pjotr Prins, Yang Li, and Ritsert C. Jansen
-# last modified Dec, 2012
-# first written Dec, 2012
+# copyright (c) 2010-2014 - GBIC, Danny Arends, Pjotr Prins, Yang Li, and Ritsert C. Jansen
+# last modified Mar, 2014
+# first written Mar, 2014
 # 
-# Wrappers around the correlation code
+# Wrappers around the correlation and chisquare code
 #
 
 correlation <- function(x, y, verbose = FALSE){
-  res <- c(0);
-  if(is.matrix(y)){
+  if(is.matrix(y)){           # Call the optimized loop unrolled version
     res <- rep(0, ncol(y));
     result <- .C("R_correlation1toN", x = as.double(x), y = as.double(y), res = as.double(res), as.integer(length(x)), as.integer(ncol(y)), as.integer(verbose), PACKAGE="ctl")
   }else{
+    res <- c(0);
     result <- .C("R_correlation", x = as.double(x), y = as.double(y), res = as.double(res), as.integer(length(x)), as.integer(verbose), PACKAGE="ctl")
   }
   return(result$res)
 }
-
-
-#void R_chiSQN(int* nr, double* r, double* res, int* phe, int* nsamples, int* nphe){
 
 chiSQN <- function(correlations, nsamples){
   res <- rep(0, nrow(correlations));
@@ -33,6 +30,13 @@ test.correlation <- function(){
   correlation(1:10, 1:10)
   correlation(10:1, 1:10)
   correlation(runif(10), matrix(runif(50),10,5))
+}
+
+test.chiSQN <- function(){
+  library(ctl)
+  correlations <- matrix(runif(6), 3, 2)
+  nind <- c(20,20)
+  chiSQN(correlations, nind)
 }
 
 # end of ctl.correlation.R
