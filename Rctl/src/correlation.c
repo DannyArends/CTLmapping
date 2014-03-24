@@ -137,6 +137,7 @@ double* chiSQN(size_t nr, double** r, size_t phe, int* nsamples, size_t nphe){
       }
       if(denom == 0) err("Divide by 0 groups too small");
       ret[p] = sumOfSquares - (pow(squaresOfSum, 2.0) / denom);
+      if(isNaN(ret[p])) ret[p] = 0.0; // This can happen if two phenotypes are the exact same
     }
   }
   return ret;
@@ -144,6 +145,6 @@ double* chiSQN(size_t nr, double** r, size_t phe, int* nsamples, size_t nphe){
 
 double chiSQtoP(double Cv, int Dof){
   if(Cv <= 0 || Dof < 1) return 1.0;
-  return dchisq(Cv,(double)Dof, 0);
+  return pchisq(Cv,(double)Dof, 0, 0);
 }
 

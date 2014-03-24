@@ -10,7 +10,7 @@
 
 correlation <- function(x, y, verbose = FALSE){
   if(is.matrix(y)){           # Call the optimized loop unrolled version
-    if(nrow(y) != length(x)) stop("incompatible dimensions")
+    if(nrow(y) != length(x)) stop(paste0("incompatible dimensions", length(x), nrow(y)))
     res <- rep(0, ncol(y));
     result <- .C("R_correlation1toN", x = as.double(x), y = as.double(y), res = as.double(res), as.integer(length(x)), as.integer(ncol(y)), as.integer(verbose), PACKAGE="ctl")
   }else{
@@ -35,6 +35,31 @@ chiSQtoP <- function(cv, dof){
   }))
 }
 
+getCorrelations.cross <- function(cross, pheno.col = 1, marker.col = 1){
+  marker <- pull.geno(cross)[,marker.col]
+  phenotypes <- pull.pheno(cross)
+  result <- NULL; nums <- NULL
+  for(x in names(table(marker))){
+    idx <- which(marker == x)
+    result$correlations <- cbind(result$correlations, correlation(phenotypes[idx, pheno.col], phenotypes[idx, ]))
+    result$samplesize <- c(result$samplesize, length(idx))
+  }
+  rownames(result$correlations) <- colnames(phenotypes)
+  colnames(result$correlations) <- names(table(marker))
+  return(result)
+}
+
+test.getCorrelation.cross <- function(){
+  library(qtl)
+  library(ctl)
+  data(hyper)
+  hyper$pheno <- matrix(runif(250*10), 250, 10)  # Create 10 phenotypes as a matrix
+  colnames(hyper$pheno) <- paste0("Pheno", 1:10)
+  crs <- getCorrelations.cross(hyper)
+  cvs <- chiSQN(crs$correlations, crs$samplesize)
+  pvs <- chiSQtoP(cvs, (length(crs$samplesize)-1))
+}
+
 test.correlation <- function(){
   library(ctl)
   correlation(1:10, 1:10)
@@ -45,7 +70,6 @@ test.correlation <- function(){
   cor(v,against)              # Should match
   correlation(v, t(against))  # Here we check the error condition
   cor(v,t(against))
-
 }
 
 test.chiSQN <- function(){
@@ -55,8 +79,10 @@ test.chiSQN <- function(){
   nind <- c(20, 20)                             # 20 individuals in each group
   cvs <- chiSQN(correlations, nind)             # Calculate the critical ChiSquare values
   chiSQtoP(cvs, ngeno-1)                        # P values associated with the observed differences in correlation
+  plot(chiSQtoP(seq(0,20,0.01), 1)  , lwd=2, t='l')                   # Plot the Pvalues for scores 0 till 30 using 1 degree of freedom
+  points(chiSQtoP(seq(0,20,0.01), 2), lwd=2, t='l', col='yellow')     # Plot the Pvalues for scores 0 till 30 using 2 degree of freedom
+  points(chiSQtoP(seq(0,20,0.01), 3), lwd=2, t='l', col='red')        # Plot the Pvalues for scores 0 till 30 using 3 degree of freedom
 }
 
 # end of ctl.correlation.R
-
 
