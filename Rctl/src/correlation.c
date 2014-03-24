@@ -19,7 +19,7 @@ void R_correlation1toN(double* x, double* y, double* res, int* dim, int* numy, i
   size_t dimension  = (size_t)(*dim);
   size_t ny    = (size_t)(*numy);
   bool verbose = (bool)(*verb);
-  double** ynew = asdmatrix(dimension, ny, y);
+  double** ynew = asdmatrix(ny, dimension, y);
   double*  cors = cor1toN(x, ynew, dimension, ny, verbose);
   for(i = 0; i < ny; i++){ res[i] = cors[i]; }
   free(cors);
@@ -36,6 +36,8 @@ void R_chiSQN(int* nr, double* r, double* res, int* phe, int* nsamples, int* nph
   for(p = 0; p < nphenotypes; p++){ if(phenotype != p){ res[p] = chisq[p]; } }
   free(chisq);
 }
+
+void R_chiSQtoP(double* Cv, int* Dof, double* res){ res[0] = chiSQtoP((double)(*Cv), (int)(*Dof)); }
 
 double correlation(const double* x, const double* y, size_t dim, bool verbose){
   size_t i;

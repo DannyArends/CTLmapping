@@ -27,6 +27,9 @@
     /** R interface to chiSQN function */
     void R_chiSQN(int* nr, double* r, double* res, int* phe, int* nsamples, int* nphe);
 
+    /** R interface to chiSQtoP function */
+    void R_chiSQtoP(double* Cv, int* Dof, double* res);
+
     /** Calculates pearsons correlation between vector x and vector y.  Use ranked 
      *  input for non-parametric testing */
     double  correlation(const double* x, const double* y, size_t dim, bool verbose);
