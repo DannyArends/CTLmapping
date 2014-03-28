@@ -23,9 +23,9 @@ genetic wiring of the classical phenotypes and identify key players in the
 genetic / protein network underlying classical phenotypes using QTL and CTL 
 information.
 
-### Installing the package
-The first and quickest way to start mapping CTLs, is to install the package 
-directly into R from Github using the devtools package:
+### Installing the R package
+The quickest way to start mapping CTLs, is to install the package directly into 
+R from Github using the devtools package:
 
 ```
 # install.packages("devtools")
