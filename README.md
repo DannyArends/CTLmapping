@@ -27,9 +27,9 @@ The first and quickest way to start mapping CTLs, is to install the package
 directly into R from Github using the devtools package:
 
 ```R
-    # install.packages("devtools")
-    library(devtools)
-    install_github("CTLmapping", "DannyArends", subdir="Rctl")
+# install.packages("devtools")
+library(devtools)
+install_github("CTLmapping", "DannyArends", subdir="Rctl")
 ```
 
 The second option to is to clone the package from Github. First prepare your 
@@ -80,8 +80,8 @@ operating system.
 Load the library in the R interface by the following command (in R):
 
 ```R
-    library(ctl)                            # Load the library
-    ?ctl                                    # Show the help
+library(ctl)                            # Load the library
+?ctl                                    # Show the help
 ```
 
 ### Examples
@@ -89,9 +89,9 @@ Load the library in the R interface by the following command (in R):
 Scan your data
 
 ```R
-    library(ctl)
-    data(multitrait)
-    ctlres <- CTLscan.cross(multitrait)
+library(ctl)
+data(multitrait)
+ctlres = CTLscan.cross(multitrait)
 ```
 
 Plot a single phenotype, the profile is comparable to the QTL profile. However using 
@@ -99,7 +99,7 @@ CTL mapping we know which phenotypes are differentially correlated underneath th
 This additional information adds to the already known QTL information.
 
 ```R
-    plot(ctlres, pheno.col=12)
+plot(ctlres, pheno.col=12)
 ```
 
 Create an image of the phenotypes to marker relation strength, this matrix is 'comparable' 
@@ -107,21 +107,21 @@ to a heat map of QTL scans on many phenotypes, the underlying model assumptions 
 from QTL mapping but comparable, thus the output is not shockingly different from QTL mapping.
 
 ```R
-    r1 <- image(ctlres,against="markers")
+r1 = image(ctlres,against="markers")
 ```
 
 Create an image of the phenotypes to phenotypes relation strength, this is the additional 
 information matrix, which is not available in classical QTL mapping.
 
 ```R
-    r2 <- image(ctlres,against="phenotypes")
+r2 = image(ctlres,against="phenotypes")
 ```
 
 Reconstruct the network and write two sif files. One sif file contains the full network, the other 
 holds the edge summary network.
 
 ```R
-    CTLnetwork(ctlres)
+CTLnetwork(ctlres)
 ```
 
 We can use Cytoscape to visualize the created network (available from [www.cytoscape.org](http://www.cytoscape.org// "www.cytoscape.org") )
