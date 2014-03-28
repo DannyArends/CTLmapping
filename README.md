@@ -23,7 +23,7 @@ genetic wiring of the classical phenotypes and identify key players in the
 genetic / protein network underlying classical phenotypes using QTL and CTL 
 information.
 
-### Download the package
+### Installing the package
 The first and quickest way to start mapping CTLs, is to install the package 
 directly into R from Github using the devtools package:
 
@@ -33,8 +33,11 @@ library(devtools)
 install_github("CTLmapping", "DannyArends", subdir="Rctl")
 ```
 
-The second option to is to clone the package from Github. First prepare your 
-environment by download and 'moving' to the folder:
+### Download the software (R, C and D)
+
+The second option to is to clone the package from Github, this will give you 
+access to the R package but also provide the command line tools. First prepare 
+your environment by download and 'moving' to the folder:
 
     $ git clone git://github.com/DannyArends/CTLmapping.git  # Download the repository
     $ cd CTLmapping                                          # Goto the folder
