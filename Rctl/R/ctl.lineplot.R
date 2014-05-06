@@ -17,7 +17,7 @@ ctl.lineplot <- function(CTLobject, mapinfo, pheno.col, significance = 0.05, gap
   ctls       <- ctls[which(ctls[,1] %in% pheno.col),]
   if(class(ctls)=="numeric") ctls <- t(ctls)
   if(nrow(ctls) < 1){    
-    warning(paste("No ctls edges found at significance<", significance))
+    warning(paste("No ctls edges found at significance <", significance))
     plot(c(-1,1),c(-1,1),t='n', axes = FALSE, xlab = "", ylab = "")
     box()    
     return()
