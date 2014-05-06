@@ -15,7 +15,7 @@ void writeout(double** ctls, size_t phenotype, size_t nmar, size_t nphe){
   char* filename = (char*)calloc(25, sizeof(char));
   char* buf      = (char*)calloc(8, sizeof(char));
   strcpy(filename,"pheno");
-  sprintf(buf,"%zu",phenotype);
+  sprintf(buf,"%lu", (unsigned long) phenotype);
   strcat(filename, buf);
   strcat(filename,".o");
   file = fopen(filename,"w+");
@@ -38,13 +38,13 @@ void writesummary(const Phenotypes phenotypes, const Genotypes genotypes, const 
   if(phenotype == 0){ 
     file = fopen(fn,"w+");
     fprintf(file, "Trait\tMarker\tTrait\tLOD");
-    for(i = 0; i < genoenc[0].nelements; i++){ fprintf(file, "\tCor_%zu", i); }
+    for(i = 0; i < genoenc[0].nelements; i++){ fprintf(file, "\tCor_%lu",  (unsigned long) i); }
     fprintf(file, "\n");
   }else{ file = fopen("summary.txt","a+"); }
   for(p = 0; p < nphe; p++){
     for(m = 0; m < nmar; m++){
       if(ctls[m][p] >= -log10(cutoff)){
-        fprintf(file, "%zu\t%zu\t%zu\t%.2f", phenotype, m, p, ctls[m][p]);
+        fprintf(file, "%lu\t%lu\t%lu\t%.2f",  (unsigned long) phenotype,  (unsigned long) m,  (unsigned long) p, ctls[m][p]);
         double* cors = getCorrelations(phenotypes, genotypes, phenotype, genoenc[m], m, p, false);
         for(i = 0; i < genoenc[m].nelements; i++){ fprintf(file,"\t%.3f", cors[i]); }
         fprintf(file, "\n");

@@ -29,7 +29,7 @@ Genotypes permutegenotypes(Genotypes genotypes){
 
 double* permute(const Phenotypes phe, const Genotypes geno, size_t p, clvector* genoenc, 
                 int a, int b, size_t np, bool verbose){
-  size_t perm, ph;
+  size_t perm;
   double* scores = newdvector(np);
 
   for(perm = 0; perm < np; perm++){

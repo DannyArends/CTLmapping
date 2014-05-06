@@ -38,3 +38,5 @@ tests/tmp_kegg
 node_attributes.txt
 *.log
 inst/doc/permutations/*
+Rctl/src-i386/
+Rctl/src-x64/
