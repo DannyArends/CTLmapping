@@ -24,7 +24,7 @@
 
     /** Get the CTLeffects matrix (Chi square scores) for a given phenotype. */
     double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
-                    clvector* genoenc, int alpha, int beta, bool verbose);
+                    clvector* genoenc, bool verbose);
 
   #endif //__MAPCTL_H__
 #ifdef __cplusplus

@@ -16,13 +16,13 @@ double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t p
   size_t i;  
   double** ctls;
   double*  perms;
-  double** scores = ctleffects(phenotypes, genotypes, phenotype, genoenc, 1, 1, verbose);
+  double** scores = ctleffects(phenotypes, genotypes, phenotype, genoenc, verbose);
   if(!doperms){
     info(", toLOD\n");  // Exact calculation can be used
     ctls = toLODexact(scores, genoenc, genotypes.nmarkers, phenotypes.nphenotypes);
   }else{
     info(", Permutation");
-    perms = permute(phenotypes, genotypes, phenotype, genoenc, 1, 1, nperms, false);
+    perms = permute(phenotypes, genotypes, phenotype, genoenc, nperms, false);
     info(", toLOD\n");
     ctls = toLOD(scores, perms, genotypes.nmarkers, phenotypes.nphenotypes, nperms);
     free(perms);
@@ -34,7 +34,7 @@ double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t p
 }
 
 double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
-                    clvector* genoenc, int alpha, int beta, bool verbose){
+                    clvector* genoenc, bool verbose){
 
   size_t g, m, ngenotypes;
   clvector idx;
