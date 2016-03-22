@@ -1,1 +1,5 @@
 exportPattern("^[^\\.]")
+
+importFrom(qtl,pull.pheno)
+importFrom(qtl,pull.geno)
+importFrom(MASS,mvrnorm)
