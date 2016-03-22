@@ -134,8 +134,6 @@ CTLanalyseRatios <- function(n = 100, perms = 100, effect = 0.4, ind = 200, rati
 }
 
 test.power.test <- function(){
-  require(ctl)
-
   sample100 <- CTLanalyseEffects(effects=c(0.02, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.75), ind=100)
   sample200 <- CTLanalyseEffects(effects=c(0.02, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.75), ind=200)
   sample400 <- CTLanalyseEffects(effects=c(0.02, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.75), ind=400)

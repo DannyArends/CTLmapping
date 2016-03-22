@@ -50,8 +50,6 @@ getCorrelations.cross <- function(cross, pheno.col = 1, marker.col = 1){
 }
 
 test.getCorrelation.cross <- function(){
-  library(qtl)
-  library(ctl)
   data(hyper)
   hyper$pheno <- matrix(runif(250*10), 250, 10)  # Create 10 phenotypes as a matrix
   colnames(hyper$pheno) <- paste0("Pheno", 1:10)
@@ -61,7 +59,6 @@ test.getCorrelation.cross <- function(){
 }
 
 test.correlation <- function(){
-  library(ctl)
   correlation(1:10, 1:10)
   correlation(10:1, 1:10)
   v <- runif(10)
@@ -73,7 +70,6 @@ test.correlation <- function(){
 }
 
 test.chiSQN <- function(){
-  library(ctl)
   ngeno <- 2
   correlations <- matrix(runif(20), 10, ngeno)  # 10 markers, with 2 x correlation per genotype
   nind <- c(20, 20)                             # 20 individuals in each group
