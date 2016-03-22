@@ -5,7 +5,7 @@ citEntry(entry="article",
          author = personList(person("Danny", "Arends"), person("Pjotr", "Prins"), person("Ritsert", "Jansen", "C.")),
          journal = "Nucl. Acids Res.",
          year = 2012,
-         volume = XX,
-         pages = "XXX-XXX",
-         textVersion = paste("Arends et al. (2012) Correlated Trait Loci (CTL) mapping. Nucl. Acids Res. XX:XXX-XXX")
+         volume = 00,
+         pages = "000-000",
+         textVersion = paste("Arends et al. (2012) Correlated Trait Loci (CTL) mapping. Nucl. Acids Res. 00:000-000")
          )
