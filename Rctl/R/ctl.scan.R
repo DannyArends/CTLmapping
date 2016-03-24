@@ -9,12 +9,12 @@
 #
 
 #-- CTLscan main function --#
-CTLscan <- function(genotypes, phenotypes, pheno.col, n.perm = 100, strategy = c("Exact", "Full", "Pairwise"), conditions = NULL, qtls = NULL, n.cores = 1, parametric = FALSE, verbose = FALSE){
+CTLscan <- function(genotypes, phenotypes, pheno.col, nperm = 100, strategy = c("Exact", "Full", "Pairwise"), conditions = NULL, qtls = NULL, ncores = 1, parametric = FALSE, verbose = FALSE){
   st <- proc.time()
   if(missing(genotypes) || is.null(genotypes))  stop("argument 'genotypes' is missing, with no default")
   if(any(class(genotypes)=="cross")){
-    CTLscan.cross(genotypes, pheno.col=pheno.col, n.perm=n.perm, strategy=strategy, conditions=conditions,
-                  qtls=qtls, n.cores=n.cores, parametric = parametric, verbose=verbose)
+    CTLscan.cross(genotypes, pheno.col=pheno.col, nperm=nperm, strategy=strategy, conditions=conditions,
+                  qtls=qtls, ncores=ncores, parametric = parametric, verbose=verbose)
   }
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   if(missing(pheno.col)) pheno.col = 1:ncol(phenotypes)
@@ -33,20 +33,20 @@ CTLscan <- function(genotypes, phenotypes, pheno.col, n.perm = 100, strategy = c
   }
   results    <- vector("list",length(pheno.col))
 
-  if(n.cores == 1){ # Single core debug call
+  if(ncores == 1){ # Single core debug call
     idx <- 1
     for(phe in pheno.col){
-      results[[idx]] <- CTLmapping(genotypes, phenotypes, pheno.col=phe, n.perm=n.perm,
+      results[[idx]] <- CTLmapping(genotypes, phenotypes, pheno.col=phe, nperm=nperm,
                              strategy=strategy, qtls=qtls, verbose=verbose)
       idx <- idx + 1
     }
   }else{ # Normally we would want to use multiple cores
-    min.cores <- min(n.cores,length(pheno.col))
-    if(min.cores != n.cores) warning("Reduced n.cores (",n.cores,"to",min.cores,")")
+    min.cores <- min(ncores,length(pheno.col))
+    if(min.cores != ncores) warning("Reduced n.cores (",ncores,"to",min.cores,")")
     cl <- parallel::makeCluster(rep("localhost", min.cores))
     parallel::clusterEvalQ(cl, library(ctl))
     results <- parallel::parLapply(cl, pheno.col, function(x, qtls){
-      CTLmapping(genotypes, phenotypes, pheno.col=x, n.perm=n.perm, strategy=strategy,
+      CTLmapping(genotypes, phenotypes, pheno.col=x, nperm=nperm, strategy=strategy,
                  qtls = qtls, verbose=verbose)
     }, qtls)
     parallel::stopCluster(cl)
@@ -56,7 +56,7 @@ CTLscan <- function(genotypes, phenotypes, pheno.col, n.perm = 100, strategy = c
   invisible(results)
 }
 
-CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, n.perm = 100, strategy = c("Exact", "Full", "Pairwise"), qtls = NULL, verbose = FALSE){
+CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, nperm = 100, strategy = c("Exact", "Full", "Pairwise"), qtls = NULL, verbose = FALSE){
   if(missing(genotypes) || is.null(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
 
@@ -80,15 +80,15 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, n.perm = 100, strat
 
   #Setup return structures for the permutations
   perm.type <- 0
-  perms     <- as.double(rep(0, n.perm))
+  perms     <- as.double(rep(0, nperm))
   if(strategy[1] == "Full"){ perm.type <- 1; }
   if(strategy[1] == "Pairwise"){
-    perm.type = 2; perms = as.double(rep(0,n.perm * n.phe))
+    perm.type = 2; perms = as.double(rep(0,nperm * n.phe))
   }
 
   result <- .C("R_mapctl",as.integer(n.ind), as.integer(n.mar), as.integer(n.phe),
-                    			as.integer(unlist(genotypes)), as.double(unlist(phenotypes)),
-                          as.integer((pheno.col-1)), as.integer(n.perm),
+                          as.integer(unlist(genotypes)), as.double(unlist(phenotypes)),
+                          as.integer((pheno.col-1)), as.integer(nperm),
                           as.integer(perm.type),
                           dcor =as.double(rep(0,n.mar*n.phe)),
                           perms=as.double(perms),
@@ -98,7 +98,7 @@ CTLmapping <- function(genotypes, phenotypes, pheno.col = 1, n.perm = 100, strat
   e2 <- proc.time()
   res$dcor  <- matrix(result$dcor, n.mar, n.phe)   # Store the DCOR/Z scores
   res$perms <- result$perms                        # Permutations
-  if(perm.type == 1){ res$perms <- matrix(result$perms, n.perm, n.phe); }
+  if(perm.type == 1){ res$perms <- matrix(result$perms, nperm, n.phe); }
 
   res$ctl   <- matrix(result$ctl, n.mar, n.phe)    # CTL likelihoods
   if(any(is.na(res$dcor))) warning("Differential correlation: NaN scores, no variance ?")
