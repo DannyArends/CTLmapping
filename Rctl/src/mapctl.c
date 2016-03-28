@@ -18,12 +18,12 @@ double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t p
   double*  perms;
   double** scores = ctleffects(phenotypes, genotypes, phenotype, genoenc, verbose);
   if(!doperms){
-    info(", toLOD\n");  // Exact calculation can be used
+    info(", toLOD\n", "");  // Exact calculation can be used
     ctls = toLODexact(scores, genoenc, genotypes.nmarkers, phenotypes.nphenotypes);
   }else{
-    info(", Permutation");
+    info(", Permutation", "");
     perms = permute(phenotypes, genotypes, phenotype, genoenc, nperms, false);
-    info(", toLOD\n");
+    info(", toLOD\n", "");
     ctls = toLOD(scores, perms, genotypes.nmarkers, phenotypes.nphenotypes, nperms);
     free(perms);
   }

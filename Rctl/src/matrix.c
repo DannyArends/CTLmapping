@@ -60,10 +60,10 @@ void printdmatrix(double** m, size_t rows, size_t cols){
   size_t r, c;
   for(r = 0; r < rows; r++){
     for(c = 0; c < cols; c++){
-      if(c > 0) info("\t");
+      if(c > 0) info("\t", "");
       info("%f",m[r][c]);
     }
-    info("\n");
+    info("\n", "");
   }
 }
 
@@ -71,10 +71,10 @@ void printimatrix(int** m, size_t rows, size_t cols){
   size_t r, c;
   for(r = 0; r < rows; r++){
     for(c = 0; c < cols; c++){
-      if(c > 0) info("\t");
+      if(c > 0) info("\t", "");
       info("%d",m[r][c]);
     }
-    info("\n");
+    info("\n", "");
   }
 }
 

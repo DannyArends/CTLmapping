@@ -56,31 +56,31 @@ int* addtoivector(int* v, size_t dim, int n){
 
 void printcvector(const char* v, size_t dim){
   size_t r;
-  info("[");
-  for(r = 0; r < dim; r++){ info("%c",v[r]); if(r != (dim-1)) info(", "); }
-  info("]");
+  info("[", "");
+  for(r = 0; r < dim; r++){ info("%c",v[r]); if(r != (dim-1)) info(", ", ""); }
+  info("]", "");
 }
 
 void printdvector(const double* v, size_t dim){
   size_t r;
-  info("[");
-  for(r = 0; r < dim; r++){ info("%.2f",v[r]); if(r != (dim-1)) info(", "); }
-  info("]");
+  info("[", "");
+  for(r = 0; r < dim; r++){ info("%.2f",v[r]); if(r != (dim-1)) info(", ", ""); }
+  info("]", "");
 }
 
 void printivector(const int* v, size_t dim){
   size_t r;
-  info("[");
-  for(r = 0; r < dim; r++){ info("%d",v[r]); if(r != (dim-1)) info(", "); }
-  info("]");
+  info("[", "");
+  for(r = 0; r < dim; r++){ info("%d",v[r]); if(r != (dim-1)) info(", ", ""); }
+  info("]", "");
 }
 
 void printclvector(const clvector v){
   size_t r;
   size_t dim = v.nelements;
-  info("[");
-  for(r = 0; r < dim; r++){ info("%d",v.data[r]); if(r != (dim-1)) info(", "); }
-  info("]\n");
+  info("[", "");
+  for(r = 0; r < dim; r++){ info("%d",v.data[r]); if(r != (dim-1)) info(", ", ""); }
+  info("]\n", "");
 }
 
 clvector which(const int* v, size_t dim, int e){

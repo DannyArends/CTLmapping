@@ -88,7 +88,7 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, bool verbose){
   for(j = 0; j < ny; j++){
     nom   = (XiYi[j] - (onedivn*Xi*Yi[j]));
     denom = sqrt(XiP2 - (onedivn * Xi * Xi)) * sqrt(YiP2[j] - (onedivn * Yi[j] * Yi[j]));
-    if(denom == 0) err("Denominator = 0 in correlation (Too few samples in a genotype)\n");
+    if(denom == 0) err("Denominator = 0 in correlation (Too few samples in a genotype)\n", "");
     cors[j] = nom / denom;
     if(isNaN(cors[j]) || isinf(cors[j]) || cors[j] < (-1.0 + EPSILON) || cors[j] > (1.0 + EPSILON)){ 
       err("Correlation '%.8f' not in range [-1, 1]\n", cors[j]);
@@ -135,7 +135,7 @@ double* chiSQN(size_t nr, double** r, size_t phe, int* nsamples, size_t nphe){
           denom += df;
         }
       }
-      if(denom == 0) err("Divide by 0 groups too small");
+      if(denom == 0) err("Divide by 0 groups too small", "");
       ret[p] = sumOfSquares - (pow(squaresOfSum, 2.0) / denom);
       if(isNaN(ret[p])) ret[p] = 0.0; // This can happen if two phenotypes are the exact same
     }
