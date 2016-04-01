@@ -9,6 +9,14 @@ natural and experimental populations. It is a method which complements classical
 QTL analysis, providing additional insights overlooked by the classical QTL 
 approach.
 
+### Cite CTL mapping
+
+When this package was helpful, please (read) and cite the upcoming paper here: 
+[TODO: http://biorxiv.org/ DOI] in your publication, when (re-)using the any 
+code or data provided by this package, please also cite: [TODO: Github/Zenodo DOI] 
+for future code and data references. Citations are also available for import in 
+bibtex format [TODO: bibtex with DOIs].
+
 ### Installing the R package
 The quickest way to start mapping CTLs, is to install the package directly into 
 R from Github using the devtools package:
@@ -82,7 +90,8 @@ operating system.
 
 ### Algorithm
 
-Learn more about the [algorithm](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/ALGORITHM.md)
+Learn more about the [algorithm](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/ALGORITHM.md) 
+behind CTL mapping
 
 ### Contributing and TODO
 
