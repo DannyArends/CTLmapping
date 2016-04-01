@@ -148,15 +148,15 @@ holds the edge summary network.
 CTLnetwork(ctlres)
 ```
 
-We can use Cytoscape to visualize the created network (available from [www.cytoscape.org](http://www.cytoscape.org// "www.cytoscape.org") )
+We can use Cytoscape to visualize the created network (available from [www.cytoscape.org](http://www.cytoscape.org/ "www.cytoscape.org") )
 
 ### Example Data and Formats
 
-Example cross object in csvr format (link)[http://github.com/DannyArends/CTLmapping/tree/master/Rctl/tests "Gene expression data"]
+Example cross object in (R/qtl csvr format)[http://github.com/DannyArends/CTLmapping/tree/master/Rctl/tests/ "Gene expression data"]
 
-Example matrixes in tab delim format (link)[http://github.com/DannyArends/CTLmapping/tree/master/D/test/data "Metabolite abundance data"]
+Example matrixes in (tab delim format)[http://github.com/DannyArends/CTLmapping/tree/master/D/test/data/ "Metabolite abundance data"]
 
-Example matrixes in experimental qtab format (link)[http://github.com/DannyArends/CTLmapping/tree/master/D/test/data "Metabolite abundance qtab data"]
+Example matrixes in (experimental qtab format)[http://github.com/DannyArends/CTLmapping/tree/master/D/test/data/ "Metabolite abundance qtab data"]
 
 ### Contributing and TODO
 
