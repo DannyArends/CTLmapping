@@ -97,12 +97,25 @@ library(ctl)                            # Load the library
 
 ### Examples
 
-Scan your data
+If you have data prepared for (R/qtl)[http://www.rqtl.org/ "R/qtl website"], 
+you can use the CTLscan.cross() function to directly scan your R/qtl cross 
+object.
+
+Scan some example data (in R/qtl format) using the CTLscan.cross function:
 
 ```
 library(ctl)
 data(multitrait)
 ctlres = CTLscan.cross(multitrait)
+```
+
+There is also a CTLscan() function, this function takes plain old genotype and 
+phenotype matrices as input, and is can be called in the same way.
+
+```
+library(ctl)
+data(ath.metabolites)
+ctlres = CTLscan(ath.metab$genotypes, ath.metab$phenotypes)
 ```
 
 Plot a single phenotype, the profile is comparable to the QTL profile. However using 
@@ -118,14 +131,14 @@ to a heat map of QTL scans on many phenotypes, the underlying model assumptions 
 from QTL mapping but comparable, thus the output is not shockingly different from QTL mapping.
 
 ```
-r1 = image(ctlres,against="markers")
+r1 = image(ctlres, against="markers")
 ```
 
 Create an image of the phenotypes to phenotypes relation strength, this is the additional 
 information matrix, which is not available in classical QTL mapping.
 
 ```
-r2 = image(ctlres,against="phenotypes")
+r2 = image(ctlres, against="phenotypes")
 ```
 
 Reconstruct the network and write two sif files. One sif file contains the full network, the other 
@@ -136,6 +149,14 @@ CTLnetwork(ctlres)
 ```
 
 We can use Cytoscape to visualize the created network (available from [www.cytoscape.org](http://www.cytoscape.org// "www.cytoscape.org") )
+
+### Example Data and Formats
+
+Example cross object in csvr format (link)[https://github.com/DannyArends/CTLmapping/tree/master/Rctl/tests, "Gene expression data"]
+
+Example matrixes in tab delim format (link)[https://github.com/DannyArends/CTLmapping/tree/master/D/test/data, "Metabolite abundance data"]
+
+Example matrixes in experimental qtab format (link)[https://github.com/DannyArends/CTLmapping/tree/master/D/test/data, "Metabolite abundance qtab data"]
 
 ### Contributing and TODO
 
