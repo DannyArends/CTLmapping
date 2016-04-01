@@ -19,7 +19,9 @@ library(devtools)
 install_github("CTLmapping", "DannyArends", subdir="Rctl")
 ```
 
-After installing [learn the R commands](#starting-in-r "Starting in R")
+Learn more about the [the R commands](https://github.com/DannyArends/CTLmapping/blob/master/Learn CTL/STARTINGinR.md)
+
+After installing [learn ](#starting-in-r "Starting in R")
 
 ### Download the software (R, C and D)
 
@@ -30,7 +32,7 @@ your environment by download and 'moving' to the folder:
     $ git clone git://github.com/DannyArends/CTLmapping.git  # Download the repository
     $ cd CTLmapping                                          # Goto the folder
 
-### Use the R library
+### Manually install the R library
 
 Prepare your environment by download and installing the R environment from 
 [www.r-project.org](http://www.r-project.org/ "www.r-project.org"). Then 
@@ -43,7 +45,14 @@ or use the 'installR' makefile target:
 
     $ make installR                                          # Install into R
 
-Plans are to put the package on CRAN, but this has not happend yet. 
+Plans are to put the package on CRAN, but this has not happend yet. A Quick online 
+introduction is [available](https://github.com/DannyArends/CTLmapping/blob/master/Learn CTL/STARTINGinR.md) 
+but help files are also easily available for almost all function in R using:
+
+```
+library(ctl)                            # Load the library
+?ctl                                    # Show the general help for ctl
+```
 
 ### Compile the standalone executable
 
@@ -58,8 +67,9 @@ Just run 'make' from a terminal / command line:
     $ make static                                            # Compile the static library
     $ make shared                                            # Compile the shared library
 
-C code can also be compiled also into static or dynamic link libraries, when using the 
-appropriate makefile commands. 
+C code can also be compiled also into static or dynamic libraries, when using the 
+appropriate makefile commands and can then be used in your own software as external 
+dependancy with minimal coupling to your own software.
 
 #### (D 2.0 version)
 
@@ -74,79 +84,7 @@ operating system.
 
 ### Algorithm
 
-Learn more about the [algorithm](https://github.com/DannyArends/CTLmapping/blob/master/Learn CTL/ALGORITHM)
-
-### Starting in R
-
-Load the library in the R interface by the following command (in R):
-
-```
-library(ctl)                            # Load the library
-?ctl                                    # Show the help
-```
-
-### Examples
-
-If you have data prepared for (R/qtl)[http://www.rqtl.org/ "R/qtl website"], 
-you can use the CTLscan.cross() function to directly scan your R/qtl cross 
-object.
-
-Scan some example data (in R/qtl format) using the CTLscan.cross function:
-
-```
-library(ctl)
-data(multitrait)
-ctlres = CTLscan.cross(multitrait)
-```
-
-There is also a CTLscan() function, this function takes plain old genotype and 
-phenotype matrices as input, and is can be called in the same way.
-
-```
-library(ctl)
-data(ath.metabolites)
-ctlres = CTLscan(ath.metab$genotypes, ath.metab$phenotypes)
-```
-
-Plot a single phenotype, the profile is comparable to the QTL profile. However using 
-CTL mapping we know which phenotypes are differentially correlated underneath the peak.
-This additional information adds to the already known QTL information.
-
-```
-plot(ctlres, pheno.col=12)
-```
-
-Create an image of the phenotypes to marker relation strength, this matrix is 'comparable' 
-to a heat map of QTL scans on many phenotypes, the underlying model assumptions are different 
-from QTL mapping but comparable, thus the output is not shockingly different from QTL mapping.
-
-```
-r1 = image(ctlres, against="markers")
-```
-
-Create an image of the phenotypes to phenotypes relation strength, this is the additional 
-information matrix, which is not available in classical QTL mapping.
-
-```
-r2 = image(ctlres, against="phenotypes")
-```
-
-Reconstruct the network and write two sif files. One sif file contains the full network, the other 
-holds the edge summary network.
-
-```
-CTLnetwork(ctlres)
-```
-
-We can use Cytoscape to visualize the created network (available from [www.cytoscape.org](http://www.cytoscape.org/ "www.cytoscape.org") )
-
-### Example Data and Formats
-
-Example cross object in (R/qtl csvr format) in the /Rctl/tests/ directory
-
-Example matrixes in (tab delim format) in the /D/test/data/ directory
-
-Example matrixes in (experimental qtab format) in the /D/test/data/ directory
+Learn more about the [algorithm](https://github.com/DannyArends/CTLmapping/blob/master/Learn CTL/ALGORITHM.md)
 
 ### Contributing and TODO
 
