@@ -54,8 +54,8 @@ void main(string[] args){
   bool doperms   = false;
 	uint nperms    = 100;
   string outdir  = "ctlout";
-  string genofilename  = "./test/data/genotypes.csv";
-  string phenofilename = "./test/data/phenotypes.csv";
+  string genofilename  = "./D/test/data/genotypes.csv";
+  string phenofilename = "./D/test/data/phenotypes.csv";
 	string format        = "csv";
 
   getopt(args, "help|h"     , &help

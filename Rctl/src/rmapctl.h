@@ -17,12 +17,14 @@
     #include "permutation.h"    
     #include "sort.h"
 
-    /** Function to 'update' R, checks user input and can flushes console. */
-    void     updateR(bool flush);
-    /** R interface to perform a CTL scan and permutations on phenotype 'phenotype' */
-    void     R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno,
-                      int* p, int *nperms, int* permt, double* dcor, 
-                      double* perms, double* res, int* verb);
+    #ifdef USING_R
+      /** Function to 'update' R, checks user input and can flushes console. */
+      void     updateR(bool flush);
+      /** R interface to perform a CTL scan and permutations on phenotype 'phenotype' */
+      void     R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno,
+                        int* p, int *nperms, int* permt, double* dcor, 
+                        double* perms, double* res, int* verb);
+    #endif //USING_R
 
   #endif //__RMAPCTL_H__
 #ifdef __cplusplus

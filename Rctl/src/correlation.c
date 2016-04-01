@@ -114,7 +114,9 @@ double* getCorrelations(const Phenotypes phenotypes, const Genotypes genotypes, 
       }
       free(P1), free(P2); // Clear phenotypes
       free(inds.data);    // Clear index data
-      updateR(0);
+      #ifdef USING_R
+        updateR(0);
+      #endif //USING_R
     }
   }
   return cors;

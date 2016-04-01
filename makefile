@@ -4,7 +4,7 @@ MAKE = make
 MOVE = mv
 CSRC = ./C
 DSRC = ./D
-RDOC = ./Rctl/inst/doc
+RDOC = ./Rctl/vignettes
 #### End of system configuration section. ####
 
 all: static shared installR versionC
@@ -42,7 +42,7 @@ checkR: clean
 	cd $(RDOC); \
   $(RCMD) Sweave manual.Rnw; \
   pdflatex manual.tex;\
-  rm -f manual.aux manual.log manual.tex
+  rm -rf manual.aux manual.log manual.tex manual.aux.Rcheck
 	$(RCMD) check --no-tests Rctl
 	$(MAKE) clean
 
