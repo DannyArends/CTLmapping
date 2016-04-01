@@ -9,20 +9,6 @@ natural and experimental populations. It is a method which complements classical
 QTL analysis, providing additional insights overlooked by the classical QTL 
 approach.
 
-### Algorithm
-
-Differences in correlations between traits within an inbred population are 
-determined at each genetic marker. Phenotypes are assigned to genotype groups 
-and a single phenotype is used to scan all other phenotypes for a loss or gain 
-of correlation. The likelihood profiles (~ QTL profiles) of this 'loss of 
-correlation' measurement shows a very high degree of overlap with classical 
-QTL profiles. However additional information is available from the phenotype x 
-phenotype interactions. With the right dataset (ideally a combination of: 
-classical phenotypes, protein abundance and gene expression) CTL shows the 
-genetic wiring of the classical phenotypes and identify key players in the 
-genetic / protein network underlying classical phenotypes using QTL and CTL 
-information.
-
 ### Installing the R package
 The quickest way to start mapping CTLs, is to install the package directly into 
 R from Github using the devtools package:
@@ -85,6 +71,10 @@ Prepare your environment by download and installing the DMD 2.0 compiler from
 
 Optionally you can use a provided binary by downloading the approriate one for your 
 operating system.
+
+### Algorithm
+
+Learn more about the [algorithm](https://github.com/DannyArends/CTLmapping/blob/master/Learn CTL/ALGORITHM)
 
 ### Starting in R
 
