@@ -33,6 +33,8 @@ library(devtools)
 install_github("CTLmapping", "DannyArends", subdir="Rctl")
 ```
 
+After installing [learn the R commands](#starting-in-r "Starting in R")
+
 ### Download the software (R, C and D)
 
 The second option to is to clone the package from Github, this will give you 
@@ -55,10 +57,12 @@ or use the 'installR' makefile target:
 
     $ make installR                                          # Install into R
 
-Infuture packages will be on CRAN, and optionally installing a pre-build packages 
-by downloading the appropriate package for your R version and operating system. 
+Plans are to put the package on CRAN, but this has not happend yet. 
 
 ### Compile the standalone executable
+
+Optimized versions of the software are also available for more high throughput data.
+Here we explain how to build a standalone executable version using C
 
 #### (C version)
 
@@ -67,6 +71,9 @@ Just run 'make' from a terminal / command line:
     $ make versionC                                          # Compile the executable
     $ make static                                            # Compile the static library
     $ make shared                                            # Compile the shared library
+
+C code can also be compiled also into static or dynamic link libraries, when using the 
+appropriate makefile commands. 
 
 #### (D 2.0 version)
 
