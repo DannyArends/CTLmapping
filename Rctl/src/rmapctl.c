@@ -8,16 +8,16 @@
  **********************************************************************/
 #include "rmapctl.h"
 
+#ifdef USING_R
+
 void updateR(bool flush){
-  #ifdef USING_R
-    R_CheckUserInterrupt();
-    if(flush) R_FlushConsole();
-  #endif
+  R_CheckUserInterrupt();
+  if(flush) R_FlushConsole();
 }
 
 void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p, 
               int *nperms, int* permt, double* dcor,  double* perms, double* res, int* verb){
-
+  GetRNGstate();
   int nindividuals  = (int)(*nind);
   int nmarkers      = (int)(*nmar);
   int nphenotypes   = (int)(*nphe);
@@ -86,9 +86,11 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
     res[i] = ctls[m][p];
   }
   for(i = 0; i < nmarkers; i++){ free(genoenc[i].data); }
+  PutRNGstate();
   free(genoenc);
   freematrix((void**)dcors, genotypes.nmarkers);
   freematrix((void**)ctls, genotypes.nmarkers);
   return;
 }
 
+#endif //USING_R

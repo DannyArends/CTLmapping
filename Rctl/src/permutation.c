@@ -39,7 +39,9 @@ double* permute(const Phenotypes phe, const Genotypes geno, size_t p, clvector* 
     freematrix((void**)ctls   , geno.nmarkers);
     freematrix((void**)g.data , geno.nmarkers);
     if(verbose) info("Done with permutation %d\n", perm);
-    updateR(0);
+    #ifdef USING_R
+      updateR(0);
+    #endif //USING_R
   }
   qsort(scores, np, sizeof(double), d_cmp);
   return scores;
@@ -61,7 +63,9 @@ double** permuteRW(const Phenotypes phe, const Genotypes geno, size_t p, clvecto
     freematrix((void**)tctls  , phe.nphenotypes);
     freematrix((void**)g.data , geno.nmarkers);
     if(verbose) info("Done with permutation %d\n", perm);
-    updateR(0);
+    #ifdef USING_R
+      updateR(0);
+    #endif //USING_R
   }
   for(ph = 0; ph <  phe.nphenotypes; ph++){
     double* ph_s =  scores[ph];
@@ -98,7 +102,9 @@ double** toLODexact(double** scores, clvector* genoenc, size_t nmar, size_t nphe
         ctls[m][p] = 0.0;
       }else{ ctls[m][p] = fabs(log10(pval)); }
     }
-    updateR(0);
+    #ifdef USING_R
+      updateR(0);
+    #endif //USING_R
   }
   return ctls;
 }
@@ -110,7 +116,9 @@ double** toLOD(double** scores, double* permutations, size_t nmar, size_t nphe, 
     for(p = 0; p < nphe; p++){
       ctls[m][p] = estimate(scores[m][p], permutations, nperms);
     }
-    updateR(0);
+    #ifdef USING_R
+      updateR(0);
+    #endif //USING_R
   }
   return ctls;
 }
@@ -122,7 +130,9 @@ double** toLODRW(double** scores, double** permutations, size_t nmar, size_t nph
     for(p = 0; p < nphe; p++){
       ctls[m][p] = estimate(scores[m][p], permutations[p], nperms);
     }
-    updateR(0);
+    #ifdef USING_R
+      updateR(0);
+    #endif //USING_R
   }
   return ctls;
 }

@@ -122,7 +122,13 @@ double vectormax(double* v, size_t dim){
 }
 
 /** A random double between 0 and 1 */
-double randnum(){ return rand() / (RAND_MAX+1.0);}
+double randnum(){
+  #ifdef USING_R
+    return unif_rand();
+  #else
+    return rand() / (RAND_MAX+1.0);
+  #endif //USING_R
+}
 
 /** Swap 2 elements in an integer vectoir */
 int* swap(int* idx, int i1, int i2){

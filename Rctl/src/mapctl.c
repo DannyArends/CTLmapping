@@ -60,8 +60,10 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
           freematrix((void**)P2M, phenotypes.nphenotypes);  // Clear phenotype2M data
         }
 
-        free(idx.data); 
-        updateR(0);
+        free(idx.data);
+        #ifdef USING_R
+          updateR(0);       // annoying function call to not crash R
+        #endif //USING_R
       }
       dcors[m] = chiSQN(ngenotypes, cors, phenotype, nsamples, phenotypes.nphenotypes);
       freematrix((void**)cors, ngenotypes);         // Clear correlation and samples data 
