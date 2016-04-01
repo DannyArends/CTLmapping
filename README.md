@@ -152,11 +152,11 @@ We can use Cytoscape to visualize the created network (available from [www.cytos
 
 ### Example Data and Formats
 
-Example cross object in (R/qtl csvr format)[CTLmapping/blob/master/Rctl/tests/ "Gene expression data"]
+Example cross object in (R/qtl csvr format) in the /Rctl/tests/ directory
 
-Example matrixes in (tab delim format)[CTLmapping/blob/master/D/test/data/ "Metabolite abundance data"]
+Example matrixes in (tab delim format) in the /D/test/data/ directory
 
-Example matrixes in (experimental qtab format)[CTLmapping/blob/master/D/test/data/ "Metabolite abundance qtab data"]
+Example matrixes in (experimental qtab format) in the /D/test/data/ directory
 
 ### Contributing and TODO
 
