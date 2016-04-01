@@ -21,6 +21,9 @@
 \alias{test.power.test}
 \alias{CTLanalyseRatios}
 \alias{CTLanalyseEffects}
+\alias{chiSQtoP}
+\alias{getCorrelations.cross}
+\alias{test.getCorrelation.cross}
 
 %ctl.circle.R
 \alias{mapinfotomarkerlocs}

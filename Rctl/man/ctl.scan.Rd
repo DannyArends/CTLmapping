@@ -5,15 +5,15 @@
   Scan for Correlated Trait Locus (CTL) in populations
 }
 \usage{
-CTLscan(genotypes, phenotypes, pheno.col, n.perm=100, 
-strategy = c("Exact", "Full", "Pairwise"), conditions = NULL, qtls = NULL, n.cores = 1,
+CTLscan(genotypes, phenotypes, pheno.col, nperm=100, 
+strategy = c("Exact", "Full", "Pairwise"), conditions = NULL, qtls = NULL, ncores = 1,
 parametric = FALSE, verbose = FALSE)
 }
 \arguments{
   \item{genotypes}{   Matrix of genotypes. (individuals x markers) }
   \item{phenotypes}{  Matrix of phenotypes. (individuals x phenotypes) }
   \item{pheno.col}{   Which phenotype column(s) should we analyse. Default analyse all phenotypes. }
-  \item{n.perm}{      Number of permutations to perform. This parameter is not used when method="Exact". }
+  \item{nperm}{       Number of permutations to perform. This parameter is not used when method="Exact". }
   \item{strategy}{    The permutation strategy to use, either 
                       \itemize{
                         \item Exact - Uses exact calculations to calculate the likelihood of a difference 
@@ -30,7 +30,7 @@ parametric = FALSE, verbose = FALSE)
   \item{conditions}{  A vector of experimental conditions applied during the experiment. These conditions 
                       are used as covariates in the QTL modeling step. }
   \item{qtls}{        Used to provide QTL results, when external QTL results are available. }
-  \item{n.cores}{     Number of CPU cores to use during the analysis. }
+  \item{ncores}{      Number of CPU cores to use during the analysis. }
   \item{parametric}{  Use non-parametric testing (Spearman) or parametric testing (Pearson). The DEFAULT is to 
                       use non-parametric tests which are less sensitive to outliers in the phenotype data. }
   \item{verbose}{     Be verbose. }
