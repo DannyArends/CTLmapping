@@ -21,8 +21,6 @@ install_github("CTLmapping", "DannyArends", subdir="Rctl")
 
 Learn more about the [the R commands](https://github.com/DannyArends/CTLmapping/blob/master/Learn CTL/STARTINGinR.md)
 
-After installing [learn ](#starting-in-r "Starting in R")
-
 ### Download the software (R, C and D)
 
 The second option to is to clone the package from Github, this will give you 
