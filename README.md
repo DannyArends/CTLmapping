@@ -77,7 +77,7 @@ Prepare your environment by download and installing the DMD 2.0 compiler from
 
     $ make versionD                                          # Compile the executable
 
-Optionally you can use a provided binary by downloading the approriate one for your 
+In the future, you can use a provided binary by downloading the approriate one for your 
 operating system.
 
 ### Algorithm
@@ -86,9 +86,10 @@ Learn more about the [algorithm](https://github.com/DannyArends/CTLmapping/blob/
 
 ### Contributing and TODO
 
-Want to contribute? Great!
+Want to contribute? Great! We're actively looking for someone to do the website 
+[www.mapctl.org](http://www.mapctl.org "www.mapctl.org")
 
-See Rctl/inst/TODO.txt or submit a Github issue or pull request
+see Rctl/inst/TODO.txt or submit a Github issue or pull request
 
 Its also possible to just post comments on code / commits.
 Or be a maintainer, and adopt a function
