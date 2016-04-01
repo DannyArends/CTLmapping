@@ -46,16 +46,16 @@ void main(string[] args){
   SysTime stime = Clock.currTime();
   writeln("Correlated Trait Locus (CTL) mapping in D");
   writeln("(c) 2012 written by Danny Arends in the D programming language");
-	bool help      = false;
+  bool help      = false;
   bool verbose   = false;
   bool overwrite = false;
-	uint alpha     = 1;
-	uint beta      = 1;
+  uint alpha     = 1;
+  uint beta      = 1;
   bool doperms   = false;
-	uint nperms    = 100;
+  uint nperms    = 100;
   string outdir  = "ctlout";
-  string genofilename  = "./D/test/data/genotypes.csv";
-  string phenofilename = "./D/test/data/phenotypes.csv";
+  string genofilename  = "./test/data/genotypes.csv";
+  string phenofilename = "./test/data/phenotypes.csv";
 	string format        = "csv";
 
   getopt(args, "help|h"     , &help
