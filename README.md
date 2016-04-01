@@ -9,20 +9,6 @@ natural and experimental populations. It is a method which complements classical
 QTL analysis, providing additional insights overlooked by the classical QTL 
 approach.
 
-### Algorithm
-
-Differences in correlations between traits within an inbred population are 
-determined at each genetic marker. Phenotypes are assigned to genotype groups 
-and a single phenotype is used to scan all other phenotypes for a loss or gain 
-of correlation. The likelihood profiles (~ QTL profiles) of this 'loss of 
-correlation' measurement shows a very high degree of overlap with classical 
-QTL profiles. However additional information is available from the phenotype x 
-phenotype interactions. With the right dataset (ideally a combination of: 
-classical phenotypes, protein abundance and gene expression) CTL shows the 
-genetic wiring of the classical phenotypes and identify key players in the 
-genetic / protein network underlying classical phenotypes using QTL and CTL 
-information.
-
 ### Installing the R package
 The quickest way to start mapping CTLs, is to install the package directly into 
 R from Github using the devtools package:
@@ -33,6 +19,8 @@ library(devtools)
 install_github("CTLmapping", "DannyArends", subdir="Rctl")
 ```
 
+After this learn more about the [the R commands](https://github.com/DannyArends/CTLmapping/blob/master/Learn CTL/STARTINGinR.md) to start mapping CTLs on example data and how to prepare your own experimental data.
+
 ### Download the software (R, C and D)
 
 The second option to is to clone the package from Github, this will give you 
@@ -42,7 +30,7 @@ your environment by download and 'moving' to the folder:
     $ git clone git://github.com/DannyArends/CTLmapping.git  # Download the repository
     $ cd CTLmapping                                          # Goto the folder
 
-### Use the R library
+### Manually install the R library
 
 Prepare your environment by download and installing the R environment from 
 [www.r-project.org](http://www.r-project.org/ "www.r-project.org"). Then 
@@ -55,10 +43,19 @@ or use the 'installR' makefile target:
 
     $ make installR                                          # Install into R
 
-Infuture packages will be on CRAN, and optionally installing a pre-build packages 
-by downloading the appropriate package for your R version and operating system. 
+Plans are to put the package on CRAN, but this has not happend yet. A quick online 
+introduction is [available](https://github.com/DannyArends/CTLmapping/blob/master/Learn CTL/STARTINGinR.md) 
+but help files are also easily available for almost all function in R using:
+
+```
+library(ctl)                            # Load the library
+?ctl                                    # Show the general help for ctl
+```
 
 ### Compile the standalone executable
+
+Optimized versions of the software are also available for more high throughput data.
+Here we explain how to build a standalone executable version using C
 
 #### (C version)
 
@@ -67,6 +64,10 @@ Just run 'make' from a terminal / command line:
     $ make versionC                                          # Compile the executable
     $ make static                                            # Compile the static library
     $ make shared                                            # Compile the shared library
+
+C code can also be compiled also into static or dynamic libraries, when using the 
+appropriate makefile commands and can then be used in your own software as external 
+dependancy with minimal coupling to your own software.
 
 #### (D 2.0 version)
 
@@ -79,56 +80,9 @@ Prepare your environment by download and installing the DMD 2.0 compiler from
 Optionally you can use a provided binary by downloading the approriate one for your 
 operating system.
 
-### Starting in R
+### Algorithm
 
-Load the library in the R interface by the following command (in R):
-
-```
-library(ctl)                            # Load the library
-?ctl                                    # Show the help
-```
-
-### Examples
-
-Scan your data
-
-```
-library(ctl)
-data(multitrait)
-ctlres = CTLscan.cross(multitrait)
-```
-
-Plot a single phenotype, the profile is comparable to the QTL profile. However using 
-CTL mapping we know which phenotypes are differentially correlated underneath the peak.
-This additional information adds to the already known QTL information.
-
-```
-plot(ctlres, pheno.col=12)
-```
-
-Create an image of the phenotypes to marker relation strength, this matrix is 'comparable' 
-to a heat map of QTL scans on many phenotypes, the underlying model assumptions are different 
-from QTL mapping but comparable, thus the output is not shockingly different from QTL mapping.
-
-```
-r1 = image(ctlres,against="markers")
-```
-
-Create an image of the phenotypes to phenotypes relation strength, this is the additional 
-information matrix, which is not available in classical QTL mapping.
-
-```
-r2 = image(ctlres,against="phenotypes")
-```
-
-Reconstruct the network and write two sif files. One sif file contains the full network, the other 
-holds the edge summary network.
-
-```
-CTLnetwork(ctlres)
-```
-
-We can use Cytoscape to visualize the created network (available from [www.cytoscape.org](http://www.cytoscape.org// "www.cytoscape.org") )
+Learn more about the [algorithm](https://github.com/DannyArends/CTLmapping/blob/master/Learn CTL/ALGORITHM.md)
 
 ### Contributing and TODO
 
