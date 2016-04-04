@@ -19,25 +19,25 @@ deltaSD <- function(t1, t2, geno){
 }
 
 #-- Normal interface --#
-scanSD <- function(genotypes, phenotypes, pheno.col=c(1,2), doRank = FALSE){
+scanSD <- function(genotypes, phenotypes, phenocol=c(1, 2), doRank = FALSE){
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
-  if(length(pheno.col) != 2) stop("argument 'pheno.col' needs to select two phenotypes")
+  if(length(phenocol) != 2) stop("argument 'phenocol' needs to select two phenotypes")
 
   if(doRank) genotypes <- apply(genotypes, 2, rank)
 
   matrix <- NULL
   for(m in 1:ncol(genotypes)){
-    res <- deltaSD(phenotypes[,pheno.col[1]], phenotypes[,pheno.col[2]], genotypes[,m])
+    res <- deltaSD(phenotypes[, phenocol[1]], phenotypes[, phenocol[2]], genotypes[, m])
     matrix <- rbind(matrix, res)
   }
   return(matrix)
 }
 
 #-- R/qtl interface --#
-scanSD.cross <- function(cross, pheno.col = c(1,2), doRank = FALSE){
+scanSD.cross <- function(cross, phenocol = c(1, 2), doRank = FALSE){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
-  if(length(pheno.col) != 2) stop("argument 'pheno.col' needs to select two phenotypes")
-  scanSD(pull.geno(cross), pull.pheno(cross), pheno.col, doRank)
+  if(length(phenocol) != 2) stop("argument 'phenocol' needs to select two phenotypes")
+  scanSD(pull.geno(cross), pull.pheno(cross), phenocol=phenocol, doRank=doRank)
 }
 

@@ -35,13 +35,13 @@ chiSQtoP <- function(cv, dof){
   }))
 }
 
-getCorrelations.cross <- function(cross, pheno.col = 1, marker.col = 1){
+getCorrelations.cross <- function(cross, phenocol = 1, marker.col = 1){
   marker <- pull.geno(cross)[,marker.col]
   phenotypes <- pull.pheno(cross)
   result <- NULL; nums <- NULL
   for(x in names(table(marker))){
     idx <- which(marker == x)
-    result$correlations <- cbind(result$correlations, correlation(phenotypes[idx, pheno.col], phenotypes[idx, ]))
+    result$correlations <- cbind(result$correlations, correlation(phenotypes[idx, phenocol], phenotypes[idx, ]))
     result$samplesize <- c(result$samplesize, length(idx))
   }
   rownames(result$correlations) <- colnames(phenotypes)

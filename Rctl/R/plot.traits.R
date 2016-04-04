@@ -8,9 +8,9 @@
 # Trait vs Trait scatter plot routine for CTL analysis
 #
 
-plotTraits <- function(genotypes, phenotypes, pheno.col = c(1, 2), marker = 1, doRank = FALSE){
-  t1 <- phenotypes[, pheno.col[1]]
-  t2 <- phenotypes[, pheno.col[2]]
+plotTraits <- function(genotypes, phenotypes, phenocol = c(1, 2), marker = 1, doRank = FALSE){
+  t1 <- phenotypes[, phenocol[1]]
+  t2 <- phenotypes[, phenocol[2]]
   if(doRank){ t1 <- rank(t1); t2 <- rank(t2) }
 
   geno  <- genotypes[,marker]
@@ -18,8 +18,8 @@ plotTraits <- function(genotypes, phenotypes, pheno.col = c(1, 2), marker = 1, d
   betas <- stdSlopeEstimate(t1,t2, geno)
   inter <- stdSlopeIntercept(t1,t2, geno, betas)
 
-  t1name <- colnames(phenotypes)[pheno.col[1]]
-  t2name <- colnames(phenotypes)[pheno.col[2]]
+  t1name <- colnames(phenotypes)[phenocol[1]]
+  t2name <- colnames(phenotypes)[phenocol[2]]
 
   plot(t1, t2, type = "n", main = "Trait-Trait scatterplot", xlab=t1name, ylab=t2name)
   max1 <- max(t1*1.25, na.rm=TRUE);  max2 <- max(t2*1.25, na.rm=TRUE)

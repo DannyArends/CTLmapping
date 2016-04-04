@@ -8,13 +8,13 @@
 # Line plot routines for CTL analysis
 #
 
-ctl.lineplot <- function(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, col="orange", bg.col = "lightgray", cex = 1, verbose = FALSE){
+ctl.lineplot <- function(CTLobject, mapinfo, phenocol, significance = 0.05, gap = 50, col="orange", bg.col = "lightgray", cex = 1, verbose = FALSE){
   if(missing(CTLobject) || is.null(CTLobject)) stop("argument 'CTLobject' is missing, with no default")
-  if(missing(pheno.col)) pheno.col <- 1:length(CTLobject) 
+  if(missing(phenocol)) phenocol <- 1:length(CTLobject) 
   n.markers  <- nrow(CTLobject[[1]]$ctl)
   ctls       <- CTLnetwork(CTLobject, mapinfo, significance, verbose = verbose)
-  CTLobject  <- CTLobject[pheno.col]
-  ctls       <- ctls[which(ctls[,1] %in% pheno.col),]
+  CTLobject  <- CTLobject[phenocol]
+  ctls       <- ctls[which(ctls[,1] %in% phenocol),]
   if(class(ctls)=="numeric") ctls <- t(ctls)
   if(is.null(ctls) || nrow(ctls) < 1) {
     warning(paste("No ctls edges found at significance <", significance))

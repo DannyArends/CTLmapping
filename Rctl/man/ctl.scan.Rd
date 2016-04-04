@@ -5,14 +5,14 @@
   Scan for Correlated Trait Locus (CTL) in populations
 }
 \usage{
-CTLscan(genotypes, phenotypes, pheno.col, nperm=100, 
+CTLscan(genotypes, phenotypes, phenocol, nperm=100, 
 strategy = c("Exact", "Full", "Pairwise"), conditions = NULL, qtls = NULL, ncores = 1,
 parametric = FALSE, verbose = FALSE)
 }
 \arguments{
   \item{genotypes}{   Matrix of genotypes. (individuals x markers) }
   \item{phenotypes}{  Matrix of phenotypes. (individuals x phenotypes) }
-  \item{pheno.col}{   Which phenotype column(s) should we analyse. Default analyse all phenotypes. }
+  \item{phenocol}{    Which phenotype column(s) should we analyse. Default: Analyse all phenotypes. }
   \item{nperm}{       Number of permutations to perform. This parameter is not used when method="Exact". }
   \item{strategy}{    The permutation strategy to use, either 
                       \itemize{
@@ -61,7 +61,7 @@ parametric = FALSE, verbose = FALSE)
   library(ctl)
   data(ath.metabolites)                 # Arabidopsis Thaliana data set
 
-  ctlscan <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, pheno.col=1:4)
+  ctlscan <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, phenocol=1:4)
   ctlscan
 
   summary <- CTLsignificant(ctlscan)    # Matrix of Trait, Marker, Trait interactions 

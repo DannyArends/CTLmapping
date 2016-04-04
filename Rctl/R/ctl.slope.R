@@ -115,7 +115,7 @@ printSignificantSlope <- function(p1, m, p2, pval, slopes, header=FALSE){
 }
 
 #-- Normal interface --#
-scanSlopes <- function(genotypes, phenotypes, pheno.col = 1, doRank = FALSE, verbose = FALSE){
+scanSlopes <- function(genotypes, phenotypes, phenocol = 1, doRank = FALSE, verbose = FALSE){
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   if(missing(genotypes)) stop("argument 'genotypes' is missing, with no default")
 
@@ -127,13 +127,13 @@ scanSlopes <- function(genotypes, phenotypes, pheno.col = 1, doRank = FALSE, ver
   for(m in 1:ncol(genotypes)){
     res <- NULL
     for(p in 1:ncol(phenotypes)){
-      if(p != pheno.col){ # Do a stdSlopeTest and convert to P
+      if(p != phenocol){ # Do a stdSlopeTest and convert to P
           J       <- length(munique(genotypes[,m]))
-          N       <- length(phenotypes[,pheno.col])
-          slopes  <- stdSlopeTest(phenotypes[,pheno.col], phenotypes[,p], genotypes[,m], verbose)
+          N       <- length(phenotypes[, phenocol])
+          slopes  <- stdSlopeTest(phenotypes[, phenocol], phenotypes[,p], genotypes[,m], verbose)
           pval    <- 1.0 - pf(slopes$f, J-1, N-2*J)
           if(pval < (0.05 /ncol(genotypes))){ #Print the summary to the screen (TODO: Print to screen / file)
-            header <- printSignificantSlope(phenames[pheno.col], marnames[m], phenames[p], pval, slopes, header)
+            header <- printSignificantSlope(phenames[phenocol], marnames[m], phenames[p], pval, slopes, header)
           }
           res <- c(res, pval)
       }else{ res <- c(res, 1.0) } # No chance in hell this will be different for the same trait vs itseld
@@ -146,9 +146,9 @@ scanSlopes <- function(genotypes, phenotypes, pheno.col = 1, doRank = FALSE, ver
 }
 
 #-- R/qtl interface --#
-scanSlopes.cross <- function(cross, pheno.col = 1, doRank = FALSE, verbose = FALSE){
+scanSlopes.cross <- function(cross, phenocol = 1, doRank = FALSE, verbose = FALSE){
   if(missing(cross)) stop("argument 'cross' is missing, with no default")
-  return(scanSlopes(pull.geno(cross), pull.pheno(cross), pheno.col, doRank, verbose))
+  return(scanSlopes(pull.geno(cross), pull.pheno(cross), phenocol = phenocol, doRank = doRank, verbose = verbose))
 }
 
 # end of ctl.slope.R

@@ -27,13 +27,13 @@ CTLasLOD <- function(CTLscan, QTLscores, main, do.legend=TRUE){
   }
 }
 
-plot.CTLobject <- function(x, pheno.col=1:length(x), ...){
+plot.CTLobject <- function(x, phenocol=1:length(x), ...){
   if(missing(x)) stop("argument 'x' is missing, with no default")
   if(length(x) == 1){
     return(plot.CTLscan(x[[1]],...))
   }
-  if(length(pheno.col) == 1){
-    return(plot.CTLscan(x[[pheno.col]],...))
+  if(length(phenocol) == 1){
+    return(plot.CTLscan(x[[phenocol]],...))
   }
   return(image.CTLobject(x,...))
 }
