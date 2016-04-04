@@ -9,13 +9,50 @@
 # Example data C. Elegans and available at request ( Danny.Arends@gmail.com )
 #
 
-CTLsignificant <- function(CTLobject, significance = 0.05, what = c("names","ids")){
+CTLregions <- function(CTLobject, map, phenocol = 1, significance = 0.05, verbose = TRUE) {
+  if(any(class(CTLobject)=="CTLscan")) CTLobject = list(CTLobject)
+  if(missing(map)) stop("You need to provide a map object with 'chr' and 'pos' columns")
+  if(!all(colnames(map) %in% c("chr", "pos"))) stop("You need to provide a map object with 'chr' and 'pos' columns")
+  p_above <- which(apply(CTLobject[[phenocol]]$ctl, 2, function(y){
+    any(y > -log10(significance))
+  }))
+  if(length(p_above) == 0) stop("No significant CTLs found at threshold = ", significance)
+  significant <- ctlscan[[1]]$ctl[, p_above]
+  map <- map[rownames(significant),]
+  if(!all(rownames(significant) %in% rownames(map))) stop("CTL markers do not match the provided map")
+  regions <- NULL
+  for(x in 1:ncol(significant)){
+    peeks <- detect.peaks(significant[,x], threshold = -log10(significance))
+    for(peek in which(peeks == 2)){
+      left <- peek - 1
+      right <- peek + 1
+      chr <- map[peek, "chr"]
+      while(left >= 1 && peeks[left] >= 1 && map[left, "chr"] == chr){
+        left <- left - 1
+      }
+      while(right <= length(peeks) && peeks[right] >= 1 && map[right, "chr"] == chr){
+        right <- right + 1
+      }
+      if(map[left, "chr"] != chr){ pos_s <- 0; }else{ pos_s <- map[left, "pos"]; }
+      if(map[right, "chr"] != chr){ pos_e <- map[(right-1), "pos"]; }else{ pos_e <- map[right, "pos"]; }
+      if(verbose){
+        cat(ctl.names(CTLobject)[phenocol], "with", colnames(significant)[x], "from", left, "to", right, paste0("chr ", chr,":", pos_s,"-", pos_e), "\n")
+      }
+      regions <- rbind(regions, c(ctl.names(CTLobject)[phenocol], colnames(significant)[x], chr, pos_s, pos_e))
+    }
+  }
+  colnames(regions) <- c("pheno1", "pheno2", "chr", "start", "end")
+  return(invisible(data.frame(regions)))
+}
+
+CTLsignificant <- function(CTLobject, significance = 0.05, what = c("names", "ids")){
   if(any(class(CTLobject)=="CTLscan")) CTLobject = list(CTLobject)
   all_sign <- NULL
   if(length(what) > 1) what = what[1]
   for(x in 1:length(CTLobject)){ #Get all significant CTLs
-    p_above <- which(apply(CTLobject[[x]]$ctl,2,function(y){
-    any(y > -log10(significance))}))
+    p_above <- which(apply(CTLobject[[x]]$ctl, 2, function(y){
+      any(y > -log10(significance))
+    }))
 
     pnames <- colnames(CTLobject[[x]]$ctl)
     mnames <- rownames(CTLobject[[x]]$ctl)
@@ -39,7 +76,7 @@ CTLsignificant <- function(CTLobject, significance = 0.05, what = c("names","ids
   if(!is.null(all_sign)){
     all_sign <- as.data.frame(all_sign)
     all_sign[,4] <- round(as.numeric(as.character(all_sign[,4])), digits=2)
-    colnames(all_sign) <- c("trait","marker","trait","lod","dcor")
+    colnames(all_sign) <- c("trait", "marker", "trait", "lod", "dcor")
     items <- nrow(all_sign)
   }
   cat("Found",items,"significant CTLs\n")
