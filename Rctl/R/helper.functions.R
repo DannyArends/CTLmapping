@@ -44,13 +44,12 @@ get.chr.edges <- function(mapinfo){
 }
 
 top.correlated <- function(x){
-  ret <- t(apply(remove.diag(x),1,function(r){
+  ret <- t(apply(remove.diag(x), 1, function(r) {
     id <- which.max(abs(r))
-    return(c(names(r)[id],id,r[id]))
+    return(c(names(r)[id], id, r[id]))
   }))
-  colnames(ret) <- c("top.correlated","id","correlation")
+  colnames(ret) <- c("top.correlated", "id", "correlation")
   return(ret)
 }
 
 # end of helper.functions.R
-

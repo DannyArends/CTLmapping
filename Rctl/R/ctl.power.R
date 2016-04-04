@@ -169,4 +169,3 @@ test.power.test <- function(){
 }
 
 # end of ctl.power.R
-
