@@ -5,7 +5,7 @@
   Get all significant interactions from a genome-wide CTLscan.
 }
 \usage{
-CTLregions(CTLobject, map, phenocol = 1, significance = 0.05, verbose = TRUE)
+CTLregions(CTLobject, mapinfo, phenocol = 1, significance = 0.05, verbose = TRUE)
 }
 
 \arguments{
