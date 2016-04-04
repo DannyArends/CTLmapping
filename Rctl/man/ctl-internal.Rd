@@ -83,6 +83,7 @@
 \alias{redblue}
 \alias{whiteblack}
 \alias{top.correlated}
+\alias{ctl.version}
 
 \title{Internal CTL functions}
 

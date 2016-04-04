@@ -64,6 +64,9 @@ parametric = FALSE, verbose = FALSE)
   ctlscan <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, phenocol=1:4)
   ctlscan
 
+  # Genetic regions with significant CTLs found for the first phenotype
+  CTLregions(ctlscan, ath.metab$map, phenocol = 1)
+  
   summary <- CTLsignificant(ctlscan)    # Matrix of Trait, Marker, Trait interactions 
   summary                               # Get a list of significant CTLs
 
@@ -73,6 +76,7 @@ parametric = FALSE, verbose = FALSE)
 \seealso{
   \itemize{
     \item \code{\link{CTLscan.cross}} - Use an R/qtl cross object with \code{\link{CTLscan}}
+    \item \code{\link{CTLregions}} - Regions with significant CTLs from a \code{\link{CTLscan}}
     \item \code{\link{CTLsignificant}} - Significant interactions from a \code{\link{CTLscan}}
     \item \code{\link{CTLnetwork}} - Create a CTL network from a \code{\link{CTLscan}}
     \item \code{\link{image.CTLobject}} - Heatmap overview of a \code{\link{CTLscan}}
