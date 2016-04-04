@@ -5,7 +5,7 @@
   Plot the CTL for genome-wide CTL on multiple traits (the output of \code{\link{CTLscan}}).
 }
 \usage{
-ctl.circle(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, cex = 1,
+ctl.circle(CTLobject, mapinfo, phenocol, significance = 0.05, gap = 50, cex = 1,
 verbose = FALSE)
 }
 \arguments{
@@ -14,7 +14,7 @@ verbose = FALSE)
                          location of the marker in centiMorgans and the 3rd column "Mbp" - The location 
                          of the marker in Mega basepairs. If supplied the marker names (rownames) should 
                          match those in the CTLobject. }
-  \item{pheno.col}{      Which phenotype results to plot. Defaults to plot all phenotypes. } 
+  \item{phenocol}{       Which phenotype results to plot. Defaults to plot all phenotypes. } 
   \item{significance}{   Significance threshold to set a genome wide False Discovery Rate (FDR). }
   \item{gap}{            Gap between chromosomes in cM. }
   \item{cex}{            Global magnificantion factor for the image elements. }
@@ -32,7 +32,7 @@ verbose = FALSE)
   data(ath.metabolites)  # Arabidopsis Thaliana data set
 
   ctl.circle(ath.result, ath.metab$map, sign=0.001)
-  ctl.circle(ath.result, ath.metab$map, pheno.col = 1:6, sign=0.01)
+  ctl.circle(ath.result, ath.metab$map, phenocol = 1:6, sign = 0.01)
 }
 \seealso{
   \itemize{

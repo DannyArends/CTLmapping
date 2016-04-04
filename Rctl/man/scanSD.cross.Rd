@@ -5,11 +5,11 @@
   Analyze the differences in standard deviation between two traits at a certain genetic marker
 }
 \usage{
-scanSD.cross(cross, pheno.col = c(1,2), doRank = FALSE)
+scanSD.cross(cross, phenocol = c(1,2), doRank = FALSE)
 }
 \arguments{
   \item{cross}{       An object of class \code{cross}. See \code{\link[qtl]{read.cross}} for details. }
-  \item{pheno.col}{   Which phenotype column(s) should we analyse. Default analyse all phenotypes. }
+  \item{phenocol}{    Which phenotype column(s) should be plotted against each other, Default: phenotype 1 versus 2 }
   \item{doRank}{      Transform quantitative data into ranked data before analyzing the slope. }
 }
 \details{

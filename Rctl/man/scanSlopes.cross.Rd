@@ -5,12 +5,12 @@
   Create a slope difference profile between two traits (using an R/qtl cross object)
 }
 \usage{
-scanSlopes.cross(cross, pheno.col = 1, doRank = FALSE, verbose = FALSE)
+scanSlopes.cross(cross, phenocol = 1, doRank = FALSE, verbose = FALSE)
 }
 
 \arguments{
   \item{cross}{       An object of class \code{cross}. See \code{\link[qtl]{read.cross}} for details. }
-  \item{pheno.col}{   Which phenotype column(s) should we analyse. Default analyse all phenotypes. }
+  \item{phenocol}{    Which phenotype column(s) should we analyse. Default: Analyse phenotype 1 }
   \item{doRank}{      Transform quantitative data into ranked data before analyzing the slope. }
   \item{verbose}{     Be verbose. }
 }

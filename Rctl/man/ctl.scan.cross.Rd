@@ -12,7 +12,7 @@ CTLscan.cross(cross, ...)
   \item{cross}{ An object of class \code{cross}. See \code{\link[qtl]{read.cross}} for details. }
   \item{...}{ Passed to \code{\link{CTLscan}} function: 
     \itemize{
-      \item pheno.col  - Which phenotype column should we analyse.
+      \item phenocol   - Which phenotype column should we analyse.
       \item method     - We provide 3 ways of mapping correlation differences across the genome:
                          \itemize{
                            \item Exact: Uses a Correlation to Z score transformation to calculate the
@@ -76,11 +76,11 @@ Columns: Genetic markers) for the phenotype.
   data(multitrait)      # Arabidopsis Thaliana (R/qtl cross object)
 
   mtrait <- calc.genoprob(multitrait)          # Calculate genotype probabilities
-  qtls   <- scanone(mtrait, pheno.col = 1:4)   # Scan for QTLS
+  qtls   <- scanone(mtrait, phenocol = 1:4)    # Scan for QTLS
   map    <- qtls[,1:2]                         # Get the genetic map
   qtls   <- qtls[,-(1:2)]                      # Get the LOD scores
 
-  ctls   <- CTLscan.cross(mtrait, pheno.col = 1:4, qtls = qtls)
+  ctls   <- CTLscan.cross(mtrait, phenocol = 1:4, qtls = qtls)
   
   ctl.lineplot(ctls, map, significance = 0.05) # Line plot all the phenotypes
 

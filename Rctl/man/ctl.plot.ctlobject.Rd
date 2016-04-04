@@ -8,13 +8,13 @@
 }
 
 \usage{
-\method{plot}{CTLobject}(x, pheno.col=1:length(x), \dots)
+\method{plot}{CTLobject}(x, phenocol = 1:length(x), \dots)
 }
 
 \arguments{
-  \item{x}{ An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
-  \item{pheno.col}{ Which phenotype column(s) should we plot. Defaults to creating an image of all phenotype columns }
-  \item{\dots}{ Passed to the function \code{\link{image.CTLobject}} \code{\link{plot.CTLscan}} when it is called. }
+  \item{x}{           An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
+  \item{phenocol}{    Which phenotype column(s) should we plot. Defaults to creating an image of all phenotype columns }
+  \item{\dots}{       Passed to the function \code{\link{image.CTLobject}} \code{\link{plot.CTLscan}} when it is called. }
 }
 
 \value{

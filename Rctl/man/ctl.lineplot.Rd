@@ -5,7 +5,7 @@
   Plot the CTL for genome-wide CTL on multiple traits (the output of \code{\link{CTLscan}}).
 }
 \usage{
-ctl.lineplot(CTLobject, mapinfo, pheno.col, significance = 0.05, gap = 50, 
+ctl.lineplot(CTLobject, mapinfo, phenocol, significance = 0.05, gap = 50, 
 col = "orange", bg.col = "lightgray", cex = 1, verbose = FALSE)
 }
 \arguments{
@@ -14,7 +14,7 @@ col = "orange", bg.col = "lightgray", cex = 1, verbose = FALSE)
                         location of the marker in centiMorgans and the 3rd column "Mbp" - The location 
                         of the marker in Mega basepairs. If supplied the marker names (rownames) 
                         should match those in the CTLobject (only significant markers will be annotated). }
-  \item{pheno.col}{     Which phenotype results to plot. Defaults to plot all phenotypes. } 
+  \item{phenocol}{      Which phenotype results to plot. Defaults to plot all phenotypes. } 
   \item{significance}{  Significance threshold to set a genome wide False Discovery Rate (FDR). }
   \item{gap}{           The gap between chromosomes in cM. }
   \item{col}{           Line color used. }
@@ -38,7 +38,7 @@ col = "orange", bg.col = "lightgray", cex = 1, verbose = FALSE)
   op   <- par(oma = c(0.1,0.1,0.1,0.1))
   op   <- par(mai = c(0.1,0.1,0.1,0.1))
   for(x in todo){ # Overview of the 16 traits with CTLs
-    ctl.lineplot(ath.result, ath.metab$map, x, sign=0.1)
+    ctl.lineplot(ath.result, ath.metab$map, phenocol = x, sign=0.1)
   }
 }
 \seealso{

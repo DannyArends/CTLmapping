@@ -5,13 +5,13 @@
   Trait vs Trait scatterplot, colored by the selected genetic locus
 }
 \usage{
-plotTraits(genotypes, phenotypes, pheno.col = c(1, 2), marker = 1, doRank = FALSE)
+plotTraits(genotypes, phenotypes, phenocol = c(1, 2), marker = 1, doRank = FALSE)
 }
 
 \arguments{
   \item{genotypes}{   Matrix of genotypes. (individuals x markers) }
   \item{phenotypes}{  Matrix of phenotypes. (individuals x phenotypes) }
-  \item{pheno.col}{   Which phenotype column(s) should be plotted against each other. }
+  \item{phenocol}{    Which phenotype column(s) should be plotted against each other, Default: phenotype 1 versus 2 }
   \item{marker}{      Which marker (column in genotypes) should be used to add genotype as a color of the dots. }
   \item{doRank}{      Transform quantitative data into ranked data before analyzing the slope. }
 }

@@ -5,13 +5,13 @@
   Analyze the differences in Standard Deviation between genotypes between two traits
 }
 \usage{
-scanSD(genotypes, phenotypes, pheno.col=c(1,2), doRank = FALSE)
+scanSD(genotypes, phenotypes, phenocol=c(1,2), doRank = FALSE)
 }
 
 \arguments{
   \item{genotypes}{   Matrix of genotypes. (individuals x markers) }
   \item{phenotypes}{  Matrix of phenotypes. (individuals x phenotypes) }
-  \item{pheno.col}{   Which phenotype column(s) should we analyse. Default analyse all phenotypes. }
+  \item{phenocol}{    Which phenotype column(s) should be plotted against each other, Default: phenotype 1 versus 2 }
   \item{doRank}{      Transform quantitative data into ranked data before analyzing the slope. }
 }
 \details{

@@ -5,13 +5,13 @@
   Create a slope difference profile between two traits
 }
 \usage{
-scanSlopes(genotypes, phenotypes, pheno.col = 1, doRank = FALSE, verbose = FALSE)
+scanSlopes(genotypes, phenotypes, phenocol = 1, doRank = FALSE, verbose = FALSE)
 }
 
 \arguments{
   \item{genotypes}{   Matrix of genotypes. (individuals x markers) }
   \item{phenotypes}{  Matrix of phenotypes. (individuals x phenotypes) }
-  \item{pheno.col}{   Which phenotype column(s) should we analyse. Default analyse all phenotypes. }
+  \item{phenocol}{    Which phenotype column(s) should we analyse. Default: Analyse phenotype 1. }
   \item{doRank}{      Transform quantitative data into ranked data before analyzing the slope. }
   \item{verbose}{     Be verbose. }
 }
@@ -45,7 +45,7 @@ scanSlopes(genotypes, phenotypes, pheno.col = 1, doRank = FALSE, verbose = FALSE
   library(ctl)
   data(ath.metabolites)                 # Arabidopsis Thaliana data set
 
-  slopes <- scanSlopes(ath.metab$genotypes, ath.metab$phenotypes, pheno.col = 2)
+  slopes <- scanSlopes(ath.metab$genotypes, ath.metab$phenotypes, phenocol = 2)
   image(1:nrow(slopes), 1:ncol(slopes), -log10(slopes))
 }
 
