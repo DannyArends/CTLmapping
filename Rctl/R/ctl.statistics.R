@@ -9,16 +9,19 @@
 #
 
 CTLregions <- function(CTLobject, mapinfo, phenocol = 1, significance = 0.05, verbose = TRUE) {
-  if(any(class(CTLobject)=="CTLscan")) CTLobject = list(CTLobject)
+  if(missing(CTLobject)) stop("argument 'CTLobject' which expects a 'CTLobject' object is missing, with no default")
   if(missing(mapinfo)) stop("You need to provide a map object with 'chr' and 'pos' columns")
   if(!all(colnames(mapinfo) %in% c("chr", "pos"))) stop("You need to provide a map object with 'chr' and 'pos' columns")
+  if(any(class(CTLobject)=="CTLscan")) CTLobject = list(CTLobject)
+
   p_above <- which(apply(CTLobject[[phenocol]]$ctl, 2, function(y){
     any(y > -log10(significance))
   }))
-  if(length(p_above) == 0) stop("No significant CTLs found at threshold = ", significance)
+
+  if(length(p_above) == 0) stop("No significant CTLs found at threshold: ", significance)
   significant <- ctlscan[[1]]$ctl[, p_above]
   map <- mapinfo[rownames(significant),]
-  if(!all(rownames(significant) %in% rownames(map))) stop("CTL markers do not match the provided map")
+  if(!all(rownames(significant) %in% rownames(map))) stop("CTL markers do not match the provided mapinfo object")
   regions <- NULL
   for(x in 1:ncol(significant)){
     peeks <- detect.peaks(significant[,x], threshold = -log10(significance))
@@ -26,10 +29,12 @@ CTLregions <- function(CTLobject, mapinfo, phenocol = 1, significance = 0.05, ve
       left <- peek - 1
       right <- peek + 1
       chr <- map[peek, "chr"]
-      while(left >= 1 && peeks[left] >= 1 && map[left, "chr"] == chr){
+      while(left >= 1 && peeks[left] >= 1 && map[left, "chr"] == chr) {
+        # Move the left side, till we reach the end of the region or the beginning of the chromosome
         left <- left - 1
       }
       while(right <= length(peeks) && peeks[right] >= 1 && map[right, "chr"] == chr){
+        # Move the right side, till we reach the end of the region, map or chromosome
         right <- right + 1
       }
       if(map[left, "chr"] != chr){ pos_s <- 0; }else{ pos_s <- map[left, "pos"]; }

@@ -33,10 +33,10 @@ dcor <- function(genotypes, phenotypes, marker=1, pheno1=1, pheno2=1, geno.enc=c
   c2 <- cor(phenotypes[idx2,pheno1], phenotypes[idx2,pheno2])
   dcor <- (c1-c2)^2
   if(verbose){
-    cat("COR_1: ",c1,", COR_2: ",c2,"\n",sep="")
-    cat("DCOR: ",dcor,"\n",sep="")
+    cat("COR_1: ", c1, ", COR_2: ", c2,"\n", sep="")
+    cat("DCOR: ", dcor, "\n", sep="")
   }
-  invisible(return(c(c1,c2,dcor)))
+  invisible(return(c(c1, c2, dcor)))
 }
 
 get.chr.edges <- function(mapinfo){
