@@ -146,7 +146,7 @@ test.power.test <- function(){
   postscript("power_analysis.eps",width=12, height=6,paper="special", horizontal=FALSE)
   op <- par(mfrow=c(1,2))
 
-  plot(c(0, 0.8),c(0, 1),t='n',xlab="Simulated effect size",ylab="Power", xaxt="n")
+  plot(c(0, 0.8),c(0, 1), t = 'n', xlab = "Simulated effect size", ylab = "Power", xaxt = "n")
   boxplot(sample100, at=as.numeric(colnames(sample100)), boxwex=0.02, add=T,pch=20)
   points(as.numeric(colnames(sample100)), apply(sample100,2,median), t='l')
   boxplot(sample200, at=as.numeric(colnames(sample200)), boxwex=0.02, add=T, col="blue",pch=20)
@@ -156,7 +156,7 @@ test.power.test <- function(){
 
   legend("bottomright",c("100","200","300"),col=c("black","blue","orange"),lwd=1,title="Sample size")
 
-  plot(c(0, 50),c(0, 1),t='n',xlab="Minor allele frequency",ylab="Power", xaxt="n")
+  plot(c(0, 50),c(0, 1), t = 'n', xlab="Minor allele frequency", ylab="Power", xaxt = "n")
   boxplot(sample100r, at=as.numeric(colnames(sample100r)), boxwex=1, add=T,pch=20)
   points(as.numeric(colnames(sample100r)), apply(sample100r,2,median), t='l')
   boxplot(sample200r, at=as.numeric(colnames(sample200r)), boxwex=1, add=T, col="blue",pch=20)

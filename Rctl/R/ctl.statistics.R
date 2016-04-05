@@ -2,11 +2,10 @@
 # ctl.statistics.R
 #
 # copyright (c) 2010-2012 - GBIC, Danny Arends, Bruno Tesson and Ritsert C. Jansen
-# last modified Oct, 2012
+# last modified Apr, 2016
 # first written Nov, 2011
 # 
-# R functions to do transform CTL mapping scores to Pvalues and LOD
-# Example data C. Elegans and available at request ( Danny.Arends@gmail.com )
+# R functions to do transform CTL mapping scores to Pvalues and LOD and collect significant results per region
 #
 
 CTLregions <- function(CTLobject, mapinfo, phenocol = 1, significance = 0.05, verbose = TRUE) {
