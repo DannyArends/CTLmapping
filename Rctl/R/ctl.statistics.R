@@ -19,7 +19,7 @@ CTLregions <- function(CTLobject, mapinfo, phenocol = 1, significance = 0.05, ve
   }))
 
   if(length(p_above) == 0) stop("No significant CTLs found at threshold: ", significance)
-  significant <- ctlscan[[1]]$ctl[, p_above]
+  significant <- CTLobject[[1]]$ctl[, p_above]
   map <- mapinfo[rownames(significant),]
   if(!all(rownames(significant) %in% rownames(map))) stop("CTL markers do not match the provided mapinfo object")
   regions <- NULL
