@@ -36,8 +36,9 @@ CTLregions(CTLobject, mapinfo, phenocol = 1, significance = 0.05, verbose = TRUE
 }
 \examples{
   library(ctl)
-  data(ath.metab)
-  data(ath.result)
+  
+  data(ath.metabolites)                 # Arabidopsis Thaliana data set
+  data(ath.result)                      # Arabidopsis Thaliana CTL results
   regions <- CTLregions(ath.result, ath.metab$map)
 }
 

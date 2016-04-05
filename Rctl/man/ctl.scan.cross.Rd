@@ -76,7 +76,7 @@ Columns: Genetic markers) for the phenotype.
   data(multitrait)      # Arabidopsis Thaliana (R/qtl cross object)
 
   mtrait <- calc.genoprob(multitrait)          # Calculate genotype probabilities
-  qtls   <- scanone(mtrait, phenocol = 1:4)    # Scan for QTLS
+  qtls   <- scanone(mtrait, pheno.col = 1:4)   # Scan for QTLS using R/qtl
   map    <- qtls[,1:2]                         # Get the genetic map
   qtls   <- qtls[,-(1:2)]                      # Get the LOD scores
 
