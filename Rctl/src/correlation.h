@@ -17,6 +17,7 @@
     #include "rmapctl.h"
 
     #define EPSILON 1e-12
+    #define RANGE 1+EPSILON
 
     /** R interface to correlation function */
     void R_correlation(double* x, double* y, double* res, int* dim, int* verb);
