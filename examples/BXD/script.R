@@ -15,7 +15,7 @@ genotypes <- genotypes[,-c(1:3)]
 renames <- c("BXD96","BXD97","BXD92","BXD80","BXD103")
 names(renames) <- c("BXD48a", "BXD65a", "BXD65b", "BXD73a", "BXD73b")
 
-GN111 <- read.csv(gzfile("GN111_MeanDataAnnotated_rev081815.txt.gz"), skip = 33, header = TRUE, sep="\t", colClasses="character")
+GN111 <- read.csv(gzfile("GN111/GN111_MeanDataAnnotated_rev081815.txt.gz"), skip = 33, header = TRUE, sep="\t", colClasses="character")
 GN111[1:10,]
 
 GN111 <- GN111[- which(grepl("AFFX", GN111[,"Gene.Symbol"])), ]
@@ -107,6 +107,9 @@ whichGroup <- function(x){
 }
 
 highImpact <- unique(c(CD, IL, H2, ACE, ESR, APP, LEP, INS, NPP, CC, TUM))
+cat(highImpact, file = "genes.txt", sep="\n")
+
+
 phenotypes <- GN111[which(GN111[,"Gene.Symbol"] %in% highImpact),]
 annotation <- phenotypes[,c("Gene.Symbol", "Description")]
 pii <- which(colnames(phenotypes) %in% names(renames))            # Rename some individuals in the phenotype dataset
@@ -210,6 +213,8 @@ pos <- unlist(lapply(strsplit(interactions, " "),"[",4))
 
 uniques <- which(!duplicated(apply(apply(cbind(sourc,targe,chr,pos),1,sort),2,paste0,collapse="-")))
 cat(gsub(" ","\t",trim(readLines("CTLs_int.txt")[uniques])),sep="\n", file="CTLs_int_all.txt")
+
+
 
 # Read in the interaction table and format for cytoscape
 interactions <- trim.trailing(readLines("CTLs_int.txt")[which(substr(readLines("CTLs_int.txt"),1,1) != " ")])
