@@ -88,6 +88,11 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   for(i = 0; i < nmarkers; i++){ free(genoenc[i].data); }
   PutRNGstate();
   free(genoenc);
+  
+  // The indices are allocated by C
+  free(genotypes.data);
+  free(phenotypes.data);
+  
   freematrix((void**)dcors, genotypes.nmarkers);
   freematrix((void**)ctls, genotypes.nmarkers);
   return;
