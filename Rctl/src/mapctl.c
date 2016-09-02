@@ -40,9 +40,10 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
   clvector idx;
   double*  P1;
   int* nsamples;
-  double** cors, **dcors, **P2M;
+  double** cors, **P2M;
 
-  dcors = newdmatrix(genotypes.nmarkers, phenotypes.nphenotypes);
+  double** dcors = (double**) calloc(genotypes.nmarkers, sizeof(double*));
+
   for(m = 0; m < genotypes.nmarkers; m++){
     ngenotypes = genoenc[m].nelements;
     if(ngenotypes > 1){
