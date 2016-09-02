@@ -1,5 +1,5 @@
 #
-# Analysis of BxD data
+# Analysis of GN111 BxD data, and selection of genes used in the analysis
 # copyright (c) 2016-2020 - Danny Arends and Rob Williams
 # last modified Apr, 2016
 # first written Apr, 2016
