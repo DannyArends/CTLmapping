@@ -5,9 +5,15 @@
 # first written Apr, 2016
 #
 
-### Genotypes
-setwd("D:/Github/CTLmapping/examples/BXD/data")
+### Setup
+setwd("D:/Github/CTLmapping/examples/BXD/data")         # Where is the data ?
+source("../whichGroup.R")
+library(ctl)
 
+### Selected genes
+highImpact <- read.table("genes.txt", sep="\t")
+
+### Genotypes
 genotypes <- read.table("BXD.geno",sep="\t", skip = 6, header =TRUE, row.names = 2, na.strings = c("U", "H"), colClasses="character")
 map <- genotypes[,1:3]
 genotypes <- genotypes[,-c(1:3)]
@@ -15,14 +21,12 @@ genotypes <- genotypes[,-c(1:3)]
 renames <- c("BXD96","BXD97","BXD92","BXD80","BXD103")
 names(renames) <- c("BXD48a", "BXD65a", "BXD65b", "BXD73a", "BXD73b")
 
+### Phenotypes
 BXDdata <- read.csv(gzfile("GN709/GN709_MeanDataAnnotated_rev120415.txt.gz"), skip = 33, header = TRUE, sep="\t", colClasses="character")
-BXDdata[1:10,]
-
-highImpact <- readLines("genes.txt")
-
-
-phenotypes <- BXDdata[which(BXDdata[,"Gene.Symbol"] %in% highImpact),]
+phenotypes <- BXDdata[which(BXDdata[,"Gene.Symbol"] %in% highImpact[,1]),]
 annotation <- phenotypes[,c("Gene.Symbol", "Description")]
+
+### Match individual names
 pii <- which(colnames(phenotypes) %in% names(renames))            # Rename some individuals in the phenotype dataset
 colnames(phenotypes)[pii] <- renames[colnames(phenotypes)[pii]]   # Rename some individuals in the phenotype dataset
 
@@ -30,12 +34,24 @@ colnames(phenotypes)[pii] <- renames[colnames(phenotypes)[pii]]   # Rename some 
 phenotypes  <- phenotypes[, which(colnames(phenotypes) %in% colnames(genotypes))]
 genotypes   <- genotypes[, colnames(phenotypes)]
 
+# Complete genotype data
+genotypes <- genotypes[which(apply(apply(genotypes,1,is.na),2,sum) == 0),]
+map <- map[rownames(genotypes),]
+
+# Change encoding of the genotypes to numeric 1 and 2
+genotypes[genotypes == "B"] <- 1
+genotypes[genotypes == "D"] <- 2
+
 phenotypes[1:5, 1:15]
 annotation[1:5, ]
 genotypes[1:5, 1:15]
 
+# Significance levels
+qtl_cutoff <- -log10(0.05 / nrow(genotypes))
+ctl_cutoff <- -log10(0.05)
+
 # Map QTLs
-if(!file.exists("QTLs.txt")) {
+if(!file.exists("GN709/QTLs.txt")) {
   QTLs <- matrix(NA, nrow(phenotypes), nrow(genotypes))
   colnames(QTLs) <- rownames(genotypes)
 
@@ -46,20 +62,9 @@ if(!file.exists("QTLs.txt")) {
 
   write.table(QTLs, file = "GN709/QTLs.txt", sep="\t", quote=FALSE)
 }else{
-  QTLs <- read.table("QTLs.txt")
+  QTLs <- read.table("GN709/QTLs.txt")
 }
 
-# Write out the data as a cross object for R/qtl
-phenotypes <- rbind(phenotypes, sex=rep("M", ncol(phenotypes)))
-write.table(cbind(NA,NA, phenotypes), "GN709/cross.csvr", sep=",", quote=FALSE, col.names=FALSE, row.names=TRUE, na="")
-write.table(cbind(map[,1],map[,2], genotypes), "GN709/cross.csvr", sep=",", append=TRUE, quote=FALSE, col.names=FALSE, row.names=TRUE, na="")
-library(qtl)
-cross <- read.cross("csvr", file="GN709/cross.csvr")
-
-# Write out the data as a cross object for R/qtl
-library(ctl)
-
-cross <- fill.geno(cross)
 # Map CTL, here we can only use a subset at a time ( I do 100, then close R and continue)
 if(!file.exists("CTLs_p.txt")) {
   CTLs <- matrix(NA, nrow(phenotypes), nrow(genotypes))
@@ -67,13 +72,13 @@ if(!file.exists("CTLs_p.txt")) {
 
   cat("", file="GN709/CTLs_p.txt")
   cat("", file="GN709/CTLs_int.txt")
-  for(x in 1:273){
-    res   <- CTLscan.cross(cross, phenocol = x)                                               # Scan for CTLs
-    scores <- apply(res[[1]]$ctl, 1, max)                                                     # Max CTL scores per marker
-    significant <- which(apply(res[[1]]$ctl, 2, max) > 2)                                     # Other phenotypes causing the CTL
+  for(x in 1:nrow(phenotypes)){
+    res <- CTLscan(t(genotypes), t(phenotypes), phenocol=x)                                             # Scan for CTLs
+    scores <- apply(res[[1]]$ctl, 1, max)                                                               # Max CTL scores per marker
+    significant <- which(apply(res[[1]]$ctl, 2, max) > ctl_cutoff)                                      # Other phenotypes causing the CTL
     for(y in significant){
-      gphes <- names(which(res[[1]]$ctl[,y] > 2))                                             # Markers causing the CTL
-      locs  <- unique(cbind(map[gphes,1], round(as.numeric(map[gphes,3])/5) * 5))             # Approx location
+      gphes <- names(which(res[[1]]$ctl[,y] > ctl_cutoff))                                              # Markers causing the CTL
+      locs  <- unique(cbind(map[gphes,1], round(as.numeric(map[gphes,3])/5) * 5))                       # Approx location
       interacts <- cbind(annotation[x,1],annotation[y,1],locs, mean(res[[1]]$ctl[gphes,y]), "\n")
       cat(t(interacts), file="GN709/CTLs_int.txt", append = TRUE)
     }
@@ -86,8 +91,8 @@ if(!file.exists("CTLs_p.txt")) {
   CTLs <- read.table("GN709/CTLs_p.txt", row.names=1)
 }
 
-haveQTL <- which(apply(-log10(QTLs), 1, max) > 5)           # 5 is 'too low' for QTL
-haveCTL <- which(apply(CTLs, 1, max) > 5)                   # 5 is 'too high/stringent' for CTL
+haveQTL <- which(apply(-log10(QTLs), 1, max) > qtl_cutoff)           # 5 is 'too low' for QTL
+haveCTL <- which(apply(CTLs, 1, max) > ctl_cutoff)                   # 5 is 'too high/stringent' for CTL
 
 dev.off()   # Close any open device and start plotting the CTL profile per probe
 for(x in unique(haveQTL, haveCTL)) {
