@@ -1,0 +1,1 @@
+R -d "valgrind --tool=memcheck --leak-check=full" --vanilla < memleak.R
