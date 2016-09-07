@@ -136,13 +136,15 @@ cat(gsub(" ","\t",trim(readLines("GN111/CTLs_int.txt")[uniques])),sep="\n", file
 # Read in the interaction table and format for cytoscape
 interactions <- trim.trailing(readLines("GN111/CTLs_int.txt")[which(substr(readLines("GN111/CTLs_int.txt"),1,1) != " ")])
 
+cat(gsub(" ","\t",trim(readLines("GN111/CTLs_int.txt"))),sep="\n", file="GN111/CTLs_int_all.txt")
+
 sourc <- unlist(lapply(strsplit(interactions, " "),"[",1))
 targe <- unlist(lapply(strsplit(interactions, " "),"[",2))
 chr <- unlist(lapply(strsplit(interactions, " "),"[",3))
 pos <- unlist(lapply(strsplit(interactions, " "),"[",4))
 
 uniques <- which(!duplicated(apply(apply(cbind(sourc,targe,chr,pos),1,sort),2,paste0,collapse="-")))
-cat(gsub(" ","\t",trim(readLines("GN111/CTLs_int.txt")[uniques])),sep="\n", file="GN111/CTLs_int_all.txt")
+cat(gsub(" ","\t",trim(readLines("GN111/CTLs_int.txt")[uniques])),sep="\n", file="GN111/CTLs_int_unique.txt")
 
 groupS <- unlist(lapply(sourc, whichGroup, highImpact))
 groupT <- unlist(lapply(targe, whichGroup, highImpact))

@@ -66,7 +66,7 @@ if(!file.exists("GN709/QTLs.txt")) {
 }
 
 # Map CTL, here we can only use a subset at a time ( I do 100, then close R and continue)
-if(!file.exists("CTLs_p.txt")) {
+if(!file.exists("GN709/CTLs_p.txt")) {
   CTLs <- matrix(NA, nrow(phenotypes), nrow(genotypes))
   colnames(CTLs) <- rownames(genotypes)
 
@@ -105,13 +105,9 @@ for(x in unique(haveQTL, haveCTL)) {
   dev.off()
 }
 
-for(x in haveQTL) {
-  cat(annotation[x,1], whichGroup(annotation[x,1]), max(-log10(QTLs[x,])), "\n")
-}
-
-for(x in haveCTL) {
-  cat(annotation[x,1], whichGroup(annotation[x,1]), max(CTLs[x,]), "\n")
-}
+table(unlist(lapply(annotation[,1], whichGroup, highImpact)))
+table(unlist(lapply(annotation[haveQTL,1], whichGroup, highImpact)))
+table(unlist(lapply(annotation[haveCTL,1], whichGroup, highImpact)))
 
 # From http://stackoverflow.com/questions/2261079
 trim.trailing <- function (x) sub("\\s+$", "", x) # returns string w/o trailing whitespace
@@ -133,21 +129,19 @@ cat(gsub(" ","\t",trim(readLines("GN709/CTLs_int.txt")[uniques])),sep="\n", file
 # Read in the interaction table and format for cytoscape
 interactions <- trim.trailing(readLines("GN709/CTLs_int.txt")[which(substr(readLines("GN709/CTLs_int.txt"),1,1) != " ")])
 
+cat(gsub(" ","\t",trim(readLines("GN709/CTLs_int.txt"))),sep="\n", file="GN709/CTLs_int_all.txt")
+
 sourc <- unlist(lapply(strsplit(interactions, " "),"[",1))
 targe <- unlist(lapply(strsplit(interactions, " "),"[",2))
 chr <- unlist(lapply(strsplit(interactions, " "),"[",3))
 pos <- unlist(lapply(strsplit(interactions, " "),"[",4))
 
 uniques <- which(!duplicated(apply(apply(cbind(sourc,targe,chr,pos),1,sort),2,paste0,collapse="-")))
-cat(gsub(" ","\t",trim(readLines("GN709/CTLs_int.txt")[uniques])),sep="\n", file="GN709/CTLs_int_all.txt")
+cat(gsub(" ","\t",trim(readLines("GN709/CTLs_int.txt")[uniques])),sep="\n", file="GN709/CTLs_int_unique.txt")
 
-groupS <- unlist(lapply(sourc, whichGroup))
-groupT <- unlist(lapply(targe, whichGroup))
+groupS <- unlist(lapply(sourc, whichGroup, highImpact))
+groupT <- unlist(lapply(targe, whichGroup, highImpact))
 interactions  <- paste0(interactions," ",paste0(chr,":",pos), " ", groupS, " ", groupT)
 
-
-
-
-a5 <- which(as.numeric(unlist(lapply(strsplit(interactions, " "),"[",5))) > 5)
-
-cat(gsub(" ","\t", c("Source\tTarget\tChr\tPos\tStrength\tChrPos\tGroup\tGroup", interactions[a5])), sep="\n", file="GN709/CTLs_cyto.txt")
+ctlsign <- which(as.numeric(unlist(lapply(strsplit(interactions, " "),"[",5))) > ctl_cutoff)
+cat(gsub(" ","\t", c("Source\tTarget\tChr\tPos\tStrength\tChrPos\tGroup\tGroup", interactions[ctlsign])), sep="\n", file="GN709/CTLs_cyto.txt")

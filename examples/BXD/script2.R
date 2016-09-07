@@ -131,22 +131,22 @@ cat(gsub(" ","\t",trim(readLines("GN318/CTLs_int.txt")[uniques])),sep="\n", file
 # Read in the interaction table and format for cytoscape
 interactions <- trim.trailing(readLines("GN318/CTLs_int.txt")[which(substr(readLines("GN318/CTLs_int.txt"),1,1) != " ")])
 
+cat(gsub(" ","\t",trim(readLines("GN318/CTLs_int.txt"))),sep="\n", file="GN318/CTLs_int_all.txt")
+
 sourc <- unlist(lapply(strsplit(interactions, " "),"[",1))
 targe <- unlist(lapply(strsplit(interactions, " "),"[",2))
 chr <- unlist(lapply(strsplit(interactions, " "),"[",3))
 pos <- unlist(lapply(strsplit(interactions, " "),"[",4))
 
 uniques <- which(!duplicated(apply(apply(cbind(sourc,targe,chr,pos),1,sort),2,paste0,collapse="-")))
-cat(gsub(" ","\t",trim(readLines("GN318/CTLs_int.txt")[uniques])),sep="\n", file="GN318/CTLs_int_all.txt")
+cat(gsub(" ","\t",trim(readLines("GN318/CTLs_int.txt")[uniques])),sep="\n", file="GN318/CTLs_int_unique.txt")
 
-groupS <- unlist(lapply(sourc, whichGroup))
-groupT <- unlist(lapply(targe, whichGroup))
+groupS <- unlist(lapply(sourc, whichGroup, highImpact))
+groupT <- unlist(lapply(targe, whichGroup, highImpact))
 interactions  <- paste0(interactions," ",paste0(chr,":",pos), " ", groupS, " ", groupT)
 
-a5 <- which(as.numeric(unlist(lapply(strsplit(interactions, " "),"[",5))) > 5)
-
+a5 <- which(as.numeric(unlist(lapply(strsplit(interactions, " "),"[",5))) > ctl_cutoff)
 cat(gsub(" ","\t", c("Source\tTarget\tChr\tPos\tStrength\tChrPos\tGroup\tGroup", interactions[a5])), sep="\n", file="GN318/CTLs_cyto.txt")
-
 
 ## Invetigate high LODs in CTL example: Il18r1 Cnnm1 12 45 66.9410570762679
 

@@ -65,6 +65,9 @@ if(!file.exists("GN206/QTLs.txt")) {
   QTLs <- read.table("GN206/QTLs.txt")
 }
 
+BXDdata <- NULL
+gc(TRUE)
+
 # Map CTL, here we can only use a subset at a time ( I do 100, then close R and continue)
 if(!file.exists("GN206/CTLs_p.txt")) {
   CTLs <- matrix(NA, nrow(phenotypes), nrow(genotypes))
@@ -85,7 +88,7 @@ if(!file.exists("GN206/CTLs_p.txt")) {
     cat(paste0(paste0(c(x, scores),collapse="\t"), "\n"), file="GN206/CTLs_p.txt", append = TRUE)
     CTLs[x,] <- scores
     if(x %% 4 == 0) cat(x, "\n")
-    gc(TRUE)
+
   }
   write.table(CTLs, file = "GN206/CTLs.txt", sep="\t", quote=FALSE)
 }else{
@@ -95,28 +98,19 @@ if(!file.exists("GN206/CTLs_p.txt")) {
 haveQTL <- which(apply(-log10(QTLs), 1, max) > qtl_cutoff)                                      # 5 is 'too low' for QTL
 haveCTL <- which(apply(CTLs, 1, max) > ctl_cutoff)                                              # 5 is 'too high/stringent' for CTL
 
-dev.off()   # Close any open device and start plotting the CTL profile per probe
-for(x in unique(haveQTL, haveCTL)) {
-  png(paste0("img/plot",x,".png"))
-  plot(c(0,ncol(QTLs)), c(-5, 10), t = 'n', main=annotation[x,1])
-  points(-log10(as.numeric(QTLs[x,])), t = 'h', col=as.numeric(as.factor(map[,1])))
-  abline(h=4, lty=2)
-  points(-as.numeric(CTLs[x,]), t = 'h', col=as.numeric(as.factor(map[,1])))
-  abline(h=-2, lty=2)
-  dev.off()
-}
+table( unlist(lapply(haveQTL, function(x){whichGroup(annotation[x,1], highImpact)} )) )
+table( unlist(lapply(haveCTL, function(x){whichGroup(annotation[x,1], highImpact)} )) )
 
-allQTL <- NULL
-for(x in haveQTL) {
-  cat(annotation[x,1], whichGroup(annotation[x,1]), max(-log10(QTLs[x,])), "\n")
-  allQTL <- rbind(allQTL, c(annotation[x,1], whichGroup(annotation[x,1]), max(-log10(QTLs[x,]))))
-}
-
-allCTL <- NULL
-for(x in haveCTL) {
-  cat(annotation[x,1], whichGroup(annotation[x,1]), max(CTLs[x,]), "\n")
-  allCTL <- rbind(allCTL, c(annotation[x,1], whichGroup(annotation[x,1]), max(CTLs[x,])))
-}
+#dev.off()   # Close any open device and start plotting the CTL profile per probe
+#for(x in unique(haveQTL, haveCTL)) {
+#  png(paste0("img/plot",x,".png"))
+#  plot(c(0,ncol(QTLs)), c(-5, 10), t = 'n', main=annotation[x,1])
+#  points(-log10(as.numeric(QTLs[x,])), t = 'h', col=as.numeric(as.factor(map[,1])))
+#  abline(h=4, lty=2)
+#  points(-as.numeric(CTLs[x,]), t = 'h', col=as.numeric(as.factor(map[,1])))
+#  abline(h=-2, lty=2)
+#  dev.off()
+#}
 
 # From http://stackoverflow.com/questions/2261079
 trim.trailing <- function (x) sub("\\s+$", "", x) # returns string w/o trailing whitespace
@@ -150,9 +144,5 @@ groupS <- unlist(lapply(sourc, whichGroup))
 groupT <- unlist(lapply(targe, whichGroup))
 interactions  <- paste0(interactions," ",paste0(chr,":",pos), " ", groupS, " ", groupT)
 
-
-
-
-a5 <- which(as.numeric(unlist(lapply(strsplit(interactions, " "),"[",5))) > 5)
-
+a5 <- which(as.numeric(unlist(lapply(strsplit(interactions, " "),"[",5))) > ctl_cutoff)
 cat(gsub(" ","\t", c("Source\tTarget\tChr\tPos\tStrength\tChrPos\tGroup\tGroup", interactions[a5])), sep="\n", file="GN206/CTLs_cyto.txt")
