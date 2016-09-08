@@ -103,13 +103,9 @@ for(x in unique(haveQTL, haveCTL)) {
   dev.off()
 }
 
-for(x in haveQTL) {
-  cat(annotation[x,1], whichGroup(annotation[x,1]), max(-log10(QTLs[x,])), "\n")
-}
-
-for(x in haveCTL) {
-  cat(annotation[x,1], whichGroup(annotation[x,1]), max(CTLs[x,]), "\n")
-}
+table(unlist(lapply(annotation[,1], whichGroup, highImpact)))
+table(unlist(lapply(annotation[haveQTL,1], whichGroup, highImpact)))
+table(unlist(lapply(annotation[haveCTL,1], whichGroup, highImpact)))
 
 # From http://stackoverflow.com/questions/2261079
 trim.trailing <- function (x) sub("\\s+$", "", x) # returns string w/o trailing whitespace
