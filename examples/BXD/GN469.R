@@ -77,9 +77,17 @@ if(!file.exists("GN469/CTLs_p.txt")) {
     scores <- apply(res[[1]]$ctl, 1, max)                                                               # Max CTL scores per marker
     significant <- which(apply(res[[1]]$ctl, 2, max) > ctl_cutoff)                                      # Other phenotypes causing the CTL
     for(y in significant){
+      maxM <- which.max(res[[1]]$ctl[,y])
+      crs <- getCorrelations(t(genotypes), t(phenotypes), x, maxM, verbose=FALSE)
       gphes <- names(which(res[[1]]$ctl[,y] > ctl_cutoff))                                              # Markers causing the CTL
       locs  <- unique(cbind(map[gphes,1], round(as.numeric(map[gphes,3])/5) * 5))                       # Approx location
-      interacts <- cbind(annotation[x,1],annotation[y,1],locs, mean(res[[1]]$ctl[gphes,y]), "\n")
+      cors <- round(as.numeric(crs$correlations[y,]),2)
+      ssize <- as.numeric(crs$samplesize)
+      interacts <- cbind(annotation[x,1], annotation[y,1], locs, 
+                         round(max(res[[1]]$ctl[gphes,y]),2), 
+                         round(mean(res[[1]]$ctl[gphes,y]),2),
+                         length(gphes),
+                         names(maxM),cors[1],cors[2], ssize[1], ssize[2], "\n")
       cat(t(interacts), file="GN469/CTLs_int.txt", append = TRUE)
     }
     cat(paste0(paste0(c(x, scores),collapse="\t"), "\n"), file="GN469/CTLs_p.txt", append = TRUE)
@@ -90,6 +98,8 @@ if(!file.exists("GN469/CTLs_p.txt")) {
 }else{
   CTLs <- read.table("GN469/CTLs_p.txt", row.names=1)
 }
+
+
 
 haveQTL <- which(apply(-log10(QTLs), 1, max) > qtl_cutoff)           # 5 is 'too low' for QTL
 haveCTL <- which(apply(CTLs, 1, max) > ctl_cutoff)                   # 5 is 'too high/stringent' for CTL

@@ -99,6 +99,9 @@ if(!file.exists("GN207/CTLs_p.txt")) {
   CTLs <- read.table("GN207/CTLs_p.txt", row.names=1)
 }
 
+
+
+
 haveQTL <- which(apply(-log10(QTLs), 1, max) > qtl_cutoff)           # 5 is 'too low' for QTL
 haveCTL <- which(apply(CTLs, 1, max) > ctl_cutoff)                   # 5 is 'too high/stringent' for CTL
 
