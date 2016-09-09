@@ -22,6 +22,8 @@ void R_correlation1toN(double* x, double* y, double* res, int* dim, int* numy, i
   double** ynew = asdmatrix(ny, dimension, y);
   double*  cors = cor1toN(x, ynew, dimension, ny, verbose);
   for(i = 0; i < ny; i++){ res[i] = cors[i]; }
+
+  free(ynew);                   // The indices are allocated by C, Data by R
   free(cors);
 }
 
@@ -34,6 +36,8 @@ void R_chiSQN(int* nr, double* r, double* res, int* phe, int* nsamples, int* nph
 
   double* chisq = chiSQN(ncorrelations, correlations, phenotype, nsamples, nphenotypes);
   for(p = 0; p < nphenotypes; p++){ if(phenotype != p){ res[p] = chisq[p]; } }
+  
+  free(correlations);           // The indices are allocated by C, Data by R
   free(chisq);
 }
 
