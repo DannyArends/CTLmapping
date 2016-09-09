@@ -108,13 +108,43 @@ TUM <- unique(GN111[c(which(grepl("tumor", GN111[,"Description"]) &
              !grepl("-dependent", GN111[,"Description"]) )), c("Gene.Symbol")])
              
 #HSP
-HSP <- GN111[c(which(grepl("heat shock", GN111[,"Description"]) & 
-             !grepl("-like", GN111[,"Description"]) )), c("Gene.Symbol")]
+HSP <- unique(GN111[c(which(grepl("heat shock", GN111[,"Description"]) & 
+             !grepl("-like", GN111[,"Description"]) )), c("Gene.Symbol")])
 
+#Other
+OTH <- unique(GN111[c(which(grepl("Tyrp", GN111[,"Gene.Symbol"])), 
+               which(grepl("Thy1", GN111[,"Gene.Symbol"])), 
+               which(grepl("Gap43", GN111[,"Gene.Symbol"])), 
+               which(grepl("Nrn1", GN111[,"Gene.Symbol"])), 
+               which(grepl("Chrna6", GN111[,"Gene.Symbol"])), 
+               which(grepl("Cplx1", GN111[,"Gene.Symbol"])), 
+               which(grepl("Nsg1", GN111[,"Gene.Symbol"])), 
+               which(grepl("Snca", GN111[,"Gene.Symbol"])), 
+               which(grepl("Nptxr", GN111[,"Gene.Symbol"])), 
+               which(grepl("Kif5a", GN111[,"Gene.Symbol"])), 
+               which(grepl("Stmn2", GN111[,"Gene.Symbol"])), 
+               which(grepl("Atp2b2", GN111[,"Gene.Symbol"])), 
+               which(grepl("Chst1", GN111[,"Gene.Symbol"])), 
+               which(grepl("Psck2", GN111[,"Gene.Symbol"])), 
+               which(grepl("Mitf", GN111[,"Gene.Symbol"])), 
+               which(grepl("Rab33a", GN111[,"Gene.Symbol"])), 
+               which(grepl("Ednrb", GN111[,"Gene.Symbol"])), 
+               which(grepl("Syn2", GN111[,"Gene.Symbol"])), 
+               which(grepl("Nef3", GN111[,"Gene.Symbol"])), 
+               which(grepl("Nrip3", GN111[,"Gene.Symbol"])), 
+               which(grepl("Nsg2", GN111[,"Gene.Symbol"])), 
+               which(grepl("Dct", GN111[,"Gene.Symbol"])), 
+               which(grepl("Slc45a2", GN111[,"Gene.Symbol"])), 
+               which(grepl("Slc26a7", GN111[,"Gene.Symbol"])), 
+               which(grepl("Tyr", GN111[,"Gene.Symbol"])), 
+               which(grepl("Usp9x", GN111[,"Gene.Symbol"])), 
+               which(grepl("Abca1", GN111[,"Gene.Symbol"])), 
+               which(grepl("Gpnmb", GN111[,"Gene.Symbol"]))), c("Gene.Symbol")])
+             
 # Which group does a gene belong to
 whichGroup <- function(x){
   if(x %in% CD) return("CD")
-  if(x %in% IL) return("Il")
+  if(x %in% IL) return("IL")
   if(x %in% H2) return("H2")
   if(x %in% ACE) return("ACE")
   if(x %in% ESR) return("ESR")
@@ -122,6 +152,7 @@ whichGroup <- function(x){
   if(x %in% OBE) return("OBE")
   if(x %in% NPP) return("NPP")
   if(x %in% CC) return("CC")
+  if(x %in% OTH) return("OTH")
   if(x %in% TUM) return("TUM")
   if(x %in% HSP) return("HSP")
 }
