@@ -157,7 +157,7 @@ whichGroup <- function(x){
   if(x %in% HSP) return("HSP")
 }
 
-highImpact <- unique(c(CD, IL, H2, ACE, ESR, APP, OBE, NPP, CC, TUM, HSP))
+highImpact <- unique(c(CD, IL, H2, ACE, ESR, APP, OBE, NPP, CC, OTH, TUM, HSP))
 cat("",file = "genes.txt")
 for(x in highImpact){
   cat(x, "\t", whichGroup(x), "\n",file = "genes.txt", sep="", append=TRUE)

@@ -98,8 +98,6 @@ if(!file.exists("GN709/CTLs_p.txt")) {
   CTLs <- read.table("GN709/CTLs_p.txt", row.names=1)
 }
 
-
-
 haveQTL <- which(apply(-log10(QTLs), 1, max) > qtl_cutoff)           # 5 is 'too low' for QTL
 haveCTL <- which(apply(CTLs, 1, max) > ctl_cutoff)                   # 5 is 'too high/stringent' for CTL
 
@@ -153,4 +151,4 @@ groupT <- unlist(lapply(targe, whichGroup, highImpact))
 interactions  <- paste0(interactions," ",paste0(chr,":",pos), " ", groupS, " ", groupT)
 
 ctlsign <- which(as.numeric(unlist(lapply(strsplit(interactions, " "),"[",5))) > ctl_cutoff)
-cat(gsub(" ","\t", c("Source\tTarget\tChr\tPos\tStrength\tChrPos\tGroup\tGroup", interactions[ctlsign])), sep="\n", file="GN709/CTLs_cyto.txt")
+cat(gsub(" ","\t", c("Source\tTarget\tChr\tPos\tmaxLOD\tmeanLOD\tnSNPs\ttop_marker\tcor1\tcor2\tss1\tss2\tChrPos\tGroup\tGroup", interactions[ctlsign])), sep="\n", file="GN709/CTLs_cyto.txt")

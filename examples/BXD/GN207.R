@@ -99,9 +99,6 @@ if(!file.exists("GN207/CTLs_p.txt")) {
   CTLs <- read.table("GN207/CTLs_p.txt", row.names=1)
 }
 
-
-
-
 haveQTL <- which(apply(-log10(QTLs), 1, max) > qtl_cutoff)           # 5 is 'too low' for QTL
 haveCTL <- which(apply(CTLs, 1, max) > ctl_cutoff)                   # 5 is 'too high/stringent' for CTL
 
@@ -154,5 +151,14 @@ groupS <- unlist(lapply(sourc, whichGroup, highImpact))
 groupT <- unlist(lapply(targe, whichGroup, highImpact))
 interactions  <- paste0(interactions," ",paste0(chr,":",pos), " ", groupS, " ", groupT)
 
+edges <- NULL
+for(x in 1:length(sourc)){
+  if(sourc[x] != targe[x])edges <- c(edges, sourc[x], targe[x])
+}
+g1 <- graph( edges=edges, directed=F )
+g1 <- simplify(g1, remove.multiple = T) 
+l <- layout_with_mds(g1)
+plot(g1,layout=l)
+
 ctlsign <- which(as.numeric(unlist(lapply(strsplit(interactions, " "),"[",5))) > ctl_cutoff)
-cat(gsub(" ","\t", c("Source\tTarget\tChr\tPos\tStrength\tChrPos\tGroup\tGroup", interactions[ctlsign])), sep="\n", file="GN207/CTLs_cyto.txt")
+cat(gsub(" ","\t", c("Source\tTarget\tChr\tPos\tmaxLOD\tmeanLOD\tnSNPs\ttop_marker\tcor1\tcor2\tss1\tss2\tChrPos\tGroup\tGroup", interactions[ctlsign])), sep="\n", file="GN207/CTLs_cyto.txt")
