@@ -30,7 +30,7 @@ bibliography: paper.bib
 # Summary
 
 CTL mapping (CTL) is a novel method that associates correlation differences observed between phenotypes to genomic loci. 
-CTL mapping can be used in the analysis of experimental and outbred crosses, as well as study human populations. CTL 
+CTL mapping can be used in the analysis of experimental and outbred crosses, as well as human populations. CTL 
 allows geneticists, biologists and animal breeders to analyze correlation difference between phenotypes. CTL analysis 
 can be performed on phenotypes obtained from the whole biomolecular spectrum. From 'classic' phenotypes such as yield 
 and disease suscepibility to high-throughput experimental data such as microarrays, RNA-seq and/or protein abundance 
