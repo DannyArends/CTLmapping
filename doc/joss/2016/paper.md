@@ -29,10 +29,9 @@ bibliography: paper.bib
 
 # Summary
 
-CTL mapping (CTL) is a novel method to associate correlation differences observed between phenotypes to genomic locations. 
-CTL mapping can be used in the analysis of experimental and outbred crosses, and can be used to study human populations.
-
-CTL allows geneticists, biologists and animal breeders to analyze correlation difference on phenotypes covering the whole 
+CTL mapping (CTL) is a novel method that associates correlation differences observed between phenotypes to genomic loci. 
+CTL mapping can be used in the analysis of experimental and outbred crosses, as well as study human populations. CTL 
+allows geneticists, biologists and animal breeders to analyze correlation difference between phenotypes covering the whole 
 biomolecular spectrum. From 'classic' phenotypes such as yield and disease suscepibility to high-throughput experimental 
 data such as microarrays, RNA-seq and protein abundance measurements.
 
@@ -59,7 +58,7 @@ CTL mapping comes with several example datasets (in Rdata format) for the user t
 - 9 Metabolite expression traits measured on 403 Arabidopsis Thaliana [@Churchill:2012]
 - 24 Metabolite expression traits measured on 162 Arabidopsis Thaliana [@Keurentjes:2002]
 
--![CTL X3.Methylthiopropyl](CTL.png)
+-![QTL profile (Positive Y-axis) and CTL associations (Negative Y-axis) for X3.Methylthiopropyl](CTL.png)
 
 # Future work
 
