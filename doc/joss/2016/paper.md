@@ -45,8 +45,11 @@ users to quickly and effiently re-analyse previous (R/)QTL experiments. Addition
 R/qtl are that CTL users can use any input formats supported by R/qtl, and additionally have access to all plot and 
 helper functions provided by R/qtl.
 
-Results from CTL mapping can be visualized by several plotting routines provided by the package, however results can 
-also be exported to external tools (such as cytoscape) for visualization.
+To increase the reach of our method, we have integrated CTL into GeneNetwork (GN) a free and open source (FOSS) 
+framework for web-based genetics that can be deployed anywhere [@Sloan:2016]. This allows results from CTL mapping to be 
+interactively explored using a web interface provided by GN. Additionally results from CTL mapping can be visualized 
+by plotting routines provided by the R package, however results can also be exported to external tools (such as 
+cytoscape) for visualization.
 
 # Example datasets
 
