@@ -11,8 +11,8 @@ approach.
 
 ### Cite CTL mapping
 
-When this package was helpful, please (read) and cite the upcoming paper here: 
-[TODO: http://biorxiv.org/ DOI] in your publication, when (re-)using the any 
+When this software was helpful, please cite the JOSS paper: 
+[TODO: http://joss.theoj.org/papers/ DOI] in your publication, when (re-)using the any 
 code or data provided by this package, please also cite: [TODO: Github/Zenodo DOI] 
 for future code and data references. Citations are also available for import in 
 bibtex format [TODO: bibtex with DOIs].
@@ -93,19 +93,25 @@ operating system.
 Learn more about the [algorithm](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/ALGORITHM.md) 
 behind CTL mapping
 
-### Contributing and TODO
+### Issues
+
+Issues can be raised through the github issue tracker.
+
+### Contributing 
 
 Want to contribute? Great! We're actively looking for someone to do the website 
 [www.mapctl.org](http://www.mapctl.org "www.mapctl.org")
+
+Contribute to CTL source code by forking the github repository with git and sending us pull requests.
 
 see Rctl/inst/TODO.txt or submit a Github issue or pull request
 
 Its also possible to just post comments on code / commits.
 Or be a maintainer, and adopt a function
 
-Danny Arends
+### License
 
-### Disclaimer
+The CTL mapping source code is released under the GNU GENERAL PUBLIC LICENSE Version 3 (GPLv3). See LICENSE.txt.
 
-Copyright (c) 2010-2013 GBIC: Danny Arends, Ritsert C Jansen, Pjotr Prins
+It was developed between 2012-2016 at the Groningen Bioinformatics Centre by Danny Arends, Ritsert C Jansen, Pjotr Prins
 
