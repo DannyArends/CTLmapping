@@ -42,8 +42,7 @@ into other languages that allow calling C functions. As a proof of concept we pr
 
 Data structures of the CTL mapping package have been harmonized with the popular R/qtl package [@Arends:2010], allowing 
 users to quickly and effiently re-analyse previous (R/)QTL experiments. Additional advantages of close integration with 
-R/qtl are that CTL users can use any input formats supported by R/qtl, and additionally have access to all plot and 
-helper functions provided by R/qtl.
+R/qtl are the many input formats supported by R/qtl, and access to all plot and helper functions provided by R/qtl.
 
 To increase the reach of our method, we have integrated CTL into GeneNetwork (GN) a free and open source (FOSS) 
 framework for web-based genetics that can be deployed anywhere [@Sloan:2016]. This allows results from CTL mapping to be 
