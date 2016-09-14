@@ -56,6 +56,8 @@ CTL mapping comes with several example datasets (in Rdata format) for the user t
 - 9 Metabolite expression traits measured on 403 Arabidopsis Thaliana [@Churchill:2012]
 - 24 Metabolite expression traits measured on 162 Arabidopsis Thaliana [@Keurentjes:2002]
 
+-![CTL X3.Methylthiopropyl](CTL.png)
+
 # Future work
 
 Future work includes research into better handling of RAM by the CTL algorithm. 
