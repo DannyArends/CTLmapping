@@ -47,9 +47,9 @@ Data structures of the CTL mapping package have been harmonized with the popular
 users to quickly and effiently re-analyse previous (R/)QTL experiments. Additional advantages of close integration with 
 R/qtl are the many input formats supported by R/qtl, and access to all plot and helper functions provided by R/qtl.
 
-To increase the reach of our method, we have integrated CTL into GeneNetwork (GN) a free and open source (FOSS) 
-framework for web-based genetics that can be deployed anywhere [@Sloan:2016]. This allows results from CTL mapping to be 
-interactively explored using the familiar GeneNetwork web interface. Additionally results from CTL mapping can be visualized 
+To increase the reach of our method, we have integrated CTL into GeneNetwork (GN) a FOSS framework for web-based 
+genetics that can be deployed anywhere [@Sloan:2016]. This allows results from CTL mapping to be interactively 
+explored using the familiar GeneNetwork web interface. Additionally results from CTL mapping can be visualized 
 by plotting routines provided by the R package, however results can also be exported to external tools (such as 
 Cytoscape [@Cytoscape:2003]) for visualization and interactive exploration.
 
