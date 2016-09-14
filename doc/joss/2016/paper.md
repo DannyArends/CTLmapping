@@ -33,8 +33,8 @@ CTL mapping (CTL) is a novel method to associate correlation differences observe
 CTL mapping can be used in the analysis of experimental and outbred crosses, and can be used to study human populations.
 
 The CTL software is provided as a free and open source (FOSS) package for the R Project for Statistical Computing [@R:2005]. The 
-core algorithm is written in C and as such can be deployed anywhere, but it also provides a way to easily integrate the 
-algorithm into other languages. As a proof of concept we provide bindings for the D 2.0 language
+core algorithm is written in C allowing it to be deployed anywhere, but it also provides easy integration of the algorithm 
+into other languages. As a proof of concept we provide bindings for the D 2.0 language.
 
 CTL allows biologists and animal breeders to analyze correlation difference on phenotypes covering the whole biomolecular spectrum.
 From 'classic' phenotypes such as yield and disease suscepibility to high-throughput experimental data such as microarrays, 
