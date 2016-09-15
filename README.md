@@ -59,7 +59,7 @@ or use the 'installR' makefile target:
 
 Plans are to put the package on CRAN, but this has not happend yet.
 
-### Tests
+### Test
 
 CTL mapping uses the build in R framework to test the package for global regressions and unit-testing of documented functions.
 Tests can be executed from the commandline, by using the following command:
@@ -118,7 +118,7 @@ Want to contribute? Great! We're actively looking for someone to do the website
 
 Contribute to CTL source code by forking the Github repository, and sending us pull requests.
 
-For a list of active developments tasks, see Rctl/inst/TODO.txt
+For a list of active developments tasks, see [Rctl/inst/TODO.txt](Rctl/inst/TODO.txt) 
 
 Its also possible to just post comments on code / commits.
 
@@ -133,7 +133,7 @@ Citations are also available for import in bibtex format [TODO: bibtex with DOIs
 
 ### License
 
-The CTL mapping source code is released under the GNU GENERAL PUBLIC LICENSE Version 3 (GPLv3). See LICENSE.txt.
+The CTL mapping source code is released under the GNU GENERAL PUBLIC LICENSE Version 3 (GPLv3). See [LICENSE.txt](LICENSE.txt).
 
 This software was developed between 2012-2016 at the Groningen Bioinformatics Centre by Danny Arends, Yang Li, Pjotr Prins and Ritsert C. Jansen
 
