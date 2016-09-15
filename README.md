@@ -30,21 +30,20 @@ install_github("DannyArends/CTLmapping", subdir="Rctl")
 After this learn more about the [the R commands](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/STARTINGinR.md) 
 to start mapping CTLs on example data and how to prepare your own experimental data.
 
-### Download the software (R, C and D)
+### Manually install the R library
 
-The second option to is to clone the package from Github, this will give you 
-access to the R package but also provide the command line tools. First prepare 
-your environment by download and 'moving' to the folder:
+The second (more complex) option to is to clone the package from Github, this 
+will give you access to the R source code and also allows you to build the standalone linux executables. 
+
+#### Download the software (R, C and D)
+
+Prepare your environment by download and installing the R environment from [www.r-project.org](http://www.r-project.org/ "www.r-project.org"). 
+Get the CTL mapping source code by download and afterwards 'move' into the folder:
 
     $ git clone git://github.com/DannyArends/CTLmapping.git  # Download the repository
     $ cd CTLmapping                                          # Goto the folder
 
-### Manually install the R library
-
-Prepare your environment by download and installing the R environment from 
-[www.r-project.org](http://www.r-project.org/ "www.r-project.org"). Then 
-download CTLmapping and install into R by using (from a terminal / command 
-line):
+The downloaded CTLmapping can be installed into R by using the following command (from a terminal / command line):
 
     $ R CMD INSTALL Rctl                                     # Install the package
 
