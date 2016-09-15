@@ -1,13 +1,9 @@
 ## Correlated Trait Locus (CTL) mapping
 
-In this repository implementations of the novel Correlated Trait Locus (CTL) 
-mapping algorithm. Provided as package for the statistical language R and in 
-the D 2.0 programming language.
-
-CTL mapping is a novel approach to detect genetic regulation of phenotypes in 
-natural and experimental populations. It is a method which complements classical 
-QTL analysis, providing additional insights overlooked by the classical QTL 
-approach.
+This repository contains the source code for the Correlated Trait Locus (CTL) mapping algorithm. 
+CTL mapping is a novel approach to detect genetic regulation of phenotypes in natural and 
+experimental populations. It is a method which complements classical QTL analysis, providing 
+additional insights overlooked by the classical QTL approach.
 
 #### Algorithm
 
