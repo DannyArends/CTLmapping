@@ -24,7 +24,7 @@ R from Github using the devtools package:
 ```
 # install.packages("devtools")
 library(devtools)
-install_github("CTLmapping", "DannyArends", subdir="Rctl")
+install_github("DannyArends/CTLmapping", subdir="Rctl")
 ```
 
 After this learn more about the [the R commands](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/STARTINGinR.md) 
@@ -61,16 +61,24 @@ but help files are also easily available for almost all function in R using:
 ```
 library(ctl)                            # Load the library
 ?ctl                                    # Show the general help for ctl
+?CTLscan                                # Show the help for the CTLscan function
 ```
 
-### Compile the standalone executable
+#### Algorithm
 
-Optimized versions of the software are also available for more high throughput data.
-Here we explain how to build a standalone executable version using C
+Learn more about the [algorithm](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/ALGORITHM.md) 
+behind CTL mapping
+
+### Compile the standalone executable
+Note: makefiles to produce standalone executable are linux specific and will now work under windows
+
+Optimized versions of the software are also available for more high throughput data. 
+The follwoing two paragraphs explain how to build a standalone executable version 
+using either the C front-end code or the D 2.0 front-end code.
 
 #### (C version)
 
-Just run 'make' from a terminal / command line:
+Clone the repository from github, move into the CTLmappinf folder and run 'make' from a terminal / command line:
 
     $ make versionC                                          # Compile the executable
     $ make static                                            # Compile the static library
@@ -86,33 +94,28 @@ Prepare your environment by download and installing the DMD 2.0 compiler from
 [www.d-programming-language.org](http://www.d-programming-language.org 
 "www.d-programming-language.org"). Run 'make' from a terminal / command line:
 
-    $ make versionD                                          # Compile the executable
+    $ make versionD                                          # Compile the D 2.0 executable
 
 In the future, you can use a provided binary by downloading the approriate one for your 
 operating system.
 
-### Algorithm
+### Issues
 
-Learn more about the [algorithm](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/ALGORITHM.md) 
-behind CTL mapping
+Issues can be raised through the github issue tracker.
 
 ### Tests
 
 CTL mapping uses the build in R framework to test the package for global regressions and unit-testing of documented functions.
 Tests can be executed from the commandline, by using the following command:
 
-    $ R CMD check Rctl                                     # Install the package
-
-### Issues
-
-Issues can be raised through the github issue tracker.
+    $ R CMD check Rctl                                     # Run the unit-tests of the R package
 
 ### Contributing 
 
 Want to contribute? Great! We're actively looking for someone to do the website 
 [www.mapctl.org](http://www.mapctl.org "www.mapctl.org")
 
-Contribute to CTL source code by forking the github repository with git and sending us pull requests.
+Contribute to CTL source code by forking the Github repository, and sending us pull requests.
 
 see Rctl/inst/TODO.txt or submit a Github issue or pull request
 
