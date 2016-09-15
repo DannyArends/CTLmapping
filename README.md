@@ -117,9 +117,10 @@ Want to contribute? Great! We're actively looking for someone to do the website
 
 Contribute to CTL source code by forking the Github repository, and sending us pull requests.
 
-see Rctl/inst/TODO.txt or submit a Github issue or pull request
+For a list of things on the TODO list, see Rctl/inst/TODO.txt or submit a Github issue or pull request to raise a new issue.
 
 Its also possible to just post comments on code / commits.
+
 Or be a maintainer, and adopt a function
 
 ### Cite
