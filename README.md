@@ -14,14 +14,6 @@ approach.
 Learn more about the [algorithm](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/ALGORITHM.md) 
 behind CTL mapping
 
-### Cite CTL mapping
-
-When this software was helpful, please cite the JOSS paper: 
-[TODO: http://joss.theoj.org/papers/ DOI] in your publication, when (re-)using the any 
-code or data provided by this package, please also cite: [TODO: Github/Zenodo DOI] 
-for future code and data references. Citations are also available for import in 
-bibtex format [TODO: bibtex with DOIs].
-
 ### Option 1) Installing the R package
 The quickest and prefered way to start mapping CTLs, is to install the package directly into 
 R from Github using the [devtools](https://cran.r-project.org/web/packages/devtools/index.html) 
@@ -129,6 +121,14 @@ see Rctl/inst/TODO.txt or submit a Github issue or pull request
 
 Its also possible to just post comments on code / commits.
 Or be a maintainer, and adopt a function
+
+### Cite CTL mapping
+
+When this software was helpful, please cite the JOSS paper: 
+[TODO: http://joss.theoj.org/papers/ DOI] in your publication, when (re-)using the any 
+code or data provided by this package, please also cite: [TODO: Github/Zenodo DOI] 
+for future code and data references. Citations are also available for import in 
+bibtex format [TODO: bibtex with DOIs].
 
 ### License
 
