@@ -9,6 +9,11 @@ natural and experimental populations. It is a method which complements classical
 QTL analysis, providing additional insights overlooked by the classical QTL 
 approach.
 
+#### Algorithm
+
+Learn more about the [algorithm](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/ALGORITHM.md) 
+behind CTL mapping
+
 ### Cite CTL mapping
 
 When this software was helpful, please cite the JOSS paper: 
@@ -71,11 +76,6 @@ library(ctl)                            # Load the library
 ?ctl                                    # Show the general help for ctl
 ?CTLscan                                # Show the help for the CTLscan function
 ```
-
-#### Algorithm
-
-Learn more about the [algorithm](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/ALGORITHM.md) 
-behind CTL mapping
 
 ### Compile the standalone executable
 Note: makefiles to produce standalone executable are linux specific and will now work under windows
