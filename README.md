@@ -38,8 +38,11 @@ to start mapping CTLs on example data and how to prepare your own experimental d
 
 ### Option 2) Manually install the R library
 
-The second (more complex) option to is to clone the package from Github, this 
-will give you access to the R source code and also allows you to build the standalone linux executables. 
+The second (more complex) option to is to clone the package from Github, this will give 
+you access to the R source code and also allows you to build the standalone linux executables.
+Also for this route, Rtools needs to be installed on the system. Download and install the 
+version of [Rtools](https://cran.r-project.org/bin/windows/Rtools/) that matches your 
+current R version. 
 
 #### Download the software (R, C and D)
 
