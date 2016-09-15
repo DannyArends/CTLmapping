@@ -18,8 +18,14 @@ for future code and data references. Citations are also available for import in
 bibtex format [TODO: bibtex with DOIs].
 
 ### Option 1) Installing the R package
-The quickest way to start mapping CTLs, is to install the package directly into 
-R from Github using the devtools package:
+The quickest and prefered way to start mapping CTLs, is to install the package directly into 
+R from Github using the [devtools](https://cran.r-project.org/web/packages/devtools/index.html) 
+package. However for this to work, Rtools needs to be installed on the system. Download and 
+install the version of [Rtools](https://cran.r-project.org/bin/windows/Rtools/) that matches 
+your current R version.
+
+After installation, run the following commands in the R terminal to install the CTL mapping package.
+Uncomment the first line (by removing the #), if you do not have devtools installed yet:
 
 ```
 # install.packages("devtools")
