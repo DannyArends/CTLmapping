@@ -46,7 +46,7 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
 
   for(m = 0; m < genotypes.nmarkers; m++){
     ngenotypes = genoenc[m].nelements;
-    if(ngenotypes > 1){
+    if(ngenotypes > 1) {
       nsamples   = newivector(ngenotypes);
       cors       = calloc(ngenotypes, sizeof(double*));
       for(g = 0; g < ngenotypes; g++){
@@ -66,9 +66,13 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
           updateR(0);       // annoying function call to not crash R
         #endif //USING_R
       }
+
       dcors[m] = chiSQN(ngenotypes, cors, phenotype, nsamples, phenotypes.nphenotypes);
       freematrix((void**)cors, ngenotypes);         // Clear correlation and samples data 
       free(nsamples);
+    } else {
+      warning("Marker %d only has a single genotype\n", m+1);
+      dcors[m] = newdvector(phenotypes.nphenotypes);  /*!< Empty Chi^2 values */
     }
   }
   return dcors;
