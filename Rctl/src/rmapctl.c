@@ -28,7 +28,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
 
   Phenotypes phenotypes;
   Genotypes  genotypes;
-  size_t     i,ph,perm;
+  int        i,ph,perm;
   double**   dcors;
   double**   ctls;
   
@@ -46,7 +46,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   updateR(1);
   dcors = ctleffects(phenotypes, genotypes, phenotype, genoenc, verbose);
 
-  for(i=0; i < (nphenotypes*nmarkers); i++){    // Send scores to R
+  for(i = 0; i < (nphenotypes*nmarkers); i++){    // Send scores to R
     int m = i % nmarkers; int p = i / nmarkers;
     dcor[i] = dcors[m][p];
   }
