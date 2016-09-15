@@ -32,13 +32,13 @@ library(devtools)                                         # Load the devtools pa
 install_github("DannyArends/CTLmapping", subdir="Rctl")   # Install the package from Github
 ```
 
-After this learn more about the [the R commands](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/STARTINGinR.md) 
+After this learn more about the [the R commands](learn%20CTL/STARTINGinR.md) 
 to start mapping CTLs on example data and how to prepare your own experimental data.
 
 #### Option 2) Manually install the R library
 
 The second (more complex) option to is to clone the package from Github, this will give 
-you access to the R source code and also allows you to build the standalone linux executables.
+you access to the R source code and also allows you to build the [standalone linux executables](learn%20CTL/COMPILE.md) .
 On windows Rtools needs to be installed on your system. Download and install the 
 version of [Rtools](https://cran.r-project.org/bin/windows/Rtools/) that matches your 
 current R version.
@@ -67,7 +67,7 @@ Tests can be executed from the commandline, by using the following command:
     R CMD check Rctl                                      # Run the unit-tests of the R package
 
 ### Documentation
-A quick online introduction is [available](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/STARTINGinR.md) 
+A short online introduction is [available](learn%20CTL/STARTINGinR.md) 
 and help files with examples are also available for almost all functions in R using:
 
 ```R
