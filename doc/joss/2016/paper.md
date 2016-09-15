@@ -43,7 +43,7 @@ The CTL software is provided as a free and open source (FOSS) package for the R 
 integration of the CTL mapping algorithm into other languages that allow calling C functions. As a proof of concept 
 the CTL repository provide bindings for the D 2.0 language. 
 
-Data structures of the CTL mapping package have been harmonized with the popular R/qtl package [@Arends:2010], allowing 
+Data structures of the CTL mapping R package have been harmonized with the popular R/qtl package [@Arends:2010], allowing 
 users to quickly and effiently re-analyse previous (R/)QTL experiments. Additional advantages of close integration with 
 R/qtl are the many input formats supported by R/qtl, and access to all plot and helper functions provided by R/qtl.
 
