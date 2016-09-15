@@ -27,7 +27,8 @@ library(devtools)
 install_github("CTLmapping", "DannyArends", subdir="Rctl")
 ```
 
-After this learn more about the [the R commands](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/STARTINGinR.md) to start mapping CTLs on example data and how to prepare your own experimental data.
+After this learn more about the [the R commands](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/STARTINGinR.md) 
+to start mapping CTLs on example data and how to prepare your own experimental data.
 
 ### Download the software (R, C and D)
 
@@ -51,8 +52,10 @@ or use the 'installR' makefile target:
 
     $ make installR                                          # Install into R
 
-Plans are to put the package on CRAN, but this has not happend yet. A quick online 
-introduction is [available](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/STARTINGinR.md) 
+Plans are to put the package on CRAN, but this has not happend yet.
+
+### Getting help in R
+A quick online introduction is [available](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/STARTINGinR.md) 
 but help files are also easily available for almost all function in R using:
 
 ```
@@ -93,6 +96,13 @@ operating system.
 Learn more about the [algorithm](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/ALGORITHM.md) 
 behind CTL mapping
 
+### Tests
+
+CTL mapping uses the build in R framework to test the package for global regressions and unit-testing of documented functions.
+Tests can be executed from the commandline, by using the following command:
+
+    $ R CMD check Rctl                                     # Install the package
+
 ### Issues
 
 Issues can be raised through the github issue tracker.
@@ -113,5 +123,4 @@ Or be a maintainer, and adopt a function
 
 The CTL mapping source code is released under the GNU GENERAL PUBLIC LICENSE Version 3 (GPLv3). See LICENSE.txt.
 
-It was developed between 2012-2016 at the Groningen Bioinformatics Centre by Danny Arends, Ritsert C Jansen, Pjotr Prins
-
+It was developed between 2012-2016 at the Groningen Bioinformatics Centre by Danny Arends, Yang Li, Pjotr Prins and Ritsert C. Jansen
