@@ -17,7 +17,7 @@ code or data provided by this package, please also cite: [TODO: Github/Zenodo DO
 for future code and data references. Citations are also available for import in 
 bibtex format [TODO: bibtex with DOIs].
 
-### Installing the R package
+### Option 1) Installing the R package
 The quickest way to start mapping CTLs, is to install the package directly into 
 R from Github using the devtools package:
 
@@ -30,7 +30,7 @@ install_github("DannyArends/CTLmapping", subdir="Rctl")
 After this learn more about the [the R commands](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/STARTINGinR.md) 
 to start mapping CTLs on example data and how to prepare your own experimental data.
 
-### Manually install the R library
+### Option 2) Manually install the R library
 
 The second (more complex) option to is to clone the package from Github, this 
 will give you access to the R source code and also allows you to build the standalone linux executables. 
