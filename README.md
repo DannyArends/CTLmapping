@@ -14,7 +14,9 @@ approach.
 Learn more about the [algorithm](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/ALGORITHM.md) 
 behind CTL mapping
 
-### Option 1) Installing the R package
+### Install
+
+#### Option 1) Installing the R package
 The quickest and prefered way to start mapping CTLs, is to install the package directly into 
 R from Github using the [devtools](https://cran.r-project.org/web/packages/devtools/index.html) 
 package. On windows Rtools needs to be installed on the system. Download and 
@@ -33,15 +35,13 @@ install_github("DannyArends/CTLmapping", subdir="Rctl")
 After this learn more about the [the R commands](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/STARTINGinR.md) 
 to start mapping CTLs on example data and how to prepare your own experimental data.
 
-### Option 2) Manually install the R library
+#### Option 2) Manually install the R library
 
 The second (more complex) option to is to clone the package from Github, this will give 
 you access to the R source code and also allows you to build the standalone linux executables.
 On windows Rtools needs to be installed on your system. Download and install the 
 version of [Rtools](https://cran.r-project.org/bin/windows/Rtools/) that matches your 
 current R version.
-
-#### Download the software (R, C and D)
 
 Prepare your environment by download and installing the R environment from [www.r-project.org](http://www.r-project.org/ "www.r-project.org"). 
 Get the CTL mapping source code by download and afterwards 'move' into the folder:
@@ -59,9 +59,9 @@ or use the 'installR' makefile target:
 
 Plans are to put the package on CRAN, but this has not happend yet.
 
-### Getting help in R
+### Documentation
 A quick online introduction is [available](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/STARTINGinR.md) 
-but help files are also easily available for almost all function in R using:
+however help files with examples are also available for almost all functions in R using:
 
 ```
 library(ctl)                            # Load the library
@@ -122,7 +122,7 @@ see Rctl/inst/TODO.txt or submit a Github issue or pull request
 Its also possible to just post comments on code / commits.
 Or be a maintainer, and adopt a function
 
-### Cite CTL mapping
+### Cite
 
 When this software was helpful, please cite the JOSS paper: 
 [TODO: http://joss.theoj.org/papers/ DOI] in your publication, when (re-)using the any 
@@ -135,3 +135,7 @@ bibtex format [TODO: bibtex with DOIs].
 The CTL mapping source code is released under the GNU GENERAL PUBLIC LICENSE Version 3 (GPLv3). See LICENSE.txt.
 
 This software was developed between 2012-2016 at the Groningen Bioinformatics Centre by Danny Arends, Yang Li, Pjotr Prins and Ritsert C. Jansen
+
+### Contact
+
+Code managed by Dr. Danny Arends and the Groningen Bioinformatics Centre, Groningen, NLD. 
