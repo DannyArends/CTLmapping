@@ -61,7 +61,7 @@ Plans are to put the package on CRAN, but this has not happend yet.
 
 ### Documentation
 A quick online introduction is [available](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/STARTINGinR.md) 
-however help files with examples are also available for almost all functions in R using:
+and help files with examples are also available for almost all functions in R using:
 
 ```
 library(ctl)                            # Load the library
