@@ -64,13 +64,13 @@ Plans are to put the package on CRAN, but this has not happend yet.
 CTL mapping uses the build in R framework to test the package for global regressions and unit-testing of documented functions.
 Tests can be executed from the commandline, by using the following command:
 
-    $ R CMD check Rctl                                     # Run the unit-tests of the R package
+    $ R CMD check Rctl                                      # Run the unit-tests of the R package
 
 ### Documentation
 A quick online introduction is [available](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/STARTINGinR.md) 
 and help files with examples are also available for almost all functions in R using:
 
-```
+```R
 library(ctl)                            # Load the library
 ?ctl                                    # Show the general help for ctl
 ?CTLscan                                # Show the help for the CTLscan function
