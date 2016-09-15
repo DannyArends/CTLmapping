@@ -20,7 +20,7 @@ bibtex format [TODO: bibtex with DOIs].
 ### Option 1) Installing the R package
 The quickest and prefered way to start mapping CTLs, is to install the package directly into 
 R from Github using the [devtools](https://cran.r-project.org/web/packages/devtools/index.html) 
-package. However for this to work, Rtools needs to be installed on the system. Download and 
+package. On windows Rtools needs to be installed on the system. Download and 
 install the version of [Rtools](https://cran.r-project.org/bin/windows/Rtools/) that matches 
 your current R version.
 
@@ -40,9 +40,9 @@ to start mapping CTLs on example data and how to prepare your own experimental d
 
 The second (more complex) option to is to clone the package from Github, this will give 
 you access to the R source code and also allows you to build the standalone linux executables.
-Also for this route, Rtools needs to be installed on the system. Download and install the 
+On windows Rtools needs to be installed on your system. Download and install the 
 version of [Rtools](https://cran.r-project.org/bin/windows/Rtools/) that matches your 
-current R version. 
+current R version.
 
 #### Download the software (R, C and D)
 
