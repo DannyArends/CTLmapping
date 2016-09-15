@@ -8,6 +8,9 @@
 \alias{chiSQN}
 \alias{test.correlation}
 \alias{test.chiSQN}
+\alias{getCorrelations}
+\alias{getCorrelations.cross}
+\alias{test.getCorrelation.cross}
 
 %ctl.power.R
 \alias{correlated.phenotype}
@@ -22,8 +25,6 @@
 \alias{CTLanalyseRatios}
 \alias{CTLanalyseEffects}
 \alias{chiSQtoP}
-\alias{getCorrelations.cross}
-\alias{test.getCorrelation.cross}
 
 %ctl.circle.R
 \alias{mapinfotomarkerlocs}
