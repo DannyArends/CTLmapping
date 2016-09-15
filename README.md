@@ -26,10 +26,10 @@ your current R version.
 After installation, run the following commands in the R terminal to install the CTL mapping package.
 Uncomment the first line (by removing the #), if you do not have devtools installed yet:
 
-```
+```R
 # install.packages("devtools")
-library(devtools)
-install_github("DannyArends/CTLmapping", subdir="Rctl")
+library(devtools)                                         # Load the devtools package
+install_github("DannyArends/CTLmapping", subdir="Rctl")   # Install the package from Github
 ```
 
 After this learn more about the [the R commands](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/STARTINGinR.md) 
@@ -46,16 +46,16 @@ current R version.
 Prepare your environment by download and installing the R environment from [www.r-project.org](http://www.r-project.org/ "www.r-project.org"). 
 Get the CTL mapping source code by download and afterwards 'move' into the folder:
 
-    $ git clone git://github.com/DannyArends/CTLmapping.git  # Download the repository
-    $ cd CTLmapping                                          # Goto the folder
+    git clone git://github.com/DannyArends/CTLmapping.git  # Download the repository
+    cd CTLmapping                                          # Goto the folder
 
 The downloaded CTLmapping can be installed into R by using the following command (from a terminal / command line):
 
-    $ R CMD INSTALL Rctl                                     # Install the package
+    R CMD INSTALL Rctl                                     # Install the package
 
 or use the 'installR' makefile target:
 
-    $ make installR                                          # Install into R
+    make installR                                          # Install into R
 
 Plans are to put the package on CRAN, but this has not happend yet.
 
@@ -64,7 +64,7 @@ Plans are to put the package on CRAN, but this has not happend yet.
 CTL mapping uses the build in R framework to test the package for global regressions and unit-testing of documented functions.
 Tests can be executed from the commandline, by using the following command:
 
-    $ R CMD check Rctl                                      # Run the unit-tests of the R package
+    R CMD check Rctl                                      # Run the unit-tests of the R package
 
 ### Documentation
 A quick online introduction is [available](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/STARTINGinR.md) 
@@ -87,9 +87,9 @@ using either the C front-end code or the D 2.0 front-end code.
 
 Clone the repository from github, move into the CTLmappinf folder and run 'make' from a terminal / command line:
 
-    $ make versionC                                          # Compile the executable
-    $ make static                                            # Compile the static library
-    $ make shared                                            # Compile the shared library
+    make versionC                                          # Compile the executable
+    make static                                            # Compile the static library
+    make shared                                            # Compile the shared library
 
 C code can also be compiled also into static or dynamic libraries, when using the 
 appropriate makefile commands and can then be used in your own software as external 
@@ -101,7 +101,7 @@ Prepare your environment by download and installing the DMD 2.0 compiler from
 [www.d-programming-language.org](http://www.d-programming-language.org 
 "www.d-programming-language.org"). Run 'make' from a terminal / command line:
 
-    $ make versionD                                          # Compile the D 2.0 executable
+    make versionD                                          # Compile the D 2.0 executable
 
 In the future, you can use a provided binary by downloading the approriate one for your 
 operating system.
@@ -109,7 +109,6 @@ operating system.
 ### Issues
 
 Issues can be raised through the github issue tracker.
-
 
 ### Contributing 
 
