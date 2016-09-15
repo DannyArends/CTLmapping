@@ -48,7 +48,7 @@ double** asdmatrix(int rows, int cols, double* data){
 }
 
 int** asimatrix(int rows, int cols, int* data){
-  size_t i;
+  int i;
   int** m = (int**) calloc(rows, sizeof(int*));
   if(m==NULL) err("Not enough memory for new integer matrix [%ix%i]\n", rows, cols);
   m[0] = data;
