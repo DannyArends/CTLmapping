@@ -43,10 +43,7 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
   double** cors, **P2M;
 
   double** dcors = (double**) calloc(genotypes.nmarkers, sizeof(double*));
-  if(phenotype >= phenotypes.nphenotypes) {
-    warning("Failed to scan phenotype %d out of %d provided phenotypes\n", phenotype, phenotypes.nphenotypes);
-    return;
-  }
+
   for(m = 0; m < genotypes.nmarkers; m++){
     ngenotypes = genoenc[m].nelements;
     if(ngenotypes > 1) {
@@ -55,7 +52,7 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
       for(g = 0; g < ngenotypes; g++){
         idx = which(genotypes.data[m], phenotypes.nindividuals, genoenc[m].data[g]);
 
-        if(idx.nelements > 3){
+        if(idx.nelements > 3 && phenotype < phenotypes.nphenotypes){
           P1            = get(phenotypes.data[phenotype], idx);
           P2M           = getM(phenotypes.data, idx, phenotypes.nphenotypes);
           cors[g]       = cor1toN(P1, P2M, idx.nelements, phenotypes.nphenotypes, true);
