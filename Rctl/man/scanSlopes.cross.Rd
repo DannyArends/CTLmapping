@@ -43,7 +43,7 @@ scanSlopes.cross(cross, phenocol = 1, doRank = FALSE, verbose = FALSE)
 \examples{
   library(ctl)
   data(multitrait)      # Arabidopsis Thaliana (R/qtl cross object)
-
+  multitrait$pheno <- multitrait$pheno[,1:4]
   slopes <- scanSlopes.cross(multitrait)
   image(1:nrow(slopes), 1:ncol(slopes), -log10(slopes))
 }

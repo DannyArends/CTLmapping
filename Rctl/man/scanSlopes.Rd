@@ -45,7 +45,7 @@ scanSlopes(genotypes, phenotypes, phenocol = 1, doRank = FALSE, verbose = FALSE)
   library(ctl)
   data(ath.metabolites)                 # Arabidopsis Thaliana data set
 
-  slopes <- scanSlopes(ath.metab$genotypes, ath.metab$phenotypes, phenocol = 2)
+  slopes <- scanSlopes(ath.metab$genotypes, ath.metab$phenotypes[,1:4], phenocol = 2)
   image(1:nrow(slopes), 1:ncol(slopes), -log10(slopes))
 }
 
