@@ -71,7 +71,7 @@
 \alias{a_loc}
 \alias{m_loc}
 \alias{plot.CTLscan2}
-\alias{plot.CTLscan3}
+\alias{plotCTLscan3}
 \alias{plotExpression}
 \alias{CTLasLOD}
 
