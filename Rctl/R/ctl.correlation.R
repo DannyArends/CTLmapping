@@ -72,7 +72,7 @@ getCorrelations.cross <- function(cross, phenocol = 1, marker.col = 1){
 }
 
 test.getCorrelation.cross <- function(){
-  data(hyper)
+  data(hyper, envir = environment())
   hyper$pheno <- matrix(runif(250*10), 250, 10)  # Create 10 phenotypes as a matrix
   colnames(hyper$pheno) <- paste0("Pheno", 1:10)
   crs <- getCorrelations.cross(hyper)
