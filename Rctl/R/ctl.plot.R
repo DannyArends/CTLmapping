@@ -192,7 +192,7 @@ m_loc <- function(mapinfo, id = 1, gap = 25){
   l + mapinfo[id, 2]
 }
 
-plot.CTLscan3 <- function(x, map_info, ...){
+plotCTLscan3 <- function(x, map_info, ...){
   summarized <- apply(x$ctl,1,sum)
   plot(c(200, chr_total_length(map_info)),c(0, max(x$ctl,x$qtl)), type='n',xlab="",ylab="")
   loc <- NULL
