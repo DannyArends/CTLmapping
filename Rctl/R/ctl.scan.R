@@ -23,6 +23,7 @@ CTLscan <- function(genotypes, phenotypes, phenocol, nperm = 100, strategy = c("
   if(!is.null(qtls) && ncol(qtls) != length(phenocol)) stop("Number of QTLs doesn't match")
   if(n.ind1 != n.ind2) stop("Number of individuals doesn't match between genotypes & phenotypes")
   if(n.phe < 2) stop("argument 'phenotypes' needs at least 2 columns")
+  #if(length(phenocol) > n.phe) stop(paste0("trying to scan more phenotypes then available (", length(phenocol), "/", n.phe, ")"))
   if(verbose){
     cat("Data", n.phe ,"phenotypes,", paste0(n.ind1, "/", n.ind2), "individuals,", n.mar ,"markers\n")
     cat("Data checks finished after:",(proc.time()-st)[3],"seconds\n")
