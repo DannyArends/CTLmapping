@@ -162,3 +162,68 @@ plot(g1,layout=l)
 
 ctlsign <- which(as.numeric(unlist(lapply(strsplit(interactions, " "),"[",5))) > ctl_cutoff)
 cat(gsub(" ","\t", c("Source\tTarget\tChr\tPos\tmaxLOD\tmeanLOD\tnSNPs\ttop_marker\tcor1\tcor2\tss1\tss2\tChrPos\tGroup\tGroup", interactions[ctlsign])), sep="\n", file="GN207/CTLs_cyto.txt")
+
+### Figure 1 for publication in JOSS
+
+png("Fig1.png", width=2048, height=700, res=300, pointsize = 5)
+
+op <- par(mfrow=c(1,3),cex = 0.9, mgp = c(2, 1, 0), lwd=0.9)
+
+ctlpr <- as.numeric(CTLs[which(annotation[,1] == "St7")[1],])
+qtlpr1 <- -log10(as.numeric(QTLs[which(annotation[,1] == "St7")[1],]))
+qtlpr2 <- -log10(as.numeric(QTLs[which(annotation[,1] == "Il18r1")[1],]))
+onmap <- which(map[,1] == map[which.max(ctlpr),1])
+chrmap <- map[onmap,]
+x <- as.numeric(chrmap[,2])
+
+plot(c(0,max(x)), c(-5, 5), t ='n', main = "a) CTL, No QTL : St7 vs Il18r1", xlab="Chromosome 2 - Position (Mb)", ylab = "<- CTL   -log10(P-value)   QTL ->")
+points(x, -ctlpr[onmap],t = 'l', col="steelblue")
+points(x, -ctlpr[onmap], pch=10, col="steelblue")
+points(x, qtlpr1[onmap], t = 'l', lty=1)
+points(x, qtlpr1[onmap], pch=19)
+points(x, qtlpr2[onmap], t = 'l', lty=2, col="orange")
+points(x, qtlpr2[onmap], pch=1, col="orange")
+abline(h = -ctl_cutoff, lty=3)
+legend("topleft", c("QTL St7", "QTL Il18r1", "CTL St7 vs Il18r1", "5% FDR"), pch=c(19,1,10,NA), lwd=0.9, col=c(1,"orange","steelblue",1), lty=c(1, 2, 1, 3))
+
+
+ctlpr <- as.numeric(CTLs[which(annotation[,1] == "St7")[1],])
+qtlpr1 <- -log10(as.numeric(QTLs[which(annotation[,1] == "St7")[1],]))
+qtlpr2 <- -log10(as.numeric(QTLs[which(annotation[,1] == "Il18r1")[2],]))
+
+onmap <- which(map[,1] == map[which.max(qtlpr1),1])
+chrmap <- map[onmap,]
+x <- as.numeric(chrmap[,2])
+
+plot(c(0,max(x)), c(-12, 12), t ="n", main = "b) QTL, No CTL : St7 vs Il18r1", xlab="Chromosome 6 - Position (Mb)", ylab = "<- CTL   -log10(P-value)   QTL ->")
+points(x, -ctlpr[onmap],t = 'l', col="steelblue")
+points(x, -ctlpr[onmap], pch=10, col="steelblue")
+points(x, qtlpr1[onmap], t = 'l', lty=1)
+points(x, qtlpr1[onmap], pch=19)
+points(x, qtlpr2[onmap], t = 'l', lty=2, col="orange")
+points(x, qtlpr2[onmap], pch=1, col="orange")
+abline(h = qtl_cutoff, lty=3)
+abline(h = -ctl_cutoff, lty=3)
+legend("topright", c("QTL St7", "QTL Il18r1", "CTL St7 vs Il18r1", "5% FDR"), pch = c(19,1,10,NA), col=c(1,"orange","steelblue",1), lwd=0.9, lty=c(1, 2, 1, 3))
+
+
+ctlpr <- as.numeric(CTLs[which(annotation[,1] == "Mtvr2")[1],])
+qtlpr1 <- -log10(as.numeric(QTLs[which(annotation[,1] == "Mtvr2")[1],]))
+qtlpr2 <- -log10(as.numeric(QTLs[which(annotation[,1] == "C1qtnf5")[1],]))
+
+onmap <- which(map[,1] == map[which.max(ctlpr),1])
+chrmap <- map[onmap,]
+x <- as.numeric(chrmap[,2])
+
+plot(c(0,max(x)), c(-12, 12), t ='n', main = "c) QTL and CTL : Mtvr2 vs C1qtnf5", xlab="Chromosome 19 - Position (Mb)", ylab = "<- CTL   -log10(P-value)   QTL ->")
+points(x, -ctlpr[onmap],t = 'l', col="steelblue")
+points(x, -ctlpr[onmap], pch=10, col="steelblue")
+points(x, qtlpr1[onmap], t = 'l', lty=1)
+points(x, qtlpr1[onmap], pch=19)
+points(x, qtlpr2[onmap], t = 'l', lty=2, col="orange")
+points(x, qtlpr2[onmap], pch=1, col="orange")
+abline(h = qtl_cutoff, lty=3)
+abline(h = -ctl_cutoff, lty=3)
+legend("topright", c("QTL Mtvr2", "QTL C1qtnf5", "CTL Mtvr2 vs C1qtnf5", "5% FDR"), pch = c(19,1,10,NA), col=c(1,"orange","steelblue",1), lwd=0.9, lty=c(1, 2, 1, 3))
+
+dev.off()

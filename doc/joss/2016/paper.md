@@ -49,11 +49,10 @@ expression patterns (see figure 1).  CTLmapping differs from set test
 methods, e.g., [@Wang:2010] in that CTLmapping does not require prior information on sets
 (e.g., pathways).
 
-(FIG1)
-
+-![Figure 1](Fig1.png)
 Figure 1: CTL profile and QTL profiles. (a) shows a very similar
 profile, (b) shows a CTL without a QTL and (m) shows a QTL without a
-CTL. (Danny: short example and explanation).
+CTL.
 
 CTL analysis can be performed on phenotypes obtained from the whole
 biomolecular spectrum. From 'classic' phenotypes, such as yield and
@@ -63,19 +62,18 @@ especially useful in combined datasets, e.g. a combination of:
 classical phenotypes, protein abundance and gene expression (see
 figure 2).
 
-(FIG2)
-
+-![Figure 2](Fig2.png)
 Figure 2: CTL show the genetic wiring of classical phenotypes and
 identify key players in the genetic / protein network underlying
 classical phenotypes using QTL and CTL information.
 
 CTLmapping can be applied in model organism experimental and outbred
-crosses, such as mouse and the plant Arabidopsis thaliana (see example
-datasets below), as well as in natural populations, such as human. For
-statistical power the more individuals the better, but as a rule of
-thumb it is about the same as for QTL, i.e., about 100 individuals for
-a recombinant inbred line CTL, and 1,000 individuals for GWAS-style
-CTL [@Arends:thesis_chapter].
+crosses, such as mouse and the plant *Arabidopsis thaliana* (see
+example datasets below), as well as in natural populations, such as
+human. For statistical power the more individuals the better, but as a
+rule of thumb it is about the same as for QTL, i.e., about 100
+individuals for a recombinant inbred line CTL, and 1,000 individuals
+for GWAS-style CTL [@Arends:thesis_chapter].
 
 The CTLmapping software is provided as a free and open source (FOSS)
 package for the R Project for Statistical Computing [@R:2005].
@@ -105,13 +103,11 @@ exploration.
 CTL mapping comes with several example datasets (in Rdata format) for
 the user to explore:
 
-- 301 gene expression traits measured on 109 Saccharomyces cerevisia [@Brem:2002]
-- 9 Metabolite expression traits measured on 403 Arabidopsis Thaliana [@Churchill:2012]
-- 24 Metabolite expression traits measured on 162 Arabidopsis Thaliana [@Keurentjes:2002]
+- 301 gene expression traits measured on 109 *Saccharomyces cerevisia* [@Brem:2002]
+- 9 Metabolite expression traits measured on 403 *Arabidopsis Thaliana* [@Churchill:2012]
+- 24 Metabolite expression traits measured on 162 *Arabidopsis Thaliana* [@Keurentjes:2002]
 
 (instructions can be found in the README).
-
--![QTL profile (Positive Y-axis) and CTL associations (Negative Y-axis) for X3.Methylthiopropyl](CTL.png)
 
 # Future work
 
