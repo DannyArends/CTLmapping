@@ -49,9 +49,21 @@ expression patterns (see figure 1).  CTLmapping differs from set test
 methods, e.g., [@Wang:2010] in that CTLmapping does not require prior information on sets (e.g., pathways).
 
 -![Figure 1](Fig1.png)
-Figure 1: CTL profile and QTL profiles. (a) shows a very similar
-profile, (b) shows a CTL without a QTL and (m) shows a QTL without a
-CTL.
+<small>
+Figure 1: Example CTL profile and QTL profiles found in GeneNetwork
+GN207 (eye mRNA)
+(a) Shows a CTL without a colocalizing QTL, correlation between the
+expression of between *St7* and *Il18r1* changes at ~ 15 Mb at
+chromosome 2 from -0.39 B locus, to 0.86 D locus, while both genes
+do not show a difference in mean expression
+(b) The *St7* gene does however shows a QTL at chromosome 6, meaning
+that the expression of this gene is regulated by some variant at
+this locus. No CTLs are detected between *St7* and *Il18r1* at this
+locus (c) At chromosome 19 we observe that the *Mtvr2* gene shows
+a significant QTL, it also shows a significant CTL at this position,
+we observe a significant change in correlation with the *C1qtnf5*
+gene (0.85 B locus to -0.46 D locus), leading to a very similar profile.
+</small>
 
 CTL analysis can be performed on phenotypes obtained from the whole
 biomolecular spectrum. From 'classic' phenotypes, such as yield and
