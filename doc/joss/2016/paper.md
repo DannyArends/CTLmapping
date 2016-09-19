@@ -47,7 +47,7 @@ phenotype correlations change with conditions, for example in pathways
 with highly correlated gene expression patterns (see figure 1).
 
 -![Figure 1](Fig1.png)
-<sub><sup>
+<small>
 Figure 1: Example CTL profile and QTL profiles found in GeneNetwork 
 GN207 (eye mRNA) 
 (a) Shows a CTL without a colocalizing QTL, correlation between the 
@@ -61,7 +61,7 @@ locus (c) At chromosome 19 we observe that the *Mtvr2* gene shows
 a significant QTL, it also shows a significant CTL at this position, 
 we observe a significant change in correlation with the *C1qtnf5* 
 gene (0.85 B locus to -0.46 D locus), leading to a very similar profile.
-</sup></sub>
+</small>
 
 CTL analysis can be performed on phenotypes obtained from the whole
 biomolecular spectrum. From 'classic' phenotypes, such as yield and
