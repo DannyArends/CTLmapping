@@ -29,26 +29,27 @@ bibliography: paper.bib
 
 # Summary
 
-CTLmapping is an implementation of the Correlation Trait Loci (CTL)
-algorithm first presented in [@Arends:thesis_chapter]. CTLmapping
+CTL mapping is an implementation of the Correlation Trait Loci (CTL)
+algorithm first presented in [@Arends:thesis_chapter]. CTL mapping
 allows geneticists to analyze correlation
-difference between phenotypes.  CTLmapping is complementary to the
-proven quantitative trait locus (QTL) mapping method which correlates
-observed phenotype against genotype. CTL mapping
+difference between phenotypes.  CTL mapping is complementary to the
+proven quantitative trait locus (QTL) mapping method which associates
+observed phenotype differences against genotype. CTL mapping
 associates correlation differences observed *between* phenotypes,
 subject to the genotype. In other words, QTL mapping treats phenotypes
 independently while CTL mapping connects phenotypes. CTL generally
 show very similar profiles to QTL, but get interesting when they
 differ (see figure 1).
 
-Because CTL connect phenotypes CTLmapping provides a mechanism for
+Because CTL connect phenotypes CTL mapping provides a mechanism for
 inference and discovering causality [@Arends:thesis_chapter].  This is
 particularly of interest when phenotype correlations change with
 conditions, for example in pathways with highly correlated gene
-expression patterns (see figure 1).  CTLmapping differs from set test
-methods, e.g., [@Wang:2010] in that CTLmapping does not require prior information on sets (e.g., pathways).
+expression patterns (see figure 1).  CTL mapping differs from set test
+methods, e.g., [@Wang:2010] in that CTL mapping does not require prior 
+information on sets (e.g., pathways).
 
--![Figure 1](Fig1.png) <small> Figure 1: Examples of colocated CTL and
+-![Figure 1](Fig1.png) Figure 1: Examples of colocated CTL and
 QTL profiles, as found in [GeneNetwork](http://genenetwork.org/)
 dataset GN207 (BXD mouse eye mRNA). (a) CTL without a colocalizing QTL
 between the expression *St7* and *Il18r1* genes, i.e., CTL changes at
@@ -59,7 +60,7 @@ shows a QTL at chromosome 6 and no CTLs are detected between *St7* and
 regulated by some variant at this locus). (c) *Mtvr2* gene shows a CTL
 and QTL at chromosome 19. A significant change in correlation with the
 *C1qtnf5* gene is observed (0.85 B locus to -0.46 D locus), leading to
-a very similar CTL profile.  </small>
+a very similar CTL profile.
 
 CTL analysis can be performed on phenotypes obtained from the whole
 biomolecular spectrum. From 'classic' phenotypes, such as yield and
@@ -75,7 +76,7 @@ the genetic / protein network underlying classical phenotypes using
 QTL and CTL information, as discovered in GeneNetwork BXD mouse
 datasets.
 
-CTLmapping can be applied in model organism experimental crosses, such
+CTL mapping can be applied in model organism experimental crosses, such
 as mouse and the plant *Arabidopsis thaliana* (see example datasets
 below); as well as outbred-crosses, such as the Mouse diversity
 outbred cross (Mouse-DO), the Rat heterogeneous stock (Rat HS) and in
@@ -85,7 +86,7 @@ as a rule of thumb it is about the same as for QTL, i.e., about 100
 individuals for a recombinant inbred line (RIL), and 1,000 individuals
 for GWA-style human [@Arends:thesis_chapter].
 
-The CTLmapping software is provided as a free and open source (FOSS)
+The CTL mapping software is provided as a free and open source (FOSS)
 package for the R Project for Statistical Computing [@R:2005].
 Data structures of the CTL mapping R package have been harmonized with
 the popular R/qtl package [@Arends:2010], allowing users to quickly
@@ -94,7 +95,7 @@ advantages of close integration with R/qtl are the many input formats
 supported by R/qtl, and access to all plot and helper functions
 provided by R/qtl.
 
-The core CTLmapping algorithm is written in standalone C making it
+The core CTL mapping algorithm is written in standalone C making it
 easy to integrate the CTL mapping algorithm into other languages that
 support bindings to C functions. As a proof of concept the CTL
 repository provides bindings for the [D programming language](http://dlang.org/).
