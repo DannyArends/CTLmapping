@@ -31,10 +31,10 @@ bibliography: paper.bib
 
 CTLmapping is an implementation of the Correlation Trait Loci (CTL)
 algorithm first presented in [@Arends:thesis_chapter]. CTLmapping
-allows geneticists, biologists and breeders to analyze correlation
+allows geneticists to analyze correlation
 difference between phenotypes.  CTLmapping is complementary to the
 proven quantitative trait locus (QTL) mapping method which correlates
-observed phenotype against genotype. CTL mapping, in contrast,
+observed phenotype against genotype. CTL mapping
 associates correlation differences observed *between* phenotypes,
 subject to the genotype. In other words, QTL mapping treats phenotypes
 independently while CTL mapping connects phenotypes. CTL generally
@@ -42,26 +42,24 @@ show very similar profiles to QTL, but get interesting when they
 differ (see figure 1).
 
 Because CTL connect phenotypes CTLmapping provides a mechanism for
-discovering causality.  This is particularly of interest when
-phenotype correlations change with conditions, for example in pathways
-with highly correlated gene expression patterns (see figure 1).
+inference and discovering causality [@Arends:thesis_chapter].  This is
+particularly of interest when phenotype correlations change with
+conditions, for example in pathways with highly correlated gene
+expression patterns (see figure 1).  CTLmapping differs from set test
+methods, e.g., [@Wang:2010] in that CTLmapping does not require prior information on sets (e.g., pathways).
 
--![Figure 1](Fig1.png)
-<small>
-Figure 1: Example CTL profile and QTL profiles found in GeneNetwork 
-GN207 (eye mRNA) 
-(a) Shows a CTL without a colocalizing QTL, correlation between the 
-expression of between *St7* and *Il18r1* changes at ~ 15 Mb at 
-chromosome 2 from -0.39 B locus, to 0.86 D locus, while both genes 
-do not show a difference in mean expression 
-(b) The *St7* gene does however shows a QTL at chromosome 6, meaning 
-that the expression of this gene is regulated by some variant at 
-this locus. No CTLs are detected between *St7* and *Il18r1* at this 
-locus (c) At chromosome 19 we observe that the *Mtvr2* gene shows 
-a significant QTL, it also shows a significant CTL at this position, 
-we observe a significant change in correlation with the *C1qtnf5* 
-gene (0.85 B locus to -0.46 D locus), leading to a very similar profile.
-</small>
+-![Figure 1](Fig1.png) <small> Figure 1: Examples of colocated CTL and
+QTL profiles, as found in [GeneNetwork](http://genenetwork.org/)
+dataset GN207 (BXD mouse eye mRNA). (a) CTL without a colocalizing QTL
+between the expression *St7* and *Il18r1* genes, i.e., CTL changes at
+~ 15 Mb at chromosome 2 from -0.39 B locus, to 0.86 D locus while both
+genes do not show a difference in mean expression. (b) *St7* gene
+shows a QTL at chromosome 6 and no CTLs are detected between *St7* and
+*Il18r1* (possibly implying that the expression of this gene is
+regulated by some variant at this locus). (c) *Mtvr2* gene shows a CTL
+and QTL at chromosome 19. A significant change in correlation with the
+*C1qtnf5* gene is observed (0.85 B locus to -0.46 D locus), leading to
+a very similar CTL profile.  </small>
 
 CTL analysis can be performed on phenotypes obtained from the whole
 biomolecular spectrum. From 'classic' phenotypes, such as yield and
@@ -71,14 +69,21 @@ especially useful in combined datasets, e.g. a combination of:
 classical phenotypes, protein abundance and gene expression (see
 figure 2).
 
--![Figure 2](Fig2.png)
-Figure 2: CTL show the genetic wiring of classical phenotypes and
-identify key players in the genetic / protein network underlying
-classical phenotypes using QTL and CTL information.
+-![Figure 2](Fig2.png) Figure 2: By network inference, CTL discover
+the genetic wiring of classical phenotypes and identify key players in
+the genetic / protein network underlying classical phenotypes using
+QTL and CTL information, as discovered in GeneNetwork BXD mouse
+datasets.
 
-CTLmapping can be applied in model organism experimental and outbred
-crosses, such as mouse and the plant *Arabidopsis thaliana* (see example
-datasets below), as well as in natural populations, such as human.
+CTLmapping can be applied in model organism experimental crosses, such
+as mouse and the plant *Arabidopsis thaliana* (see example datasets
+below); as well as outbred-crosses, such as the Mouse diversity
+outbred cross (Mouse-DO), the Rat heterogeneous stock (Rat HS) and in
+Arabidopsis MAGIC; and in natural populations, such as human. For
+statistical power, in general: the more individuals the better. But,
+as a rule of thumb it is about the same as for QTL, i.e., about 100
+individuals for a recombinant inbred line (RIL), and 1,000 individuals
+for GWA-style human [@Arends:thesis_chapter].
 
 The CTLmapping software is provided as a free and open source (FOSS)
 package for the R Project for Statistical Computing [@R:2005].
@@ -91,17 +96,17 @@ provided by R/qtl.
 
 The core CTLmapping algorithm is written in standalone C making it
 easy to integrate the CTL mapping algorithm into other languages that
-allow calling C functions. As a proof of concept the CTL repository
-provides bindings for the D language.
+support bindings to C functions. As a proof of concept the CTL
+repository provides bindings for the [D programming language](http://dlang.org/).
 
-CTL has been integrated into GeneNetwork (GN), a FOSS framework for
+CTL has been integrated into
+[GeneNetwork (GN)](http://genenetwork.org/), a FOSS framework for
 web-based genetics that can be deployed anywhere [@Sloan:2016]. This
 allows results from CTL mapping to be interactively explored using the
 GeneNetwork web interface. Additionally results from CTL mapping can
 be visualized by plotting routines provided by the R package and
 results can be exported to external tools (such as Cytoscape
-[@Cytoscape:2003]) for visualization and interactive
-exploration.
+[@Cytoscape:2003]) for visualization and interactive exploration.
 
 # Example datasets
 
@@ -112,14 +117,15 @@ the user to explore:
 - 9 Metabolite expression traits measured on 403 *Arabidopsis Thaliana* [@Churchill:2012]
 - 24 Metabolite expression traits measured on 162 *Arabidopsis Thaliana* [@Keurentjes:2002]
 
-(instructions can be found in the README).
+(instructions can be found in the [README](https://github.com/DannyArends/CTLmapping)).
 
 # Future work
 
-CTL is computationally very intensive, both in terms of RAM use and
-CPU.  Future work includes research into improving the CTL algorithm
-for large scale correlations and making GPU/supercomputing available
-to users. We are also working on adding explorative interactive
-visualization (such as Cytoscape and D3 interactive graphics).
+CTL is computationally very intensive, phenotypes O(n^2), both in
+terms of RAM use and CPU.  Future work includes research into
+improving the CTL algorithm for large scale correlations and
+inference, including the use of GPU/supercomputing.  We are also
+working on adding explorative interactive visualization (such as
+Cytoscape and D3 interactive graphics).
 
 # References
