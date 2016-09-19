@@ -83,7 +83,7 @@ Arabidopsis MAGIC; and in natural populations, such as human. For
 statistical power, in general: the more individuals the better. But,
 as a rule of thumb it is about the same as for QTL, i.e., about 100
 individuals for a recombinant inbred line (RIL), and 1,000 individuals
-for GWA-style human [@Arends:thesis_chapter].
+for genome-wide association (GWA) in human [@Arends:thesis_chapter].
 
 The CTLmapping software is provided as a free and open source (FOSS)
 package for the R Project for Statistical Computing [@R:2005].
