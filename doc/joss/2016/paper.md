@@ -31,10 +31,10 @@ bibliography: paper.bib
 
 CTLmapping is an implementation of the Correlation Trait Loci (CTL)
 algorithm first presented in [@Arends:thesis_chapter]. CTLmapping
-allows geneticists, biologists and breeders to analyze correlation
+allows geneticists to analyze correlation
 difference between phenotypes.  CTLmapping is complementary to the
 proven quantitative trait locus (QTL) mapping method which correlates
-observed phenotype against genotype. CTL mapping, in contrast,
+observed phenotype against genotype. CTL mapping
 associates correlation differences observed *between* phenotypes,
 subject to the genotype. In other words, QTL mapping treats phenotypes
 independently while CTL mapping connects phenotypes. CTL generally
@@ -42,9 +42,12 @@ show very similar profiles to QTL, but get interesting when they
 differ (see figure 1).
 
 Because CTL connect phenotypes CTLmapping provides a mechanism for
-discovering causality.  This is particularly of interest when
-phenotype correlations change with conditions, for example in pathways
-with highly correlated gene expression patterns (see figure 1).
+inference and discovering causality [@Arends:thesis_chapter].  This is
+particularly of interest when phenotype correlations change with
+conditions, for example in pathways with highly correlated gene
+expression patterns (see figure 1).  CTLmapping differs from set test
+methods, e.g., [@Wang:2010] in that CTLmapping does not require prior information on sets
+(e.g., pathways).
 
 (FIG1)
 
@@ -68,7 +71,11 @@ classical phenotypes using QTL and CTL information.
 
 CTLmapping can be applied in model organism experimental and outbred
 crosses, such as mouse and the plant Arabidopsis thaliana (see example
-datasets below), as well as in natural populations, such as human.
+datasets below), as well as in natural populations, such as human. For
+statistical power the more individuals the better, but as a rule of
+thumb it is about the same as for QTL, i.e., about 100 individuals for
+a recombinant inbred line CTL, and 1,000 individuals for GWAS-style
+CTL [@Arends:thesis_chapter].
 
 The CTLmapping software is provided as a free and open source (FOSS)
 package for the R Project for Statistical Computing [@R:2005].
@@ -108,10 +115,11 @@ the user to explore:
 
 # Future work
 
-CTL is computationally very intensive, both in terms of RAM use and
-CPU.  Future work includes research into improving the CTL algorithm
-for large scale correlations and making GPU/supercomputing available
-to users. We are also working on adding explorative interactive
-visualization (such as Cytoscape and D3 interactive graphics).
+CTL is computationally very intensive, phenotypes O(n^2), both in
+terms of RAM use and CPU.  Future work includes research into
+improving the CTL algorithm for large scale correlations and inference
+using GPU/supercomputing.  We are also working on adding explorative
+interactive visualization (such as Cytoscape and D3 interactive
+graphics).
 
 # References
