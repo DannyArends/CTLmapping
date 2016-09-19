@@ -161,3 +161,4 @@ interactions  <- paste0(interactions," ",paste0(chr,":",pos), " ", groupS, " ", 
 a5 <- which(as.numeric(unlist(lapply(strsplit(interactions, " "),"[",5))) > -log10(0.05))
 
 cat(gsub(" ","\t", c("Source\tTarget\tChr\tPos\tStrength\tChrPos\tGroup\tGroup", interactions[a5])), sep="\n", file="GN111/CTLs_cyto.txt")
+

@@ -30,12 +30,13 @@ genotypes <- genotypes[,-c(1:3)]
 interesting <- NULL
 
 for(x in 1:(nrow(phenotypes)-1)){
-  for(y in (x+1):nrow(phenotypes)){
+  for(y in 56:56){
     hasPhe <- names(which(apply(apply(phenotypes[c(x,y),],2,is.na),2,sum) == 0))
     subPhe <- phenotypes[c(x,y), hasPhe]
     subGen <- genotypes[,colnames(subPhe)]
 
-    subGen <- subGen[which(apply(apply(subGen, 1, is.na), 2, sum) == 0),]   # No missing genotypes
+    subGen <- subGen[which(apply(apply(subGen, 1, is.na), 2, sum) == 0),]             # No missing genotypes
+    subGen <- subGen[which(lapply(apply(subGen,1,table), min) > 5),]                  # At least 5 indidivudals in each group
     map <- map[rownames(subGen),]
     err <- 0
     # Change encoding of the genotypes to numeric 1 and 2
@@ -46,6 +47,7 @@ for(x in 1:(nrow(phenotypes)-1)){
       interesting <- cbind(interesting,c(x,y))
       cat("CTL", x," ", y, " ", max(apply(res[[1]]$ctl,1,max)),"\n")
     }
+    cat(y,"\n")
   }
 }
 
