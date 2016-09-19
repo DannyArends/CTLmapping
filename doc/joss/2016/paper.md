@@ -46,8 +46,7 @@ inference and discovering causality [@Arends:thesis_chapter].  This is
 particularly of interest when phenotype correlations change with
 conditions, for example in pathways with highly correlated gene
 expression patterns (see figure 1).  CTLmapping differs from set test
-methods, e.g., [@Wang:2010] in that CTLmapping does not require prior information on sets
-(e.g., pathways).
+methods, e.g., [@Wang:2010] in that CTLmapping does not require prior information on sets (e.g., pathways).
 
 -![Figure 1](Fig1.png)
 Figure 1: CTL profile and QTL profiles. (a) shows a very similar
@@ -67,13 +66,15 @@ Figure 2: CTL show the genetic wiring of classical phenotypes and
 identify key players in the genetic / protein network underlying
 classical phenotypes using QTL and CTL information.
 
-CTLmapping can be applied in model organism experimental and outbred
-crosses, such as mouse and the plant *Arabidopsis thaliana* (see
-example datasets below), as well as in natural populations, such as
-human. For statistical power the more individuals the better, but as a
-rule of thumb it is about the same as for QTL, i.e., about 100
-individuals for a recombinant inbred line CTL, and 1,000 individuals
-for GWAS-style CTL [@Arends:thesis_chapter].
+CTLmapping can be applied in model organism experimental crosses, such
+as mouse and the plant *Arabidopsis thaliana* (see example datasets
+below); as well as outbred-crosses, such as the Mouse diversity
+outbred cross (Mouse-DO), the Rat heterogeneous stock (Rat HS) and in
+Arabidopsis MAGIC; and in natural populations, such as human. For
+statistical power, in general: the more individuals the better. But,
+as a rule of thumb it is about the same as for QTL, i.e., about 100
+individuals for a recombinant inbred line (RIL), and 1,000 individuals
+for GWA-style human [@Arends:thesis_chapter].
 
 The CTLmapping software is provided as a free and open source (FOSS)
 package for the R Project for Statistical Computing [@R:2005].
@@ -86,17 +87,17 @@ provided by R/qtl.
 
 The core CTLmapping algorithm is written in standalone C making it
 easy to integrate the CTL mapping algorithm into other languages that
-allow calling C functions. As a proof of concept the CTL repository
-provides bindings for the D language.
+support bindings to C functions. As a proof of concept the CTL
+repository provides bindings for the [D programming language](http://dlang.org/).
 
-CTL has been integrated into GeneNetwork (GN), a FOSS framework for
+CTL has been integrated into
+[GeneNetwork (GN)](http://genenetwork.org/), a FOSS framework for
 web-based genetics that can be deployed anywhere [@Sloan:2016]. This
 allows results from CTL mapping to be interactively explored using the
 GeneNetwork web interface. Additionally results from CTL mapping can
 be visualized by plotting routines provided by the R package and
 results can be exported to external tools (such as Cytoscape
-[@Cytoscape:2003]) for visualization and interactive
-exploration.
+[@Cytoscape:2003]) for visualization and interactive exploration.
 
 # Example datasets
 
@@ -107,15 +108,15 @@ the user to explore:
 - 9 Metabolite expression traits measured on 403 *Arabidopsis Thaliana* [@Churchill:2012]
 - 24 Metabolite expression traits measured on 162 *Arabidopsis Thaliana* [@Keurentjes:2002]
 
-(instructions can be found in the README).
+(instructions can be found in the [README](https://github.com/DannyArends/CTLmapping)).
 
 # Future work
 
 CTL is computationally very intensive, phenotypes O(n^2), both in
 terms of RAM use and CPU.  Future work includes research into
-improving the CTL algorithm for large scale correlations and inference
-using GPU/supercomputing.  We are also working on adding explorative
-interactive visualization (such as Cytoscape and D3 interactive
-graphics).
+improving the CTL algorithm for large scale correlations and
+inference, including the use of GPU/supercomputing.  We are also
+working on adding explorative interactive visualization (such as
+Cytoscape and D3 interactive graphics).
 
 # References
