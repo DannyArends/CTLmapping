@@ -49,17 +49,17 @@ expression patterns (see figure 1).  CTLmapping differs from set test
 methods, e.g., [@Wang:2010] in that CTLmapping does not require prior information on sets (e.g., pathways).
 
 -![Figure 1](Fig1.png) <small> Figure 1: Examples of colocated CTL and
-QTL profiles, as found in GeneNetwork dataset GN207 (BXD mouse eye
-mRNA). (a) CTL without a colocalizing QTL between the expression *St7*
-and *Il18r1* genes, i.e., CTL changes at ~ 15 Mb at chromosome 2 from
--0.39 B locus, to 0.86 D locus while both genes do not show a
-difference in mean expression. (b) *St7* gene shows a QTL at
-chromosome 6 and no CTLs are detected between *St7* and *Il18r1*
-(possibly implying that the expression of this gene is regulated by
-some variant at this locus). (c) *Mtvr2* gene shows a CTL and QTL at
-chromosome 19. A significant change in correlation with the *C1qtnf5*
-gene is observed (0.85 B locus to -0.46 D locus), leading to a very
-similar CTL profile.  </small>
+QTL profiles, as found in [GeneNetwork](http://genenetwork.org/)
+dataset GN207 (BXD mouse eye mRNA). (a) CTL without a colocalizing QTL
+between the expression *St7* and *Il18r1* genes, i.e., CTL changes at
+~ 15 Mb at chromosome 2 from -0.39 B locus, to 0.86 D locus while both
+genes do not show a difference in mean expression. (b) *St7* gene
+shows a QTL at chromosome 6 and no CTLs are detected between *St7* and
+*Il18r1* (possibly implying that the expression of this gene is
+regulated by some variant at this locus). (c) *Mtvr2* gene shows a CTL
+and QTL at chromosome 19. A significant change in correlation with the
+*C1qtnf5* gene is observed (0.85 B locus to -0.46 D locus), leading to
+a very similar CTL profile.  </small>
 
 CTL analysis can be performed on phenotypes obtained from the whole
 biomolecular spectrum. From 'classic' phenotypes, such as yield and
@@ -69,10 +69,11 @@ especially useful in combined datasets, e.g. a combination of:
 classical phenotypes, protein abundance and gene expression (see
 figure 2).
 
--![Figure 2](Fig2.png)
-Figure 2: CTL show the genetic wiring of classical phenotypes and
-identify key players in the genetic / protein network underlying
-classical phenotypes using QTL and CTL information.
+-![Figure 2](Fig2.png) Figure 2: By network inference, CTL discover
+the genetic wiring of classical phenotypes and identify key players in
+the genetic / protein network underlying classical phenotypes using
+QTL and CTL information, as discovered in GeneNetwork BXD mouse
+datasets.
 
 CTLmapping can be applied in model organism experimental crosses, such
 as mouse and the plant *Arabidopsis thaliana* (see example datasets
