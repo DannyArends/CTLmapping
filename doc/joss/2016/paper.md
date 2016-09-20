@@ -66,21 +66,22 @@ and QTL at chromosome 19. A significant change in correlation with the
 *C1qtnf5* gene is observed (0.85 B locus to -0.46 D locus), leading to
 a very similar CTL profile.
 
-CTL analysis can be performed on phenotypes obtained from the whole
-biomolecular spectrum. From 'classic' phenotypes, such as yield and
-disease suscepibility, to high-throughput experimental data, such as
-microarrays, RNA-seq and/or protein abundance measurements.  This is
-especially useful in combined datasets, e.g. a combination of:
+CTL analysis can be performed on combined phenotypes obtained from the
+whole spectrum of data types: i.e., from classical phenotypes, such as
+yield and disease suscepibility, to high-throughput experimental data,
+such as microarrays, RNA-seq and/or protein abundance measurements.
+This is especially useful in combined datasets, e.g. a combination of:
 classical phenotypes, protein abundance and gene expression (see
 figure 2).
 
--![Figure 2](Fig2.png) Figure 2: By network inference, CTL discover
-the genetic wiring of classical phenotypes and identify key players in
-the genetic / protein network underlying classical phenotypes using
-CTL and QTL information, as discovered in GeneNetwork BXD mouse
-datasets. Here we visualise significantly changed correlation
-between genes (again from GN207) as edges between the genes (nodes),
-each link shows the location (Chr:Position) at which correlation is lost.
+-![Figure 2](Fig2.png) Figure 2: By network inference CTL discover the
+genetic wiring of classical phenotypes and identify known and new key
+players in the genetic / protein network underlying classical
+phenotypes using CTL and QTL information, as discovered in GeneNetwork
+BXD mouse datasets (again from GN207). Here we visualise significantly
+changed correlation between genes in different studies as edges
+between the genes (nodes) with links showing the location
+(Chr:Position) at which correlation was lost.
 
 CTL mapping can be applied in model organism experimental crosses, such
 as mouse and the plant *Arabidopsis thaliana* (see example datasets
