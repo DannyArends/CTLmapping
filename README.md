@@ -12,15 +12,33 @@ behind CTL mapping
 
 ### Install
 
-#### Option 1) Installing the R package
-The quickest and prefered way to start mapping CTLs, is to install the package directly into 
-R from Github using the [devtools](https://cran.r-project.org/web/packages/devtools/index.html) 
-package. On windows Rtools needs to be installed on the system. Download and 
+#### Option 1) Installing the R package from CRAN
+The quickest and prefered way to start mapping CTLs, is to 
+install the package directly from CRAN, start R and issue 
+the following command to install the package:
+
+```R
+install.packages("ctl")
+```
+
+After installation, load the package by:
+
+```R
+library("ctl")
+```
+
+#### Option 2) Installing the development version
+Sometimes it is needed to install a develpoment version, since CRAN 
+might take a while to update after a bug is fixed. You can install 
+a development version from the github repository by using the 
+[devtools](https://cran.r-project.org/web/packages/devtools/index.html) 
+package. On windows Rtools needs to be installed on the system. So first download and 
 install the version of [Rtools](https://cran.r-project.org/bin/windows/Rtools/) that matches 
 your current R version.
 
-After installation, run the following commands in the R terminal to install the CTL mapping package.
-Uncomment the first line (by removing the #), if you do not have devtools installed yet:
+After installation of Rtools, run the following commands in the R 
+terminal to download and install the CTL mapping package. Uncomment 
+the first line (by removing the #), if you do not have devtools installed yet:
 
 ```R
 # install.packages("devtools")
@@ -31,7 +49,7 @@ install_github("DannyArends/CTLmapping", subdir="Rctl")   # Install the package 
 After this learn more about the [the R commands](learn%20CTL/STARTINGinR.md) 
 to start mapping CTLs on example data and how to prepare your own experimental data.
 
-#### Option 2) Manually install the R library
+#### Option 3) Manually install the R source code
 
 The second (more complex) option to is to clone the package from Github, this will give 
 you access to the R source code and also allows you to build the [standalone linux executables](learn%20CTL/COMPILE.md) .
