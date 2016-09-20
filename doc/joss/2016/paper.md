@@ -22,15 +22,15 @@ authors:
     affiliation: University of Tennessee Health Science Center, USA
   - name: Pjotr Prins
     orcid: 0000-0002-8021-9162
-    affiliation: University Medical Center Utrecht, The Netherlands, University of Tennessee Health Science Center, USA
-date: 29 May 2016
+    affiliation: University of Groningen, The Netherlands, University Medical Center Utrecht, The Netherlands, University of Tennessee Health Science Center, USA
+date: 20 September 2016
 bibliography: paper.bib
 ---
 
 # Summary
 
-The CTLmapping repository provides an implementation of the Correlation 
-Trait Loci (CTL) algorithm first presented in [@Arends:thesis_chapter]. 
+The CTLmapping repository provides an implementation of the Correlation
+Trait Loci (CTL) algorithm first presented in [@Arends:thesis_chapter].
 CTL mapping allows geneticists to analyze correlation
 difference between phenotypes.  CTL mapping is complementary to the
 proven quantitative trait locus (QTL) mapping method which associates
@@ -42,11 +42,11 @@ show very similar profiles to QTL, but get interesting when they
 differ (see figure 1).
 
 Because CTL connect phenotypes CTL mapping provides a mechanism for
-inference and discovering causality [@Arends:thesis_chapter].  This is
+inference and discovering causality (see chapter 4 [@Arends:thesis_chapter]).  This is
 particularly of interest when phenotype correlations change with
 conditions, for example in pathways with highly correlated gene
 expression patterns (see figure 1).  CTL mapping differs from set test
-methods, e.g., [@Wang:2010] in that CTL mapping does not require prior 
+methods, e.g., [@Wang:2010] in that CTL mapping does not require prior
 information on sets (e.g., pathways).
 
 -![Figure 1](Fig1.png) Figure 1: Examples of colocated CTL and
@@ -74,8 +74,8 @@ figure 2).
 the genetic wiring of classical phenotypes and identify key players in
 the genetic / protein network underlying classical phenotypes using
 QTL and CTL information, as discovered in GeneNetwork BXD mouse
-datasets. Here we visualise significantly changed correlation 
-between genes (again from GN207) as edges between the genes (nodes), 
+datasets. Here we visualise significantly changed correlation
+between genes (again from GN207) as edges between the genes (nodes),
 each link shows the location (Chr:Position) at which correlation is lost.
 
 CTL mapping can be applied in model organism experimental crosses, such
