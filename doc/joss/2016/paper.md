@@ -1,5 +1,5 @@
 ---
-title: 'CTL: Discovering genetic loci associated with correlation differences'
+title: 'Correlation Trait Loci (CTL) mapping: phenotype network inference subject to genotype'
 tags:
   - bioinformatics
   - genetics
@@ -29,25 +29,29 @@ bibliography: paper.bib
 
 # Summary
 
-The CTLmapping repository provides an implementation of the Correlation
-Trait Loci (CTL) algorithm first presented in [@Arends:thesis_chapter].
-CTL mapping allows geneticists to analyze correlation
-difference between phenotypes.  CTL mapping is complementary to the
-proven quantitative trait locus (QTL) mapping method which associates
-observed phenotype differences against genotype. CTL mapping
-associates correlation differences observed *between* phenotypes,
-subject to the genotype. In other words, QTL mapping treats phenotypes
-independently while CTL mapping connects phenotypes. CTL generally
-show very similar profiles to QTL, but get interesting when they
-differ (see figure 1).
+The [CTLmapping repository](https://github.com/DannyArends/CTLmapping)
+contains an implementation of the Correlation Trait Loci (CTL)
+algorithm first presented [@Arends:thesis_chapter].  CTL mapping
+allows geneticists to pursue network inference by analysing
+correlation difference between phenotypes.
 
-Because CTL connect phenotypes CTL mapping provides a mechanism for
-inference and discovering causality (see chapter 4 [@Arends:thesis_chapter]).  This is
-particularly of interest when phenotype correlations change with
+CTL mapping is complementary to the proven quantitative trait locus
+(QTL) mapping method which maps/associates observed phenotype differences
+against genotype. CTL mapping associates correlation differences
+observed *between* phenotypes, subject to the genotype. In other
+words, QTL mapping treats phenotypes independently while CTL mapping
+connects phenotypes. CTL generally show very similar profiles to QTL,
+but get interesting when they differ (see figure 1).
+
+By comparing differences between QTL and CTL and by connecting
+phenotypes CTL mapping provides a mechanism for inference and
+discovery of causality (see chapter 4 [@Arends:thesis_chapter]).  This
+is particularly of interest when phenotype correlations change with
 conditions, for example in pathways with highly correlated gene
-expression patterns (see figure 1).  CTL mapping differs from set test
-methods, e.g., [@Wang:2010] in that CTL mapping does not require prior
-information on sets (e.g., pathways).
+expression patterns (see figure 1).  CTL mapping differs from existing
+correlation methods, such as set test methods (e.g., [@Wang:2010]) in
+that CTL mapping does not require prior information on sets (e.g.,
+pathways) and uses (existing) QTL information for inference.
 
 -![Figure 1](Fig1.png) Figure 1: Examples of colocated CTL and
 QTL profiles, as found in [GeneNetwork](http://genenetwork.org/)
@@ -73,7 +77,7 @@ figure 2).
 -![Figure 2](Fig2.png) Figure 2: By network inference, CTL discover
 the genetic wiring of classical phenotypes and identify key players in
 the genetic / protein network underlying classical phenotypes using
-QTL and CTL information, as discovered in GeneNetwork BXD mouse
+CTL and QTL information, as discovered in GeneNetwork BXD mouse
 datasets. Here we visualise significantly changed correlation
 between genes (again from GN207) as edges between the genes (nodes),
 each link shows the location (Chr:Position) at which correlation is lost.
