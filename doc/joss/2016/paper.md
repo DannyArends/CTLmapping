@@ -32,8 +32,8 @@ bibliography: paper.bib
 The [CTLmapping repository](https://github.com/DannyArends/CTLmapping)
 contains an implementation of the Correlation Trait Loci (CTL)
 algorithm first presented [@Arends:thesis_chapter].  CTL mapping
-allows geneticists to pursue network inference by analyzing
-correlation difference between phenotypes.
+allows geneticists to pursue network inference by discovering genetic 
+loci associated with correlation difference between phenotypes.
 
 CTL mapping is complementary to the proven quantitative trait locus
 (QTL) mapping method which maps/associates observed phenotype differences
