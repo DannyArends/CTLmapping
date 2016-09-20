@@ -61,10 +61,9 @@ between the expression *St7* and *Il18r1* genes, i.e., CTL changes at
 genes do not show a difference in mean expression. (b) *St7* gene
 shows a QTL at chromosome 6 and no CTL are detected between *St7* and
 *Il18r1* (possibly implying that the expression of this gene is
-regulated by some variant at this locus). (c) *Mtvr2* gene shows a CTL
-and QTL at chromosome 19. A significant change in correlation with the
-*C1qtnf5* gene is observed (0.85 B locus to -0.46 D locus), leading to
-a very similar CTL profile.
+regulated by some variant at this locus). (c) Expression variation of *Mtvr2* 
+is linked to a CTL with *C1qtnf5* (0.85 B locus to -0.46 D locus) and 
+to a conventional QTL, both of which map to proximal chromosome 19.
 
 CTL analysis can be performed on combined phenotypes obtained from the
 whole spectrum of data types: i.e., from classical phenotypes, such as
