@@ -32,7 +32,7 @@ bibliography: paper.bib
 The [CTLmapping repository](https://github.com/DannyArends/CTLmapping)
 contains an implementation of the Correlation Trait Loci (CTL)
 algorithm first presented [@Arends:thesis_chapter].  CTL mapping
-allows geneticists to pursue network inference by analysing
+allows geneticists to pursue network inference by analyzing
 correlation difference between phenotypes.
 
 CTL mapping is complementary to the proven quantitative trait locus
@@ -68,8 +68,8 @@ a very similar CTL profile.
 
 CTL analysis can be performed on combined phenotypes obtained from the
 whole spectrum of data types: i.e., from classical phenotypes, such as
-yield and disease suscepibility, to high-throughput experimental data,
-such as microarrays, RNA-seq and/or protein abundance measurements.
+yield and disease susceptibility, to high-throughput experimental data,
+such as micro-arrays, RNA-seq and/or protein abundance measurements.
 This is especially useful in combined datasets, e.g. a combination of:
 classical phenotypes, protein abundance and gene expression (see
 figure 2).
@@ -79,7 +79,7 @@ genetic wiring of classical phenotypes and identify known and new key
 players in the genetic / protein network underlying classical
 phenotypes using CTL and QTL information; as discovered without prior
 information in GeneNetwork BXD mouse datasets (again from
-GN207). Here we visualise significantly changed correlation between
+GN207). Here we visualize significantly changed correlation between
 genes in different studies as edges between the genes (nodes) with
 links showing the location (Chr:Position) at which correlation was
 lost.
@@ -98,7 +98,7 @@ The CTL mapping software is provided as a free and open source (FOSS)
 package for the R Project for Statistical Computing [@R:2005].
 Data structures of the CTL mapping R package have been harmonized with
 the popular R/qtl package [@Arends:2010], allowing users to quickly
-and efficiently re-analyse previous (R/)QTL experiments. Additional
+and efficiently re-analyze previous (R/)QTL experiments. Additional
 advantages of close integration with R/qtl are the many input formats
 supported by R/qtl, and access to all plot and helper functions
 provided by R/qtl.
@@ -130,11 +130,11 @@ the user to explore:
 
 # Future work
 
-CTL is computationally very intensive, phenotypes O(n^2), both in
-terms of RAM use and CPU.  Future work includes research into
+CTL is computationally very intensive, phenotypes *O(n<sup>2</sup>)*,
+both in terms of RAM use and CPU.  Future work includes research into
 improving the CTL algorithm for large scale correlations and
-inference, including the use of GPU/supercomputing.  We are also
-working on adding explorative interactive visualization (such as
-Cytoscape and D3 interactive graphics).
+inference, including the use of GPU/supercomputing.  In the context of
+GeneNetwork we are also working on adding exploratory interactive
+visualization (such as Cytoscape and D3 interactive graphics).
 
 # References
