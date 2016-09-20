@@ -1,15 +1,15 @@
 ### Beginners Guide
 The beginners introduction can be found here:
-[CTL introduction](doc/STARTINGinR.md)
+[CTL introduction](STARTINGinR.md)
 
 More information about the algorithm can be found here:
-[The algorithm](doc/ALGORITHM.md) 
+[The algorithm](ALGORITHM.md) 
 
 Learn how to install a development version for R here:
-[Development version](doc/DEVELOPMENT.md) 
+[Development version](DEVELOPMENT.md) 
 
 Information on how to compile a standalone version:
-[Compiled binairy](doc/COMPILE.md) 
+[Compiled binairy](COMPILE.md) 
 
 ### API level documentation
 API level documentation is provided by R documentation files, available after installing the package.
