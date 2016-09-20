@@ -74,7 +74,9 @@ figure 2).
 the genetic wiring of classical phenotypes and identify key players in
 the genetic / protein network underlying classical phenotypes using
 QTL and CTL information, as discovered in GeneNetwork BXD mouse
-datasets.
+datasets. Here we visualise significantly changed correlation 
+between genes (again from GN207) as edges between the genes (nodes), 
+each link shows the location (Chr:Position) at which correlation is lost.
 
 CTL mapping can be applied in model organism experimental crosses, such
 as mouse and the plant *Arabidopsis thaliana* (see example datasets
