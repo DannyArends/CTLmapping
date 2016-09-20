@@ -8,8 +8,7 @@ additional insights overlooked by the classical QTL approach.
 
 #### Algorithm
 
-Learn more about the [algorithm](https://github.com/DannyArends/CTLmapping/blob/master/learn%20CTL/ALGORITHM.md) 
-behind CTL mapping
+Learn more about the [algorithm](doc/ALGORITHM.md) behind CTL mapping
 
 ### Installing the R package from CRAN
 The quickest and prefered way to start mapping CTLs, is to 
@@ -26,13 +25,17 @@ After installation, load the package by:
 library("ctl")
 ```
 
+Next thing is to [map your first CTL](doc/STARTINGinR.md) 
+on either example data or your own data. For this see: [doc/STARTINGinR.md](doc/STARTINGinR.md) 
+
 Sometimes it is needed to install a develpoment version, since CRAN 
 might take a while to update after a bug is fixed. To learn how to 
-install a development version see: [doc/DevelopmentVersion.md](doc/DevelopmentVersion.md) 
+install a development version see: [doc/DEVELOPMENT.md](doc/DEVELOPMENT.md) 
 
 ### Test
 
-CTL mapping uses the build in R framework to test the package for global regressions and unit-testing of documented functions.
+CTL mapping uses the build in R framework to test the package 
+for global regressions and unit-testing of documented functions.
 Tests can be executed from the commandline, by using the following command:
 
     R CMD check Rctl                                      # Run the unit-tests of the R package
