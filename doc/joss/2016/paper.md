@@ -15,7 +15,7 @@ authors:
     orcid:
     affiliation: Humboldt-Universität zu Berlin, Germany
   - name: Ritsert C. Jansen
-    orcid:
+    orcid: 0000-0003-2977-9110
     affiliation: University of Groningen, The Netherlands
   - name: Robert W. Williams
     orcid: 0000-0001-8924-4447
