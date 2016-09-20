@@ -59,7 +59,7 @@ dataset GN207 (BXD mouse eye mRNA). (a) CTL without a colocalizing QTL
 between the expression *St7* and *Il18r1* genes, i.e., CTL changes at
 ~ 15 Mb at chromosome 2 from -0.39 B locus, to 0.86 D locus while both
 genes do not show a difference in mean expression. (b) *St7* gene
-shows a QTL at chromosome 6 and no CTLs are detected between *St7* and
+shows a QTL at chromosome 6 and no CTL are detected between *St7* and
 *Il18r1* (possibly implying that the expression of this gene is
 regulated by some variant at this locus). (c) *Mtvr2* gene shows a CTL
 and QTL at chromosome 19. A significant change in correlation with the
@@ -77,17 +77,18 @@ figure 2).
 -![Figure 2](Fig2.png) Figure 2: By network inference CTL discover the
 genetic wiring of classical phenotypes and identify known and new key
 players in the genetic / protein network underlying classical
-phenotypes using CTL and QTL information, as discovered in GeneNetwork
-BXD mouse datasets (again from GN207). Here we visualise significantly
-changed correlation between genes in different studies as edges
-between the genes (nodes) with links showing the location
-(Chr:Position) at which correlation was lost.
+phenotypes using CTL and QTL information; as discovered without prior
+information in GeneNetwork BXD mouse datasets (again from
+GN207). Here we visualise significantly changed correlation between
+genes in different studies as edges between the genes (nodes) with
+links showing the location (Chr:Position) at which correlation was
+lost.
 
 CTL mapping can be applied in model organism experimental crosses, such
 as mouse and the plant *Arabidopsis thaliana* (see example datasets
 below); as well as outbred-crosses, such as the Mouse diversity
 outbred cross (Mouse-DO), the Rat heterogeneous stock (Rat HS) and in
-Arabidopsis MAGIC; and in natural populations, such as human. For
+A. *thaliana* MAGIC; as well as in natural populations, such as human. For
 statistical power, in general: the more individuals the better. But,
 as a rule of thumb it is about the same as for QTL, i.e., about 100
 individuals for a recombinant inbred line (RIL), and 1,000 individuals
