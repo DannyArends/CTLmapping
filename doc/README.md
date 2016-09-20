@@ -8,8 +8,8 @@ More information about the algorithm can be found here:
 Learn how to install a development version for R here:
 [Development version](DEVELOPMENT.md) 
 
-Information on how to compile a standalone version:
-[Compiled binairy](COMPILE.md) 
+Information on how to compile a standalone executable:
+[Compile a standalone executable](COMPILE.md) 
 
 ### API level documentation
 API level documentation is provided by R documentation files, available after installing the package.
