@@ -9,7 +9,7 @@ library(ctl)                            # Load the library
 
 ### Examples
 
-If you have data prepared for (R/qtl)[http://www.rqtl.org/], you can use the 
+If you have data prepared for [R/qtl](http://www.rqtl.org/), you can use the 
 CTLscan.cross() function to directly scan your R/qtl cross object.
 
 Scan some example data (in R/qtl format) using the CTLscan.cross function:
