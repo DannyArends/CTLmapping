@@ -31,17 +31,18 @@ bibliography: paper.bib
 
 The [CTLmapping repository](https://github.com/DannyArends/CTLmapping)
 contains an implementation of the Correlation Trait Loci (CTL)
-algorithm first presented [@Arends:thesis_chapter].  CTL mapping
-allows geneticists to pursue network inference by discovering genetic 
+algorithm first presented in [@Arends:thesis_chapter].  CTL mapping
+allows geneticists to pursue network inference by discovering genetic
 loci associated with correlation difference between phenotypes.
 
 CTL mapping is complementary to the proven quantitative trait locus
-(QTL) mapping method which maps/associates observed phenotype differences
-against genotype. CTL mapping associates correlation differences
-observed *between* phenotypes, subject to the genotype. In other
-words, QTL mapping treats phenotypes independently while CTL mapping
-connects phenotypes. CTL generally show very similar profiles to QTL,
-but get interesting when they differ (see figure 1).
+(QTL) mapping method which maps/associates each separately observed
+phenotype against genotype. CTL mapping, in contrast, associates
+correlation differences observed *between* two phenotypes at a time,
+subject to the genotype. In other words, QTL mapping treats phenotypes
+independently while CTL mapping connects phenotypes. CTL show very
+similar profiles to QTL, but get interesting when they differ (see
+figure 1).
 
 By comparing differences between QTL and CTL and by connecting
 phenotypes CTL mapping provides a mechanism for inference and
@@ -61,8 +62,8 @@ between the expression *St7* and *Il18r1* genes, i.e., CTL changes at
 genes do not show a difference in mean expression. (b) *St7* gene
 shows a QTL at chromosome 6 and no CTL are detected between *St7* and
 *Il18r1* (possibly implying that the expression of this gene is
-regulated by some variant at this locus). (c) Expression variation of *Mtvr2* 
-is linked to a CTL with *C1qtnf5* (0.85 B locus to -0.46 D locus) and 
+regulated by some variant at this locus). (c) Expression variation of *Mtvr2*
+is linked to a CTL with *C1qtnf5* (0.85 B locus to -0.46 D locus) and
 to a conventional QTL, both of which map to proximal chromosome 19.
 
 CTL analysis can be performed on combined phenotypes obtained from the
