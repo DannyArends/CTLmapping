@@ -9,7 +9,7 @@ authors:
     orcid: 0000-0001-8738-0162
     affiliation: Humboldt University, Berlin, Germany, University of Groningen, The Netherlands
   - name: Yang Li
-    orcid:
+    orcid: 0000-0003-4022-7341
     affiliation: University of Groningen, The Netherlands, University Medical Center Groningen, The Netherlands
   - name: Gudrun A. Brockmann
     orcid:
