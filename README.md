@@ -1,5 +1,6 @@
 ## Correlated Trait Locus (CTL) mapping
 [![Build Status](https://travis-ci.org/DannyArends/CTLmapping.svg)](https://travis-ci.org/DannyArends/CTLmapping)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ctl)](http://cran.r-project.org/package=ctl)
 
 This repository contains the source code for the Correlated Trait Locus (CTL) mapping algorithm. 
 CTL mapping is a novel approach to detect genetic regulation of phenotypes in natural and 
