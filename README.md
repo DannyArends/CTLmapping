@@ -42,7 +42,7 @@ Tests can be executed from the commandline, by using the following command:
     R CMD check Rctl                                      # Run the unit-tests of the R package
 
 ### Documentation
-A short online introduction is [available](learn%20CTL/STARTINGinR.md) 
+A short online introduction is [available](doc/STARTINGinR.md) 
 and help files with examples are also available for almost all functions in R using:
 
 ```R
