@@ -12,7 +12,7 @@ authors:
     orcid: 0000-0003-4022-7341
     affiliation: University of Groningen, The Netherlands, University Medical Center Groningen, The Netherlands
   - name: Gudrun A. Brockmann
-    orcid:
+    orcid: 10000-00002-4387-2947
     affiliation: Humboldt-Universität zu Berlin, Germany
   - name: Ritsert C. Jansen
     orcid: 0000-0003-2977-9110
