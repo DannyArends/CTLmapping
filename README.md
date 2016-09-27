@@ -74,7 +74,7 @@ When this software was helpful, please cite the JOSS paper:
 [TODO: http://joss.theoj.org/papers/ DOI] in your publication, when (re-)using the any 
 code or data provided by this package, please also cite: 
 
-[![DOI](https://zenodo.org/badge/2619708.svg)](https://zenodo.org/badge/latestdoi/2619708)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.155296.svg)](https://doi.org/10.5281/zenodo.155296)
  
 Citations are also available for import in bibtex format [TODO: bibtex with DOIs].
 
