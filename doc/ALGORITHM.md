@@ -11,3 +11,6 @@ classical phenotypes, protein abundance and gene expression) CTL shows the
 genetic wiring of the classical phenotypes and identify key players in the 
 genetic / protein network underlying classical phenotypes using QTL and CTL 
 information.
+
+For more information on how-to calculate CTLs on N-genotypes, please read 
+Chapter 4 of [my Thesis](http://hdl.handle.net/11370/29cf3cc5-6596-4d5a-a87c-490b31676a96)
