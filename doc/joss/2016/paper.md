@@ -7,22 +7,33 @@ tags:
 authors:
   - name: Danny Arends
     orcid: 0000-0001-8738-0162
-    affiliation: Humboldt University, Berlin, Germany, University of Groningen, The Netherlands
+    affiliation: 1,2
   - name: Yang Li
     orcid: 0000-0003-4022-7341
-    affiliation: University of Groningen, The Netherlands, University Medical Center Groningen, The Netherlands
+    affiliation: 2,3
   - name: Gudrun A. Brockmann
     orcid: 0000-0002-4387-2947
-    affiliation: Humboldt-Universität zu Berlin, Germany
+    affiliation: 1
   - name: Ritsert C. Jansen
     orcid: 0000-0003-2977-9110
-    affiliation: University of Groningen, The Netherlands
+    affiliation: 2
   - name: Robert W. Williams
     orcid: 0000-0001-8924-4447
-    affiliation: University of Tennessee Health Science Center, USA
+    affiliation: 4
   - name: Pjotr Prins
     orcid: 0000-0002-8021-9162
-    affiliation: University of Groningen, The Netherlands, University Medical Center Utrecht, The Netherlands, University of Tennessee Health Science Center, USA
+    affiliation: 2,5,5
+affiliations:
+  - name: Humboldt University, Berlin, Germany,
+    index: 1
+  - name: University of Groningen, The Netherlands
+    index: 2
+  - name: University Medical Center Groningen, The Netherlands
+    index: 3
+  - name: University of Tennessee Health Science Center, USA
+    index: 4
+  - name: University Medical Center Utrecht, The Netherlands
+    index: 5
 date: 20 September 2016
 bibliography: paper.bib
 ---
@@ -124,7 +135,7 @@ the user to explore:
 
 - 301 gene expression traits measured on 109 *Saccharomyces cerevisia* [@Brem:2002]
 - 9 Metabolite expression traits measured on 403 *Arabidopsis Thaliana* [@Churchill:2012]
-- 24 Metabolite expression traits measured on 162 *Arabidopsis Thaliana* [@Keurentjes:2002]
+- 24 Metabolite expression traits measured on 162 *Arabidopsis Thaliana* [@Keurentjes:2006]
 
 (instructions can be found in the [README](https://github.com/DannyArends/CTLmapping)).
 
