@@ -22,7 +22,7 @@ authors:
     affiliation: 4
   - name: Pjotr Prins
     orcid: 0000-0002-8021-9162
-    affiliation: 2,5
+    affiliation: 2,4,5
 affiliations:
   - name: Humboldt University, Berlin, Germany,
     index: 1
