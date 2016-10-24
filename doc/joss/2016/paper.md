@@ -103,7 +103,9 @@ A. *thaliana* MAGIC [@DeKoning:2014]; as well as in natural populations, such as
 statistical power, in general: the more individuals the better. But,
 as a rule of thumb it is about the same as for QTL, i.e., about 100
 individuals for a recombinant inbred line (RIL), and 1,000 individuals
-for genome-wide association (GWA) in human [@Arends:thesis_chapter].
+for genome-wide association (GWA) in human. This rule of thumb was 
+determined by performing power analysis using genome wide simulations 
+with varying effect sizes and minor allele frequencies. [@Arends:thesis_chapter].
 
 The CTL mapping software is provided as a free and open source (FOSS)
 package for the R Project for Statistical Computing [@R:2005].
