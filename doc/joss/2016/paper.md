@@ -99,7 +99,7 @@ CTL mapping can be applied in model organism experimental crosses, such
 as mouse and the plant *Arabidopsis thaliana* (see example datasets
 below); as well as outbred-crosses, such as the Mouse diversity
 outbred cross (Mouse-DO), the Rat heterogeneous stock (Rat HS) and in
-A. *thaliana* MAGIC; as well as in natural populations, such as human. For
+A. *thaliana* MAGIC [@DeKoning:2014]; as well as in natural populations, such as human. For
 statistical power, in general: the more individuals the better. But,
 as a rule of thumb it is about the same as for QTL, i.e., about 100
 individuals for a recombinant inbred line (RIL), and 1,000 individuals
