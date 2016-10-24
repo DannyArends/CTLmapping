@@ -55,23 +55,19 @@ independently while CTL mapping connects phenotypes. CTL show very
 similar profiles to QTL, but get interesting when they differ (see
 figure 1).
 
-CTL differs fundamentally from mediation [Chick:2016] where the goal 
-is to use covariates tied to genomic position (e.g. mRNA expression) 
-to look at change in strength of QTL signal, compared to mediation,  
-CTL does not require phenotypes with genomic locations and provides 
-an unbiased method to look for genomic loci controlling correlation 
-differences between phenotypes. 
+CTL differs from mediation [Chick:2016], for example, where the goal
+is to use covariates tied to genomic position, i.e., mRNA expression,
+and to find change in strength of QTL signal.  The CTL method does
+not require phenotype tied to genomic location and provides an unbiased
+method to look for those genomic loci which control correlation
+differences between phenotypes.
 
-The CTL method is related to using ANCOVA for QTL mapping which is 
-commonly used to determine changes in correlation. Normally, ANCOVA 
-is used in QTL mapping is to adjust for covariates when searching for 
-QTL. ANCOVA often used to improves power to map QTLs, since variance 
-in the dependent variable is absorbed by covariates. In contrast, 
-the CTL method looks for different information, and is not concerned 
-about finding QTLs, CTL associates genetic loci with significant 
-difference in correlation between pairs of phenotypes, and can detects 
-correlation differences between two phenotypes even if there is no 
-QTL to cause observable differences in mean expression of these traits.
+The CTL method is somewhat related to ANCOVA for QTL mapping which is
+often used to determine changes in correlation. ANCOVA is used in QTL
+mapping is to adjust for covariates when searching for QTL and is used
+to improve mapping power, because variance in the dependent variable
+is absorbed by covariates.  CTL, in contrast, are calculated without
+knowledge of QTL.
 
 By comparing differences between QTL and CTL and by connecting
 phenotypes CTL mapping provides a mechanism for inference and
@@ -121,8 +117,8 @@ A. *thaliana* MAGIC [@DeKoning:2014]; as well as in natural populations, such as
 statistical power, in general: the more individuals the better. But,
 as a rule of thumb it is about the same as for QTL, i.e., about 100
 individuals for a recombinant inbred line (RIL), and 1,000 individuals
-for genome-wide association (GWA) in human. This rule of thumb was 
-determined by performing power analysis using genome wide simulations 
+for genome-wide association (GWA) in human. This rule of thumb was
+determined by performing power analysis using genome wide simulations
 with varying effect sizes and minor allele frequencies. [@Arends:thesis_chapter].
 
 The CTL mapping software is provided as a free and open source (FOSS)
