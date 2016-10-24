@@ -57,7 +57,7 @@ figure 1).
 
 CTL differs from mediation [Chick:2016], for example, where the goal
 is to use covariates tied to genomic position, i.e., mRNA expression,
-and to find change in strength of QTL signal.  The CTL method does
+and to find change in strength of QTL signal. The CTL method does
 not require phenotype tied to genomic location and provides an unbiased
 method to look for those genomic loci which control correlation
 differences between phenotypes.
