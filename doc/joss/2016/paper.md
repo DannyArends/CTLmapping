@@ -55,6 +55,24 @@ independently while CTL mapping connects phenotypes. CTL show very
 similar profiles to QTL, but get interesting when they differ (see
 figure 1).
 
+CTL differs fundamentally from mediation [Chick:2016] where the goal 
+is to use covariates tied to genomic position (e.g. mRNA expression) 
+to look at change in strength of QTL signal, compared to mediation,  
+CTL does not require phenotypes with genomic locations and provides 
+an unbiased method to look for genomic loci controlling correlation 
+differences between phenotypes. 
+
+The CTL method is related to using ANCOVA for QTL mapping which is 
+commonly used to determine changes in correlation. Normally, ANCOVA 
+is used in QTL mapping is to adjust for covariates when searching for 
+QTL. ANCOVA often used to improves power to map QTLs, since variance 
+in the dependent variable is absorbed by covariates. In contrast, 
+the CTL method looks for different information, and is not concerned 
+about finding QTLs, CTL associates genetic loci with significant 
+difference in correlation between pairs of phenotypes, and can detects 
+correlation differences between two phenotypes even if there is no 
+QTL to cause observable differences in mean expression of these traits.
+
 By comparing differences between QTL and CTL and by connecting
 phenotypes CTL mapping provides a mechanism for inference and
 discovery of causality (see chapter 4 [@Arends:thesis_chapter]).  This
