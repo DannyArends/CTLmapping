@@ -64,7 +64,7 @@ differences between phenotypes.
 
 The CTL method is somewhat related to ANCOVA for QTL mapping which is
 often used to determine changes in correlation. ANCOVA is used in QTL
-mapping is to adjust for covariates when searching for QTL and is used
+mapping to adjust for covariates when searching for QTL and is used
 to improve mapping power, because variance in the dependent variable
 is absorbed by covariates.  CTL, in contrast, are calculated without
 knowledge of QTL.
