@@ -15,13 +15,14 @@ cross <- convert2riself(cross)
 cross <- fill.geno(cross)                   # Fill the genotypes
 cross <- calc.genoprob(cross)               # Calculate genotype probabilities
 
-cross$pheno <- apply(cross$pheno, 2, as.numeric)
+ctls  <- CTLscan.cross(cross, phenocol = c(1:5), qtl = FALSE, verbose = TRUE)
 
-qtls  <- scanone(cross, pheno.col = 1:10)   # Scan for QTLS
+for(x in 1:5) {
+  qtls <- scanone(cross, pheno.col = x)     # Scan for QTLS
+  ctls[[x]]$qtls <- qtls[,3]
+}
 map   <- qtls[,1:2]                         # Get the genetic map
-qtls  <- qtls[,-(1:2)]                      # Get the LOD scores
 
-ctls  <- CTLscan.cross(cross, phenocol = 1:10, qtls = qtls, verbose=TRUE)
 nodes <- ctl.lineplot(ctls, map, significance = 0.1) # Line plot all the phenotypes
 nodes
 

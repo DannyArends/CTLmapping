@@ -41,7 +41,7 @@ ctl.lineplot <- function(CTLobject, mapinfo, phenocol, significance = 0.05, gap 
     if(!is.na(ctls[x,5])){
       draw.spline(from, to, via, lwd=(ctls[x,4]/5)+1,lty=c(1,2,3)[ctls[x,5]+2], col=col)
     }else{
-      warning(paste("Na direction detected:", from[1], via[1], to[1]))
+      cat(paste("Direction of CTL unknown, NA detected:", from[1], via[1], to[1], "\n"))
       draw.spline(from, to, via, lwd=(ctls[x,4]/5)+1,lty=2, col=col)
     }
   } # All done now plot the trait elements

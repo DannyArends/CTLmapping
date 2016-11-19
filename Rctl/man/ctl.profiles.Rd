@@ -6,7 +6,8 @@
   and phenotype x phenotype (p2p matrix) from a \code{\link{CTLscan}}.
 }
 \usage{
-CTLprofiles(CTLobject, against = c("markers","phenotypes"), significance = 0.05, verbose=FALSE)
+CTLprofiles(CTLobject, against = c("markers","phenotypes"), significance = 0.05, 
+verbose=FALSE)
 }
 \arguments{
   \item{CTLobject}{     An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }

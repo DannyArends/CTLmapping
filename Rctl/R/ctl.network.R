@@ -57,15 +57,17 @@ CTLnetwork <- function(CTLobject, mapinfo, significance = 0.05, LODdrop = 2, wha
       qlod2    <- qlod1
       edgetype <- NA
       if(length(CTLobject) >= data[3]){  # Edge type based on QTL LOD scores
-        qlod2 <-CTLobject[[data[3]]]$qtl[data[2]]
+        qlod2 <- CTLobject[[data[3]]]$qtl[data[2]]
         if((qlod1-qlod2) > LODdrop){
           edgetype <- 1
         }else if((qlod1-qlod2) < -LODdrop){
           edgetype <- -1
         }else{ edgetype <- 0; }
-      }else{ cat("Warning: Phenotype", data[3], "from", data[1], "no CTL/QTL information"); qlod2 <- NA; }
+      } else { 
+        cat("Warning: Phenotype", data[3], "from", data[1], "no CTL/QTL information\n")
+        qlod2 <- NA; 
+      }
       #Store the results
-
       results <- rbind(results, c(data[1], data[2], data[3], lod, edgetype, qlod1, qlod2))
 
       if(nodefile == "" && !verbose){ }else{

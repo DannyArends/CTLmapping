@@ -7,7 +7,7 @@
 # 
 
 #Create the 2 possible CTL matrices: 1) phenotypes versus markers (PxM) and 2) Phenotypes versus phenotypes (PxP)
-CTLprofiles <- function(CTLobject, against = c("markers","phenotypes"), significance = 0.05, verbose = FALSE){
+CTLprofiles <- function(CTLobject, against = c("markers","phenotypes"), significance = 0.05, verbose = FALSE) {
   if(missing(CTLobject)) stop("argument 'CTLobject' is missing, with no default")
   mymatrix <- NULL
   mynames <- NULL
