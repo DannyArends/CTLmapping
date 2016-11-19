@@ -15,8 +15,11 @@
     #include "ctl.h"
     #include "rmapctl.h"
     #include "correlation.h"
-    #include "permutation.h"    
+    #include "permutation.h"
     #include "sort.h"
+
+    /** openMP test function. */
+    void R_openmp(int* nthr, int* ni, double* res);
 
     /** Example function that does CTL mapping permutation for a given phenotype. */
     double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 

@@ -7,6 +7,29 @@
  * First written 2011<br>
  **********************************************************************/
 #include "mapctl.h"
+#include <omp.h>
+
+void R_openmp(int* nthr, int* ni, double* res) {
+  int rthreads = (int)(*nthr);
+  int nitems = (int)(*ni);
+  int npthread = ceil((float)nitems / (float)rthreads);
+  int nthreads, tid;
+
+  #pragma omp parallel private(nthreads, tid) shared(nitems, npthread, res) num_threads(rthreads)
+  {
+    tid = omp_get_thread_num();                                                 /* Obtain thread number */
+    int start = npthread * tid;
+    int stop = (int)fmin((float)(start + (int)npthread), (float)nitems);
+    info("I am thread = %d/%d -> [%d,%d]\n", tid, rthreads, start, stop);       /* Echo threadinformation */
+    for(int i = start; i < stop; i++) {                                         /* Do work we are assigned */
+      res[i] = (double)i;                                                       /* Cores write back in shared memory */
+    }
+    if (tid == 0) {                                                             /* Only master thread does this */
+      nthreads = omp_get_num_threads();
+      info("Number of threads = (%d|%d)\n", rthreads, nthreads);
+    }
+  }  /* All threads join master thread and disband */
+}
 
 double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
                 bool doperms, int nperms, int nthreads, bool verbose){
