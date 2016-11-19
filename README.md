@@ -1,6 +1,8 @@
 ## Correlated Trait Locus (CTL) mapping
 [![Build Status](https://travis-ci.org/DannyArends/CTLmapping.svg)](https://travis-ci.org/DannyArends/CTLmapping)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ctl)](http://cran.r-project.org/package=ctl)
+[![JOSS](http://joss.theoj.org/papers/10.21105/joss.00087/status.svg)](http://joss.theoj.org/papers/10.21105/joss.00087)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.154465.svg)](https://doi.org/10.5281/zenodo.154465)
 
 This repository contains the source code for the Correlated Trait Locus (CTL) mapping algorithm. 
 CTL mapping is a novel approach to detect genetic regulation of phenotypes in natural and 
@@ -70,10 +72,10 @@ Or be a maintainer, and adopt a function
 
 ### Cite
 
-When this software was helpful, please cite the JOSS paper: 
-[TODO: http://joss.theoj.org/papers/ DOI] in your publication, when (re-)using the any 
-code or data provided by this package, please also cite: 
+When this software was helpful, please cite the JOSS paper in your publication: 
+[![JOSS](http://joss.theoj.org/papers/10.21105/joss.00087/status.svg)](http://joss.theoj.org/papers/10.21105/joss.00087)
 
+When (re-)using the any code or data provided by this package, please also cite: 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.154465.svg)](https://doi.org/10.5281/zenodo.154465)
  
 Citations are also available for import in bibtex format [TODO: bibtex with DOIs].

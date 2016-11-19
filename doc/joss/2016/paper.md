@@ -55,6 +55,20 @@ independently while CTL mapping connects phenotypes. CTL show very
 similar profiles to QTL, but get interesting when they differ (see
 figure 1).
 
+CTL differs from mediation [Chick:2016], for example, where the goal
+is to use covariates tied to genomic position, i.e., mRNA expression,
+and to find change in strength of QTL signal. The CTL method does
+not require phenotype tied to genomic location and provides an unbiased
+method to look for those genomic loci which control correlation
+differences between phenotypes.
+
+The CTL method is somewhat related to ANCOVA for QTL mapping which is
+often used to determine changes in correlation. ANCOVA is used in QTL
+mapping to adjust for covariates when searching for QTL and is used
+to improve mapping power, because variance in the dependent variable
+is absorbed by covariates.  CTL, in contrast, are calculated without
+knowledge of QTL.
+
 By comparing differences between QTL and CTL and by connecting
 phenotypes CTL mapping provides a mechanism for inference and
 discovery of causality (see chapter 4 [@Arends:thesis_chapter]).  This
@@ -99,11 +113,13 @@ CTL mapping can be applied in model organism experimental crosses, such
 as mouse and the plant *Arabidopsis thaliana* (see example datasets
 below); as well as outbred-crosses, such as the Mouse diversity
 outbred cross (Mouse-DO), the Rat heterogeneous stock (Rat HS) and in
-A. *thaliana* MAGIC; as well as in natural populations, such as human. For
+A. *thaliana* MAGIC [@DeKoning:2014]; as well as in natural populations, such as human. For
 statistical power, in general: the more individuals the better. But,
 as a rule of thumb it is about the same as for QTL, i.e., about 100
 individuals for a recombinant inbred line (RIL), and 1,000 individuals
-for genome-wide association (GWA) in human [@Arends:thesis_chapter].
+for genome-wide association (GWA) in human. This rule of thumb was
+determined by performing power analysis using genome wide simulations
+with varying effect sizes and minor allele frequencies. [@Arends:thesis_chapter].
 
 The CTL mapping software is provided as a free and open source (FOSS)
 package for the R Project for Statistical Computing [@R:2005].
