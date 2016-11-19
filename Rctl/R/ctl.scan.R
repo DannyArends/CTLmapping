@@ -9,8 +9,8 @@
 #
 
 #-- CTLscan main function --#
-CTLscan <- function(genotypes, phenotypes, phenocol, nperm = 100, 
-                    strategy = c("Exact", "Full", "Pairwise"), ncores = 1, 
+CTLscan <- function(genotypes, phenotypes, phenocol, nperm = 100, nthreads = 1,
+                    strategy = c("Exact", "Full", "Pairwise"),
                     parametric = FALSE, qtl = TRUE, verbose = FALSE) {
 
   if(missing(genotypes) || is.null(genotypes))  stop("argument 'genotypes' is missing, with no default")
@@ -42,25 +42,12 @@ CTLscan <- function(genotypes, phenotypes, phenocol, nperm = 100,
   }
   ctlobject <- vector("list", length(phenocol))
 
-  if(ncores == 1){ # Single core debug call
-    idx <- 1
-    for(phe in phenocol) {
-      ctlobject[[idx]] <- CTLmapping(genotypes, phenotypes, phenocol = phe, nperm = nperm,
-                                     strategy = strategy, qtl = qtl, verbose = verbose)
-      idx <- idx + 1
-    }
-  }else{ 
-    # This is more or less the worst place to do multicore, we duplicate all memory allocated to all cores
-    # Normally we would want to use multiple cores, but in the C code, splitting by e.g. marker
-    min.cores <- min(ncores, length(phenocol))
-    if(min.cores != ncores) warning("Reduced n.cores (", ncores, "to", min.cores, ")")
-    cl <- parallel::makeCluster(rep("localhost", min.cores))
-    parallel::clusterEvalQ(cl, library(ctl))
-    ctlobject <- parallel::parLapply(cl, phenocol, function(x) {
-      CTLmapping(genotypes, phenotypes, phenocol = x, nperm = nperm, 
-                 strategy = strategy, qtl = qtl, verbose = verbose)
-    })
-    parallel::stopCluster(cl)
+
+  idx <- 1
+  for(phe in phenocol) {
+    ctlobject[[idx]] <- CTLmapping(genotypes, phenotypes, phenocol = phe, nperm = nperm, nthreads = nthreads,
+                                   strategy = strategy, qtl = qtl, verbose = verbose)
+    idx <- idx + 1
   }
   if(verbose) cat("Done after:", (proc.time()-st)[3], "seconds\n")
 
@@ -68,7 +55,7 @@ CTLscan <- function(genotypes, phenotypes, phenocol, nperm = 100,
   invisible(ctlobject)
 }
 
-CTLmapping <- function(genotypes, phenotypes, phenocol = 1, nperm = 100, strategy = c("Exact", "Full", "Pairwise"), qtl = TRUE, verbose = FALSE){
+CTLmapping <- function(genotypes, phenotypes, phenocol = 1, nperm = 100, nthreads = 1, strategy = c("Exact", "Full", "Pairwise"), qtl = TRUE, verbose = FALSE){
   if(missing(genotypes) || is.null(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   ss  <- proc.time()
@@ -95,6 +82,7 @@ CTLmapping <- function(genotypes, phenotypes, phenocol = 1, nperm = 100, strateg
                           as.integer(unlist(genotypes)), as.double(unlist(phenotypes)),
                           as.integer((phenocol-1)), as.integer(nperm),
                           as.integer(perm.type),
+                          as.integer(nthreads), 
                           dcor = as.double(rep(0, n.mar * n.phe)),
                           perms = as.double(perms),
                           ctl  = as.double(rep(0, n.mar * n.phe)),
