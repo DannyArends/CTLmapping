@@ -16,7 +16,7 @@ void updateR(bool flush){
 }
 
 void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p, 
-              int *nperms, int* permt, double* dcor,  double* perms, double* res, int* verb){
+              int *nperms, int* permt, int* nthr, double* dcor,  double* perms, double* res, int* verb){
   GetRNGstate();
   int nindividuals  = (int)(*nind);
   int nmarkers      = (int)(*nmar);
@@ -24,6 +24,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   int phenotype     = (int)(*p);
   int npermutations = (int)(*nperms);
   int permtype      = (int)(*permt);
+  int nthreads      = (int)(*nthr);
   int verbose       = (int)(*verb);
 
   Phenotypes phenotypes;
@@ -44,7 +45,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
 
   if(verbose) info("Phenotype %d: Mapping", (phenotype+1));  
   updateR(1);
-  dcors = ctleffects(phenotypes, genotypes, phenotype, genoenc, verbose);
+  dcors = ctleffects(phenotypes, genotypes, phenotype, genoenc, nthreads, verbose);
 
   for(i = 0; i < (nphenotypes*nmarkers); i++){    // Send scores to R
     int m = i % nmarkers; int p = i / nmarkers;
@@ -55,7 +56,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
     if(verbose) info(", Full permutation", "");
     updateR(1);
     double* permutations = permute(phenotypes, genotypes, phenotype, genoenc, 
-                                   npermutations, false);
+                                   npermutations, nthreads, false);
     for(i=0; i < npermutations; i++){           // Send permutations to R
       perms[i] = permutations[i];
     }
@@ -66,7 +67,8 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   }else if(permtype == 2){
     if(verbose) info(", Pairwise permutation", "");
     updateR(1);
-    double** permutations = permuteRW(phenotypes, genotypes, phenotype, genoenc, npermutations, false);
+    double** permutations = permuteRW(phenotypes, genotypes, phenotype, genoenc, 
+                                      npermutations, nthreads, false);
     for(ph=0; ph < (nphenotypes); ph++){         // Send permutations to R
       for(perm=0; perm < (npermutations); perm++){
         perms[(ph*npermutations)+perm] = permutations[ph][perm];

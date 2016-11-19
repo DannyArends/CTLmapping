@@ -7,6 +7,7 @@
  * First written 2011<br>
  **********************************************************************/
 #include "correlation.h"
+#include <omp.h>
 
 void R_correlation(double* x, double* y, double* res, int* dim, int* verb){
   size_t dimension  = (size_t)(*dim);
@@ -14,13 +15,13 @@ void R_correlation(double* x, double* y, double* res, int* dim, int* verb){
   res[0] = correlation(x, y, dimension, verbose);
 }
 
-void R_correlation1toN(double* x, double* y, double* res, int* dim, int* numy, int* verb){
+void R_correlation1toN(double* x, double* y, double* res, int* dim, int* numy, int nthreads, int* verb){
   size_t i = 0;
   size_t dimension  = (size_t)(*dim);
   size_t ny    = (size_t)(*numy);
   bool verbose = (bool)(*verb);
   double** ynew = asdmatrix(ny, dimension, y);
-  double*  cors = cor1toN(x, ynew, dimension, ny, verbose);
+  double*  cors = cor1toN(x, ynew, dimension, ny, nthreads, verbose);
   for(i = 0; i < ny; i++){ res[i] = cors[i]; }
 
   free(ynew);                   // The indices are allocated by C, Data by R
@@ -66,7 +67,7 @@ double correlation(const double* x, const double* y, size_t dim, bool verbose){
   return(cor);
 }
 
-double* cor1toN(double* x, double** y, size_t dim, size_t ny, bool verbose){
+double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool verbose){
   size_t i, j;
   double nom, denom;
   double onedivn = (1.0 / dim), Xi = 0.0, XiP2 = 0.0;
@@ -77,9 +78,11 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, bool verbose){
   double* XiYi   = newdvector(ny);
 
   // Unrolled 1:N correlation loop
+  #pragma omp parallel for shared(XiYi, Yi, YiP2) reduction(+:Xi) reduction(+:XiP2) num_threads(nthreads)
   for(j = 0; j < ny; j++){   // Loop over all traits
-    for(i = 0; i < dim; i++){ if(y[j][i] != MISSING && x[i] != MISSING){ // If both are available
-      if(j==0){
+    // Additional openmp directive: #pragma omp parallel for shared(XiYi, Yi, YiP2)
+    for(i = 0; i < dim; i++){ if(y[j][i] != MISSING && x[i] != MISSING) { // If both are available
+      if(j==0) {
         Xi   += x[i];
         XiP2 += x[i] * x[i];
       }
@@ -88,15 +91,18 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, bool verbose){
       YiP2[j] += y[j][i] * y[j][i];
     }}
   }
-
+  // Additional openmp directive: #pragma omp parallel for private(nom, denom) shared(cors)
   for(j = 0; j < ny; j++){
     nom   = (XiYi[j] - (onedivn*Xi*Yi[j]));
     denom = sqrt(XiP2 - (onedivn * Xi * Xi)) * sqrt(YiP2[j] - (onedivn * Yi[j] * Yi[j]));
-    if(denom == 0) err("Denominator = 0 in correlation (Too few samples in a genotype)\n", "");
-    cors[j] = nom / denom;
-    
+    if(denom == 0){
+      if(verbose) info("Denominator = 0 in correlation (Too few samples in a genotype)\n", "");
+      cors[j] = R_NaN;
+    } else {
+      cors[j] = nom / denom;
+    }
     if(isNaN(cors[j]) || isinf(cors[j]) || cors[j] < -(RANGE) || cors[j] > RANGE){ 
-      err("Correlation '%.8f' not in range [-1, 1]\n", cors[j]);
+      if(verbose) info("Correlation '%.8f' not in range [-1, 1]\n", cors[j]);
     }
   }
   free(Yi); free(YiP2); free(XiYi);
@@ -146,6 +152,9 @@ double* chiSQN(size_t nr, double** r, size_t phe, int* nsamples, size_t nphe){
       ret[p] = sumOfSquares - (pow(squaresOfSum, 2.0) / denom);
       if(isNaN(ret[p])) ret[p] = 0.0; // This can happen if two phenotypes are the exact same
     }
+    #ifdef USING_R
+      updateR(0);
+    #endif //USING_R
   }
   return ret;
 }
