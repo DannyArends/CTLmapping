@@ -78,9 +78,9 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool
   double* XiYi   = newdvector(ny);
 
   // Unrolled 1:N correlation loop
-  #pragma omp parallel for shared(XiYi, Yi, YiP2) reduction(+:Xi) reduction(+:XiP2) num_threads(nthreads)
+  // ? Possible openmp directive ?:  #pragma omp parallel for shared(Xi, XiP2, XiYi, Yi, YiP2) num_threads(nthreads)
   for(j = 0; j < ny; j++){   // Loop over all traits
-    // Additional openmp directive: #pragma omp parallel for shared(XiYi, Yi, YiP2)
+    // ? Possible openmp directive ?:  #pragma omp parallel for shared(XiYi, Yi, YiP2)
     for(i = 0; i < dim; i++){ if(y[j][i] != MISSING && x[i] != MISSING) { // If both are available
       if(j==0) {
         Xi   += x[i];
@@ -91,7 +91,7 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool
       YiP2[j] += y[j][i] * y[j][i];
     }}
   }
-  // Additional openmp directive: #pragma omp parallel for private(nom, denom) shared(cors)
+  // ? Possible openmp directive ?:  #pragma omp parallel for private(nom, denom) shared(cors)
   for(j = 0; j < ny; j++){
     nom   = (XiYi[j] - (onedivn*Xi*Yi[j]));
     denom = sqrt(XiP2 - (onedivn * Xi * Xi)) * sqrt(YiP2[j] - (onedivn * Yi[j] * Yi[j]));
