@@ -34,6 +34,9 @@
 \alias{nfrom}
 \alias{nto}
 
+%ctl.scan.R
+\alias{openmp}
+
 %ctl.statistics.R
 \alias{extrapolateBeyondRange}
 \alias{CTLscantoScanone}
