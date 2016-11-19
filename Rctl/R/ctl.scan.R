@@ -8,6 +8,13 @@
 # R functions to do CTL mapping
 #
 
+openmp <- function(nthreads = 1, nitems = 10) {
+  result <- .C("R_openmp", nthr = as.integer(nthreads),
+                            ni = as.integer(nitems), 
+                           res = as.double(rep(0, nitems)), PACKAGE="ctl")
+  return(result)
+}
+
 #-- CTLscan main function --#
 CTLscan <- function(genotypes, phenotypes, phenocol, nperm = 100, nthreads = 1,
                     strategy = c("Exact", "Full", "Pairwise"),
@@ -41,7 +48,6 @@ CTLscan <- function(genotypes, phenotypes, phenocol, nperm = 100, nthreads = 1,
     if(verbose) cat("Data ranking finished after:",(proc.time()-st)[3],"seconds\n")
   }
   ctlobject <- vector("list", length(phenocol))
-
 
   idx <- 1
   for(phe in phenocol) {
