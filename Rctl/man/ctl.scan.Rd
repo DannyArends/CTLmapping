@@ -5,8 +5,8 @@
   Scan for Correlated Trait Locus (CTL) in populations
 }
 \usage{
-CTLscan(genotypes, phenotypes, phenocol, nperm=100, 
-strategy = c("Exact", "Full", "Pairwise"), ncores = 1,
+CTLscan(genotypes, phenotypes, phenocol, nperm=100, nthreads = 1, 
+strategy = c("Exact", "Full", "Pairwise"),
 parametric = FALSE, qtl = TRUE, verbose = FALSE)
 }
 \arguments{
@@ -14,6 +14,7 @@ parametric = FALSE, qtl = TRUE, verbose = FALSE)
   \item{phenotypes}{  Matrix of phenotypes. (individuals x phenotypes) }
   \item{phenocol}{    Which phenotype column(s) should we analyse. Default: Analyse all phenotypes. }
   \item{nperm}{       Number of permutations to perform. This parameter is not used when method="Exact". }
+  \item{nthreads}{    Number of CPU cores to use during the analysis. }
   \item{strategy}{    The permutation strategy to use, either 
                       \itemize{
                         \item Exact - Uses exact calculations to calculate the likelihood of a difference 
@@ -27,7 +28,6 @@ parametric = FALSE, qtl = TRUE, verbose = FALSE)
                       estimating p-values and uses bonferoni correction. It has however the least power to 
                       detect CTLs, the two other methods (Full and Pairwise) perform permutations to
                       assign significance. }
-  \item{ncores}{      Number of CPU cores to use during the analysis. }
   \item{parametric}{  Use non-parametric testing (Spearman) or parametric testing (Pearson). The DEFAULT is to 
                       use non-parametric tests which are less sensitive to outliers in the phenotype data. }
   \item{qtl}{        Use the internal slow QTL mapping method to map QTLs. }

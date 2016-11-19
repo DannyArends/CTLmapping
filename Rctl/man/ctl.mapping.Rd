@@ -5,7 +5,7 @@
   Scan for correlated trait loci (CTL)
 }
 \usage{
-CTLmapping(genotypes, phenotypes, phenocol = 1, nperm = 100, 
+CTLmapping(genotypes, phenotypes, phenocol = 1, nperm = 100, nthreads = 1,
 strategy = c("Exact", "Full", "Pairwise"), qtl = TRUE, verbose = FALSE)
 }
 
@@ -14,6 +14,7 @@ strategy = c("Exact", "Full", "Pairwise"), qtl = TRUE, verbose = FALSE)
   \item{phenotypes}{  Matrix of phenotypes. (individuals x phenotypes) }
   \item{phenocol}{    Which phenotype column(s) should we analyse. Default: Analyse a single phenotype. }
   \item{nperm}{       Number of permutations to perform. This parameter is not used when method="Exact". }
+  \item{nthreads}{    Number of CPU cores to use during the analysis. }
   \item{strategy}{    The permutation strategy to use, either 
                       \itemize{
                         \item Exact: Uses exact calculations to calculate the likelihood of a difference 
