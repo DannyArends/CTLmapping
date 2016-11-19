@@ -6,15 +6,13 @@
   and phenotype x phenotype (p2p matrix) from a \code{\link{CTLscan}}.
 }
 \usage{
-CTLprofiles(CTLobject, against = c("markers","phenotypes"), significance = 0.05, 
-verbose=FALSE, warn=TRUE)
+CTLprofiles(CTLobject, against = c("markers","phenotypes"), significance = 0.05, verbose=FALSE)
 }
 \arguments{
   \item{CTLobject}{     An object of class \code{"CTLobject"}, as output by \code{\link{CTLscan}}. }
   \item{against}{       Plot the CTL against either: markers or phenotypes. }
   \item{significance}{  Significance threshold to set a genome wide False Discovery Rate (FDR). }
   \item{verbose}{       Be verbose. }
-  \item{warn}{          Warn when there are not enough permutations. }
 }
 \details{
   These matrices can be combined with QTL information to perform de novo 

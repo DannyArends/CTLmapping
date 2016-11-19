@@ -6,8 +6,8 @@
 }
 \usage{
 CTLscan(genotypes, phenotypes, phenocol, nperm=100, 
-strategy = c("Exact", "Full", "Pairwise"), conditions = NULL, qtls = NULL, ncores = 1,
-parametric = FALSE, verbose = FALSE)
+strategy = c("Exact", "Full", "Pairwise"), ncores = 1,
+parametric = FALSE, qtl = TRUE, verbose = FALSE)
 }
 \arguments{
   \item{genotypes}{   Matrix of genotypes. (individuals x markers) }
@@ -27,12 +27,10 @@ parametric = FALSE, verbose = FALSE)
                       estimating p-values and uses bonferoni correction. It has however the least power to 
                       detect CTLs, the two other methods (Full and Pairwise) perform permutations to
                       assign significance. }
-  \item{conditions}{  A vector of experimental conditions applied during the experiment. These conditions 
-                      are used as covariates in the QTL modeling step. }
-  \item{qtls}{        Used to provide QTL results, when external QTL results are available. }
   \item{ncores}{      Number of CPU cores to use during the analysis. }
   \item{parametric}{  Use non-parametric testing (Spearman) or parametric testing (Pearson). The DEFAULT is to 
                       use non-parametric tests which are less sensitive to outliers in the phenotype data. }
+  \item{qtl}{        Use the internal slow QTL mapping method to map QTLs. }
   \item{verbose}{     Be verbose. }
 }
 \value{
