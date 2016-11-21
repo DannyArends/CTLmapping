@@ -13,8 +13,11 @@
   #define CSTACK_DEFNS 7                                          /* http://stats.blogoverflow.com/2011/08/using-openmp-ized-c-code-with-r/ */
   #include "Rinterface.h"
 
+  extern uintptr_t R_CStackLimit; /* C stack limit */
+  extern uintptr_t R_CStackStart; /* Initial stack address */
+
   void R_openmp(int* nthr, int* ni, int* ny, double* x, double* ym, double* res) {
-    R_CStackLimit=(uintptr_t) - 1;                                /* http://stats.blogoverflow.com/2011/08/using-openmp-ized-c-code-with-r/ */
+    //R_CStackLimit=(uintptr_t) - 1;                              /* http://stats.blogoverflow.com/2011/08/using-openmp-ized-c-code-with-r/ */
 
     int rthreads = (int)(*nthr);                                  /* Requested number of threads */
     int nitems = (int)(*ni);                                      /* Number of items todo */
