@@ -7,7 +7,6 @@
  * First written 2011<br>
  **********************************************************************/
 #include "correlation.h"
-#include <omp.h>
 
 void R_correlation(double* x, double* y, double* res, int* dim, int* verb){
   size_t dimension  = (size_t)(*dim);
@@ -47,17 +46,17 @@ void R_chiSQtoP(double* Cv, int* Dof, double* res){ res[0] = chiSQtoP((double)(*
 double correlation(const double* x, const double* y, size_t dim, bool verbose){
   size_t i;
   double XiYi = 0.0, Xi = 0.0, Yi = 0.0, XiP2 = 0.0, YiP2 = 0.0;
-  double onedivn = 1.0 / dim;
-
+  //#pragma omp parallel for reduction(+:Xi) reduction(+:Yi) reduction(+:XiP2) reduction(+:YiP2) reduction(+:XiYi)
   for(i = 0; i < dim; i++){
     if(x[i] != MISSING && y[i] != MISSING){
-      XiYi += x[i] * y[i];
       Xi   += x[i];
       Yi   += y[i];
       XiP2 += x[i] * x[i];
       YiP2 += y[i] * y[i];
+      XiYi += x[i] * y[i];
     }
   }
+  double onedivn = 1.0 / dim;
   double nom = (XiYi - (onedivn *Xi * Yi));
   double denom = sqrt(XiP2 - onedivn * pow(Xi, 2.0)) * sqrt(YiP2 - onedivn * pow(Yi, 2.0));
   double cor = nom / denom;
@@ -77,8 +76,9 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool
   double* YiP2   = newdvector(ny);
   double* XiYi   = newdvector(ny);
 
-  // Unrolled 1:N correlation loop
+
   // ? Possible openmp directive ?:  #pragma omp parallel for shared(Xi, XiP2, XiYi, Yi, YiP2) num_threads(nthreads)
+  // Cache efficient, unrolled 1:N correlation loop
   for(j = 0; j < ny; j++){   // Loop over all traits
     // ? Possible openmp directive ?:  #pragma omp parallel for shared(XiYi, Yi, YiP2)
     for(i = 0; i < dim; i++){ if(y[j][i] != MISSING && x[i] != MISSING) { // If both are available
@@ -92,7 +92,7 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool
     }}
   }
   // ? Possible openmp directive ?:  #pragma omp parallel for private(nom, denom) shared(cors)
-  for(j = 0; j < ny; j++){
+  for(j = 0; j < ny; j++) {
     nom   = (XiYi[j] - (onedivn*Xi*Yi[j]));
     denom = sqrt(XiP2 - (onedivn * Xi * Xi)) * sqrt(YiP2[j] - (onedivn * Yi[j] * Yi[j]));
     if(denom == 0){
