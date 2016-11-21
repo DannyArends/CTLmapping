@@ -93,7 +93,7 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), o
   if(is.null(ydim)){ 
     maxy <- max(c(7.5, ctlsubset, x$qtl))
     if(type[1] == "barplot") maxy <- max(c(7.5, summarized, x$qtl)) # Maximum of barplot is summarized
-    ydim <- c(-maxy, maxy)
+    ydim <- c(-10, maxy)
   }
   plot(c(0.5, maxX+0.5), ydim, type='n',xlab="", ylab=ylab, ...)
   points(pointsx, rep(0, length(pointsx)), lwd = 1, pch="|",cex = 0.2)
@@ -103,8 +103,8 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), o
   nmarkers <- nrow(ctlsubset)
   ltype    <- 'l'
   if(type[1]=="gwas") ltype <- 'h' # GWAS plot uses bars
-  colfunc <- colorRampPalette(c("red", "blue", "darkgreen", "orange"))
-  mycolors <- colfunc(ncol(ctlsubset))
+  #colfunc <- colorRampPalette(c("red", "blue", "darkgreen", "orange"))
+  mycolors <- c("red", "orange")
 
   p  <- rep(0,nrow(ctlsubset))
   mx <- 0
@@ -141,13 +141,13 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), o
 
   # Plot the cut-off line at -log10(significance)
   if(plot.cutoff){
-    abline(h=-log10(c(significance / nmarkers)), col=c("green"), lty=2)
-    abline(h= log10(c(significance)), col=c("green"), lty=2)
+    abline(h=-log10(c(significance / nmarkers)), col=c("black"), lty=2)
+    abline(h= log10(c(significance)), col=c("black"), lty=2)
     mleg <- as.character(paste("FDR:",c(significance),"%"))
   }
   # Plot the legend(s)
   if(do.legend){
-    if(plot.cutoff) legend("topright", mleg, col=c("green"), lty=rep(2), lwd=1, cex=cex.legend, bty='n')
+    if(plot.cutoff) legend("topright", mleg, col=c("black"), lty=rep(2), lwd=1, cex=cex.legend, bty='n')
     lty <- 1:ntraits
     if(type[1] == "barplot") lty <- 1
     legend("topleft", colnames(ctlsubset), col=mycolors, lwd=1, lty=lty, cex=cex.legend, bty='n')
