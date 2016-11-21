@@ -5,15 +5,16 @@
   Scan for Correlated Trait Locus (CTL) in populations
 }
 \usage{
-CTLscan(genotypes, phenotypes, phenocol, nperm=100, 
-strategy = c("Exact", "Full", "Pairwise"), conditions = NULL, qtls = NULL, ncores = 1,
-parametric = FALSE, verbose = FALSE)
+CTLscan(genotypes, phenotypes, phenocol, nperm=100, nthreads = 1, 
+strategy = c("Exact", "Full", "Pairwise"),
+parametric = FALSE, qtl = TRUE, verbose = FALSE)
 }
 \arguments{
   \item{genotypes}{   Matrix of genotypes. (individuals x markers) }
   \item{phenotypes}{  Matrix of phenotypes. (individuals x phenotypes) }
   \item{phenocol}{    Which phenotype column(s) should we analyse. Default: Analyse all phenotypes. }
   \item{nperm}{       Number of permutations to perform. This parameter is not used when method="Exact". }
+  \item{nthreads}{    Number of CPU cores to use during the analysis. }
   \item{strategy}{    The permutation strategy to use, either 
                       \itemize{
                         \item Exact - Uses exact calculations to calculate the likelihood of a difference 
@@ -27,12 +28,9 @@ parametric = FALSE, verbose = FALSE)
                       estimating p-values and uses bonferoni correction. It has however the least power to 
                       detect CTLs, the two other methods (Full and Pairwise) perform permutations to
                       assign significance. }
-  \item{conditions}{  A vector of experimental conditions applied during the experiment. These conditions 
-                      are used as covariates in the QTL modeling step. }
-  \item{qtls}{        Used to provide QTL results, when external QTL results are available. }
-  \item{ncores}{      Number of CPU cores to use during the analysis. }
   \item{parametric}{  Use non-parametric testing (Spearman) or parametric testing (Pearson). The DEFAULT is to 
                       use non-parametric tests which are less sensitive to outliers in the phenotype data. }
+  \item{qtl}{        Use the internal slow QTL mapping method to map QTLs. }
   \item{verbose}{     Be verbose. }
 }
 \value{

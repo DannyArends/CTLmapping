@@ -18,10 +18,10 @@
 
     /** Perform permutations using Breitling et al. permutations strategy. */
     double*   permute(const Phenotypes phe, const Genotypes geno, size_t p, clvector* genoenc, 
-                      size_t np, bool verbose);
+                      size_t np, int nthreads, bool verbose);
     /** Perform permutations using a row-wise permutations strategy. */
     double**  permuteRW(const Phenotypes phe, const Genotypes geno, size_t p, clvector* genoenc, 
-                        size_t np, bool verbose);
+                        size_t np, int nthreads, bool verbose);
 
     /** Estimate a p-value based on permutations */
     double estimate(double val, double* permutations, size_t nperms);

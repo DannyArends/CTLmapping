@@ -35,7 +35,6 @@ CTLscan.cross(cross, ...)
                          This parameter is not used when method="Exact".
       \item conditions - A vector of experimental conditions applied during the experiment. These conditions 
                          will be used as covariates in the QTL modeling step.
-      \item qtls       - Can be used to provide QTL results, when external QTL results are available.
       \item n.cores    - Number of CPU cores to use during the analysis.
       \item verbose    - Be verbose.
     }
@@ -76,13 +75,12 @@ Columns: Genetic markers) for the phenotype.
   data(multitrait)      # Arabidopsis Thaliana (R/qtl cross object)
 
   mtrait <- calc.genoprob(multitrait)          # Calculate genotype probabilities
-  qtls   <- scanone(mtrait, pheno.col = 1:4)   # Scan for QTLS using R/qtl
-  map    <- qtls[,1:2]                         # Get the genetic map
-  qtls   <- qtls[,-(1:2)]                      # Get the LOD scores
+  qtls   <- scanone(mtrait, pheno.col = 1)     # Scan for QTLS using R/qtl
 
-  ctls   <- CTLscan.cross(mtrait, phenocol = 1:4, qtls = qtls)
-  
-  ctl.lineplot(ctls, map, significance = 0.05) # Line plot all the phenotypes
+  ctls   <- CTLscan.cross(mtrait, phenocol = 1, qtl = FALSE)
+  ctls[[1]]$qtl <- qtls[,3]
+
+  ctl.lineplot(ctls, qtls[,1:2], significance = 0.05) # Line plot all the phenotypes
 
   summary <- CTLsignificant(ctls)              # Get a list of significant CTLs
   summary

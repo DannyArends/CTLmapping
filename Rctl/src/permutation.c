@@ -28,13 +28,13 @@ Genotypes permutegenotypes(Genotypes genotypes){
 }
 
 double* permute(const Phenotypes phe, const Genotypes geno, size_t p, clvector* genoenc, 
-                size_t np, bool verbose){
+                size_t np, int nthreads, bool verbose){
   size_t perm;
   double* scores = newdvector(np);
 
   for(perm = 0; perm < np; perm++){
     Genotypes g = permutegenotypes(geno);
-    double** ctls  = ctleffects(phe, g, p, genoenc, false);
+    double** ctls  = ctleffects(phe, g, p, genoenc, nthreads, false);
     scores[perm] = fabs(matrixmax(ctls, geno.nmarkers, phe.nphenotypes));
     freematrix((void**)ctls   , geno.nmarkers);
     freematrix((void**)g.data , geno.nmarkers);
@@ -48,13 +48,13 @@ double* permute(const Phenotypes phe, const Genotypes geno, size_t p, clvector* 
 }
 
 double** permuteRW(const Phenotypes phe, const Genotypes geno, size_t p, clvector* genoenc, 
-                   size_t np, bool verbose){
+                   size_t np, int nthreads, bool verbose){
   size_t perm,ph;
   double** scores = newdmatrix(phe.nphenotypes, np);
 
   for(perm = 0; perm < np; perm++){
     Genotypes g = permutegenotypes(geno);
-    double** ctls  = ctleffects(phe, g, p, genoenc, false);
+    double** ctls  = ctleffects(phe, g, p, genoenc, nthreads, false);
     double** tctls = transpose(ctls, geno.nmarkers, phe.nphenotypes);
     for(ph = 0; ph <  phe.nphenotypes; ph++){
       scores[ph][perm] = fabs(vectormax(tctls[ph], geno.nmarkers));
@@ -98,9 +98,11 @@ double** toLODexact(double** scores, clvector* genoenc, size_t nmar, size_t nphe
       pval = chiSQtoP(scores[m][p], Dof);
       if(pval > 1 || pval < 0) err("p-value '%.8f' not in range [0, 1]\n", pval);
       pval *= nmar * nphe;
-      if(pval >= 1){
+      if(pval < 1){
+        ctls[m][p] = fabs(log10(pval));
+      }else{
         ctls[m][p] = 0.0;
-      }else{ ctls[m][p] = fabs(log10(pval)); }
+      }
     }
     #ifdef USING_R
       updateR(0);

@@ -12,8 +12,8 @@ CTLasLOD <- function(CTLscan, QTLscores, main, do.legend=TRUE){
   if(missing(CTLscan)) stop("argument 'CTLscan' is missing, with no default")
   if(missing(main)) main <- paste("Comparison CTL:QTL of",ctl.name(CTLscan))
   
-  op <- par(mfrow=c(2,1))
-  plot.CTLscan(CTLscan,do.legend=do.legend)
+  op <- par(mfrow = c(2, 1))
+  plot.CTLscan(CTLscan, do.legend = do.legend)
   CTLscores <- CTLtoLODvector(CTLscan)
   if(!missing(QTLscores)){
     QTLscores <- as.numeric(unlist(QTLscores))
@@ -45,7 +45,7 @@ plotExpression <- function(genotypes, phenotypes, traits=c("X3.Hydroxypropyl", "
   if(missing(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   if(length(traits) != 2) stop("argument 'traits' needs to be of length 2")
   
-  ids <- c(which(colnames(phenotypes)==traits[1]),which(colnames(phenotypes)==traits[2]))
+  ids <- c(which(colnames(phenotypes)==traits[1]), which(colnames(phenotypes)==traits[2]))
   result <- NULL
   
   for(m in markers){
@@ -70,13 +70,23 @@ plotExpression <- function(genotypes, phenotypes, traits=c("X3.Hydroxypropyl", "
   return(result)
 }
 
-plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), onlySignificant = TRUE, significance = 0.05, gap = 25, plot.cutoff = FALSE, do.legend=TRUE, cex.legend=1.0, ydim=NULL, ylab="-log10(P-value)", ...){
+plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), 
+                         onlySignificant = TRUE, significance = 0.05, gap = 25, plot.cutoff = FALSE, 
+                         do.legend = TRUE, cex.legend = 1.0, ydim = NULL, ylab = "-log10(P-value)", ...){
 
   if(missing(x) || is.null(x)) stop("argument 'x' is missing, with no default")
 
   significant <- as.numeric(which(apply(abs(x$ctl), 2, max) > -log10(significance)))
 
-  if(length(significant) ==0 || onlySignificant == FALSE){ significant <- 1:ncol(x$ctl); do.legend = FALSE }
+  if(length(significant) == 0 || onlySignificant == FALSE) {
+    if(length(significant) == 0) cat("No significant CTLs, default to plot all (", ncol(x$ctl), ")\n")
+    significant <- 1:ncol(x$ctl);
+  }
+  if(length(significant) > 5) {
+    cat("A lot (", length(significant), ") of CTL significance, switching to lineplot\n")
+    type = "line"
+    do.legend = FALSE
+  }
 
   if(is.null(mapinfo)){
     maxX <- nrow(x$ctl) ; pointsx <- 1:nrow(x$ctl)
@@ -90,7 +100,7 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), o
 
   summarized <- apply(ctlsubset, 1, sum) # Summarized scores for all significant
   x$qtl[is.infinite(x$qtl)] <- max(x$qtl[is.finite(x$qtl)])
-  if(is.null(ydim)){ 
+  if(is.null(ydim)) {
     maxy <- max(c(7.5, ctlsubset, x$qtl))
     if(type[1] == "barplot") maxy <- max(c(7.5, summarized, x$qtl)) # Maximum of barplot is summarized
     ydim <- c(-10, maxy)
@@ -108,8 +118,8 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), o
 
   p  <- rep(0,nrow(ctlsubset))
   mx <- 0
-  apply(ctlsubset, 2, function(d){
-     if(type[1]=="barplot"){        # Summarized bar plot
+  apply(ctlsubset, 2, function(d) {
+     if(type[1]=="barplot") {        # Summarized bar plot
        for(idx in 1:length(d)){
           if(is.null(mapinfo)){
             mx   <- idx; lbar <- 0.5; rbar <- 0.5;
@@ -119,16 +129,16 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), o
           }
           rect(mx-lbar, -p[idx],mx+rbar, -(p[idx]+d[idx]), col=mycolors[i], lwd = 0, lty = 0)
         }
-      }else{ # Line or GWAS plot
-        if(is.null(mapinfo)){ # Without mapinfo coordinated match
+      } else {                          # Line or GWAS plot
+        if(is.null(mapinfo)) {          # Without mapinfo coordinated match
           points(pointsx, -d, type = ltype, lwd = 1, col = mycolors[i])
-        }else{ # Go through the chromosomes
+        }else{                          # Go through the chromosomes
           for(chr in unique(mapinfo[, 1])){
             idxes <- which(mapinfo[, 1] == chr)
-            if(type[1]=="gwas"){  # Plot Gwas, chromosome colors alternate
+            if(type[1]=="gwas"){        # Plot Gwas, chromosome colors alternate
               lty   <- 1
               col <- c("black","orange")[(as.numeric(chr) %% 2)+1]
-            }else{
+            }else{                      # Lines
               lty <- i ; col <- mycolors[i]
             }
             points(pointsx[idxes], -d[idxes], type = ltype, lwd = 2, lty = lty, col = col)
@@ -140,23 +150,24 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), o
     } )
 
   # Plot the cut-off line at -log10(significance)
-  if(plot.cutoff){
-    abline(h=-log10(c(significance / nmarkers)), col=c("black"), lty=2)
-    abline(h= log10(c(significance)), col=c("black"), lty=2)
+  if (plot.cutoff) {
+    abline(h=-log10(c(significance / nmarkers)), col=c("green"), lty=2)
+    abline(h= log10(c(significance)), col=c("green"), lty=2)
     mleg <- as.character(paste("FDR:",c(significance),"%"))
   }
   # Plot the legend(s)
-  if(do.legend){
-    if(plot.cutoff) legend("topright", mleg, col=c("black"), lty=rep(2), lwd=1, cex=cex.legend, bty='n')
+  if (do.legend) {
+    if(plot.cutoff) legend("topright", mleg, col=c("green"), lty=rep(2), lwd=1, cex=cex.legend, bty='n')
     lty <- 1:ntraits
     if(type[1] == "barplot") lty <- 1
     legend("topleft", colnames(ctlsubset), col=mycolors, lwd=1, lty=lty, cex=cex.legend, bty='n')
   }
   # Plot the summarized lines and QTLs
-  if(is.null(mapinfo)){
+  if (is.null(mapinfo)) {
     if(type[1] == "barplot") points(pointsx, -summarized,type='l',lwd=1)
     points(pointsx, as.numeric(x$qtl), type=ltype,lwd=2, col="black")
-  }else{ # With mapinfo, plot chromosomes and markers
+  } else { 
+    # With mapinfo, plot chromosomes and markers
     for(chr in unique(mapinfo[, 1])){
       idxes <- which(mapinfo[, 1] == chr)
       if(type[1] == "barplot") points(pointsx[idxes], -summarized[idxes],type = ltype,lwd=1)
@@ -166,26 +177,26 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), o
   invisible(ctlsubset)
 }
 
-chr_length <- function(mapinfo, chr = 1){ 
-  max(mapinfo[which(mapinfo[, 1]==chr), 2]) 
+chr_length <- function(mapinfo, chr = 1) { 
+  max(mapinfo[which(mapinfo[, 1] == chr), 2])
 }
 
 chr_total_length <- function(mapinfo, gap = 25){
   l <- 0
   for(x in unique(mapinfo[, 1])){ l <- l + chr_length(mapinfo,x) + gap }
-  (l-gap) #Gaps are between, so we don't need the last gap
+  (l-gap) # Gaps are between, so we don't need the last gap
 }
 
-a_loc <- function(mapinfo, gap = 25){
+a_loc <- function(mapinfo, gap = 25) {
   res <- NULL
   for(x in 1:nrow(mapinfo)){ res <- c(res, m_loc(mapinfo,x, gap = gap)) }
   res
 }
 
-m_loc <- function(mapinfo, id = 1, gap = 25){
+m_loc <- function(mapinfo, id = 1, gap = 25) {
   chr <- as.numeric(mapinfo[id, 1])
   l <- 0
-  while((chr-1) > 0){
+  while((chr-1) > 0) {
    l <- l + chr_length(mapinfo, (chr-1)) + gap
    chr <- chr - 1
   }
@@ -224,3 +235,4 @@ plot.CTLpermute <- function(x, type="s", ...){
 }
 
 # end of ctl.plot.R
+

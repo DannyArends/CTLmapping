@@ -15,16 +15,19 @@
     #include "ctl.h"
     #include "rmapctl.h"
     #include "correlation.h"
-    #include "permutation.h"    
+    #include "permutation.h"
     #include "sort.h"
+
+    /** openMP test function. */
+    void R_openmp(int* nthr, int* ni, double* res);
 
     /** Example function that does CTL mapping permutation for a given phenotype. */
     double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
-                    bool doperms, int nperms, bool verbose);
+                    bool doperms, int nperms, int nthreads, bool verbose);
 
     /** Get the CTLeffects matrix (Chi square scores) for a given phenotype. */
     double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
-                    clvector* genoenc, bool verbose);
+                    clvector* genoenc, int nthreads, bool verbose);
 
   #endif //__MAPCTL_H__
 #ifdef __cplusplus

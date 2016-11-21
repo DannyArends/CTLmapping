@@ -23,7 +23,7 @@
     void R_correlation(double* x, double* y, double* res, int* dim, int* verb);
 
     /** R interface to cor1toN function */
-    void R_correlation1toN(double* x, double* y, double* res, int* dim, int* numy, int* verb);
+    void R_correlation1toN(double* x, double* y, double* res, int* dim, int* numy, int nthreads, int* verb);
 
     /** R interface to chiSQN function */
     void R_chiSQN(int* nr, double* r, double* res, int* phe, int* nsamples, int* nphe);
@@ -38,7 +38,7 @@
     /** Calculates pearsons correlation between vector x and matrix y. Use ranked 
      *  input for non-parametric testing<br>
      *  <b>TODO</b>: Use the Kahan Accumulator */
-    double* cor1toN(double* x, double** y, size_t dim, size_t ny, bool verbose);
+    double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool verbose);
 
 
     /** Calculate the correlations for all genotype encodings between P1 and P2 at marker M. */
