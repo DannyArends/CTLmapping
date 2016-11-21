@@ -7,29 +7,38 @@
  * First written 2011<br>
  **********************************************************************/
 #include "mapctl.h"
-#include <omp.h>
 
-void R_openmp(int* nthr, int* ni, double* res) {
-  int rthreads = (int)(*nthr);
-  int nitems = (int)(*ni);
-  int npthread = ceil((float)nitems / (float)rthreads);
-  int nthreads, tid;
+#ifdef _OPENMP
+  #include <omp.h>
+  #define CSTACK_DEFNS 7                                          /* http://stats.blogoverflow.com/2011/08/using-openmp-ized-c-code-with-r/ */
+  #include "Rinterface.h"
 
-  #pragma omp parallel private(nthreads, tid) shared(nitems, npthread, res) num_threads(rthreads)
-  {
-    tid = omp_get_thread_num();                                                 /* Obtain thread number */
-    int start = npthread * tid;
-    int stop = (int)fmin((float)(start + (int)npthread), (float)nitems);
-    info("I am thread = %d/%d -> [%d,%d]\n", tid, rthreads, start, stop);       /* Echo threadinformation */
-    for(int i = start; i < stop; i++) {                                         /* Do work we are assigned */
-      res[i] = (double)i;                                                       /* Cores write back in shared memory */
-    }
-    if (tid == 0) {                                                             /* Only master thread does this */
-      nthreads = omp_get_num_threads();
-      info("Number of threads = (%d|%d)\n", rthreads, nthreads);
-    }
-  }  /* All threads join master thread and disband */
-}
+  void R_openmp(int* nthr, int* ni, int* ny, double* x, double* ym, double* res) {
+    R_CStackLimit=(uintptr_t) - 1;                                /* http://stats.blogoverflow.com/2011/08/using-openmp-ized-c-code-with-r/ */
+
+    int rthreads = (int)(*nthr);                                  /* Requested number of threads */
+    int nitems = (int)(*ni);                                      /* Number of items todo */
+    int ylength = (int)(*ny);                                     /* First dimension of y */
+    int npthread = ceil((float)nitems / (float)rthreads);         /* Number we do in every thread */
+    int tid;                                                      /* private(tid) */
+    double** y = asdmatrix(nitems, ylength, ym);                  /* y matrix */
+
+    #pragma omp parallel private(tid) shared(x, y, res) num_threads(rthreads)
+    {
+      tid = omp_get_thread_num();                                                 /* Obtain thread number */
+      int start = npthread * tid;
+      int stop = (int)fmin((float)(start + (int)npthread), (float)nitems);
+      if (start < stop) {
+        //info("I am thread = %d/%d -> [%d,%d]\n", tid, rthreads, start, stop);             /* Echo thread information */
+        for(int j = start; j < stop; j++) {                                                 /* Do work we are assigned */
+          res[j] = correlation(x, y[j], ylength, false);
+        }
+      }
+    }  /* All threads join master thread and disband */
+    free(y);
+  }
+
+#endif
 
 double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
                 bool doperms, int nperms, int nthreads, bool verbose){

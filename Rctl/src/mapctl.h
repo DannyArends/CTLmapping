@@ -19,7 +19,7 @@
     #include "sort.h"
 
     /** openMP test function. */
-    void R_openmp(int* nthr, int* ni, double* res);
+    void R_openmp(int* nthr, int* ni, int* ny, double* x, double* ym, double* res);
 
     /** Example function that does CTL mapping permutation for a given phenotype. */
     double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
