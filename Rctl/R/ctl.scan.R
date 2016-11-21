@@ -8,10 +8,13 @@
 # R functions to do CTL mapping
 #
 
-openmp <- function(nthreads = 1, nitems = 10) {
+openmp <- function(nthreads = 1, x, Y) {
   result <- .C("R_openmp", nthr = as.integer(nthreads),
-                            ni = as.integer(nitems), 
-                           res = as.double(rep(0, nitems)), PACKAGE="ctl")
+                           ni = as.integer(ncol(Y)),
+                           ny = as.integer(nrow(Y)),
+                           x = as.double(x),
+                           ym = as.double(unlist(Y)),
+                           res = as.double(rep(0, ncol(Y))), PACKAGE="ctl")
   return(result)
 }
 
