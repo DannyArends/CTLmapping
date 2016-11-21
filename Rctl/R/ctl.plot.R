@@ -106,7 +106,7 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"),
     ydim <- c(-10, maxy)
   }
   plot(c(0.5, maxX+0.5), ydim, type='n',xlab="", ylab=ylab, ...)
-  points(pointsx, rep(0, length(pointsx)), lwd = 1, pch="|",cex = 0.2)
+  points(pointsx, rep(0, length(pointsx)), lwd = 1, pch="|", ...)
 
   i <- 1;
   ntraits  <- ncol(ctlsubset)

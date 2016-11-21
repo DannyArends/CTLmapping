@@ -8,15 +8,15 @@
 # Image plot routines for CTL analysis
 #
 
-image.CTLobject <- function(x, against = c("markers","phenotypes"), significance = 0.05, col=whiteblack, do.grid=TRUE, grid.col = "white", verbose = FALSE, add=FALSE, breaks = c(0, 1, 2, 3, 10, 10000), marker_info, ...){
+image.CTLobject <- function(x, marker_info, against = c("markers","phenotypes"), significance = 0.05, col=whiteblack, do.grid=TRUE, grid.col = "white", verbose = FALSE, add=FALSE, breaks = c(0, 1, 2, 3, 10, 10000), ...){
   if(missing(x)) stop("argument 'x' is missing, with no default")
   colorrange <- col
   mymatrix <- CTLprofiles(x, against, significance)
-  mainlabel <- paste("CTL phenotypes vs",against[1],"at P-value <",significance)
-  internal.image(mymatrix, colorrange, mainlabel,do.grid, grid.col, breaks=breaks, marker_info=marker_info)
+  main <- paste("CTL phenotypes vs",against[1],"at P-value <",significance)
+  internal.image(mymatrix, marker_info = marker_info, colorrange, main = main, do.grid, grid.col, breaks=breaks)
 }
 
-qtlimage <- function(x, do.grid = TRUE, grid.col = "white", verbose = FALSE, ...){
+qtlimage <- function(x, marker_info, do.grid = TRUE, grid.col = "white", verbose = FALSE, ...){
   if(missing(x)) stop("argument 'x' is missing, with no default")
   colorrange <- c("white",gray.colors(10)[10:1])
   mymatrix <- NULL
@@ -27,23 +27,23 @@ qtlimage <- function(x, do.grid = TRUE, grid.col = "white", verbose = FALSE, ...
   }
   rownames(mymatrix) <- mynames
   colnames(mymatrix) <- names(x[[1]]$qtl)
-  internal.image(mymatrix, colorrange, "QTLs", do.grid, grid.col, ...)
+  internal.image(mymatrix, marker_info = marker_info, colorrange, "QTLs", do.grid = do.grid, grid.col = grid.col, ...)
   invisible(mymatrix)
 }
 
-internal.image <- function(mymatrix, colorrange = whiteblack, mainlabel="Image", do.grid = TRUE, grid.col = 'white', add=FALSE, breaks = c(0, 1, 2, 3, 10, 10000), marker_info){
+internal.image <- function(mymatrix, marker_info, colorrange = whiteblack, main = "Image", do.grid = TRUE, grid.col = 'white', add=FALSE, breaks = c(0, 1, 2, 3, 10, 10000), cex.axis = 1.0, cex.main = 1.0, las = 2){
   if(missing(mymatrix)) stop("argument 'mymatrix' is missing, with no default")
   if(!is.null(mymatrix)){ 
-    image(1:ncol(mymatrix),1:nrow(mymatrix),t(mymatrix), main=mainlabel, yaxt="n", 
-          xaxt="n", ylab="", xlab="",col=c("white",gray.colors(4)[4:1]), cex.main=0.7, 
-          breaks = breaks,add=add)
-    axis(2,rownames(mymatrix),at=1:nrow(mymatrix),las=2,cex.axis=0.5)
+    image(1:ncol(mymatrix),1:nrow(mymatrix),t(mymatrix), main = main, yaxt="n", 
+          xaxt="n", ylab="", xlab="", col = c("white", gray.colors(4)[4:1]), cex.main=cex.main, 
+          breaks = breaks, add = add)
+    axis(2,rownames(mymatrix),at=1:nrow(mymatrix), las = las, cex.axis = cex.axis)
     if(do.grid){
-      abline(h=seq(-0.5,nrow(mymatrix)+0.5,1),col=grid.col,lwd=1)
+      abline(h=seq(-0.5,nrow(mymatrix)+0.5,1),col=grid.col,lwd = 1)
       if(missing(marker_info)) abline(v=seq(-0.5,ncol(mymatrix)+0.5,1),col=grid.col,lwd=1)
     }
     if(missing(marker_info)){
-      axis(1,colnames(mymatrix),at=1:ncol(mymatrix),las=2,cex.axis=0.6)
+      axis(1, colnames(mymatrix),at=1:ncol(mymatrix), las = las, cex.axis = cex.axis)
     }else{
       addChromosomeLines(marker_info)
     }
@@ -52,16 +52,16 @@ internal.image <- function(mymatrix, colorrange = whiteblack, mainlabel="Image",
   invisible(mymatrix)
 }
 
-addChromosomeLines <- function(markerinfo, col='black'){
+addChromosomeLines <- function(markerinfo, col='black', cex.axis = 1.0){
   chr_start <- c()
   chr_ends <- c()
-  for(x in unique(markerinfo[,1])){
+  for(x in unique(markerinfo[,1])) {
     chr_start <- c(chr_start,min(which(markerinfo[,1]==x)))
     chr_ends  <- c(chr_ends, max(which(markerinfo[,1]==x)))
   }
   abline(v=.5 + chr_ends, lwd=1, lty=2, col=col)
   for(x in 1:length(chr_start)){
-    axis(1,at=(chr_start[x]+chr_ends[x])/2,paste("Chr",unique(markerinfo[,1])[x]),cex.axis=0.3)
+    axis(1, at=(chr_start[x]+chr_ends[x])/2, paste("Chr",unique(markerinfo[,1])[x]), cex.axis = cex.axis)
   }
   box()
 }
