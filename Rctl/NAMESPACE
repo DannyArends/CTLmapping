@@ -4,8 +4,9 @@ importFrom("grDevices", "colorRampPalette", "colors", "dev.off", "gray.colors", 
 importFrom("graphics", "abline", "axis", "box", "boxplot", "hist", "image", "legend", "lines", "par", "plot", "points", "rect", "text", "xspline")
 importFrom("MASS", "mvrnorm")
 importFrom("qtl", "pull.pheno", "pull.geno")
-importFrom("stats", "anova", "cor", "lm", "median", "pf", "runif", "sd")
+importFrom("stats", "anova", "cor", "lm", "median", "pf", "runif", "sd", "pchisq")
 importFrom("utils", "data")
+importFrom("parallel", "makeCluster", "parLapply", "stopCluster")
 
 S3method(plot, CTLobject)
 S3method(print, CTLobject)
