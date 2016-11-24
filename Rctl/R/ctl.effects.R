@@ -46,19 +46,20 @@ ctleffects <- function(genotypes, phenotypes, phe = 1, nthreads = 1, verbose = T
   return(r)
 }
 
-test.ctlmarker <- function(){
-  require(ctl)
-  require(parallel)
-  data(ath.metabolites)
-  res1 <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, phenocol=1, parametric = TRUE)
-  res <- ctleffects(ath.metab$genotypes, ath.metab$phenotypes)
+#test.ctleffects <- function(){
+#  require(ctl)
+#  require(parallel)
+#  data(ath.metabolites)
+#  res1 <- CTLscan(ath.metab$genotypes, ath.metab$phenotypes, phenocol=1, parametric = TRUE)
+#  res <- ctleffects(ath.metab$genotypes, ath.metab$phenotypes)
 
-  dcors <- t(matrix(unlist(lapply(res,"[", 2)), ncol(ath.metab$phenotypes), ncol(ath.metab$genotypes)))
-  raw.p <- t(matrix(unlist(lapply(res,"[", 3)), ncol(ath.metab$phenotypes), ncol(ath.metab$genotypes)))
-  adj.p <- t(matrix(unlist(lapply(res,"[", 4)), ncol(ath.metab$phenotypes), ncol(ath.metab$genotypes)))
-  LOD <- t(matrix(unlist(lapply(res,"[", 5)), ncol(ath.metab$phenotypes), ncol(ath.metab$genotypes)))
+#  dcors <- t(matrix(unlist(lapply(res,"[", 2)), ncol(ath.metab$phenotypes), ncol(ath.metab$genotypes)))
+#  raw.p <- t(matrix(unlist(lapply(res,"[", 3)), ncol(ath.metab$phenotypes), ncol(ath.metab$genotypes)))
+#  adj.p <- t(matrix(unlist(lapply(res,"[", 4)), ncol(ath.metab$phenotypes), ncol(ath.metab$genotypes)))
+#  LOD <- t(matrix(unlist(lapply(res,"[", 5)), ncol(ath.metab$phenotypes), ncol(ath.metab$genotypes)))
 
-  op <- par(mfrow = c(2,1))
-  image(res1[[1]]$dcor)
-  image(dcors)
-}
+#  op <- par(mfrow = c(2,1))
+#  image(res1[[1]]$dcor)
+#  image(dcors)
+#}
+
