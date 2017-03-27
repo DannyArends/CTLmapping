@@ -4,8 +4,8 @@ CC = gcc
 LINK = ar
 DEFS = -DSTANDALONE
 
-CFLAGS = -I/usr/share/R/include -std=gnu99 -O3 -pedantic -w -Wall -Wextra -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
-LDFLAGS = -lm -L/usr/lib/R/lib -lR -O3
+CFLAGS = -I /sw/cs300_centos6.6/r/3.3.0/centos6.7_gnu4.8.2/lib64/R/include/ -std=gnu99 -O3 -pedantic -w -Wall -Wextra -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
+LDFLAGS = -lm -L /sw/cs300_centos6.6/r/3.3.0/centos6.7_gnu4.8.2/lib64/R/lib -lR -lRblas -O3
 #### End of system configuration section. ####
 
 SOURCES    = $(srcdir)/vector.c $(srcdir)/matrix.c $(srcdir)/sort.c $(srcdir)/structs.c \
