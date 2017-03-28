@@ -67,6 +67,15 @@ double correlation(const double* x, const double* y, size_t dim, bool verbose){
 }
 
 double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool verbose){
+  size_t i;
+  double* cors   = newdvector(ny);
+  for(i = 0; i < ny; i++) {
+    cors[i] = correlation(x, y[i], dim, verbose);
+  }
+  return(cors);
+}
+
+double* cor1toNold(double* x, double** y, size_t dim, size_t ny, int nthreads, bool verbose){
   size_t i, j;
   double nom, denom;
   double onedivn = (1.0 / dim), Xi = 0.0, XiP2 = 0.0;
