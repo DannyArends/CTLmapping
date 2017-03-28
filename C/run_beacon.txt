@@ -1,1 +1,1 @@
-LD_LIBRARY_PATH=/sw/cs300_centos6.6/r/3.3.0/centos6.7_gnu4.8.2/lib64/R/lib:/sw/cs300_centos6.6/r/3.3.0/centos6.7_gnu4.8.2/lib ./C/mapctl -p ./D/test/data/phenotypes.csv -g./D/test/data/genotypes.csv
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/sw/cs300_centos6.6/r/3.3.0/centos6.7_gnu4.8.2/lib64/R/lib:/sw/cs300_centos6.6/r/3.3.0/centos6.7_gnu4.8.2/lib ./C/mapctl -p ./D/test/data/phenotypes.csv -g./D/test/data/genotypes.csv
