@@ -1,6 +1,6 @@
 #### Start of system configuration section. ####
 srcdir = ../Rctl/src
-CC = gcc
+CC = icc
 LINK = ar
 DEFS = -DSTANDALONE
 
