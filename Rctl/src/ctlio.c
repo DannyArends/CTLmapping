@@ -43,13 +43,13 @@ void writesummary(const Phenotypes phenotypes, const Genotypes genotypes, const 
   }else{ file = fopen("summary.txt","a+"); }
   for(p = 0; p < nphe; p++){
     for(m = 0; m < nmar; m++){
-      if(ctls[m][p] >= -log10(cutoff)){
+      //if(ctls[m][p] >= -log10(cutoff)){
         fprintf(file, "%lu\t%lu\t%lu\t%.2f",  (unsigned long) phenotype,  (unsigned long) m,  (unsigned long) p, ctls[m][p]);
         double* cors = getCorrelations(phenotypes, genotypes, phenotype, genoenc[m], m, p, false);
         for(i = 0; i < genoenc[m].nelements; i++){ fprintf(file,"\t%.3f", cors[i]); }
         fprintf(file, "\n");
         free(cors);
-      }
+      //}
     }
   }
   fclose(file);
