@@ -175,6 +175,6 @@ double* chiSQN(size_t nr, double** r, size_t phe, int* nsamples, size_t nphe){
 double chiSQtoP(double Cv, int Dof){
   if(Cv <= 0 || Dof < 1) return 1.0;
   //return pchisq(Cv,(double)Dof, 0, 0);
-  return(0.0001);
+  return(Cv);
 }
 
