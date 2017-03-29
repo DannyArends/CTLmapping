@@ -1,0 +1,11 @@
+allmicput -x Github/CTLmapping/C/mapctl
+
+allmicput -l /global/opt/intel/parallel_studio_xe_2016_update3/mkl/lib/mic/lib*.so
+allmicput -l /global/opt/intel/parallel_studio_xe_2016_update3/lib/mic/lib*.so
+
+allmicput -t Github/CTLmapping/D/test/data/genotypes.csv
+allmicput -t Github/CTLmapping/D/test/data/phenotypes.csv
+
+micssh beacon0XX-mic0
+cd $TMPDIR/bin
+./mapctl -g ../genotypes.csv -p ../phenotypes.csv
