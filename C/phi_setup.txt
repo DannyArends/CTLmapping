@@ -9,3 +9,7 @@ allmicput -t Github/CTLmapping/D/test/data/phenotypes.csv
 micssh beacon0XX-mic0
 cd $TMPDIR/bin
 ./mapctl -g ../genotypes.csv -p ../phenotypes.csv
+
+
+## Vectorization report
+-qopt-report=5
