@@ -40,7 +40,7 @@ shared: DEFS += -fPIC
 shared: clean $(SOURCES) $(SHARED)
 
 $(EXECUTABLE): $(OBJECTS) main.o
-	$(CC) $(LDFLAGS) main.o $(OBJECTS) -o $@
+	$(CC) main.o $(OBJECTS) $(LDFLAGS) -o $@
 
 $(STATIC): $(OBJECTS)
 	$(LINK) rcs $@ $(OBJECTS)
