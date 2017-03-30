@@ -19,7 +19,6 @@
     #ifdef STANDALONE
       #include <stdio.h>
       #include <stdlib.h>
-      #include <Rmath.h>
       #include <float.h>
 
       #define info(format, ...) { \
