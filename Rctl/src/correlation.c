@@ -66,37 +66,7 @@ double correlation(const double* x, const double* y, size_t dim, bool verbose){
   return(cor);
 }
 
-#ifdef _OPENMP
-  #include <omp.h>
-
-double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool verbose){
-  double* cors   = newdvector(ny);
-  //info("Numthreads: %d\n", omp_get_max_threads());
-  int rthreads = omp_get_max_threads();                         /* Requested number of threads */
-  int nitems = ny;                                              /* Number of items todo */
-  int npthread = ceil((float)nitems / (float)rthreads);         /* Number we do in every thread */
-  int tid;                                                      /* private(tid) */
-
-  #pragma omp parallel
-  {
-
-   tid = omp_get_thread_num();                                                 /* Obtain thread number */
-   int start = npthread * tid;
-   int stop = (int)fmin((float)(start + (int)npthread), (float)nitems);
-   if (start < stop) {
-     //info("I am thread = %d/%d -> [%d,%d]\n", tid, rthreads, start, stop);             /* Echo thread information */
-     for(int j = start; j < stop; j++) {                                                 /* Do work we are assigned */
-       cors[j] = correlation(x, y[j], dim, false);
-     }
-   }
-
-  }
-  return(cors);
-}
-
-#else
-
-double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool verbose){
+double* cor1toNold(double* x, double** y, size_t dim, size_t ny, int nthreads, bool verbose){
   size_t i;
   info("!!");
   double* cors   = newdvector(ny);
@@ -106,9 +76,7 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool
   return(cors);
 }
 
-#endif
-
-double* cor1toNold(double* x, double** y, size_t dim, size_t ny, int nthreads, bool verbose){
+double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool verbose){
   size_t i, j;
   double nom, denom;
   double onedivn = (1.0 / dim), Xi = 0.0, XiP2 = 0.0;
