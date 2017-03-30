@@ -66,14 +66,37 @@ double correlation(const double* x, const double* y, size_t dim, bool verbose){
   return(cor);
 }
 
+#ifdef _OPENMP
+  #include <omp.h>
+
 double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool verbose){
   size_t i;
+  int tid;                                                      /* private(tid) */
+  double* cors   = newdvector(ny);
+  // #pragma omp parallel private(tid) shared(x, y, cors) num_threads(nthreads)
+  #pragma omp parallel private(tid) shared(x, y, cors)
+  info("Numthreads: %d\n", omp_get_num_threads());
+  for(i = 0; i < ny; i++) {
+    tid = omp_get_thread_num();                                                 /* Obtain thread number */
+    info("tid %d/%d\n", tid, nthreads);
+    cors[i] = correlation(x, y[i], dim, verbose);
+  }
+  return(cors);
+}
+
+#else
+
+double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool verbose){
+  size_t i;
+  info("!!");
   double* cors   = newdvector(ny);
   for(i = 0; i < ny; i++) {
     cors[i] = correlation(x, y[i], dim, verbose);
   }
   return(cors);
 }
+
+#endif
 
 double* cor1toNold(double* x, double** y, size_t dim, size_t ny, int nthreads, bool verbose){
   size_t i, j;

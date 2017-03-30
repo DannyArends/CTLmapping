@@ -2,10 +2,10 @@
 srcdir = ../Rctl/src
 CC = gcc
 LINK = ar
-DEFS = -DSTANDALONE
+DEFS = -DSTANDALONE -D_OPENMP
 
-CFLAGS = -I /usr/share/R/include/ -std=gnu99 -O3 -pedantic -w -Wall -Wextra -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
-LDFLAGS = -lm -L /usr/lib/R/lib/ -lR -O3
+CFLAGS = -I /usr/share/R/include/ -std=gnu99 -O3 -fopenmp -pedantic -w -Wall -Wextra -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
+LDFLAGS = -lm -L /usr/lib/R/lib/ -lR -O3 -lgomp -lpthread
 #### End of system configuration section. ####
 
 SOURCES    = $(srcdir)/vector.c $(srcdir)/matrix.c $(srcdir)/sort.c $(srcdir)/structs.c \

@@ -1,4 +1,5 @@
 allmicput -x Github/CTLmapping/C/mapctl
+allmicput -x Github/CTLmapping/C/mapctlNV
 
 allmicput -l /global/opt/intel/parallel_studio_xe_2016_update3/mkl/lib/mic/lib*.so
 allmicput -l /global/opt/intel/parallel_studio_xe_2016_update3/lib/mic/lib*.so
