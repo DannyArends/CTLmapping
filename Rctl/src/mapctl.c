@@ -11,8 +11,9 @@
 #ifdef _OPENMP
   #include <omp.h>
   #define CSTACK_DEFNS 7                                          /* http://stats.blogoverflow.com/2011/08/using-openmp-ized-c-code-with-r/ */
-  #include "Rinterface.h"
-
+  #ifdef USING_R
+    #include "Rinterface.h"
+  #endif
   // extern uintptr_t R_CStackLimit; /* C stack limit */
   // extern uintptr_t R_CStackStart; /* Initial stack address */
 
