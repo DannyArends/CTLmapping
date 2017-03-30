@@ -1,5 +1,5 @@
 #include <omp.h>
-#include <cstdio>
+#include <stdio.h>
 
 int main(){
   const int nt = omp_get_max_threads();
