@@ -119,9 +119,9 @@ int main(int argc, char **argv){
       }  
       freematrix((void**)scores, genotypes.nmarkers);
       freematrix((void**)ctls, genotypes.nmarkers);
-      info("Phenotype %d done\n", (phenotype+1));
+      //info("Phenotype %d done\n", (phenotype+1));
     }
-    info("Thread %d done\n", tid);
+    //info("Thread %d done\n", tid);
     } //OMP
 
     for(m = 0; m < nmar; m++){ free(genoenc[m].data); }
