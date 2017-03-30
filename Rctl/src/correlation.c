@@ -71,7 +71,7 @@ double correlation(const double* x, const double* y, size_t dim, bool verbose){
 
 double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool verbose){
   double* cors   = newdvector(ny);
-  info("Numthreads: %d\n", omp_get_max_threads());
+  //info("Numthreads: %d\n", omp_get_max_threads());
   int rthreads = omp_get_max_threads();                         /* Requested number of threads */
   int nitems = ny;                                              /* Number of items todo */
   int npthread = ceil((float)nitems / (float)rthreads);         /* Number we do in every thread */
@@ -84,7 +84,7 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool
    int start = npthread * tid;
    int stop = (int)fmin((float)(start + (int)npthread), (float)nitems);
    if (start < stop) {
-     info("I am thread = %d/%d -> [%d,%d]\n", tid, rthreads, start, stop);             /* Echo thread information */
+     //info("I am thread = %d/%d -> [%d,%d]\n", tid, rthreads, start, stop);             /* Echo thread information */
      for(int j = start; j < stop; j++) {                                                 /* Do work we are assigned */
        cors[j] = correlation(x, y[j], dim, false);
      }
