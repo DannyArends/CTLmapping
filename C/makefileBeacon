@@ -2,7 +2,7 @@
 srcdir = ../Rctl/src
 CC = icc
 LINK = ar
-DEFS = -DSTANDALONE
+DEFS = -DSTANDALONE -D_OPENMP
 
 CFLAGS = -I /sw/cs300_centos6.6/r/3.3.0/centos6.7_gnu4.8.2/lib64/R/include/ -std=gnu99 -openmp -O3 -pedantic -w -Wall -Wextra -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
 LDFLAGS = -lm -L /sw/cs300_centos6.6/r/3.3.0/centos6.7_gnu4.8.2/lib64/R/lib -lR -lRblas -openmp -O3
