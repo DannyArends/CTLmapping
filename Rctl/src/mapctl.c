@@ -73,16 +73,11 @@ double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t p
 
 double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
                     clvector* genoenc, int nthreads, bool verbose){
-  size_t g, m, ngenotypes;
-  clvector idx;
-  double*  P1;
-  int* nsamples;
-  double** cors, **P2M;
-  double** dcors = (double**) calloc(genotypes.nmarkers, sizeof(double*));
 
   if(phenotype >= phenotypes.nphenotypes){
     err("Cannot scan phenotype %d out of %d phenotypes provided", (phenotype+1), phenotypes.nphenotypes);
   }
+  double** dcors = (double**) calloc(genotypes.nmarkers, sizeof(double*));
 
   int rthreads = omp_get_max_threads();                         /* Requested number of threads */
   int nitems = genotypes.nmarkers;                              /* Number of items todo */
@@ -91,11 +86,18 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
 
   #pragma omp parallel
   {
+  size_t g, m, ngenotypes;
+  clvector idx;
+  double*  P1;
+  int* nsamples;
+  double** cors, **P2M;
+
+
 
   tid = omp_get_thread_num();                                                 /* Obtain thread number */
   int start = npthread * tid;
   int stop = (int)fmin((float)(start + (int)npthread), (float)nitems);
-
+  if(start < stop){
   for(m = start; m < stop; m++){
     ngenotypes = genoenc[m].nelements;
     if(ngenotypes > 1) {
@@ -129,7 +131,7 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
     }
   }
 
-  }//OMP
+  }}//OMP
   return dcors;
 }
 
