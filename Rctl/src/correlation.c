@@ -73,7 +73,7 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool
   size_t i;
   int tid;                                                      /* private(tid) */
   double* cors   = newdvector(ny);
-  info("Numthreads: %d\n", omp_get_num_threads());
+  info("Numthreads: %d\n", omp_get_max_threads());
   #pragma omp parallel
   {
    printf("Hello world by %d\n", omp_get_thread_num());
