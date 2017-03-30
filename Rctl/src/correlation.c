@@ -73,13 +73,10 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool
   size_t i;
   int tid;                                                      /* private(tid) */
   double* cors   = newdvector(ny);
-  // #pragma omp parallel private(tid) shared(x, y, cors) num_threads(nthreads)
-
   info("Numthreads: %d\n", omp_get_num_threads());
   #pragma omp parallel
   {
-    info("tid %d/%d\n", omp_get_thread_num(), nthreads);
-//    cors[i] = correlation(x, y[i], dim, verbose);
+   printf("Hello world by %d\n", omp_get_thread_num());
   }
   return(cors);
 }
