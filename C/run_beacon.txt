@@ -1,5 +1,6 @@
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/sw/cs300_centos6.6/r/3.3.0/centos6.7_gnu4.8.2/lib64/R/lib:/sw/cs300_centos6.6/r/3.3.0/centos6.7_gnu4.8.2/lib ./mapctl -p ../D/test/data/phenotypes.csv -g ../D/test/data/genotypes.csv
 
+### Times
 export OMP_NUM_THREADS=2
 time LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/sw/cs300_centos6.6/r/3.3.0/centos6.7_gnu4.8.2/lib64/R/lib:/sw/cs300_centos6.6/r/3.3.0/centos6.7_gnu4.8.2/lib ~/Github/CTLmapping/C/mapctl -p /lustre/medusa/dannya/GN302_pheno_1000.csv -g /lustre/medusa/dannya/GN301_genotypes_100.csv
 
@@ -11,6 +12,10 @@ time LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/sw/cs300_centos6.6/r/3.3.0/centos6.7_gnu4
 
 export OMP_NUM_THREADS=16
 time LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/sw/cs300_centos6.6/r/3.3.0/centos6.7_gnu4.8.2/lib64/R/lib:/sw/cs300_centos6.6/r/3.3.0/centos6.7_gnu4.8.2/lib ~/Github/CTLmapping/C/mapctl -p /lustre/medusa/dannya/GN302_pheno_1000.csv -g /lustre/medusa/dannya/GN301_genotypes_100.csv
+
+export OMP_NUM_THREADS=32
+time LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/sw/cs300_centos6.6/r/3.3.0/centos6.7_gnu4.8.2/lib64/R/lib:/sw/cs300_centos6.6/r/3.3.0/centos6.7_gnu4.8.2/lib ~/Github/CTLmapping/C/mapctl -p /lustre/medusa/dannya/GN302_pheno_1000.csv -g /lustre/medusa/dannya/GN301_genotypes_100.csv
+
 
 - William Gibbson
 - Charlie Strauss - Laundry files
