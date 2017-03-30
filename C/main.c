@@ -77,26 +77,39 @@ int main(int argc, char **argv){
     printf("Individuals doesn't match between genotypes and phenotypes");
     return -1;
   }else{
-    clvector* genoenc = getGenotypes(genotypes, verbose);
+
 
     size_t nmar = genotypes.nmarkers;
     size_t nphe = phenotypes.nphenotypes;
-    size_t phenotype  = 0;
     size_t m;
 
-    for(phenotype = 0; phenotype < phenotypes.nphenotypes; phenotype++){
-      info("Phenotype %d: Mapping", (phenotype+1));
+    int rthreads = omp_get_max_threads();                         /* Requested number of threads */
+    int nitems = nphe;                              /* Number of items todo */
+    int npthread = ceil((float)nitems / (float)rthreads);         /* Number we do in every thread */
+
+
+    clvector* genoenc = getGenotypes(genotypes, verbose);
+
+    #pragma omp parallel
+    {
+    size_t phenotype  = 0;
+    int tid = omp_get_thread_num();                                                 /* Obtain thread number */
+    int start = npthread * tid;
+    int stop = (int)fmin((float)(start + (int)npthread), (float)nitems);
+    info("I am thread = %d/%d -> [%d,%d]\n", tid, rthreads, start, stop);
+    for(size_t phenotype = start; phenotype < stop; phenotype++){
+//      info("Phenotype %d: Mapping", (phenotype+1));
 
       double** ctls;
       double*  perms;
       double** scores = ctleffects(phenotypes, genotypes, phenotype, genoenc, 2, verbose);
       if(!doperms){
-        info(", toLOD\n");  // Exact calculation can be used
+//        info(", toLOD\n");  // Exact calculation can be used
         ctls = toLODexact(scores, genoenc, nmar, nphe);
       }else{
-        info(", Permutation");
+//        info(", Permutation");
         perms = permute(phenotypes, genotypes, phenotype, genoenc, nperms, 2, false);
-        info(", toLOD\n");
+//        info(", toLOD\n");
         ctls = toLOD(scores, perms, nmar, nphe, nperms);
         free(perms);
       }
@@ -106,7 +119,10 @@ int main(int argc, char **argv){
       }  
       freematrix((void**)scores, genotypes.nmarkers);
       freematrix((void**)ctls, genotypes.nmarkers);
+      info("Phenotype %d done\n", (phenotype+1));
     }
+    info("Thread %d done\n", tid);
+    } //OMP
 
     for(m = 0; m < nmar; m++){ free(genoenc[m].data); }
     free(genoenc);
