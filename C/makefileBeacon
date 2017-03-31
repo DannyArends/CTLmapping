@@ -4,8 +4,8 @@ CC = icc
 LINK = ar
 DEFS = -DSTANDALONE -D_OPENMP
 
-CFLAGS = -std=gnu99 -openmp -O3 -pedantic -w -Wall -Wextra -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
-LDFLAGS = -lm -qopenmp -O3
+CFLAGS = -std=gnu99 -openmp -g -O3 -pedantic -w -Wall -Wextra -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
+LDFLAGS = -lm -qopenmp -g -O3
 #### End of system configuration section. ####
 
 SOURCES    = $(srcdir)/vector.c $(srcdir)/matrix.c $(srcdir)/sort.c $(srcdir)/structs.c \
