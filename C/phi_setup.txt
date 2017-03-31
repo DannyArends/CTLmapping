@@ -11,6 +11,9 @@ micssh beacon0XX-mic0
 cd $TMPDIR/bin
 ./mapctl -g ../genotypes.csv -p ../phenotypes.csv
 
+##Node with faster phi's: mic7120
+
+# Submit 2 jobs of 120
 
 ## Vectorization report
 -qopt-report=5
@@ -24,7 +27,13 @@ allmicput -l /global/opt/intel/parallel_studio_xe_2016_update3/lib/mic/lib*.so
 allmicput -t /lustre/medusa/dannya/GN301_genotypes_100.csv
 allmicput -t /lustre/medusa/dannya/GN302_pheno_1000.csv
 
-micssh beacon0XX-mic0
+micssh mic0
 cd $TMPDIR/bin
-./mapctl -g ../genotypes.csv -p ../phenotypes.csv
+
+export OMP_NUM_THREADS=1
+nohup time ./mapctl -g ../GN301_genotypes_100.csv -p ../GN302_pheno_1000.csv > /lustre/medusa/dannya/time_mic1.txt &
+
+
+export OMP_NUM_THREADS=240
+time ./mapctl -g ../GN301_genotypes_100.csv -p ../GN302_pheno_1000.csv
 
