@@ -23,7 +23,7 @@
 
     /** Example function that does CTL mapping permutation for a given phenotype. */
     double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
-                    bool doperms, int nperms, int nthreads, bool verbose);
+                    bool doperms, int nperms, int nthreads, bool adjust, bool verbose);
 
     /** Get the CTLeffects matrix (Chi square scores) for a given phenotype. */
     double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
