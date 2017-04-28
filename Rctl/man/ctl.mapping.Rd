@@ -6,7 +6,7 @@
 }
 \usage{
 CTLmapping(genotypes, phenotypes, phenocol = 1, nperm = 100, nthreads = 1,
-strategy = c("Exact", "Full", "Pairwise"), qtl = TRUE, verbose = FALSE)
+strategy = c("Exact", "Full", "Pairwise"), adjust = TRUE, qtl = TRUE, verbose = FALSE)
 }
 
 \arguments{
@@ -28,6 +28,7 @@ strategy = c("Exact", "Full", "Pairwise"), qtl = TRUE, verbose = FALSE)
                       estimating p-values and uses bonferoni correction. It has however the least power to 
                       detect CTLs, the two other methods (Full and Pairwise) perform permutations to
                       assign significance. }
+  \item{adjust}{      Adjust p-values for multiple testing (only used when strategy = Exact). }
   \item{qtl}{         Use the internal slow QTL mapping method to map QTLs. }
   \item{verbose}{     Be verbose. }
 }
