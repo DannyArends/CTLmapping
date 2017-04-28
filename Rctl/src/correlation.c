@@ -105,7 +105,7 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool
       cors[j] = nom / denom;
     }
     if(isNaN(cors[j]) || isinf(cors[j]) || cors[j] < -(RANGE) || cors[j] > RANGE){ 
-      if(verbose) info("Correlation '%.8f' not in range [-1, 1]\n", cors[j]);
+      if(verbose) info("Correlation '%.8f' not in range [-1, 1] [%f %f %d]\n", cors[j], nom, denom, dim);
     }
   }
   free(Yi); free(YiP2); free(XiYi);
