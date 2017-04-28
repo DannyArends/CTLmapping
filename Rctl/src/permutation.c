@@ -88,7 +88,7 @@ double estimate(double val, double* permutations, size_t nperms){
   return -log10(1.0 - (getidx(val, permutations, nperms)/(double)nperms));
 }
 
-double** toLODexact(double** scores, clvector* genoenc, size_t nmar, size_t nphe){
+double** toLODexact(double** scores, clvector* genoenc, size_t nmar, size_t nphe, bool adjust){
   double** ctls = newdmatrix(nmar, nphe);
   size_t p,m;
   double pval;
@@ -97,7 +97,7 @@ double** toLODexact(double** scores, clvector* genoenc, size_t nmar, size_t nphe
     for(p = 0; p < nphe; p++){
       pval = chiSQtoP(scores[m][p], Dof);
       if(pval > 1 || pval < 0) err("p-value '%.8f' not in range [0, 1]\n", pval);
-      pval *= nmar * nphe;
+      if(adjust) pval *= nmar * nphe;
       if(pval < 1){
         ctls[m][p] = fabs(log10(pval));
       }else{

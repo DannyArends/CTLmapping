@@ -27,7 +27,7 @@
     double estimate(double val, double* permutations, size_t nperms);
 
     /** Converts CTL scores to LOD using exact calculations and bonferonni correction. */
-    double**  toLODexact(double** scores, clvector* genoenc, size_t nmar, size_t nphe);
+    double** toLODexact(double** scores, clvector* genoenc, size_t nmar, size_t nphe, bool adjust);
     /** Converts CTL scores to LOD using Breitling et al. permutations. */
     double**  toLOD(double** scores, double* permutations, size_t nmar, size_t nphe, size_t nperms);
     /** Converts CTL scores to LOD using row-wise permutations. */
