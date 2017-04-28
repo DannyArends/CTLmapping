@@ -91,6 +91,7 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool
   // Cache efficient, unrolled 1:N correlation loop
   for(j = 0; j < ny; j++){   // Loop over all traits
     // ? Possible openmp directive ?:  #pragma omp parallel for shared(XiYi, Yi, YiP2)
+    #pragma omp simd
     for(i = 0; i < dim; i++){ if(y[j][i] != MISSING && x[i] != MISSING) { // If both are available
       if(j==0) {
         Xi   += x[i];
