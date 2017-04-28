@@ -21,7 +21,7 @@ openmp <- function(nthreads = 1, x, Y) {
 #-- CTLscan main function --#
 CTLscan <- function(genotypes, phenotypes, phenocol, nperm = 100, nthreads = 1,
                     strategy = c("Exact", "Full", "Pairwise"),
-                    parametric = FALSE, qtl = TRUE, verbose = FALSE) {
+                    parametric = FALSE, adjust = TRUE, qtl = TRUE, verbose = FALSE) {
 
   if(missing(genotypes) || is.null(genotypes))  stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
@@ -55,7 +55,7 @@ CTLscan <- function(genotypes, phenotypes, phenocol, nperm = 100, nthreads = 1,
   idx <- 1
   for(phe in phenocol) {
     ctlobject[[idx]] <- CTLmapping(genotypes, phenotypes, phenocol = phe, nperm = nperm, nthreads = nthreads,
-                                   strategy = strategy, qtl = qtl, verbose = verbose)
+                                   strategy = strategy, adjust = adjust, qtl = qtl, verbose = verbose)
     idx <- idx + 1
   }
   if(verbose) cat("Done after:", (proc.time()-st)[3], "seconds\n")
@@ -64,7 +64,7 @@ CTLscan <- function(genotypes, phenotypes, phenocol, nperm = 100, nthreads = 1,
   invisible(ctlobject)
 }
 
-CTLmapping <- function(genotypes, phenotypes, phenocol = 1, nperm = 100, nthreads = 1, strategy = c("Exact", "Full", "Pairwise"), qtl = TRUE, verbose = FALSE){
+CTLmapping <- function(genotypes, phenotypes, phenocol = 1, nperm = 100, nthreads = 1, strategy = c("Exact", "Full", "Pairwise"), adjust = TRUE, qtl = TRUE, verbose = FALSE){
   if(missing(genotypes) || is.null(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   ss  <- proc.time()
@@ -95,6 +95,7 @@ CTLmapping <- function(genotypes, phenotypes, phenocol = 1, nperm = 100, nthread
                           dcor = as.double(rep(0, n.mar * n.phe)),
                           perms = as.double(perms),
                           ctl  = as.double(rep(0, n.mar * n.phe)),
+                          as.integer(adjust),
                           as.integer(verbose), 
                           PACKAGE = "ctl")
   e2 <- proc.time()

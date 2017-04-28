@@ -7,7 +7,7 @@
 \usage{
 CTLscan(genotypes, phenotypes, phenocol, nperm=100, nthreads = 1, 
 strategy = c("Exact", "Full", "Pairwise"),
-parametric = FALSE, qtl = TRUE, verbose = FALSE)
+parametric = FALSE, adjust=TRUE, qtl = TRUE, verbose = FALSE)
 }
 \arguments{
   \item{genotypes}{   Matrix of genotypes. (individuals x markers) }
@@ -30,7 +30,8 @@ parametric = FALSE, qtl = TRUE, verbose = FALSE)
                       assign significance. }
   \item{parametric}{  Use non-parametric testing (Spearman) or parametric testing (Pearson). The DEFAULT is to 
                       use non-parametric tests which are less sensitive to outliers in the phenotype data. }
-  \item{qtl}{        Use the internal slow QTL mapping method to map QTLs. }
+  \item{adjust}{      Adjust p-values for multiple testing (only used when strategy = Exact). }
+  \item{qtl}{         Use the internal slow QTL mapping method to map QTLs. }
   \item{verbose}{     Be verbose. }
 }
 \value{
