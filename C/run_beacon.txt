@@ -22,3 +22,6 @@ time LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/sw/cs300_centos6.6/r/3.3.0/centos6.7_gnu4
 - Diamond Age
 - Lee Child
 - Ready player one
+
+export OMP_NUM_THREADS=16
+/global/opt/intel/parallel_studio_xe_2016_update3/vtune_amplifier_xe_2016.3.0.463186/bin64/amplxe-cl -collect advanced-hotspots -app-working-dir /nics/c/home/dannya/Github/CTLmapping/C -- /nics/c/home/dannya/Github/CTLmapping/C/mapctl -p /lustre/medusa/dannya/GN302_pheno_1000.csv -g /lustre/medusa/dannya/GN301_genotypes_100.csv
