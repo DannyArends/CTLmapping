@@ -13,34 +13,43 @@ char* getFilecontent(char* name) {
   size_t fsize = ftell(file);
   fseek(file, 0L, SEEK_SET);
   
-  char*  content = malloc(fsize * sizeof(char));
+  char*  content = malloc((fsize + 1) * sizeof(char));
   if(content == NULL) printf("Not enough memory for new vector of dimension %d\n",(fsize));
   
   size_t cnt = 0;
   while(cnt < fsize) {
     content[cnt] = (char)fgetc(file);
-    if(content[cnt] == '\n') printf("%d newline\n", cnt);
-    if(content[cnt] == -1) printf("%d WARN\n", cnt);
+    //if(content[cnt] == '\n') printf("%d newline\n", cnt);
+    //if(content[cnt] == -1) printf("%d WARN\n", cnt);
     cnt++;
   }
+  content[fsize] = -1;
   fclose(file);
   printf("File '%s' loaded: %d, %d bytes\n", name, cnt, fsize);
   return content;
 }
 
-double* contentToDoubles(char* content){
-  size_t cnt = 0, nCnt = 0, vCnt = 0;
-  char* nBuffer = malloc(12 * sizeof(char));
-  double* values = malloc(0 * sizeof(double));
-  while(content[cnt] != EOF) {
-    printf("%c %d %d\n", content[cnt], cnt, nCnt);
+double* contentToDoubles(char* content, int* online, int* lines){
+  size_t cnt = 0, nCnt = 0, vCnt = 0, lCnt = 0;
+  size_t bufSize = 12 * sizeof(char);
+  char* nBuffer = malloc(bufSize);
+  double* values = malloc(vCnt * sizeof(double));
+  while(content[cnt] != -1) {
+    //printf("%c %d %d\n", content[cnt], cnt, nCnt);
     if(content[cnt] == '\t'){
       nCnt = 0;
-      vCnt ++;
+      values = realloc(values, (vCnt+1) * sizeof(double));
+      values[vCnt] = atof(nBuffer);
+      vCnt++;
+      memset(nBuffer, 0, bufSize);
     }else {
       if(content[cnt] == '\n' || content[cnt] == '\0'){
         nCnt = 0;
-        vCnt ++;
+        values = realloc(values, (vCnt+1) * sizeof(double));
+        values[vCnt] = atof(nBuffer);
+        vCnt++;
+        lCnt++; //line count
+        memset(nBuffer, 0, bufSize);
       }else{
         nBuffer[nCnt] = content[cnt];
         nCnt = nCnt + 1;
@@ -48,23 +57,39 @@ double* contentToDoubles(char* content){
     }
     cnt = cnt + 1;
   }
+
+  (*lines) = lCnt;
+  (*online) = vCnt / lCnt;
   printf(" %s parsed %d values from %d bytes\n", nBuffer, vCnt, cnt);
   return(values);
 }
 
 int main(int argc, char **argv){
-  char* inputAfn  = "../data/inputAb.txt";
+  char* inputAfn  = "../data/inputA.txt";
   char* inputBfn  = "../data/inputB.txt";
   char* outputCfm = "../data/outputC.txt";
 
   char* inputAchar = getFilecontent(inputAfn);
-  //char* inputBchar = getFilecontent(inputBfn);
-  //char* outputCchar = getFilecontent(outputCfm);
-  contentToDoubles(inputAchar);
-  int i,j,k, m, mm, n, p;
-  int sab,sa,sb,saa,sbb;
+  char* inputBchar = getFilecontent(inputBfn);
+  char* outputCchar = getFilecontent(outputCfm);
+  int aol, alc; // a on line, a line count
+  int bol, blc; // a on line, a line count
+  int col, clc; // a on line, a line count
+  double* A = contentToDoubles(inputAchar, &aol, &alc);
+  printf("A on line: %d, A lines: %d\n", aol, alc);
+  double* B = contentToDoubles(inputBchar, &bol, &blc);
+  printf("B on line: %d, B lines: %d\n", bol, blc);
+  double* Co = contentToDoubles(outputCchar, &col, &clc);
+  printf("Co on line: %d, Co lines: %d\n", col, clc);
 
-  double *A, *B, *C;
+  int i,j,k, m, mm, n, p;
+  double sab,sa,sb,saa,sbb;
+
+  m = alc;      // m is the shared dimension between A and B (individuals)
+  n = aol;      // n is the dimension unique to A
+  p = bol;      // p is the dimension unique to B
+
+  double *C = malloc((n*p) * sizeof(double));
   
   for (i=0; i<n; i++) {
     for (j=0; j<p; j++) {
@@ -91,7 +116,7 @@ int main(int argc, char **argv){
 
         }
       }
-
+      printf("%d %d, sab: %f, sa:%f, sb:%f, saa:%f, sbb:%f\n",i, j, sab, sa, sb,saa,sbb);
       C[i*p+j] = (sab-sa*sb/  \
                  (double)mm)/  \
                  (sqrt(saa-sa*sa/  \
@@ -100,4 +125,11 @@ int main(int argc, char **argv){
 
     }
   }
+
+  for (i=0; i<n; i++) {
+    for (j=0; j<p; j++) {
+        printf("%f == %f\n", C[i*p+j],  Co[i*p+j]);
+    }
+  }
+
 }

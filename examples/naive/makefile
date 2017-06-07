@@ -5,6 +5,7 @@ LINK = ar
 
 OBJECTS    = $(SOURCES:.c=.o)
 EXECUTABLE = naive
+LDFLAGS = -lm
 
 all: clean $(SOURCES) $(EXECUTABLE)
 
@@ -14,7 +15,7 @@ help:
 
 
 $(EXECUTABLE): main.o
-	$(CC) $(LDFLAGS) main.o $(OBJECTS) -o $@
+	$(CC) main.o $(OBJECTS) $(LDFLAGS) -o $@
 
 # target: clean - Cleanup
 clean:
