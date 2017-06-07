@@ -40,26 +40,26 @@ double* contentToDoubles(char* content, int* online, int* lines){
       nCnt = 0;
       values = realloc(values, (vCnt+1) * sizeof(double));
       values[vCnt] = atof(nBuffer);
-      vCnt++;
+      vCnt++; // numeric value count
       memset(nBuffer, 0, bufSize);
     }else {
       if(content[cnt] == '\n' || content[cnt] == '\0'){
         nCnt = 0;
         values = realloc(values, (vCnt+1) * sizeof(double));
         values[vCnt] = atof(nBuffer);
-        vCnt++;
+        vCnt++; // numeric value count
         lCnt++; //line count
         memset(nBuffer, 0, bufSize);
       }else{
         nBuffer[nCnt] = content[cnt];
-        nCnt = nCnt + 1;
+        nCnt = nCnt + 1; // N char in number buffer count
       }
     }
     cnt = cnt + 1;
   }
 
-  (*lines) = lCnt;
-  (*online) = vCnt / lCnt;
+  (*lines) = lCnt;          // Number of lines in the file
+  (*online) = vCnt / lCnt;  // Number of values on a line
   printf(" %s parsed %d values from %d bytes\n", nBuffer, vCnt, cnt);
   return(values);
 }
@@ -73,8 +73,8 @@ int main(int argc, char **argv){
   char* inputBchar = getFilecontent(inputBfn);
   char* outputCchar = getFilecontent(outputCfm);
   int aol, alc; // a on line, a line count
-  int bol, blc; // a on line, a line count
-  int col, clc; // a on line, a line count
+  int bol, blc; // b on line, b line count
+  int col, clc; // c on line, c line count
   double* A = contentToDoubles(inputAchar, &aol, &alc);
   printf("A on line: %d, A lines: %d\n", aol, alc);
   double* B = contentToDoubles(inputBchar, &bol, &blc);
@@ -116,7 +116,7 @@ int main(int argc, char **argv){
 
         }
       }
-      printf("%d %d, sab: %f, sa:%f, sb:%f, saa:%f, sbb:%f\n",i, j, sab, sa, sb,saa,sbb);
+      //printf("%d %d, sab: %f, sa:%f, sb:%f, saa:%f, sbb:%f\n",i, j, sab, sa, sb,saa,sbb);
       C[i*p+j] = (sab-sa*sb/  \
                  (double)mm)/  \
                  (sqrt(saa-sa*sa/  \
@@ -128,7 +128,7 @@ int main(int argc, char **argv){
 
   for (i=0; i<n; i++) {
     for (j=0; j<p; j++) {
-        printf("%f == %f\n", C[i*p+j],  Co[i*p+j]);
+        if(i < 10 && j < 10) printf("%f == %f\n", C[i*p+j],  Co[i*p+j]);
     }
   }
 
