@@ -14,10 +14,10 @@ A[sample(n * nMeasurementsA, 50)] <- 3   # Introduce missing data
 B[sample(n * nMeasurementsB, 50)] <- 3   # Introduce missing data
 
 # Write the input A for the C code
-write.table(A, file = "inputA.txt", sep = "\t", quote = FALSE, row.names=FALSE, col.names=FALSE)
+write.table(t(A), file = "inputA.txt", sep = "\t", quote = FALSE, row.names=FALSE, col.names=FALSE)
 
 # Write the input B for the C code
-write.table(B, file = "inputB.txt", sep = "\t", quote = FALSE, row.names=FALSE, col.names=FALSE)
+write.table(t(B), file = "inputB.txt", sep = "\t", quote = FALSE, row.names=FALSE, col.names=FALSE)
 
 A[A == 3] <- NA  # Change the coding of the missing data in A to NA
 B[B == 3] <- NA  # Change the coding of the missing data in B to NA
@@ -28,4 +28,6 @@ C <- apply(A, 2, function(columnA, mB) {
 }, B)
 
 # Write the output C matrix, to compare the results of the C code against
-write.table(C, file = "outputC.txt", sep = "\t", quote = FALSE, row.names=FALSE, col.names=FALSE)
+write.table(t(C), file = "outputC.txt", sep = "\t", quote = FALSE, row.names=FALSE, col.names=FALSE)
+q("no")
+
