@@ -85,9 +85,9 @@ int main(int argc, char **argv){
   int i,j,k, m, mm, n, p;
   double sab,sa,sb,saa,sbb;
 
-  m = alc;      // m is the shared dimension between A and B (individuals)
-  n = aol;      // n is the dimension unique to A
-  p = bol;      // p is the dimension unique to B
+  m = aol;      // m is the shared dimension between A and B (individuals)
+  n = alc;      // n is the dimension unique to A
+  p = blc;      // p is the dimension unique to B
 
   double *C = malloc((n*p) * sizeof(double));
   
@@ -102,17 +102,17 @@ int main(int argc, char **argv){
       mm=m;
 
       for (k=0; k<m; k++) {
-        if ((A[i*m+k] > 2.0) || (B[k*p+j] > 2.0)) {
+        if ((A[i*m+k] > 2.0) || (B[j*m+k] > 2.0)) {
 
           mm--;
 
         } else {
 
-          sab+=A[i*m+k]*B[k*p+j];
-          sa+=A[i*m+k];
-          sb+=B[k*p+j];
-          saa+=A[i*m+k]*A[i*m+k];
-          sbb+=B[k*p+j]*B[k*p+j];
+          sab += A[i*m+k]*B[j*m+k];
+          sa  += A[i*m+k];
+          sb  += B[j*m+k];
+          saa += A[i*m+k]*A[i*m+k];
+          sbb += B[j*m+k]*B[j*m+k];
 
         }
       }
@@ -128,8 +128,9 @@ int main(int argc, char **argv){
 
   for (i=0; i<n; i++) {
     for (j=0; j<p; j++) {
-        if(i < 10 && j < 10) printf("%f == %f\n", C[i*p+j],  Co[i*p+j]);
+        if(j < 5) printf("%f == %f\t", C[i*p+j],  Co[i*p+j]);
     }
+    printf("\n");
   }
 
 }
