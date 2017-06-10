@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <float.h>
+#include <time.h>
       
 char* getFilecontent(char* name) {
   FILE*  file = fopen(name, "r");
@@ -69,13 +70,16 @@ int main(int argc, char **argv){
   char* inputBfn  = "../data/inputB.txt";
   char* outputCfm = "../data/outputC.txt";
 
+  // Read the file content as character
   char* inputAchar = getFilecontent(inputAfn);
   char* inputBchar = getFilecontent(inputBfn);
   char* outputCchar = getFilecontent(outputCfm);
+
   size_t aol, alc; // a on line, a line count
   size_t bol, blc; // b on line, b line count
   size_t col, clc; // c on line, c line count
 
+  // Convert the file content to double vectors
   double* A = contentToDoubles(inputAchar, &aol, &alc);
   printf("A on line: %zu, A lines: %zu\n", aol, alc);
   double* B = contentToDoubles(inputBchar, &bol, &blc);
@@ -83,55 +87,67 @@ int main(int argc, char **argv){
   double* Co = contentToDoubles(outputCchar, &col, &clc);
   printf("Co on line: %zu, Co lines: %zu\n", col, clc);
 
-  int i,j,k, m, mm, n, p;
+  size_t i,j,k, m, mm, n, p, t;
+  size_t nt = 20; // Number of times to execute for timing
   double sab,sa,sb,saa,sbb;
+  double found, expected;  // rounded down values for comparison
+  double sum_time = 0, var_time = 0;  // used in timing the code
+  m = aol;  // m is the shared dimension between A and B (individuals)
+  n = alc;  // n is the dimension unique to A
+  p = blc;  // p is the dimension unique to B
 
-  m = aol;      // m is the shared dimension between A and B (individuals)
-  n = alc;      // n is the dimension unique to A
-  p = blc;      // p is the dimension unique to B
-
+  // Allocate the matrix holding the results
   double *C = malloc((n*p) * sizeof(double));
-  
-  for (i=0; i<n; i++) {
-    for (j=0; j<p; j++) {
-      sab=0.0;
-      sa=0.0;
-      sb=0.0;
-      saa=0.0;
-      sbb=0.0;
+  double *time = malloc((nt) * sizeof(double));
 
-      mm=m;
+  for (t = 0; t < nt; t++) {  // Run nt times to get a time estimate
+    clock_t begin = clock();
+    for (i = 0; i < n; i++) {
+      for (j = 0; j < p; j++) {
+        sab=0.0;
+        sa=0.0;
+        sb=0.0;
+        saa=0.0;
+        sbb=0.0;
 
-      for (k=0; k<m; k++) {
-        if ((A[i*m+k] > 2.0) || (B[j*m+k] > 2.0)) {
+        mm=m;
 
-          mm--;
+        for (k = 0; k < m; k++) {
+          if ((A[i*m+k] > 2.0) || (B[j*m+k] > 2.0)) {   // Missing value
+            mm--;                                       // Decrease the effective number of individuals (mm)
+          } else {
+            sab += A[i*m+k]*B[j*m+k];
+            sa  += A[i*m+k];
+            sb  += B[j*m+k];
+            saa += A[i*m+k]*A[i*m+k];
+            sbb += B[j*m+k]*B[j*m+k];
+          }
+        }
+        C[i*p+j] = (sab-sa*sb/  \
+                   (double)mm)/  \
+                   (sqrt(saa-sa*sa/  \
+                   (double)mm)*sqrt(sbb-sb*sb/  \
+                   (double)mm));
+      }
+    }
+    clock_t end = clock();
 
-        } else {
-
-          sab += A[i*m+k]*B[j*m+k];
-          sa  += A[i*m+k];
-          sb  += B[j*m+k];
-          saa += A[i*m+k]*A[i*m+k];
-          sbb += B[j*m+k]*B[j*m+k];
-
+    // Compare results to the output calculated by R (our gold standard)
+    for (i = 0; i < n; i++) {
+      for (j = 0; j < p; j++) {
+        found = floorf(C[i*p+j] * 10000) / 10000;
+        expected = floorf(Co[i*p+j] * 10000) / 10000;
+        if(!(found == expected)) {
+          printf("Warning, results not equal, found %f, expected %f\n", found, expected);
         }
       }
-      //printf("%d %d, sab: %f, sa:%f, sb:%f, saa:%f, sbb:%f\n",i, j, sab, sa, sb,saa,sbb);
-      C[i*p+j] = (sab-sa*sb/  \
-                 (double)mm)/  \
-                 (sqrt(saa-sa*sa/  \
-                 (double)mm)*sqrt(sbb-sb*sb/  \
-                 (double)mm));
-
     }
+    time[t] = (double)(end - begin) / CLOCKS_PER_SEC;
+    sum_time += time[t];
   }
-
-  for (i=0; i<n; i++) {
-    for (j=0; j<p; j++) {
-        if(j < 5) printf("%f == %f\t", C[i*p+j],  Co[i*p+j]);
-    }
-    printf("\n");
+  for (t = 0; t < nt; t++) {
+    var_time += pow(time[t] - (sum_time / nt), 2);
   }
-
+  printf("Time: %f +/- %f\n", (sum_time / nt), sqrt(var_time / nt));
 }
+
