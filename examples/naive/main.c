@@ -32,7 +32,7 @@ char* getFilecontent(char* name) {
 
 double* contentToDoubles(char* content, size_t* online, size_t* lines){
   size_t cnt = 0, nCnt = 0, vCnt = 0, lCnt = 0;
-  size_t bufSize = 12 * sizeof(char);
+  size_t bufSize = 20 * sizeof(char);
   char* nBuffer = malloc(bufSize);
   double* values = malloc(vCnt * sizeof(double));
   while(content[cnt] != -1) {
@@ -87,11 +87,14 @@ int main(int argc, char **argv){
   double* Co = contentToDoubles(outputCchar, &col, &clc);
   printf("Co on line: %zu, Co lines: %zu\n", col, clc);
 
+  size_t nt = 10;                       // number of times to execute for timing
+  size_t nd = 100000000;                // rounding constant
+  double accuracy = 0.00001;            // rounding accuracy
+  double found, expected;               // rounded down values for comparison
+  double sum_time = 0, var_time = 0;    // used in timing the code
+
   size_t i,j,k, m, mm, n, p, t;
-  size_t nt = 20; // Number of times to execute for timing
   double sab,sa,sb,saa,sbb;
-  double found, expected;  // rounded down values for comparison
-  double sum_time = 0, var_time = 0;  // used in timing the code
   m = aol;  // m is the shared dimension between A and B (individuals)
   n = alc;  // n is the dimension unique to A
   p = blc;  // p is the dimension unique to B
@@ -135,10 +138,10 @@ int main(int argc, char **argv){
     // Compare results to the output calculated by R (our gold standard)
     for (i = 0; i < n; i++) {
       for (j = 0; j < p; j++) {
-        found = floorf(C[i*p+j] * 10000) / 10000;
-        expected = floorf(Co[i*p+j] * 10000) / 10000;
-        if(!(found == expected)) {
-          printf("Warning, results not equal, found %f, expected %f\n", found, expected);
+        found = roundf(C[i*p+j] * nd) / nd;
+        expected = roundf(Co[i*p+j] * nd) / nd;
+        if(fabs(found) < fabs(expected) - accuracy || fabs(found) > fabs(expected) + accuracy) {
+          printf("Warning at %zu,%zu, results not equal, found %f, expected %f\n", i, j, found, expected);
         }
       }
     }
