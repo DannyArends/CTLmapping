@@ -104,11 +104,11 @@ int main(int argc, char **argv){
     clock_t begin = clock();
     for (i = 0; i < n; i++) {
       for (j = 0; j < p; j++) {
-        sab=0.0;
-        sa=0.0;
-        sb=0.0;
-        saa=0.0;
-        sbb=0.0;
+        sa = 0.0;
+        sb = 0.0;
+        saa = 0.0;
+        sbb = 0.0;
+        sab = 0.0;
 
         mm=m;
 
@@ -142,9 +142,13 @@ int main(int argc, char **argv){
         }
       }
     }
+
+    // Update the time information
     time[t] = (double)(end - begin) / CLOCKS_PER_SEC;
     sum_time += time[t];
   }
+
+  // Compute the time standard deviation
   for (t = 0; t < nt; t++) {
     var_time += pow(time[t] - (sum_time / nt), 2);
   }
