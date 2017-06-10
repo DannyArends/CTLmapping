@@ -14,7 +14,7 @@ char* getFilecontent(char* name) {
   fseek(file, 0L, SEEK_SET);
   
   char*  content = malloc((fsize + 1) * sizeof(char));
-  if(content == NULL) printf("Not enough memory for new vector of dimension %d\n",(fsize));
+  if(content == NULL) printf("Not enough memory for new vector of dimension %zu\n",(fsize));
   
   size_t cnt = 0;
   while(cnt < fsize) {
@@ -25,11 +25,11 @@ char* getFilecontent(char* name) {
   }
   content[fsize] = -1;
   fclose(file);
-  printf("File '%s' loaded: %d, %d bytes\n", name, cnt, fsize);
+  printf("File '%s' loaded: %zu, %zu bytes\n", name, cnt, fsize);
   return content;
 }
 
-double* contentToDoubles(char* content, int* online, int* lines){
+double* contentToDoubles(char* content, size_t* online, size_t* lines){
   size_t cnt = 0, nCnt = 0, vCnt = 0, lCnt = 0;
   size_t bufSize = 12 * sizeof(char);
   char* nBuffer = malloc(bufSize);
@@ -60,7 +60,7 @@ double* contentToDoubles(char* content, int* online, int* lines){
 
   (*lines) = lCnt;          // Number of lines in the file
   (*online) = vCnt / lCnt;  // Number of values on a line
-  printf(" %s parsed %d values from %d bytes\n", nBuffer, vCnt, cnt);
+  printf(" %s parsed %zu values from %zu bytes\n", nBuffer, vCnt, cnt);
   return(values);
 }
 
@@ -72,15 +72,16 @@ int main(int argc, char **argv){
   char* inputAchar = getFilecontent(inputAfn);
   char* inputBchar = getFilecontent(inputBfn);
   char* outputCchar = getFilecontent(outputCfm);
-  int aol, alc; // a on line, a line count
-  int bol, blc; // b on line, b line count
-  int col, clc; // c on line, c line count
+  size_t aol, alc; // a on line, a line count
+  size_t bol, blc; // b on line, b line count
+  size_t col, clc; // c on line, c line count
+
   double* A = contentToDoubles(inputAchar, &aol, &alc);
-  printf("A on line: %d, A lines: %d\n", aol, alc);
+  printf("A on line: %zu, A lines: %zu\n", aol, alc);
   double* B = contentToDoubles(inputBchar, &bol, &blc);
-  printf("B on line: %d, B lines: %d\n", bol, blc);
+  printf("B on line: %zu, B lines: %zu\n", bol, blc);
   double* Co = contentToDoubles(outputCchar, &col, &clc);
-  printf("Co on line: %d, Co lines: %d\n", col, clc);
+  printf("Co on line: %zu, Co lines: %zu\n", col, clc);
 
   int i,j,k, m, mm, n, p;
   double sab,sa,sb,saa,sbb;
