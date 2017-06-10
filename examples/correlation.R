@@ -28,6 +28,6 @@ C <- apply(A, 2, function(columnA, mB) {
 }, B)
 
 # Write the output C matrix, to compare the results of the C code against
-write.table(t(C), file = "outputC.txt", sep = "\t", quote = FALSE, row.names=FALSE, col.names=FALSE)
+write.table(round(t(C),12), file = "outputC.txt", sep = "\t", quote = FALSE, row.names=FALSE, col.names=FALSE)
 q("no")
 
