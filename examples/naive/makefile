@@ -15,7 +15,7 @@ help:
 
 
 $(EXECUTABLE): main.o
-	$(CC) main.o $(OBJECTS) $(LDFLAGS) -o $@
+	$(CC) -O3 main.o $(OBJECTS) $(LDFLAGS) -o $@
 
 # target: clean - Cleanup
 clean:
