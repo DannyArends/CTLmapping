@@ -51,7 +51,7 @@ set.seed(61777369)
 \bigskip \bigskip 
 \bigskip \bigskip 
  
-{\large Danny Arends, and Ritsert C. Jansen} 
+{\large Danny Arends, Pjotr Prins, and Ritsert C. Jansen} 
 
 \bigskip \bigskip
 
@@ -115,9 +115,9 @@ Use the example excel file and simply replace the example data by your own then:
 After you have stored the data as plain text open the files in a text editor (NOT WORD, for 
 windows Notepad++ is a good option) and check to see if your data is stored correctly, if 
 not reformat your data in both the genotype.csv and the phenotype.csv files to match the 
-format below.
-{\color{red} \emph{\bf{ \\NOTE: Individual order must match between the genotype and the phenotype file... \\}}} 
-The genotypes.csv file containing the genotype matrix is stored individuals x genetic marker:
+format below. The genotypes.csv file containing the genotype matrix is stored 
+individuals x genetic marker:
+
 \begin{tabular}{lrrrrrrr}
 & Chromosome & Location & Ind1 & Ind2 & ... & IndN \\
 Marker1  & 1 & 0.0 & 1 & 1 & 1 & ... & 2 \\
@@ -137,6 +137,8 @@ Trait3  & ... & ... & 5.1    & 11.1   & 12.3   & ... & 2.0 \\
 ...   & ... & ... & ...    & ...    & ...    & ... & ... \\
 Trait  & ... & ... & 9.8    & 15.8   & 23.0   & ... & 3.4 \\
 \end{tabular}
+
+{\color{red} \emph{\bf{ \\NOTE: Individual order must match between the genotype and the phenotype file... \\}}}
 
 After verifying your files are formatted correctly (this is the source of most errors).
 Start R and load in the data, check that the output looks like below:
