@@ -58,8 +58,8 @@ set.seed(61777369)
 {\color{blue} \tt \bfseries University of Groningen \\
 Groningen Bioinformatics Centre \& GCC \\
 Revision \# 1 \\[24pt]}
-First written: Okt 2011\\
-Last modified: Jul 2016
+First written: Oct 2011\\
+Last modified: Jan 2018
 
 
 \end{center}
@@ -70,10 +70,11 @@ Last modified: Jul 2016
 reconstruct genetic regulatory networks using the R package 'ctl' and the mapctl commandline 
 tool. 
 This tutorial is targetted at people with a basic understanding of genetics and would like to 
-analyse there inbred cross (RIL, DH, BC) or any population using SNP markers. Main focus will 
-be explaining the functionality of the software, and a how-to on using datasets currently in 
-Excel, tab delimited files (.csv) or use $read.cross$ from R/qtl. In the methodology and 
-background only a short introduction in CTL mapping theory is given.
+analyse there inbred cross (RIL, F2, DH, BC) or any outbred population (e.g. Human GWAS) using 
+SNP markers. The main focus will be explaining the functionality of the software, and a how-to 
+format your data for R when using datasets currently stored in Excel format, tab delimited 
+files (.csv) or use $read.cross$ from R/qtl. In the methodology and background only a short 
+introduction in CTL mapping theory is given.
 
 \vfill
 \noindent \verb|Software:      http://www.mapctl.org/download.html|\\
@@ -86,12 +87,12 @@ background only a short introduction in CTL mapping theory is given.
 \nopagebreak
 
 Welcome reader to this tutorial, you'll be thrown into the world of network reconstruction 
-using differential correlations. This methodology CTL mapping is not the easiest but the 
+using differential correlations. The CTL mapping methodology is not the easiest but the 
 results can be of great help unraveling trait to trait interactions in all types of 
-eukaryotes. In this tutorial I'll try to use as few difficult concepts as possible. But
+crosses. In this tutorial I'll try to use as few difficult concepts as possible. But
 some always $sneak$ in.\\
 \\
-Enjoy this tutorial, and good luck hunting that heritability.\\
+Enjoy this tutorial, and good luck hunting that missing heritability.\\
 Danny Arends\\
 \\
 PS. Use a good text editor\\
@@ -102,8 +103,14 @@ PPS. Use a repository / backup system
 \textbf{\sffamily Background \& Methodology}
 \nopagebreak
 
-Some introduction on the methodology, skip this chapter first (DO come back later) if you 
-have a dataset and just want to use the software.
+Differences in correlations between traits within an inbred population are determined at each genetic marker. 
+Phenotypes are assigned to genotype groups and a single phenotype is used to scan all other phenotypes for a 
+loss or gain of correlation. The likelihood profiles (similar to QTL profiles) of this 'loss of correlation' measurement 
+shows a very high degree of overlap with classical QTL profiles. However additional information is available 
+from the phenotype x phenotype interactions. With the right dataset (ideally a combination of: classical 
+phenotypes, protein abundance and gene expression) CTL shows the genetic wiring of the classical phenotypes 
+and identify key players in the genetic / protein network underlying classical phenotypes using QTL and 
+CTL information.
 
 \bigskip
 
@@ -114,30 +121,31 @@ have a dataset and just want to use the software.
 Use the example excel file and simply replace the example data by your own then: 
   $$File->Save As->TODO$$
 
-After you have stored the data as plain text open the files in a text editor (NOT WORD, for 
-windows Notepad++ is a good option) and check to see if your data is stored correctly, if 
-not reformat your data in both the genotype.csv and the phenotype.csv files to match the 
-format below. The genotypes.csv file containing the genotype matrix is stored 
-individuals x genetic marker:
+After you have stored the data as plain text open the files in a text editor (do not 
+format data using MS WORD, for windows Notepad++ is a good option) and check to see 
+if your data is formatted correctly. If this is not the case, please reformat your 
+data to match the example format shown below. 
+
+The genotypes.csv file containing the genotype matrix is stored individuals (rows) x genetic marker (columns):
 
 \begin{tabular}{lrrrrrrr}
-& Chromosome & Location & Ind1 & Ind2 & ... & IndN \\
-Marker1  & 1 & 0.0 & 1 & 1 & 1 & ... & 2 \\
-marker2  & 1 & 5.3 & 1 & 2 & 2 & ... & 1 \\
-marker3  & 1 & 7.8 & 2 & 2 & 1 & ... & 1 \\
-...   & ... & ... & ... & ... & ... & ... & ... \\
-MarkerN  & 7 & 120.1 & 1 & 1 & 1 & ... & 2 \\
+      & Marker1 & Marker2 & Marker3 & ... & MarkerN \\
+Ind1  & 1 & 1 & 1 & ... & 2 \\
+Ind2  & 1 & 2 & 2 & ... & 1 \\
+Ind3  & 2 & 2 & 1 & ... & 1 \\
+...   & ... & ... & ... & ... & ... \\
+IndN  & 1 & 1 & 1 & ... & 2 \\
 \end{tabular}
 
-The phenotypes.csv file containing individuals x trait measurements:
+The phenotypes.csv file containing individuals (rows) x traits (columns) measurements:
 
 \begin{tabular}{lrrrrrrr}
-      & Chromosome & Location & Ind1 & Ind2 & ... & IndN \\
-Trait1  & ... & ... & 5.8    & 11.0   & 9.0    & ... & 1.6 \\
-Trait2  & ... & ... & 6.3    & 12.2   & NA     & ... & 1.3 \\
-Trait3  & ... & ... & 5.1    & 11.1   & 12.3   & ... & 2.0 \\
-...   & ... & ... & ...    & ...    & ...    & ... & ... \\
-Trait  & ... & ... & 9.8    & 15.8   & 23.0   & ... & 3.4 \\
+      & Trait1 & Trait2 & Trait3 & ... & TraitN \\
+Ind1  & 5.8    & 11.0   & 9.0    & ... & 1.6 \\
+Ind2  & 6.3    & 12.2   & NA     & ... & 1.3 \\
+Ind3  & 5.1    & 11.1   & 12.3   & ... & 2.0 \\
+...   & ...    & ...    & ...    & ... & ... \\
+IndN  & 9.8    & 15.8   & 23.0   & ... & 3.4 \\
 \end{tabular}
 
 {\color{red} \emph{\bf{ \\NOTE: Individual order must match between the genotype and the phenotype file... \\}}}
@@ -146,13 +154,10 @@ After verifying your files are formatted correctly (this is the source of most e
 Start R and load in the data, check that the output looks like below:
 <<echo=TRUE,eval=FALSE>>=
   setwd("/Path/To/Data/")
-  genotypes <- read.csv("genotypes.csv",row.names=1, header=FALSE,sep="\t")
-  traits <- read.csv("phenotypes.csv",row.names=1, header=FALSE,sep="\t")
-  genotypes[1:5,1:10]    #Show 5 individuals, 8 markers, and genetic locations
-  traits[1:5,1:10]       #Show 5 individuals, 8 traits, and genetic locations
-  mapinfo <- genotypes[,1:2]
-  genotypes <- genotypes[,-c(1,2)]  # Remove the genetic locations
-  traits <- traits[,-c(1,2)]        # Remove the genetic locations
+  genotypes <- read.csv("genotypes.csv",row.names=1, header=FALSE, sep="\t")
+  traits <- read.csv("phenotypes.csv",row.names=1, header=FALSE, sep="\t")
+  genotypes[1:5,1:10]    #Show 5 individuals, 10 markers
+  traits[1:5,1:10]       #Show 5 individuals, 10 traits
 @
 
 \emph{Use an R/qtl formatted dataset}\\
@@ -202,7 +207,7 @@ We start explaining how to map CTL using the basic options of the $CTLscan$ func
 This function scan CTL and produces an output "CTLobject".
 <<echo=TRUE,eval=FALSE>>=
 require(ctl)                     #Loads the R/ctl package
-data(ath.metab)                  #Loads the example dataset
+data(ath.metabolites)            #Loads the example dataset
 geno   <- ath.metab$genotypes    #Short name
 traits <- ath.metab$phenotypes   #Short name
 
