@@ -16,7 +16,7 @@ void updateR(bool flush){
 }
 
 void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p, 
-              int *nperms, int* permt, int* nthr, double* dcor,  double* perms, double* res, int* verb){
+              int *nperms, int* permt, int* nthr, double* dcor,  double* perms, double* res, int* adj, int* verb){
   GetRNGstate();
   int nindividuals  = (int)(*nind);
   int nmarkers      = (int)(*nmar);
@@ -25,6 +25,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   int npermutations = (int)(*nperms);
   int permtype      = (int)(*permt);
   int nthreads      = (int)(*nthr);
+  int adjust       = (int)(*adj);
   int verbose       = (int)(*verb);
 
   Phenotypes phenotypes;
@@ -80,7 +81,7 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   }else{
     if(verbose) info(", toLOD\n", "");
     updateR(1);
-    ctls = toLODexact(dcors, genoenc, genotypes.nmarkers, phenotypes.nphenotypes);
+    ctls = toLODexact(dcors, genoenc, genotypes.nmarkers, phenotypes.nphenotypes, adjust);
   }
   for(i=0; i < (nphenotypes*nmarkers); i++){
     int m = i % nmarkers;

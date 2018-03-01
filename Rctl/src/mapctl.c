@@ -10,7 +10,7 @@
 
 #ifdef _OPENMP
   #include <omp.h>
-  #define CSTACK_DEFNS 7                                          /* http://stats.blogoverflow.com/2011/08/using-openmp-ized-c-code-with-r/ */
+  #define CSTACK_DEFNS 7 /* http://stats.blogoverflow.com/2011/08/using-openmp-ized-c-code-with-r/ */
   #ifdef USING_R
     #include "Rinterface.h"
   #endif
@@ -18,7 +18,7 @@
   // extern uintptr_t R_CStackStart; /* Initial stack address */
 
   void R_openmp(int* nthr, int* ni, int* ny, double* x, double* ym, double* res) {
-    //R_CStackLimit=(uintptr_t) - 1;                              /* http://stats.blogoverflow.com/2011/08/using-openmp-ized-c-code-with-r/ */
+    //R_CStackLimit=(uintptr_t) - 1; /* http://stats.blogoverflow.com/2011/08/using-openmp-ized-c-code-with-r/ */
 
     int rthreads = (int)(*nthr);                                  /* Requested number of threads */
     int nitems = (int)(*ni);                                      /* Number of items todo */
@@ -45,7 +45,7 @@
 #endif
 
 double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
-                bool doperms, int nperms, int nthreads, bool verbose){
+                bool doperms, int nperms, int nthreads, bool adjust, bool verbose){
 
   //info("Phenotype %d: Mapping", (phenotype+1));
   clvector* genoenc = getGenotypes(genotypes, false);
@@ -53,10 +53,10 @@ double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t p
   double** ctls;
   double*  perms;
   double** scores = ctleffects(phenotypes, genotypes, phenotype, genoenc, nthreads, verbose);
-  if(!doperms){
-    //info(", toLOD\n", "");  // Exact calculation can be used
-    ctls = toLODexact(scores, genoenc, genotypes.nmarkers, phenotypes.nphenotypes);
-  }else{
+  if (!doperms) {
+    info(", toLOD\n", "");  // Exact calculation can be used
+    ctls = toLODexact(scores, genoenc, genotypes.nmarkers, phenotypes.nphenotypes, adjust);
+  } else {
     //info(", Permutation", "");
     perms = permute(phenotypes, genotypes, phenotype, genoenc, nperms, nthreads, false);
     //info(", toLOD\n", "");
