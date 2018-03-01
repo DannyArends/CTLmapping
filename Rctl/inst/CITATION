@@ -8,6 +8,6 @@ citEntry(entry="article",
   volume = 1,
   issue = 6,
   pages = "87-87",
-  doi = "10.21105/joss.0008",
-  textVersion = paste("Arends et al, (2016), Correlation Trait Loci (CTL) mapping: phenotype network inference subject to genotype, Journal of Open Source Software, 1(6), 87, doi:10.21105/joss.0008")
+  doi = "10.21105/joss.00087",
+  textVersion = paste("Arends et al, (2016), Correlation Trait Loci (CTL) mapping: phenotype network inference subject to genotype, Journal of Open Source Software, 1(6), 87, doi:10.21105/joss.00087")
 )
