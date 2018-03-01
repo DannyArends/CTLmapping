@@ -108,7 +108,7 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
       freematrix((void**)cors, ngenotypes);         // Clear correlation and samples data 
       free(nsamples);
     } else {
-      warning("Marker %d only has a single genotype\n", m+1);
+     // warning("Marker %d only has a single genotype\n", m+1);
       dcors[m] = newdvector(phenotypes.nphenotypes);  /*!< Empty Chi^2 values */
     }
   }

@@ -100,7 +100,11 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool
     denom = sqrt(XiP2 - (onedivn * Xi * Xi)) * sqrt(YiP2[j] - (onedivn * Yi[j] * Yi[j]));
     if (denom == 0) {
       if(verbose) info("Denominator = 0 in correlation (Too few samples in a genotype)\n", "");
+      #ifdef USING_R
       cors[j] = R_NaN;
+      #else
+      cors[j] = NAN;
+      #endif
     } else {
       cors[j] = nom / denom;
     }

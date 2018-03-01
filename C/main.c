@@ -89,13 +89,13 @@ int main(int argc, char **argv){
 
       double** ctls;
       double*  perms;
-      double** scores = ctleffects(phenotypes, genotypes, phenotype, genoenc, verbose);
+      double** scores = ctleffects(phenotypes, genotypes, phenotype, genoenc, 1, verbose);
       if(!doperms){
         info(", toLOD\n");  // Exact calculation can be used
         ctls = toLODexact(scores, genoenc, nmar, nphe);
       }else{
         info(", Permutation");
-        perms = permute(phenotypes, genotypes, phenotype, genoenc, nperms, false);
+        perms = permute(phenotypes, genotypes, phenotype, genoenc, nperms, 1, false);
         info(", toLOD\n");
         ctls = toLOD(scores, perms, nmar, nphe, nperms);
         free(perms);

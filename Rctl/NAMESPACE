@@ -1,3 +1,5 @@
+useDynLib(ctl, .registration=TRUE)
+
 exportPattern("^[^\\.]")
 
 importFrom("grDevices", "colorRampPalette", "colors", "dev.off", "gray.colors", "png", "postscript", "rgb")

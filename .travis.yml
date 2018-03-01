@@ -2,3 +2,8 @@ language: r
 cache: packages
 before_install:
   - cd Rctl
+
+# blocklist
+branches:
+  except:
+  - Beacon
