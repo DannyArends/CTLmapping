@@ -120,7 +120,7 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool
       if(verbose) info("Correlation '%.8f' not in range [-1, 1]\n", cors[j]);
     }
   }
-  free(Yi); free(YiP2); free(XiYi);
+  free(onedivn); free(Yi); free(YiP2); free(XiYi);
   return(cors);
 }
 
