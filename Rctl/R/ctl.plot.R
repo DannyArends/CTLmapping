@@ -72,7 +72,7 @@ plotExpression <- function(genotypes, phenotypes, traits=c("X3.Hydroxypropyl", "
 
 plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"), 
                          onlySignificant = TRUE, significance = 0.05, gap = 25, plot.cutoff = FALSE, 
-                         do.legend = TRUE, cex.legend = 1.0, ydim = NULL, ylab = "-log10(P-value)", ...){
+                         do.legend = TRUE, legend.pos = "topleft", cex.legend = 1.0, ydim = NULL, ylab = "-log10(P-value)", ...){
 
   if(missing(x) || is.null(x)) stop("argument 'x' is missing, with no default")
 
@@ -101,9 +101,13 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"),
   summarized <- apply(ctlsubset, 1, sum) # Summarized scores for all significant
   x$qtl[is.infinite(x$qtl)] <- max(x$qtl[is.finite(x$qtl)])
   if(is.null(ydim)) {
-    maxy <- max(c(7.5, ctlsubset, x$qtl))
-    if(type[1] == "barplot") maxy <- max(c(7.5, summarized, x$qtl)) # Maximum of barplot is summarized
-    ydim <- c(-10, maxy)
+    maxy <- max(c(7.5, x$qtl))
+    miny <- max(c(7.5, ctlsubset)) # Maximum of barplot is summarized
+    if(type[1] == "barplot") {
+      maxy <- max(c(7.5, x$qtl)) # Maximum of barplot is summarized
+      miny <- max(c(7.5, summarized)) # Maximum of barplot is summarized
+    }
+    ydim <- c(-miny, maxy)
   }
   plot(c(0.5, maxX+0.5), ydim, type='n',xlab="", ylab=ylab, ...)
   points(pointsx, rep(0, length(pointsx)), lwd = 1, pch="|",cex = 0.2)
@@ -114,7 +118,6 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"),
   ltype    <- 'l'
   if(type[1]=="gwas") ltype <- 'h' # GWAS plot uses bars
   #colfunc <- colorRampPalette(c("red", "blue", "darkgreen", "orange"))
-  mycolors <- c("red", "orange")
 
   p  <- rep(0,nrow(ctlsubset))
   mx <- 0
@@ -127,11 +130,11 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"),
             mp <- mx; mx <- pointsx[idx]
             lbar <- abs(mp - mx)/2; rbar <- abs(pointsx[idx+1] - mx)/2;
           }
-          rect(mx-lbar, -p[idx],mx+rbar, -(p[idx]+d[idx]), col=mycolors[i], lwd = 0, lty = 0)
+          rect(mx-lbar, -p[idx],mx+rbar, -(p[idx]+d[idx]), col=i, lwd = 0, lty = 0)
         }
       } else {                          # Line or GWAS plot
         if(is.null(mapinfo)) {          # Without mapinfo coordinated match
-          points(pointsx, -d, type = ltype, lwd = 1, col = mycolors[i])
+          points(pointsx, -d, type = ltype, lwd = 1, col = i)
         }else{                          # Go through the chromosomes
           for(chr in unique(mapinfo[, 1])){
             idxes <- which(mapinfo[, 1] == chr)
@@ -139,7 +142,7 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"),
               lty   <- 1
               col <- c("black","orange")[(as.numeric(chr) %% 2)+1]
             }else{                      # Lines
-              lty <- i ; col <- mycolors[i]
+              lty <- i ; col <- i
             }
             points(pointsx[idxes], -d[idxes], type = ltype, lwd = 2, lty = lty, col = col)
           }
@@ -160,7 +163,7 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"),
     if(plot.cutoff) legend("topright", mleg, col=c("green"), lty=rep(2), lwd=1, cex=cex.legend, bty='n')
     lty <- 1:ntraits
     if(type[1] == "barplot") lty <- 1
-    legend("topleft", colnames(ctlsubset), col=mycolors, lwd=1, lty=lty, cex=cex.legend, bty='n')
+    legend(legend.pos, colnames(ctlsubset), col=1:ncol(ctlsubset), lwd=1, lty=lty, cex=cex.legend, bty='n')
   }
   # Plot the summarized lines and QTLs
   if (is.null(mapinfo)) {
