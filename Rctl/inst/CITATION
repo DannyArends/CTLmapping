@@ -1,11 +1,13 @@
 citHeader("To cite R/ctl in publications use:")
 
 citEntry(entry="article",
-         title = "Correlated Trait Loci {CTL} mapping",
-         author = personList(person("Danny", "Arends"), person("Pjotr", "Prins"), person("Ritsert", "Jansen", "C.")),
-         journal = "Nucl. Acids Res.",
-         year = 2012,
-         volume = 00,
-         pages = "000-000",
-         textVersion = paste("Arends et al. (2012) Correlated Trait Loci (CTL) mapping. Nucl. Acids Res. 00:000-000")
-         )
+  title = "Correlation Trait Loci {CTL} mapping: phenotype network inference subject to genotype",
+  author = personList(person("Danny", "Arends"), person("Yang", "Li"), person("Gudrun", "Brockmann", "A."), person("Ritsert", "Jansen", "C."), person("Robert", "Williams", "W."), person("Pjotr", "Prins")),
+  journal = "Journal of Open Source Software",
+  year = 2016,
+  volume = 1,
+  issue = 6,
+  pages = "87-87",
+  doi = "10.21105/joss.00087",
+  textVersion = paste("Arends et al, (2016), Correlation Trait Loci (CTL) mapping: phenotype network inference subject to genotype, Journal of Open Source Software, 1(6), 87, doi:10.21105/joss.00087")
+)
