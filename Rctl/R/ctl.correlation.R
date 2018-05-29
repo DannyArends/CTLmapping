@@ -9,14 +9,18 @@
 #
 
 correlation <- function(x, y, nthreads = 1, verbose = FALSE){
-  if(is.matrix(y)){           # Call the optimized loop unrolled version
+  if(is.matrix(y)) {           # Call the optimized loop unrolled version
     if(nrow(y) != length(x)) stop(paste0("incompatible dimensions", length(x), nrow(y)))
+    y[is.na(y)] <- -999
+    x[is.na(x)] <- -999
     res <- rep(0, ncol(y));
     result <- .C("R_correlation1toN", x = as.double(x), y = as.double(y), res = as.double(res), 
                                       as.integer(length(x)), as.integer(ncol(y)), as.integer(nthreads),
                                       as.integer(verbose), PACKAGE="ctl")
-  }else{
+  } else {
     if(length(y) != length(x)) stop("incompatible dimensions")
+    y[is.na(y)] <- -999
+    x[is.na(x)] <- -999
     res <- c(0);
     result <- .C("R_correlation", x = as.double(x), y = as.double(y), res = as.double(res), as.integer(length(x)), as.integer(verbose), PACKAGE="ctl")
   }
