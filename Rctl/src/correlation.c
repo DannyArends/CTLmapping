@@ -44,7 +44,7 @@ void R_chiSQN(int* nr, double* r, double* res, int* phe, int* nsamples, int* nph
 void R_chiSQtoP(double* Cv, int* Dof, double* res){ res[0] = chiSQtoP((double)(*Cv), (int)(*Dof)); }
 
 double correlation(const double* x, const double* y, size_t dim, bool verbose){
-  size_t i;
+  size_t i, n = 0;
   double XiYi = 0.0, Xi = 0.0, Yi = 0.0, XiP2 = 0.0, YiP2 = 0.0;
   //#pragma omp parallel for reduction(+:Xi) reduction(+:Yi) reduction(+:XiP2) reduction(+:YiP2) reduction(+:XiYi)
   for(i = 0; i < dim; i++){
@@ -54,9 +54,12 @@ double correlation(const double* x, const double* y, size_t dim, bool verbose){
       XiP2 += x[i] * x[i];
       YiP2 += y[i] * y[i];
       XiYi += x[i] * y[i];
+      n++;
+    }else if(verbose) {
+      info("Missing value at i=%d\n", i);
     }
   }
-  double onedivn = 1.0 / dim;
+  double onedivn = 1.0 / n;
   double nom = (XiYi - (onedivn *Xi * Yi));
   double denom = sqrt(XiP2 - onedivn * pow(Xi, 2.0)) * sqrt(YiP2 - onedivn * pow(Yi, 2.0));
   double cor = nom / denom;
@@ -69,8 +72,9 @@ double correlation(const double* x, const double* y, size_t dim, bool verbose){
 double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool verbose){
   size_t i, j;
   double nom, denom;
-  double onedivn = (1.0 / dim), Xi = 0.0, XiP2 = 0.0;
+  double Xi = 0.0, XiP2 = 0.0;
 
+  double* onedivn = newdvector(ny);
   double* cors   = newdvector(ny);
   double* Yi     = newdvector(ny);
   double* YiP2   = newdvector(ny);
@@ -81,20 +85,27 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool
   // Cache efficient, unrolled 1:N correlation loop
   for(j = 0; j < ny; j++){   // Loop over all traits
     // ? Possible openmp directive ?:  #pragma omp parallel for shared(XiYi, Yi, YiP2)
-    for(i = 0; i < dim; i++){ if(y[j][i] != MISSING && x[i] != MISSING) { // If both are available
-      if(j==0) {
-        Xi   += x[i];
-        XiP2 += x[i] * x[i];
+    size_t n = 0;
+    for(i = 0; i < dim; i++){
+      if(y[j][i] != MISSING && x[i] != MISSING) { // If both are available
+        if(j==0) {
+          Xi   += x[i];
+          XiP2 += x[i] * x[i];
+        }
+        XiYi[j] += x[i] * y[j][i];
+        Yi[j]   += y[j][i];
+        YiP2[j] += y[j][i] * y[j][i];
+        n++;
+      }else if(verbose) {
+        info("Missing value at i=%d\n", i);
       }
-      XiYi[j] += x[i] * y[j][i];
-      Yi[j]   += y[j][i];
-      YiP2[j] += y[j][i] * y[j][i];
-    }}
+    }
+    onedivn[j] = 1.0 / (double)n;
   }
   // ? Possible openmp directive ?:  #pragma omp parallel for private(nom, denom) shared(cors)
   for(j = 0; j < ny; j++) {
-    nom   = (XiYi[j] - (onedivn*Xi*Yi[j]));
-    denom = sqrt(XiP2 - (onedivn * Xi * Xi)) * sqrt(YiP2[j] - (onedivn * Yi[j] * Yi[j]));
+    nom   = (XiYi[j] - (onedivn[j]*Xi*Yi[j]));
+    denom = sqrt(XiP2 - (onedivn[j] * Xi * Xi)) * sqrt(YiP2[j] - (onedivn[j] * Yi[j] * Yi[j]));
     if(denom == 0){
       if(verbose) info("Denominator = 0 in correlation (Too few samples in a genotype)\n", "");
       #ifdef USING_R

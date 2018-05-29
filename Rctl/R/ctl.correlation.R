@@ -38,19 +38,19 @@ chiSQtoP <- function(cv, dof){
 }
 
 getCorrelations <- function(genotypes, phenotypes, phenocol = 1, marker.col = 1, parametric = FALSE, verbose = TRUE){
+  phenotypes <- apply(phenotypes, 2, as.numeric)
   marker <- genotypes[,marker.col]
   result <- NULL; nums <- NULL
   if(!parametric){
     st <- proc.time()
-    phenotypes <- apply(phenotypes, 2, rank) # Parametric vs Non-Parametric testing
+    phenotypes <- apply(phenotypes, 2, rank, na.last="keep") # Parametric vs Non-Parametric testing
     if(verbose) cat("Data ranking finished after:",(proc.time()-st)[3],"seconds\n")
   }
   for(x in names(table(marker))){
     idx <- which(marker == x)
-    isNA <- which(apply(apply(phenotypes[idx,], 1, is.na),2,sum) > 0)
-    if(length(isNA) > 0) idx <- idx[-isNA]
+    phenotypes[is.na(phenotypes)] <- -999
     pheX <- phenotypes[idx, phenocol]
-    pheM <- as.matrix(phenotypes[idx, ])
+    pheM <- phenotypes[idx, ]
     result$correlations <- cbind(result$correlations, correlation(pheX, pheM))
     result$samplesize <- c(result$samplesize, length(idx))
   }
