@@ -72,7 +72,7 @@ CTLscan <- function(genotypes, phenotypes, phenocol, nperm = 100, nthreads = 1,
   invisible(ctlobject)
 }
 
-CTLmapping <- function(genotypes, phenotypes, phenocol = 1, nperm = 100, nthreads = 1, strategy = c("Exact", "Full", "Pairwise"), adjust = TRUE, qtl = TRUE, verbose = FALSE){
+CTLmapping <- function(genotypes, phenotypes, phenocol = 1, nperm = 100, nthreads = 1, strategy = c("Exact", "Full", "Pairwise"), adjust = TRUE, qtl = TRUE, verbose = FALSE) {
   if(missing(genotypes) || is.null(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
   if(class(phenotypes) != "matrix") {
@@ -88,7 +88,7 @@ CTLmapping <- function(genotypes, phenotypes, phenocol = 1, nperm = 100, nthread
   n.ind = nrow(genotypes); n.mar = ncol(genotypes); n.phe = ncol(phenotypes)
   ctlscan <- list()
   ctlscan$qtl <- rep(0, n.mar)
-  if(qtl) ctlscan$qtl <- QTLmapping(genotypes = genotypes, phenotypes = phenotypes, phenocol = phenocol)
+  if(qtl) ctlscan$qtl <- QTLmapping(genotypes = genotypes, phenotypes = phenotypes, phenocol = phenocol, verbose = verbose)
 
   # In C we use -999 for missing genotype data
   if(any(is.na(genotypes)))  genotypes[is.na(genotypes)]   <- -999
