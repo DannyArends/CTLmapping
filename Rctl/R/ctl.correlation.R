@@ -34,7 +34,7 @@ chiSQN <- function(correlations, nsamples){
 }
 
 chiSQtoP <- function(cv, dof){
-  unlist(lapply(cv,function(x){
+  unlist(lapply(cv, function(x){
     res <- 0;
     result <- .C("R_chiSQtoP", Cv = as.double(x), Dof = as.integer(dof), res = as.double(res), PACKAGE="ctl")
     return(result$res)
