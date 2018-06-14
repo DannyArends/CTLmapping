@@ -30,7 +30,7 @@ void printhelp(){
 /** Main function of the command line tool. */
 int main(int argc, char **argv){
   printf("Correlated Trait Locus (CTL) mapping\n");
-  printf("(c) 2012 GBIC, written by Danny Arends\n");
+  printf("(c) 2012-2020 GBIC - RUG & HU-Berlin, written by Danny Arends\n");
   printf("Number of command line arguments passed: %d\n", (argc-1));
 #ifdef TEST
   char*  genofilename  = "../D/test/data/genotypes.csv";
@@ -92,7 +92,7 @@ int main(int argc, char **argv){
       double** scores = ctleffects(phenotypes, genotypes, phenotype, genoenc, 1, verbose);
       if(!doperms){
         info(", toLOD\n");  // Exact calculation can be used
-        ctls = toLODexact(scores, genoenc, nmar, nphe);
+        ctls = toLODexact(scores, genoenc, nmar, nphe, FALSE);
       }else{
         info(", Permutation");
         perms = permute(phenotypes, genotypes, phenotype, genoenc, nperms, 1, false);
