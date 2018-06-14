@@ -12,7 +12,7 @@ else
 endif
 
 CFLAGS = -I $(RINCLUDE) -std=gnu99 -O3 -pedantic -w -Wall -Wextra -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
-LDFLAGS = -lm -L $(RLIB) -lR -lRblas -O3
+LDFLAGS = -lm -L $(RLIB) -lR -O3
 #### End of system configuration section. ####
 
 SOURCES    = $(srcdir)/vector.c $(srcdir)/matrix.c $(srcdir)/sort.c $(srcdir)/structs.c \
