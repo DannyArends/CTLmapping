@@ -32,6 +32,8 @@ int main(int argc, char **argv){
   printf("Correlated Trait Locus (CTL) mapping\n");
   printf("(c) 2012-2020 GBIC - RUG & HU-Berlin, written by Danny Arends\n");
   printf("Number of command line arguments passed: %d\n", (argc-1));
+  char *r_argv[] = { "R", "--silent" };
+  Rf_initEmbeddedR(2, r_argv);
 #ifdef TEST
   char*  genofilename  = "../D/test/data/genotypes.csv";
   char*  phenofilename = "../D/test/data/phenotypes.csv";
@@ -115,6 +117,7 @@ int main(int argc, char **argv){
   }
   info("All done. Thank you for using mapctl\n", "");
   info("Please cite: CTL mapping - Journal - Arends et al. [2013]\n", "");
+  Rf_endEmbeddedR(0);
   return 0;
 }
 
