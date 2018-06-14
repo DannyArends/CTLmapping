@@ -102,10 +102,10 @@ plot.CTLscan <- function(x, mapinfo = NULL, type = c("barplot","gwas","line"),
   x$qtl[is.infinite(x$qtl)] <- max(x$qtl[is.finite(x$qtl)])
   if(is.null(ydim)) {
     maxy <- max(c(7.5, x$qtl))
-    miny <- max(c(7.5, ctlsubset)) # Maximum of barplot is summarized
+    miny <- max(c(2.5, ctlsubset)) # Maximum of barplot is summarized
     if(type[1] == "barplot") {
       maxy <- max(c(7.5, x$qtl)) # Maximum of barplot is summarized
-      miny <- max(c(7.5, summarized)) # Maximum of barplot is summarized
+      miny <- max(c(2.5, summarized)) # Maximum of barplot is summarized
     }
     ydim <- c(-miny, maxy)
   }
