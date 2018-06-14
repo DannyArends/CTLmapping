@@ -23,10 +23,10 @@
       #include <float.h>
 
       #define info(format, ...) { \
-        printf(format, #__VA_ARGS__); \
+        printf(format, __VA_ARGS__); \
         fflush(stdout); }
       #define err(format, ...) { \
-        printf(format, #__VA_ARGS__); \
+        printf(format, __VA_ARGS__); \
         exit(-1); }
     #else
       #define USING_R
