@@ -8,7 +8,7 @@ RINCLUDE = "${R_HOME}/include/"
 ifeq ($(OS),Windows_NT)
 	RLIB = "${R_HOME}/bin/x64/"
 else
-	RLIB = "${R_HOME}/lib/"
+	RLIB = "/usr/lib/"
 endif
 
 CFLAGS = -I $(RINCLUDE) -std=gnu99 -O3 -pedantic -w -Wall -Wextra -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
