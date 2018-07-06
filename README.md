@@ -43,10 +43,15 @@ install a development version see: [doc/DEVELOPMENT.md](doc/DEVELOPMENT.md)
 
 CTL mapping uses the build in R framework to test the package 
 for global regressions and unit-testing of documented functions.
-Tests can be executed from the commandline, by using the following command:
+Tests can be executed from the commandline, by using the 
+following command:
 
     R CMD check Rctl                                      # Run the unit-tests of the R package
 
+Make sure that when running the tests using MS Windows the Rtools 
+package is installed. Rtools for MS Windows can be installed from 
+[here](https://cran.r-project.org/bin/windows/Rtools/)
+    
 ### Documentation
 A short online introduction is [available](doc/STARTINGinR.md) 
 and help files with examples are also available for almost all functions in R using:
