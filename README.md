@@ -46,7 +46,7 @@ for global regressions and unit-testing of documented functions.
 Tests can be executed from the commandline, by using the 
 following command:
 
-    R CMD check Rctl                                      # Run the unit-tests of the R package
+    R CMD check Rctl                    # Run the unit-tests of the R package
 
 Make sure that when running the tests using MS Windows the Rtools 
 package is installed. Rtools for MS Windows can be installed from 
