@@ -54,8 +54,10 @@ package is installed. Rtools for MS Windows can be installed from
     
 ### Documentation
 A short online introduction is [available](doc/STARTINGinR.md), or 
-learn by doing by following the workshop on CTL mapping, which can be found [here](https://www.dannyarends.nl/ctc/)
-and help files with examples are also available for almost all functions in R using:
+learn by doing by following the workshop on CTL mapping, which can 
+be found [here](https://www.dannyarends.nl/ctc/). Additionally 
+almost all R function come with a help files with examples. In R 
+you can access the help using:
 
 ```R
 library(ctl)                            # Load the library
