@@ -53,7 +53,8 @@ package is installed. Rtools for MS Windows can be installed from
 [here](https://cran.r-project.org/bin/windows/Rtools/)
     
 ### Documentation
-A short online introduction is [available](doc/STARTINGinR.md) 
+A short online introduction is [available](doc/STARTINGinR.md), or 
+learn by doing by following the workshop on CTL mapping, which can be found [here](https://www.dannyarends.nl/ctc/)
 and help files with examples are also available for almost all functions in R using:
 
 ```R
@@ -68,7 +69,7 @@ Issues can be raised through the github issue tracker.
 
 ### Contributing 
 
-Want to contribute? Great! We're actively looking for someone to do the website 
+Want to contribute? Great! We're actively looking for someone to manage the CTL website 
 [www.mapctl.org](http://www.mapctl.org "www.mapctl.org")
 
 Contribute to CTL source code by forking the Github repository, and sending us pull requests.
