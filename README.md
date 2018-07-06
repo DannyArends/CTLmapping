@@ -11,7 +11,10 @@ additional insights overlooked by the classical QTL approach.
 
 #### Algorithm
 
-Learn more about the [algorithm](doc/ALGORITHM.md) behind CTL mapping
+Learn more about the [algorithm](doc/ALGORITHM.md) behind CTL mapping. 
+Alternatively I gave a workshop during the complex traits consortium 
+meeting in Glasgow to demonstrate CTL mapping on an example data set. 
+The presentation and code can be found on my [website](https://www.dannyarends.nl/ctc/)
 
 ### Installing the R package from CRAN
 The quickest and prefered way to start mapping CTLs, is to 
