@@ -42,6 +42,4 @@ for(i in 1:n.perm) {
 
 boxplot(time.all)
 plot(time.all[,"ref"], time.all[,"cor"])
-t.test(time.all[,"ref"], time.all[,"cor"], paired = TRUE)
 plot(time.all[,"ref"], time.all[,"omp"])
-t.test(time.all[,"ref"], time.all[,"omp"], paired = TRUE)
