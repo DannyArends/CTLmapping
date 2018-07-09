@@ -3,9 +3,16 @@ srcdir = ../Rctl/src
 CC = gcc
 LINK = ar
 DEFS = -DSTANDALONE
+RINCLUDE = "${R_HOME}/include/"
 
-CFLAGS = -I /sw/cs300_centos6.6/r/3.3.0/centos6.7_gnu4.8.2/lib64/R/include/ -std=gnu99 -O3 -pedantic -w -Wall -Wextra -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
-LDFLAGS = -lm -L /sw/cs300_centos6.6/r/3.3.0/centos6.7_gnu4.8.2/lib64/R/lib -lR -lRblas -O3
+ifeq ($(OS),Windows_NT)
+	RLIB = "${R_HOME}/bin/x64/"
+else
+	RLIB = "/usr/lib/"
+endif
+
+CFLAGS = -I $(RINCLUDE) -std=gnu99 -O3 -pedantic -w -Wall -Wextra -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
+LDFLAGS = -lm -L $(RLIB) -lR -O3
 #### End of system configuration section. ####
 
 SOURCES    = $(srcdir)/vector.c $(srcdir)/matrix.c $(srcdir)/sort.c $(srcdir)/structs.c \
@@ -40,13 +47,13 @@ shared: DEFS += -fPIC
 shared: clean $(SOURCES) $(SHARED)
 
 $(EXECUTABLE): $(OBJECTS) main.o
-	$(CC) $(LDFLAGS) main.o $(OBJECTS) -o $@
+	$(CC)  main.o $(OBJECTS) $(LDFLAGS) -o $@
 
 $(STATIC): $(OBJECTS)
 	$(LINK) rcs $@ $(OBJECTS)
 
 $(SHARED): $(OBJECTS)
-	$(CC) -shared -Wl $(OBJECTS) -o $@
+	$(CC) -shared  $(OBJECTS) $(LDFLAGS)  -o $@
 
 .c.o:
 	$(CC) $(CFLAGS) $< -o $@

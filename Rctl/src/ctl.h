@@ -23,19 +23,19 @@
       #include <float.h>
 
       #define info(format, ...) { \
-        printf(format, ## __VA_ARGS__); \
+        printf(format, __VA_ARGS__); \
         fflush(stdout); }
       #define err(format, ...) { \
-        printf(format, ## __VA_ARGS__); \
+        printf(format, __VA_ARGS__); \
         exit(-1); }
     #else
       #define USING_R
       #include <R.h>
       #include <Rmath.h>
       #define info(format, ...) { \
-        Rprintf(format, ## __VA_ARGS__);}
+        Rprintf(format, __VA_ARGS__);}
       #define err(format, ...) { \
-        error(format, ## __VA_ARGS__);}
+        error(format, __VA_ARGS__);}
       #endif
     
   #endif //__CTL_H__

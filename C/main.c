@@ -30,8 +30,10 @@ void printhelp(){
 /** Main function of the command line tool. */
 int main(int argc, char **argv){
   printf("Correlated Trait Locus (CTL) mapping\n");
-  printf("(c) 2012 GBIC, written by Danny Arends\n");
+  printf("(c) 2012-2020 GBIC - RUG & HU-Berlin, written by Danny Arends\n");
   printf("Number of command line arguments passed: %d\n", (argc-1));
+  char *r_argv[] = { "R", "--silent" };
+  Rf_initEmbeddedR(2, r_argv);
 #ifdef TEST
   char*  genofilename  = "../D/test/data/genotypes.csv";
   char*  phenofilename = "../D/test/data/phenotypes.csv";
@@ -91,12 +93,12 @@ int main(int argc, char **argv){
       double*  perms;
       double** scores = ctleffects(phenotypes, genotypes, phenotype, genoenc, 1, verbose);
       if(!doperms){
-        info(", toLOD\n");  // Exact calculation can be used
-        ctls = toLODexact(scores, genoenc, nmar, nphe);
+        info(", toLOD\n", "");  // Exact calculation can be used
+        ctls = toLODexact(scores, genoenc, nmar, nphe, false);
       }else{
-        info(", Permutation");
+        info(", Permutation", "");
         perms = permute(phenotypes, genotypes, phenotype, genoenc, nperms, 1, false);
-        info(", toLOD\n");
+        info(", toLOD\n", "");
         ctls = toLOD(scores, perms, nmar, nphe, nperms);
         free(perms);
       }
@@ -113,8 +115,9 @@ int main(int argc, char **argv){
     freematrix((void**)phenotypes.data, nphe);
     freematrix((void**)genotypes.data, nmar);
   }
-  info("All done. Thank you for using mapctl\n");
-  info("Please cite: CTL mapping - Journal - Arends et al. [2013]\n");
+  info("All done. Thank you for using mapctl\n", "");
+  info("Please cite: CTL mapping - Journal - Arends et al. [2013]\n", "");
+  Rf_endEmbeddedR(0);
   return 0;
 }
 

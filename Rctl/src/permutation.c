@@ -96,6 +96,7 @@ double** toLODexact(double** scores, clvector* genoenc, size_t nmar, size_t nphe
     size_t Dof = (genoenc[m].nelements-1);
     for(p = 0; p < nphe; p++){
       pval = chiSQtoP(scores[m][p], Dof);
+      //printf("score, %f, %d, pval:%f\n",scores[m][p], genoenc[m].nelements, pval);
       if(pval > 1 || pval < 0) err("p-value '%.8f' not in range [0, 1]\n", pval);
       if(adjust) pval *= nmar * nphe;
       if(pval < 1){

@@ -9,14 +9,18 @@
 #
 
 correlation <- function(x, y, nthreads = 1, verbose = FALSE){
-  if(is.matrix(y)){           # Call the optimized loop unrolled version
+  if(is.matrix(y)) {           # Call the optimized loop unrolled version
     if(nrow(y) != length(x)) stop(paste0("incompatible dimensions", length(x), nrow(y)))
+    y[is.na(y)] <- -999
+    x[is.na(x)] <- -999
     res <- rep(0, ncol(y));
     result <- .C("R_correlation1toN", x = as.double(x), y = as.double(y), res = as.double(res), 
                                       as.integer(length(x)), as.integer(ncol(y)), as.integer(nthreads),
                                       as.integer(verbose), PACKAGE="ctl")
-  }else{
+  } else {
     if(length(y) != length(x)) stop("incompatible dimensions")
+    y[is.na(y)] <- -999
+    x[is.na(x)] <- -999
     res <- c(0);
     result <- .C("R_correlation", x = as.double(x), y = as.double(y), res = as.double(res), as.integer(length(x)), as.integer(verbose), PACKAGE="ctl")
   }
@@ -30,7 +34,7 @@ chiSQN <- function(correlations, nsamples){
 }
 
 chiSQtoP <- function(cv, dof){
-  unlist(lapply(cv,function(x){
+  unlist(lapply(cv, function(x){
     res <- 0;
     result <- .C("R_chiSQtoP", Cv = as.double(x), Dof = as.integer(dof), res = as.double(res), PACKAGE="ctl")
     return(result$res)
@@ -38,19 +42,19 @@ chiSQtoP <- function(cv, dof){
 }
 
 getCorrelations <- function(genotypes, phenotypes, phenocol = 1, marker.col = 1, parametric = FALSE, verbose = TRUE){
+  phenotypes <- apply(phenotypes, 2, as.numeric)
   marker <- genotypes[,marker.col]
   result <- NULL; nums <- NULL
   if(!parametric){
     st <- proc.time()
-    phenotypes <- apply(phenotypes, 2, rank) # Parametric vs Non-Parametric testing
+    phenotypes <- apply(phenotypes, 2, rank, na.last="keep") # Parametric vs Non-Parametric testing
     if(verbose) cat("Data ranking finished after:",(proc.time()-st)[3],"seconds\n")
   }
   for(x in names(table(marker))){
     idx <- which(marker == x)
-    isNA <- which(apply(apply(phenotypes[idx,], 1, is.na),2,sum) > 0)
-    if(length(isNA) > 0) idx <- idx[-isNA]
+    phenotypes[is.na(phenotypes)] <- -999
     pheX <- phenotypes[idx, phenocol]
-    pheM <- as.matrix(phenotypes[idx, ])
+    pheM <- phenotypes[idx, ]
     result$correlations <- cbind(result$correlations, correlation(pheX, pheM))
     result$samplesize <- c(result$samplesize, length(idx))
   }

@@ -5,6 +5,7 @@ MOVE = mv
 CSRC = ./C
 DSRC = ./D
 RDOC = ./Rctl/vignettes
+RPDF = ./Rctl/inst/doc
 #### End of system configuration section. ####
 
 all: static shared installR versionC
@@ -43,6 +44,7 @@ checkR: clean
   $(RCMD) Sweave manual.Rnw; \
   pdflatex manual.tex;\
   rm -rf manual.aux manual.log manual.tex manual.aux.Rcheck
+	$(MOVE) $(RDOC)/manual.pdf $(RPDF)
 	$(RCMD) check --no-tests Rctl
 	$(MAKE) clean
 
@@ -50,11 +52,17 @@ checkR: clean
 installR: clean
 	$(RCMD) INSTALL Rctl
 	$(MAKE) clean
+ 
+# target: buildR - Build the R version for CRAN submission
+buildR: clean
+	$(RCMD) build Rctl
+	$(MAKE) clean
 
 # target: clean - Cleanup
 clean:
 	rm -f mapctl *a *.so q.log
-	rm -f C/*o C/summary.txt 
+	rm -f C/*o C/summary.txt
+	rm -f $(RPDF)/manual.pdf
 	rm -rf Rctl/src/*o
 	rm -rf Rctl.Rcheck
 	cd $(RDOC); \
