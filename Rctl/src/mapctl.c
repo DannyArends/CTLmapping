@@ -39,7 +39,10 @@
     }  /* All threads join master thread and disband */
     free(y);
   }
-
+#else
+  void R_openmp(int* nthr, int* ni, int* ny, double* x, double* ym, double* res) {
+    info("Unfortunately, openMP is not supported on your platform\n", "");
+  }
 #endif
 
 double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
