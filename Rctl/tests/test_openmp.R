@@ -37,7 +37,7 @@ for(i in 1:n.perm) {
   time.all <- rbind(time.all, c(time.ref, time.cor, time.omp))
 
   if(!all(res.ref == res.cor)) stop("ref != cor\n")   # When results differ, stop
-  if(!all(res.ref == res.omp)) stop("ref != mp\n")     # When results differ, stop
+  if(!all(res.ref == res.omp)) stop("ref != mp\n")    # When results differ, stop
 }
 
 boxplot(time.all)

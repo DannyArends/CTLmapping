@@ -8,7 +8,7 @@
  **********************************************************************/
 #include "mapctl.h"
 
-#ifndef _OPENMP
+#ifdef _OPENMP
   #include <omp.h>
   #define CSTACK_DEFNS 7                                          /* http://stats.blogoverflow.com/2011/08/using-openmp-ized-c-code-with-r/ */
 
