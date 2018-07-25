@@ -8,7 +8,7 @@
  **********************************************************************/
 #include "mapctl.h"
 
-#ifdef _OPENMP
+#ifndef _OPENMP
   #include <omp.h>
   #define CSTACK_DEFNS 7                                          /* http://stats.blogoverflow.com/2011/08/using-openmp-ized-c-code-with-r/ */
 
@@ -42,6 +42,14 @@
 #else
   void R_openmp(int* nthr, int* ni, int* ny, double* x, double* ym, double* res) {
     info("Unfortunately, openMP is not supported on your platform\n", "");
+    info("Using a basic for loop on 1 thread\n", "");
+    int nitems = (int)(*ni);                                      /* Number of items todo */
+    int ylength = (int)(*ny);                                     /* First dimension of y */
+    double** y = asdmatrix(nitems, ylength, ym);                  /* y matrix */
+    for(int j = 0; j < nitems; j++) {                                                 /* Do work we are assigned */
+      res[j] = correlation(x, y[j], ylength, false);
+    }
+    free(y);
   }
 #endif
 
