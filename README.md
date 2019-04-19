@@ -3,6 +3,7 @@
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ctl)](http://cran.r-project.org/package=ctl)
 [![JOSS](http://joss.theoj.org/papers/10.21105/joss.00087/status.svg)](http://joss.theoj.org/papers/10.21105/joss.00087)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.154465.svg)](https://doi.org/10.5281/zenodo.154465)
+[![license](https://img.shields.io/github/license/DannyArends/CTLmapping.svg?style=flat)](https://github.com/DannyArends/CTLmapping/blob/master/LICENSE.txt)
 
 This repository contains the source code for the Correlated Trait Locus (CTL) mapping algorithm. 
 CTL mapping is a novel approach to detect genetic regulation of phenotypes in natural and 
