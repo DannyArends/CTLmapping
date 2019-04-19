@@ -3,6 +3,10 @@
 %ctl.network.R
 \alias{CTLnetwork.addmarker}
 
+%ctl.effects.R
+\alias{ctleffects}
+\alias{ctlmarker}
+
 %ctl.correlation.R
 \alias{correlation}
 \alias{chiSQN}

@@ -5,12 +5,13 @@
   Plot the CTL for genome-wide CTL on multiple traits (the output of \code{\link{CTLscan}}).
 }
 \usage{
-\method{image}{CTLobject}(x, against = c("markers","phenotypes"), significance = 0.05,
+\method{image}{CTLobject}(x, marker_info, against = c("markers","phenotypes"), significance = 0.05,
 col=whiteblack, do.grid=TRUE, grid.col = "white", verbose = FALSE, add=FALSE, 
-breaks = c(0, 1, 2, 3, 10, 10000), marker_info, \dots)
+breaks = c(0, 1, 2, 3, 10, 10000), \dots)
 }
 \arguments{
   \item{x}{             An object of class \code{"CTLscan"}, as output by \code{\link{CTLscan}}. }
+  \item{marker_info}{   Information used to plot chromosome lines. }
   \item{against}{       Plot which interaction matrice, options are: markers: the phenotype*marker or 
                         phenotypes: the phenotype*phenotypes matrix. }
   \item{significance}{  Significance threshold to set a genome wide False Discovery Rate (FDR). }
@@ -20,7 +21,6 @@ breaks = c(0, 1, 2, 3, 10, 10000), marker_info, \dots)
   \item{verbose}{       Be verbose. }
   \item{add}{           Add this plot to a previously opened plot window. }
   \item{breaks}{        See par. }
-  \item{marker_info}{   Information used to plot chromosome lines. }
   \item{\dots}{         Passed to the function \code{\link[graphics]{image}} when it is called. }
 }
 \details{

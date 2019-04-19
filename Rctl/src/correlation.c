@@ -17,12 +17,13 @@ void R_correlation(double* x, double* y, double* res, int* dim, int* verb){
 void R_correlation1toN(double* x, double* y, double* res, int* dim, int* numy, int nthreads, int* verb){
   size_t i = 0;
   size_t dimension  = (size_t)(*dim);
-  size_t ny    = (size_t)(*numy);
+  size_t ny = (size_t)(*numy);
   bool verbose = (bool)(*verb);
   double** ynew = asdmatrix(ny, dimension, y);
-  double*  cors = cor1toN(x, ynew, dimension, ny, nthreads, verbose);
-  for(i = 0; i < ny; i++){ res[i] = cors[i]; }
-
+  double* cors = cor1toN(x, ynew, dimension, ny, nthreads, verbose);
+  for (i = 0; i < ny; i++) {
+    res[i] = cors[i];
+  }
   free(ynew);                   // The indices are allocated by C, Data by R
   free(cors);
 }
@@ -35,8 +36,10 @@ void R_chiSQN(int* nr, double* r, double* res, int* phe, int* nsamples, int* nph
   double** correlations = asdmatrix(ncorrelations, nphenotypes, r);
 
   double* chisq = chiSQN(ncorrelations, correlations, phenotype, nsamples, nphenotypes);
-  for(p = 0; p < nphenotypes; p++){ if(phenotype != p){ res[p] = chisq[p]; } }
-  
+  for (p = 0; p < nphenotypes; p++) { 
+    if(phenotype != p){ res[p] = chisq[p]; }
+  }
+
   free(correlations);           // The indices are allocated by C, Data by R
   free(chisq);
 }
@@ -69,6 +72,7 @@ double correlation(const double* x, const double* y, size_t dim, bool verbose){
   return(cor);
 }
 
+
 double* cor1toNold(double* x, double** y, size_t dim, size_t ny, int nthreads, bool verbose){
   size_t i;
   info("!!");
@@ -79,7 +83,10 @@ double* cor1toNold(double* x, double** y, size_t dim, size_t ny, int nthreads, b
   return(cors);
 }
 
-double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool verbose){
+// ? Possible openmp directive ?:  #pragma omp parallel for shared(Xi, XiP2, XiYi, Yi, YiP2) num_threads(nthreads)
+// ? Possible openmp directive ?:  #pragma omp parallel for shared(XiYi, Yi, YiP2)
+// ? Possible openmp directive ?:  #pragma omp parallel for private(nom, denom) shared(cors)
+double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool verbose) {
   size_t i, j;
   double nom, denom;
   double Xi = 0.0, XiP2 = 0.0;
@@ -90,8 +97,6 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool
   double* YiP2   = newdvector(ny);
   double* XiYi   = newdvector(ny);
 
-
-  // ? Possible openmp directive ?:  #pragma omp parallel for shared(Xi, XiP2, XiYi, Yi, YiP2) num_threads(nthreads)
   // Cache efficient, unrolled 1:N correlation loop
   for(j = 0; j < ny; j++){   // Loop over all traits
     // ? Possible openmp directive ?:  #pragma omp parallel for shared(XiYi, Yi, YiP2)
@@ -127,7 +132,7 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool
       cors[j] = nom / denom;
     }
     if(isNaN(cors[j]) || isinf(cors[j]) || cors[j] < -(RANGE) || cors[j] > RANGE){ 
-      if(verbose) info("Correlation '%.8f' not in range [-1, 1]\n", cors[j]);
+      if(verbose) info("Correlation '%.8f' not in range [-1, 1] [%f %f %d]\n", cors[j], nom, denom, dim);
     }
   }
   free(onedivn); free(Yi); free(YiP2); free(XiYi);
@@ -135,17 +140,17 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool
 }
 
 double* getCorrelations(const Phenotypes phenotypes, const Genotypes genotypes, size_t phe1, 
-                        clvector genoenc, size_t mar, size_t phe2, bool verbose){
+                        clvector genoenc, size_t mar, size_t phe2, bool verbose) {
 
   size_t  i;
   double* cors = newdvector(genoenc.nelements);
-  if(phe1 != phe2){
-    for(i = 0; i < genoenc.nelements; i++){
+  if (phe1 != phe2) {
+    for (i = 0; i < genoenc.nelements; i++) {
       clvector inds = which(genotypes.data[mar], phenotypes.nindividuals, genoenc.data[i]);
       double* P1  = get(phenotypes.data[phe1], inds);
       double* P2  = get(phenotypes.data[phe2], inds);
       cors[i]    = correlation(P1, P2, inds.nelements, false);
-      if(verbose){
+      if (verbose) {
         info("CTL: %d %d %d | %d [%d] -> %f\n", phe1, mar, phe2, genoenc.data[i], inds.nelements, cors[i]);
       }
       free(P1), free(P2); // Clear phenotypes
@@ -158,24 +163,27 @@ double* getCorrelations(const Phenotypes phenotypes, const Genotypes genotypes, 
   return cors;
 }
 
-double* chiSQN(size_t nr, double** r, size_t phe, int* nsamples, size_t nphe){
+double* chiSQN(size_t nr, double** r, size_t phe, int* nsamples, size_t nphe) {
   size_t p, i, denom;
   double sumOfSquares = 0.0, squaresOfSum = 0.0, df;
   double* ret = newdvector(nphe);  /*!< Returned Chi^2 values for phenotype phe against the other phenotypes */
-  for(p = 0; p < nphe; p++){
-    if(phe != p){
+  for (p = 0; p < nphe; p++) {
+    if (phe != p) {
       denom = 0; sumOfSquares = 0.0; squaresOfSum = 0.0; // Reset for next calculation
-      for(i = 0; i < nr; i++){
+      for (i = 0; i < nr; i++) {
         df = nsamples[i]-3;
-        if(df > 0){
+        if (df > 0) {
           sumOfSquares += df * pow(zscore(r[i][p]), 2.0);
           squaresOfSum += df * zscore(r[i][p]);
           denom += df;
         }
       }
-      if(denom == 0) err("Divide by 0 groups too small", "");
-      ret[p] = sumOfSquares - (pow(squaresOfSum, 2.0) / denom);
-      if(isNaN(ret[p])) ret[p] = 0.0; // This can happen if two phenotypes are the exact same
+      if (denom != 0) {
+        ret[p] = sumOfSquares - (pow(squaresOfSum, 2.0) / denom);
+      } else {
+        ret[p] = R_NaN;
+        info("Severe: Divide by 0 (Groups too small)", "");
+      }
     }
     #ifdef USING_R
       updateR(0);
@@ -184,9 +192,8 @@ double* chiSQN(size_t nr, double** r, size_t phe, int* nsamples, size_t nphe){
   return ret;
 }
 
-double chiSQtoP(double Cv, int Dof){
-  if(Cv <= 0 || Dof < 1) return 1.0;
-  //return pchisq(Cv,(double)Dof, 0, 0);
-  return(Cv);
+double chiSQtoP(double Cv, int Dof) {
+  if (Cv <= 0 || Dof < 1) return 1.0;
+  return pchisq(Cv,(double)Dof, 0, 0);
 }
 
