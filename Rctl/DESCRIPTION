@@ -1,9 +1,9 @@
 Package: ctl
-Version: 1.0.0-1
-Date: 2018-07-06
+Version: 1.0.0-2
+Date: 2019-19-04
 Title: Correlated Trait Locus (CTL) Mapping in R
 Author: Danny Arends <Danny.Arends@gmail.com>
 Maintainer: Danny Arends <Danny.Arends@gmail.com>
 Depends: R (>= 2.10), MASS, parallel, qtl
-Description: Analysis of genetical genomic data to identify genetic loci associated with correlation changes in quantitative traits (CTL).
+Description: Idenfication and network inference of genetic loci associated with correlation changes in quantitative traits (CTL).
 License: GPL-3
