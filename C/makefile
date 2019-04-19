@@ -1,11 +1,20 @@
 #### Start of system configuration section. ####
+
 srcdir = ../Rctl/src
 CC = gcc
 LINK = ar
-DEFS = -DSTANDALONE -D_OPENMP
+DEFS = -DSTANDALONE
+RINCLUDE = "${R_HOME}/include/"
 
-CFLAGS = -I /usr/share/R/include/ -std=gnu99 -O3 -fopenmp -pedantic -w -Wall -Wextra -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
-LDFLAGS = -lm -L /usr/lib/R/lib/ -lR -O3 -lgomp -lpthread
+ifeq ($(OS),Windows_NT)
+	RLIB = "${R_HOME}/bin/x64/"
+else
+	RLIB = "/usr/lib/"
+endif
+
+CFLAGS = -I $(RINCLUDE) -std=gnu99 -O3 -pedantic -w -Wall -Wextra -c $(CDEBUG) -I. -I$(srcdir) $(DEFS)
+LDFLAGS = -lm -L $(RLIB) -lR -O3
+
 #### End of system configuration section. ####
 
 SOURCES    = $(srcdir)/vector.c $(srcdir)/matrix.c $(srcdir)/sort.c $(srcdir)/structs.c \
@@ -40,13 +49,17 @@ shared: DEFS += -fPIC
 shared: clean $(SOURCES) $(SHARED)
 
 $(EXECUTABLE): $(OBJECTS) main.o
+<<<<<<< HEAD
 	$(CC) main.o $(OBJECTS) $(LDFLAGS) -o $@
+=======
+	$(CC)  main.o $(OBJECTS) $(LDFLAGS) -o $@
+>>>>>>> c2680f9ca68ef8b89e803f6ed29477da1e8794d8
 
 $(STATIC): $(OBJECTS)
 	$(LINK) rcs $@ $(OBJECTS)
 
 $(SHARED): $(OBJECTS)
-	$(CC) -shared -Wl $(OBJECTS) -o $@
+	$(CC) -shared  $(OBJECTS) $(LDFLAGS)  -o $@
 
 .c.o:
 	$(CC) $(CFLAGS) $< -o $@

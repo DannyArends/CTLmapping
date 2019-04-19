@@ -6,9 +6,10 @@
   or GWAS plot.
 }
 \usage{
-\method{plot}{CTLscan}(x, mapinfo, type = c("barplot","gwas","line"), 
+\method{plot}{CTLscan}(x, mapinfo = NULL, type = c("barplot","gwas","line"), 
 onlySignificant = TRUE, significance = 0.05, gap = 25, plot.cutoff = FALSE, 
-do.legend=TRUE, cex.legend=1.0, ydim=NULL, ylab="-log10(P-value)", \dots)
+do.legend=TRUE, legend.pos = "topleft", cex.legend=1.0, ydim=NULL, 
+ylab="-log10(P-value)", \dots)
 }
 \arguments{
   \item{x}{                 An object of class \code{"CTLscan"}, as output by \code{\link{CTLscan}}. }
@@ -23,6 +24,7 @@ do.legend=TRUE, cex.legend=1.0, ydim=NULL, ylab="-log10(P-value)", \dots)
   \item{plot.cutoff}{       Adds a line at -log10(significance) and adds a legend showing the 
                             significance level. }
   \item{do.legend}{         Adds a legend showing which phenotypes contribute to the CTL profile. }
+  \item{legend.pos}{        Position of the legend in the plot window. }
   \item{cex.legend}{        Maginification of the text in the legend. }
   \item{ydim}{              Dimension of the y-axis, if NULL then it will be calculated. }
   \item{ylab}{              Label for the y-axis. }

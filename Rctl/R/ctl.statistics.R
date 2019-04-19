@@ -58,11 +58,12 @@ CTLsignificant <- function(CTLobject, significance = 0.05, what = c("names", "id
     p_above <- which(apply(CTLobject[[x]]$ctl, 2, function(y) {     # Phenotypes above the significance threshold
       any(y > -log10(significance))
     }))
-
+    cat("p_above=", length(p_above), "\n")
     pnames <- colnames(CTLobject[[x]]$ctl)
     mnames <- rownames(CTLobject[[x]]$ctl)
 
     if(what != "ids"){ p_above <- pnames[p_above] }
+    cat("p_above=", length(p_above), "\n")
     if(length(p_above) > 0) {                                       # If there are phenotypes above the threshold, retrieve which markers
       for(p in p_above) {
         m_above <- which(CTLobject[[x]]$ctl[,p] > -log10(significance))

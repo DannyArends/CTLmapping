@@ -51,14 +51,16 @@ set.seed(61777369)
 \bigskip \bigskip 
 \bigskip \bigskip 
  
-{\large Danny Arends, and Ritsert C. Jansen} 
+{\large Danny Arends, Pjotr Prins, and Ritsert C. Jansen} 
 
 \bigskip \bigskip
 
 {\color{blue} \tt \bfseries University of Groningen \\
 Groningen Bioinformatics Centre \& GCC \\
-Revision \# 1 \\[24pt]
-XX Okt 2011}
+Revision \# 1 \\[24pt]}
+First written: Oct 2011\\
+Last modified: Jan 2018
+
 
 \end{center}
 
@@ -68,15 +70,16 @@ XX Okt 2011}
 reconstruct genetic regulatory networks using the R package 'ctl' and the mapctl commandline 
 tool. 
 This tutorial is targetted at people with a basic understanding of genetics and would like to 
-analyse there inbred cross (RIL, DH, BC) or any population using SNP markers. Main focus will 
-be explaining the functionality of the software, and a how-to on using datasets currently in 
-Excel, tab delimited files (.csv) or use $read.cross$ from R/qtl. In the methodology and 
-background only a short introduction in CTL mapping theory is given.
+analyse there inbred cross (RIL, F2, DH, BC) or any outbred population (e.g. Human GWAS) using 
+SNP markers. The main focus will be explaining the functionality of the software, and a how-to 
+format your data for R when using datasets currently stored in Excel format, tab delimited 
+files (.csv) or use $read.cross$ from R/qtl. In the methodology and background only a short 
+introduction in CTL mapping theory is given.
 
 \vfill
 \noindent \verb|Software:      http://www.mapctl.org/download.html|\\
 \noindent \verb|Manual:        http://www.mapctl.org/manual.html|\\
-\noindent \verb|Source-code:   http://www.github.com/DannyArends/ctl|\\
+\noindent \verb|Source-code:   http://www.github.com/DannyArends/CTLmapping|\\
 \noindent \verb|E-mail:        Danny.Arends@Gmail.com|
 \newpage
 
@@ -84,12 +87,12 @@ background only a short introduction in CTL mapping theory is given.
 \nopagebreak
 
 Welcome reader to this tutorial, you'll be thrown into the world of network reconstruction 
-using differential correlations. This methodology CTL mapping is not the easiest but the 
+using differential correlations. The CTL mapping methodology is not the easiest but the 
 results can be of great help unraveling trait to trait interactions in all types of 
-eukaryotes. In this tutorial I'll try to use as few difficult concepts as possible. But
+crosses. In this tutorial I'll try to use as few difficult concepts as possible. But
 some always $sneak$ in.\\
 \\
-Enjoy this tutorial, and good luck hunting that heritability.\\
+Enjoy this tutorial, and good luck hunting that missing heritability.\\
 Danny Arends\\
 \\
 PS. Use a good text editor\\
@@ -100,8 +103,14 @@ PPS. Use a repository / backup system
 \textbf{\sffamily Background \& Methodology}
 \nopagebreak
 
-Some introduction on the methodology, skip this chapter first (DO come back later) if you 
-have a dataset and just want to use the software.
+Differences in correlations between traits within an inbred population are determined at each genetic marker. 
+Phenotypes are assigned to genotype groups and a single phenotype is used to scan all other phenotypes for a 
+loss or gain of correlation. The likelihood profiles (similar to QTL profiles) of this 'loss of correlation' measurement 
+shows a very high degree of overlap with classical QTL profiles. However additional information is available 
+from the phenotype x phenotype interactions. With the right dataset (ideally a combination of: classical 
+phenotypes, protein abundance and gene expression) CTL shows the genetic wiring of the classical phenotypes 
+and identify key players in the genetic / protein network underlying classical phenotypes using QTL and 
+CTL information.
 
 \bigskip
 
@@ -112,43 +121,43 @@ have a dataset and just want to use the software.
 Use the example excel file and simply replace the example data by your own then: 
   $$File->Save As->TODO$$
 
-After you have stored the data as plain text open the files in a text editor (NOT WORD, for 
-windows Notepad++ is a good option) and check to see if your data is stored correctly, if 
-not reformat your data in both the genotype.csv and the phenotype.csv files to match the 
-format below.
-{\color{red} \emph{\bf{ \\NOTE: Individual order must match between the genotype and the phenotype file... \\}}} 
-The genotypes.csv file containing the genotype matrix is stored individuals x genetic marker:
-\begin{tabular}{lrrrrrrr}
-& Chromosome & Location & Ind1 & Ind2 & ... & IndN \\
-Marker1  & 1 & 0.0 & 1 & 1 & 1 & ... & 2 \\
-marker2  & 1 & 5.3 & 1 & 2 & 2 & ... & 1 \\
-marker3  & 1 & 7.8 & 2 & 2 & 1 & ... & 1 \\
-...   & ... & ... & ... & ... & ... & ... & ... \\
-MarkerN  & 7 & 120.1 & 1 & 1 & 1 & ... & 2 \\
-\end{tabular}
+After you have stored the data as plain text open the files in a text editor (do not 
+format data using MS WORD, for windows Notepad++ is a good option) and check to see 
+if your data is formatted correctly. If this is not the case, please reformat your 
+data to match the example format shown below. 
 
-The phenotypes.csv file containing individuals x trait measurements:
+The genotypes.csv file containing the genotype matrix is stored individuals (rows) x genetic marker (columns):
 
 \begin{tabular}{lrrrrrrr}
-      & Chromosome & Location & Ind1 & Ind2 & ... & IndN \\
-Trait1  & ... & ... & 5.8    & 11.0   & 9.0    & ... & 1.6 \\
-Trait2  & ... & ... & 6.3    & 12.2   & NA     & ... & 1.3 \\
-Trait3  & ... & ... & 5.1    & 11.1   & 12.3   & ... & 2.0 \\
-...   & ... & ... & ...    & ...    & ...    & ... & ... \\
-Trait  & ... & ... & 9.8    & 15.8   & 23.0   & ... & 3.4 \\
+      & Marker1 & Marker2 & Marker3 & ... & MarkerN \\
+Ind1  & 1 & 1 & 1 & ... & 2 \\
+Ind2  & 1 & 2 & 2 & ... & 1 \\
+Ind3  & 2 & 2 & 1 & ... & 1 \\
+...   & ... & ... & ... & ... & ... \\
+IndN  & 1 & 1 & 1 & ... & 2 \\
 \end{tabular}
+
+The phenotypes.csv file containing individuals (rows) x traits (columns) measurements:
+
+\begin{tabular}{lrrrrrrr}
+      & Trait1 & Trait2 & Trait3 & ... & TraitN \\
+Ind1  & 5.8    & 11.0   & 9.0    & ... & 1.6 \\
+Ind2  & 6.3    & 12.2   & NA     & ... & 1.3 \\
+Ind3  & 5.1    & 11.1   & 12.3   & ... & 2.0 \\
+...   & ...    & ...    & ...    & ... & ... \\
+IndN  & 9.8    & 15.8   & 23.0   & ... & 3.4 \\
+\end{tabular}
+
+{\color{red} \emph{\bf{ \\NOTE: Individual order must match between the genotype and the phenotype file... \\}}}
 
 After verifying your files are formatted correctly (this is the source of most errors).
 Start R and load in the data, check that the output looks like below:
 <<echo=TRUE,eval=FALSE>>=
   setwd("/Path/To/Data/")
-  genotypes <- read.csv("genotypes.csv",row.names=1, header=FALSE,sep="\t")
-  traits <- read.csv("phenotypes.csv",row.names=1, header=FALSE,sep="\t")
-  genotypes[1:5,1:10]    #Show 5 individuals, 8 markers, and genetic locations
-  traits[1:5,1:10]       #Show 5 individuals, 8 traits, and genetic locations
-  mapinfo <- genotypes[,1:2]
-  genotypes <- genotypes[,-c(1,2)]  # Remove the genetic locations
-  traits <- traits[,-c(1,2)]        # Remove the genetic locations
+  genotypes <- read.csv("genotypes.csv",row.names=1, header=FALSE, sep="\t")
+  traits <- read.csv("phenotypes.csv",row.names=1, header=FALSE, sep="\t")
+  genotypes[1:5,1:10]    #Show 5 individuals, 10 markers
+  traits[1:5,1:10]       #Show 5 individuals, 10 traits
 @
 
 \emph{Use an R/qtl formatted dataset}\\
@@ -198,11 +207,11 @@ We start explaining how to map CTL using the basic options of the $CTLscan$ func
 This function scan CTL and produces an output "CTLobject".
 <<echo=TRUE,eval=FALSE>>=
 require(ctl)                     #Loads the R/ctl package
-data(ath.metab)                  #Loads the example dataset
+data(ath.metabolites)            #Loads the example dataset
 geno   <- ath.metab$genotypes    #Short name
 traits <- ath.metab$phenotypes   #Short name
 
-#Scan all phenotypes for CTLs, using the default options (Could take some time)
+# Scan all phenotypes against each other for CTLs, using the default options
 ctls   <- CTLscan(geno,traits)
 @
 If you have loaded an R/qtl "cross" object, use the $CTLscan.cross$ interface, this will 
@@ -220,53 +229,66 @@ and which (if set incorrectly) could seriously reduce mapping power. Also you mi
 your own/previous QTL results.
 
 \emph{CTLscan options}\\
-The genotype matrix and the $geno.enc$ parameter, if data is of a different encoding then the 
-standard 1 / 2 it can be specified by using the $geno.enc$ parameter.
+CTL mapping can be performed using three different strategies ("Exact", "Full", and "Pairwise") to 
+calculate significance. The default strategy "Exact" is the fastest one, but the statistical power 
+of this stategy is poor and it doesn't handle data distributions with a lot of outliers properly. 
+For publication it is better to use one of the other strategies "Full" or "Pairwise" since these 
+strategies perform permutations, which deals with outliers and non-normal distributions in a 
+correct way.
 
+When the startegy is not set to the default "Exact", the important parameter to consider is the 
+$n.perms$ parameter, which should be set to as many as possible. When you just want to have a 
+quick estimation if there are any effects (1) use the default strategy, or (2) use only a limited a
+mount of permutations. However, when publishing any results, make sure to increase the number of 
+permutations to e.g. 15000, for a quick look at any effects the default of setting of doing 100 
+permutations should be sufficient:
 <<echo=TRUE,eval=FALSE>>=
-#Load a dataset with "AA" and "AB" genotypes
-ctls <- CTLscan(geno,traits,geno.enc=c("AA","AB"))
+ctls_quick_scan1      <- CTLscan(geno, traits)
+ctls_quick_scan2      <- CTLscan(geno, traits, strategy = "Full", n.perm=100)
+ctls_for_publication  <- CTLscan(geno, traits, strategy = "Full", n.perm=15000)
 @
 
-The important $n.perms$ parameter, which should be set to as many as possible, especially 
-when publishing any results, but for a quick the default of 100 is sufficient:
+To make the analysis fast, use the $nthreads$ parameter, this will use multiple logical cores 
+when the pc has a multi-core CPU, and can reduce the required total analysis by quite a bit. 
+The algorithm will not allow you to specify more cores then logical processors, so when setting 
+a value too large the algorithm will use only the maximum amount of logical cores detected.
+
 <<echo=TRUE,eval=FALSE>>=
-ctls_quick_scan      <- CTLscan(geno,traits,n.perm=100)
-ctls_for_publication <- CTLscan(geno,traits,n.perm=15000)
+ctls_quicker_scan <- CTLscan(geno, traits, nthreads = 4)
 @
 
-CTLs could be condition dependant just like QTL, so if one has multiple conditions or 
-treatments. we need to accomodate that in the underlying models. 
-{\color{red} \emph{\bf{ \\\\NOTE: Current version doesn't handle conditions (only the QTL are compensated). \\\\}}} 
-If no QTLs are supplied the internal QTL mapping routine is used, which can deal with just a single condition per 
-individual. An environmental condition can be specified by the $conditions$ parameter:
+Non-parametric analysis (using ranked data) is done by default, to minimize the effect of 
+outliers on the analysis. However if your trait distributions are normally distributed you 
+should / can enable paramteric analysis, to obtain more statistical power. To perform 
+parametric analysis set the parameter $parametric$ to TRUE, this use the original phenotype 
+values for the analysis.
 
 <<echo=TRUE,eval=FALSE>>=
-#Specify that individuals 1:51 were in condition A / e.g. treatment A
-#Specify that individuals 52:100 were in condition B / e.g. treatment B 
-#Specify that individuals 101:162 were in condition C / e.g. control
-conditions <- c(rep(1,51),rep(2,49),rep(3,62))
-ctls <- CTLscan(geno, traits, conditions=conditions)
+ctls_parametric_scan <- CTLscan(geno, traits, parametric = TRUE)
 @
 
-When experimental setups are more complex a user can supply QTL results via the $have.qtl$ option.
-An example is shown below in which we use QTL results obtained by using single marker mapping via 
-$scanone$ and the new Multiple QTL mapping routine $mqmscan$ in R/qtl:
+A new feature added to allow computation of CTLs on a trait by trait basis is to disable 
+multiple testing correction. By default it is enable to prevent users from overestimating 
+CTLs in their data. Since CTL mapping is doing a lot of statistical testing during a 
+single analysis run, proper multiple testing should always be performed. However when running 
+CTL mapping on a cluster (e.g. on a trait by trait basis) it might be needed to disable the 
+automated multiple testing correction, since each node of the cluster will only see a 
+subset of the data. Disable multiple testing adjustment, byu setting the parameter $adjust$ 
+to FALSE.
 
 <<echo=TRUE,eval=FALSE>>=
-require(qtl)        #load the R/qtl package
-data(multitrait)    #load the dataset
-oneqtls   <- scanone(multitrait, pheno.col=1:24)[,-c(1,2)]
-ctls_one  <- CTLscan.cross(multitrait, pheno.col=1:2, have.qtl=qtls)
+ctls_uncorrected_scan <- CTLscan(geno, traits, adjust = FALSE)
 @
 
-And a more advanced example where the MQM scan uses 30 genetic markers as cofactors to first build 
-up a genetic model underlying the QTL and locus to locus interactions:
+When the analysis finishes with an error, you can turn on verbose output, but setting the 
+parameter $verbose$ to TRUE. This will produce a lot of textual output in the R window, 
+which can sometimes help to identify an issue with the dataset. turning on verbose output 
+has no influence on the analysis, and will only make the algorithm produce more text output 
+during the analysis.
+
 
 <<echo=TRUE,eval=FALSE>>=
-cofactors <- mqmautocofactors(multitrait, 30)
-mqm_qtls  <- mqmscan(multitrait, cofactors=cofactors, pheno.col=1:24)[,-c(1,2)]
-ctls_mqm  <- CTLscan.cross(multitrait, pheno.col=1:2, have.qtl=qtls)
+ctls_scan <- CTLscan(geno, traits, verbose = TRUE)
 @
 
 \bigskip
@@ -292,8 +314,8 @@ scan use:
 ctls[[1]]
 @
 To plot other summaries just replace the 1 by the trait number. We can also use the plot 
-function on individual CTLscans and shows a colorful and detailed view of the 
-(selected) Trait x Marker X Traits interactions detected in the dataset.
+function on the individual trait CTL scans and show a more detailed view of the (selected) 
+Trait x Marker X Traits interactions detected in the dataset.
 <<echo=TRUE,eval=FALSE>>=
 plot(ctls[[1]])
 @

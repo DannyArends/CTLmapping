@@ -10,9 +10,9 @@ Prepare your environment by download and 'moving' to the folder:
 Prepare your environment by download and installing a C compiler. Run 'make' from a 
 terminal / command line to build either the executable, shared or static library:
 
-    $ make                                                   # Compile the executable
-    $ make static                                            # Compile the static library
-    $ make shared                                            # Compile the shared library
+    $ make R_HOME="path/to/R"               # Compile the executable
+    $ make R_HOME="path/to/R" static        # Compile the static library
+    $ make R_HOME="path/to/R" shared        # Compile the shared library
 
 ### Commandline options
 
@@ -36,5 +36,4 @@ To test the executable run a special make target:
 
 ### Disclaimer
 
-Copyright (c) 2010-2013 GBIC: Danny Arends, Ritsert C Jansen, Pjotr Prins
-
+(c) 2012-2020 GBIC - RUG & HU-Berlin, written by Danny Arends, Ritsert C Jansen, Pjotr Prins

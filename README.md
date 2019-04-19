@@ -1,6 +1,6 @@
 ## Correlated Trait Locus (CTL) mapping
 [![Build Status](https://travis-ci.org/DannyArends/CTLmapping.svg)](https://travis-ci.org/DannyArends/CTLmapping)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ctl)](http://cran.r-project.org/package=ctl)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ctl)](http://cran.r-project.org/package=ctl)
 [![JOSS](http://joss.theoj.org/papers/10.21105/joss.00087/status.svg)](http://joss.theoj.org/papers/10.21105/joss.00087)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.154465.svg)](https://doi.org/10.5281/zenodo.154465)
 
@@ -11,7 +11,11 @@ additional insights overlooked by the classical QTL approach.
 
 #### Algorithm
 
-Learn more about the [algorithm](doc/ALGORITHM.md) behind CTL mapping
+Learn more about the [algorithm](doc/ALGORITHM.md) behind CTL mapping. 
+Alternatively, learn more about CTL mapping by following the workshop 
+I presented at the complex traits consortium meeting in Glasgow to 
+demonstrate CTL mapping on an example data set. The presentation and 
+code can be found on my [website](https://www.dannyarends.nl/ctc/)
 
 ### Installing the R package from CRAN
 The quickest and prefered way to start mapping CTLs, is to 
@@ -39,13 +43,21 @@ install a development version see: [doc/DEVELOPMENT.md](doc/DEVELOPMENT.md)
 
 CTL mapping uses the build in R framework to test the package 
 for global regressions and unit-testing of documented functions.
-Tests can be executed from the commandline, by using the following command:
+Tests can be executed from the commandline, by using the 
+following command:
 
-    R CMD check Rctl                                      # Run the unit-tests of the R package
+    R CMD check Rctl                    # Run the unit-tests of the R package
 
+Make sure that when running the tests using MS Windows the Rtools 
+package is installed. Rtools for MS Windows can be installed from 
+[here](https://cran.r-project.org/bin/windows/Rtools/)
+    
 ### Documentation
-A short online introduction is [available](doc/STARTINGinR.md) 
-and help files with examples are also available for almost all functions in R using:
+A short online introduction is [available](doc/STARTINGinR.md), or 
+learn by doing by following the workshop on CTL mapping, which can 
+be found [here](https://www.dannyarends.nl/ctc/). Additionally 
+almost all R function come with a help files with examples. In R 
+you can access the help using:
 
 ```R
 library(ctl)                            # Load the library
@@ -59,7 +71,7 @@ Issues can be raised through the github issue tracker.
 
 ### Contributing 
 
-Want to contribute? Great! We're actively looking for someone to do the website 
+Want to contribute? Great! We're actively looking for someone to manage the CTL website 
 [www.mapctl.org](http://www.mapctl.org "www.mapctl.org")
 
 Contribute to CTL source code by forking the Github repository, and sending us pull requests.

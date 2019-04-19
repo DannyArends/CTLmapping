@@ -11,9 +11,13 @@
 #ifdef _OPENMP
   #include <omp.h>
   #define CSTACK_DEFNS 7                                          /* http://stats.blogoverflow.com/2011/08/using-openmp-ized-c-code-with-r/ */
+<<<<<<< HEAD
   #ifdef USING_R
     #include "Rinterface.h"
   #endif
+=======
+
+>>>>>>> c2680f9ca68ef8b89e803f6ed29477da1e8794d8
   // extern uintptr_t R_CStackLimit; /* C stack limit */
   // extern uintptr_t R_CStackStart; /* Initial stack address */
 
@@ -41,11 +45,22 @@
     }  /* All threads join master thread and disband */
     free(y);
   }
-
+#else
+  void R_openmp(int* nthr, int* ni, int* ny, double* x, double* ym, double* res) {
+    info("Unfortunately, openMP is not supported on your platform\n", "");
+    info("Using a basic for loop on 1 thread\n", "");
+    int nitems = (int)(*ni);                                      /* Number of items todo */
+    int ylength = (int)(*ny);                                     /* First dimension of y */
+    double** y = asdmatrix(nitems, ylength, ym);                  /* y matrix */
+    for(int j = 0; j < nitems; j++) {                                                 /* Do work we are assigned */
+      res[j] = correlation(x, y[j], ylength, false);
+    }
+    free(y);
+  }
 #endif
 
 double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
-                bool doperms, int nperms, int nthreads, bool verbose){
+                bool doperms, int nperms, int nthreads, bool adjust, bool verbose){
 
   //info("Phenotype %d: Mapping", (phenotype+1));
   clvector* genoenc = getGenotypes(genotypes, false);
@@ -54,8 +69,8 @@ double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t p
   double*  perms;
   double** scores = ctleffects(phenotypes, genotypes, phenotype, genoenc, nthreads, verbose);
   if(!doperms){
-    //info(", toLOD\n", "");  // Exact calculation can be used
-    ctls = toLODexact(scores, genoenc, genotypes.nmarkers, phenotypes.nphenotypes);
+    info(", toLOD\n", "");  // Exact calculation can be used
+    ctls = toLODexact(scores, genoenc, genotypes.nmarkers, phenotypes.nphenotypes, adjust);
   }else{
     //info(", Permutation", "");
     perms = permute(phenotypes, genotypes, phenotype, genoenc, nperms, nthreads, false);
