@@ -10,6 +10,7 @@
 
 #ifdef _OPENMP
   #include <omp.h>
+<<<<<<< HEAD
   #define CSTACK_DEFNS 7                                          /* http://stats.blogoverflow.com/2011/08/using-openmp-ized-c-code-with-r/ */
 <<<<<<< HEAD
   #ifdef USING_R
@@ -18,11 +19,17 @@
 =======
 
 >>>>>>> c2680f9ca68ef8b89e803f6ed29477da1e8794d8
+=======
+  #define CSTACK_DEFNS 7 /* http://stats.blogoverflow.com/2011/08/using-openmp-ized-c-code-with-r/ */
+  #ifdef USING_R
+    #include "Rinterface.h"
+  #endif
+>>>>>>> d422e9c20700552ef09d7fbc39df68c37e544aed
   // extern uintptr_t R_CStackLimit; /* C stack limit */
   // extern uintptr_t R_CStackStart; /* Initial stack address */
 
   void R_openmp(int* nthr, int* ni, int* ny, double* x, double* ym, double* res) {
-    //R_CStackLimit=(uintptr_t) - 1;                              /* http://stats.blogoverflow.com/2011/08/using-openmp-ized-c-code-with-r/ */
+    //R_CStackLimit=(uintptr_t) - 1; /* http://stats.blogoverflow.com/2011/08/using-openmp-ized-c-code-with-r/ */
 
     int rthreads = (int)(*nthr);                                  /* Requested number of threads */
     int nitems = (int)(*ni);                                      /* Number of items todo */
@@ -68,10 +75,11 @@ double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t p
   double** ctls;
   double*  perms;
   double** scores = ctleffects(phenotypes, genotypes, phenotype, genoenc, nthreads, verbose);
-  if(!doperms){
+
+  if (!doperms) {
     info(", toLOD\n", "");  // Exact calculation can be used
     ctls = toLODexact(scores, genoenc, genotypes.nmarkers, phenotypes.nphenotypes, adjust);
-  }else{
+  } else {
     //info(", Permutation", "");
     perms = permute(phenotypes, genotypes, phenotype, genoenc, nperms, nthreads, false);
     //info(", toLOD\n", "");
