@@ -39,7 +39,18 @@
     }  /* All threads join master thread and disband */
     free(y);
   }
-
+#else
+  void R_openmp(int* nthr, int* ni, int* ny, double* x, double* ym, double* res) {
+    info("Unfortunately, openMP is not supported on your platform\n", "");
+    info("Using a basic for loop on 1 thread\n", "");
+    int nitems = (int)(*ni);                                      /* Number of items todo */
+    int ylength = (int)(*ny);                                     /* First dimension of y */
+    double** y = asdmatrix(nitems, ylength, ym);                  /* y matrix */
+    for(int j = 0; j < nitems; j++) {                                                 /* Do work we are assigned */
+      res[j] = correlation(x, y[j], ylength, false);
+    }
+    free(y);
+  }
 #endif
 
 double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
