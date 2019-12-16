@@ -5,5 +5,5 @@ Title: Correlated Trait Locus (CTL) Mapping in R
 Author: Danny Arends <Danny.Arends@gmail.com>
 Maintainer: Danny Arends <Danny.Arends@gmail.com>
 Depends: R (>= 2.10), MASS, parallel, qtl
-Description: Idenfication and network inference of genetic loci associated with correlation changes in quantitative traits (CTL).
+Description: Identification and network inference of genetic loci associated with correlation changes in quantitative traits (CTL).
 License: GPL-3
