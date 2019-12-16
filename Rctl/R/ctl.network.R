@@ -15,7 +15,7 @@ plot.CTLnetwork <- function(x, main="Causal significance", ...){
 
 CTLnetwork <- function(CTLobject, mapinfo, significance = 0.05, LODdrop = 2, what = c("names","ids"), short = FALSE, add.qtls = FALSE, file = "", verbose = TRUE){
   if(missing(CTLobject) || is.null(CTLobject)) stop("argument 'CTLobject' is missing, with no default")
-  if(any(class(CTLobject)=="CTLscan")) CTLobject = list(CTLobject)
+  if("CTLscan" %in% class(CTLobject)) CTLobject = list(CTLobject)
   if(length(what) > 1) what = what[1]
 
   results <- NULL

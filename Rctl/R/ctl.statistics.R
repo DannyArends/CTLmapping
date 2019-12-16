@@ -12,7 +12,7 @@ CTLregions <- function(CTLobject, mapinfo, phenocol = 1, significance = 0.05, ve
   if(missing(CTLobject)) stop("argument 'CTLobject' which expects a 'CTLobject' object is missing, with no default")
   if(missing(mapinfo)) stop("You need to provide a map object with 'chr' and 'pos' columns")
   if(!all(colnames(mapinfo) %in% c("chr", "pos"))) stop("You need to provide a map object with 'chr' and 'pos' columns")
-  if(any(class(CTLobject)=="CTLscan")) CTLobject = list(CTLobject)
+  if("CTLscan" %in% class(CTLobject)) CTLobject = list(CTLobject)
 
   p_above <- which(apply(CTLobject[[phenocol]]$ctl, 2, function(y){
     any(y > -log10(significance))
@@ -50,7 +50,7 @@ CTLregions <- function(CTLobject, mapinfo, phenocol = 1, significance = 0.05, ve
 }
 
 CTLsignificant <- function(CTLobject, significance = 0.05, what = c("names", "ids")) {
-  if(any(class(CTLobject)=="CTLscan")) CTLobject = list(CTLobject)
+  if("CTLscan" %in% class(CTLobject)) CTLobject = list(CTLobject)
   all_sign <- NULL
   nsignificant <- 0 
   if(length(what) > 1) what = what[1]                               # Use the first option of what

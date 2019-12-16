@@ -25,11 +25,11 @@ CTLscan <- function(genotypes, phenotypes, phenocol, nperm = 100, nthreads = 1,
 
   if(missing(genotypes) || is.null(genotypes))  stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
-  if(class(phenotypes) != "matrix") {
+  if(!("matrix" %in% class(phenotypes))) {
     warning("argument 'phenotypes' is not a matrix, converting to numeric matrix using apply")
     phenotypes = apply(phenotypes, 2, as.numeric)
   }
-  if(class(genotypes) != "matrix") {
+  if(!("matrix" %in% class(genotypes))) {
     warning("argument 'genotypes' is not a matrix, converting to numeric matrix using apply")
     genotypes = apply(genotypes, 2, as.numeric)
   }
@@ -75,11 +75,11 @@ CTLscan <- function(genotypes, phenotypes, phenocol, nperm = 100, nthreads = 1,
 CTLmapping <- function(genotypes, phenotypes, phenocol = 1, nperm = 100, nthreads = 1, strategy = c("Exact", "Full", "Pairwise"), adjust = TRUE, qtl = TRUE, verbose = FALSE) {
   if(missing(genotypes) || is.null(genotypes)) stop("argument 'genotypes' is missing, with no default")
   if(missing(phenotypes)|| is.null(phenotypes)) stop("argument 'phenotypes' is missing, with no default")
-  if(class(phenotypes) != "matrix") {
+  if(!("matrix" %in% class(phenotypes))) {
     warning("argument 'phenotypes' is not a matrix, converting to numeric matrix using apply")
     phenotypes = apply(phenotypes, 2, as.numeric)
   }
-  if(class(genotypes) != "matrix") {
+  if(!("matrix" %in% class(genotypes))) {
     warning("argument 'genotypes' is not a matrix, converting to numeric matrix using apply")
     genotypes = apply(genotypes, 2, as.numeric)
   }
