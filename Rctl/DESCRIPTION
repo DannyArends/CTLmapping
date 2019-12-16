@@ -6,7 +6,7 @@ Author: Danny Arends <Danny.Arends@gmail.com>, Yang Li, Gudrun A Brockmann,
   Ritsert C Jansen, Robert W Williams, and Pjotr Prins
 Maintainer: Danny Arends <Danny.Arends@gmail.com>
 Depends: R (>= 2.10), MASS, parallel, qtl
-Description: Identification and network inference of genetic loci associated with
-  correlation changes in quantitative traits.
-  Arends et al. (2016) <doi:10.21105/joss.00087>
+Description: Identification and network inference of genetic loci associated
+  with correlation changes in quantitative traits (called correlated trait loci, CTLs).
+  Arends et al. (2016) <doi:10.21105/joss.00087>.
 License: GPL-3
