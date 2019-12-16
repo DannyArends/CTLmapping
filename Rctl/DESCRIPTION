@@ -1,5 +1,5 @@
 Package: ctl
-Version: 1.0.0-3
+Version: 1.0.0-4
 Date: 2019-12-16
 Title: Correlated Trait Locus (CTL) Mapping in R
 Author: Danny Arends <Danny.Arends@gmail.com>
