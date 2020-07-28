@@ -9,8 +9,8 @@
 }
 \arguments{
   \item{x}{       An object of class \code{"CTLscan"}. }
-  \item{type}{    What type of plot should be drawn. for possible options see \code{\link[graphics]{plot}}. }
-  \item{\dots}{   Passed to the function \code{\link[graphics]{plot}} when it is called. }
+  \item{type}{    What type of plot should be drawn. for possible options see \code{\link[base]{plot}}. }
+  \item{\dots}{   Passed to the function \code{\link[base]{plot}} when it is called. }
 }
 \value{
   None.

@@ -13,7 +13,7 @@
   \item{do.grid}{   When TRUE, grid lines are added to the plot. }
   \item{grid.col}{  Color used for the grid lines, only used when do.grid = TRUE. }
   \item{verbose}{   Be verbose. }
-  \item{\dots}{     Passed to the function \code{\link[graphics]{plot}} when it is called. }
+  \item{\dots}{     Passed to the function \code{\link[base]{plot}} when it is called. }
 }
 \value{
   None.

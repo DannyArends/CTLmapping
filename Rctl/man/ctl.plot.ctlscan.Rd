@@ -28,7 +28,7 @@ ylab="-log10(P-value)", \dots)
   \item{cex.legend}{        Maginification of the text in the legend. }
   \item{ydim}{              Dimension of the y-axis, if NULL then it will be calculated. }
   \item{ylab}{              Label for the y-axis. }
-  \item{\dots}{             Passed to the function \code{\link[graphics]{plot}} when it is called. }
+  \item{\dots}{             Passed to the function \code{\link[base]{plot}} when it is called. }
 }
 \value{
   None.
