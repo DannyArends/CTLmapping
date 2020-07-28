@@ -9,4 +9,6 @@ Depends: R (>= 2.10), MASS, parallel, qtl
 Description: Identification and network inference of genetic loci associated
   with correlation changes in quantitative traits (called correlated trait loci, CTLs).
   Arends et al. (2016) <doi:10.21105/joss.00087>.
+Encoding: UTF-8
+ByteCompile: true
 License: GPL-3
