@@ -59,7 +59,7 @@ CTLscan <- function(genotypes, phenotypes, phenocol, nperm = 100, nthreads = 1,
     if(verbose) cat("Data ranking finished after:",(proc.time()-st)[3],"seconds\n")
   }
   ctlobject <- vector("list", length(phenocol))
-
+  names(ctlobject) <- colnames(phenotypes)
   idx <- 1
   for(phe in phenocol) {
     ctlobject[[idx]] <- CTLmapping(genotypes, phenotypes, phenocol = phe, nperm = nperm, nthreads = nthreads,
@@ -90,9 +90,6 @@ CTLmapping <- function(genotypes, phenotypes, phenocol = 1, nperm = 100, nthread
   ctlscan$qtl <- rep(0, n.mar)
   if(qtl) ctlscan$qtl <- QTLmapping(genotypes = genotypes, phenotypes = phenotypes, phenocol = phenocol, verbose = verbose)
 
-  # In C we use -999 for missing genotype data
-  if(any(is.na(genotypes)))  genotypes[is.na(genotypes)]   <- -999
-  if(any(is.na(phenotypes))) phenotypes[is.na(phenotypes)] <- -999
   e1 <- proc.time()
 
   # Setup return structures for the permutations
@@ -113,7 +110,7 @@ CTLmapping <- function(genotypes, phenotypes, phenocol = 1, nperm = 100, nthread
                           ctl  = as.double(rep(0, n.mar * n.phe)),
                           as.integer(adjust),
                           as.integer(verbose), 
-                          PACKAGE = "ctl")
+                          NAOK = TRUE, PACKAGE = "ctl")
   e2 <- proc.time()
   ctlscan$dcor  <- matrix(result$dcor, n.mar, n.phe)   # Store the DCOR/Z scores
   ctlscan$perms <- result$perms                        # Permutations
