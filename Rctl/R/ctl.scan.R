@@ -59,7 +59,7 @@ CTLscan <- function(genotypes, phenotypes, phenocol, nperm = 100, nthreads = 1,
     if(verbose) cat("Data ranking finished after:",(proc.time()-st)[3],"seconds\n")
   }
   ctlobject <- vector("list", length(phenocol))
-  names(ctlobject) <- colnames(phenotypes)
+  names(ctlobject) <- colnames(phenotypes)[phenocol]
   idx <- 1
   for(phe in phenocol) {
     ctlobject[[idx]] <- CTLmapping(genotypes, phenotypes, phenocol = phe, nperm = nperm, nthreads = nthreads,
