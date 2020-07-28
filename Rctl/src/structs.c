@@ -15,7 +15,7 @@ clvector* getGenotypes(const Genotypes geno, bool verbose){
   for(m = 0; m < nmar; m++){
     genoenc[m] = newclvector(0);
     for(i = 0; i < geno.nindividuals; i++){
-      if(geno.data[m][i] != MISSING && !in(genoenc[m], geno.data[m][i])){
+      if(!CHECKNA(geno.data[m][i]) && !in(genoenc[m], geno.data[m][i])){
         if(verbose) info("Found genotype: %d at marker %d ind %d\n",geno.data[m][i], m, i);
         genoenc[m].data = addtoivector(genoenc[m].data, genoenc[m].nelements, geno.data[m][i]); 
         genoenc[m].nelements++;

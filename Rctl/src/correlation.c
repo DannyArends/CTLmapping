@@ -51,7 +51,7 @@ double correlation(const double* x, const double* y, size_t dim, bool verbose){
   double XiYi = 0.0, Xi = 0.0, Yi = 0.0, XiP2 = 0.0, YiP2 = 0.0;
   //#pragma omp parallel for reduction(+:Xi) reduction(+:Yi) reduction(+:XiP2) reduction(+:YiP2) reduction(+:XiYi)
   for(i = 0; i < dim; i++){
-    if(x[i] != MISSING && y[i] != MISSING){
+    if(!CHECKNA(x[i]) && !CHECKNA(y[i])){
       Xi   += x[i];
       Yi   += y[i];
       XiP2 += x[i] * x[i];
@@ -91,7 +91,7 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool
     // ? Possible openmp directive ?:  #pragma omp parallel for shared(XiYi, Yi, YiP2)
     size_t n = 0;
     for(i = 0; i < dim; i++){
-      if(y[j][i] != MISSING && x[i] != MISSING) { // If both are available
+      if(!CHECKNA(y[j][i]) && !CHECKNA(x[i])) { // If both are available
         if(j==0) {
           Xi   += x[i];
           XiP2 += x[i] * x[i];
@@ -112,11 +112,7 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool
     denom = sqrt(XiP2 - (onedivn[j] * Xi * Xi)) * sqrt(YiP2[j] - (onedivn[j] * Yi[j] * Yi[j]));
     if(denom == 0){
       if(verbose) info("Denominator = 0 in correlation (Too few samples in a genotype)\n", "");
-      #ifdef USING_R
-      cors[j] = R_NaN;
-      #else
-      cors[j] = NAN;
-      #endif
+      cors[j] = MISSING;
     } else {
       cors[j] = nom / denom;
     }

@@ -158,7 +158,7 @@ double* torank(double* v, size_t dim){
     }
     // Ties should now contains the minimum indexes in v
     for(i = 0; i < ties.nelements; i++){
-      if(min == MISSING){                      // Propagate missing values (-999)
+      if(CHECKNA(min)){                      // Propagate missing values (-999)
         r[ties.data[i]] = MISSING;
       }else{
         r[ties.data[i]] = base + (1.0 / ties.nelements);

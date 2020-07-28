@@ -28,6 +28,8 @@ void R_mapctl(int* nind, int* nmar, int* nphe, int* geno, double* pheno, int* p,
   int adjust       = (int)(*adj);
   int verbose       = (int)(*verb);
 
+  if(verbose) info("R_mapctl, verbose=%d", verbose);
+
   Phenotypes phenotypes;
   Genotypes  genotypes;
   int        i,ph,perm;

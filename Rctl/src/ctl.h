@@ -14,13 +14,14 @@
 
     #include <stdbool.h>
     #include <string.h>
-    #define MISSING -999
 
     #ifdef STANDALONE
       #include <stdio.h>
       #include <stdlib.h>
       #include <Rmath.h>
       #include <float.h>
+      #define MISSING NAN
+      #define CHECKNA isnan
 
       #define info(format, ...) { \
         printf(format, __VA_ARGS__); \
@@ -32,6 +33,9 @@
       #define USING_R
       #include <R.h>
       #include <Rmath.h>
+      #define MISSING R_NaN
+      #define CHECKNA ISNA
+
       #define info(format, ...) { \
         Rprintf(format, __VA_ARGS__);}
       #define err(format, ...) { \
