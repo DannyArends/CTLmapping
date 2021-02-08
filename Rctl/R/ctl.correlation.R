@@ -11,32 +11,30 @@
 correlation <- function(x, y, nthreads = 1, verbose = FALSE){
   if(is.matrix(y)) {           # Call the optimized loop unrolled version
     if(nrow(y) != length(x)) stop(paste0("incompatible dimensions", length(x), nrow(y)))
-    y[is.na(y)] <- -999
-    x[is.na(x)] <- -999
     res <- rep(0, ncol(y));
     result <- .C("R_correlation1toN", x = as.double(x), y = as.double(y), res = as.double(res), 
                                       as.integer(length(x)), as.integer(ncol(y)), as.integer(nthreads),
-                                      as.integer(verbose), PACKAGE="ctl")
+                                      as.integer(verbose), NAOK = TRUE, PACKAGE="ctl")
   } else {
     if(length(y) != length(x)) stop("incompatible dimensions")
-    y[is.na(y)] <- -999
-    x[is.na(x)] <- -999
     res <- c(0);
-    result <- .C("R_correlation", x = as.double(x), y = as.double(y), res = as.double(res), as.integer(length(x)), as.integer(verbose), PACKAGE="ctl")
+    result <- .C("R_correlation", x = as.double(x), y = as.double(y), res = as.double(res), 
+                                  as.integer(length(x)), as.integer(verbose), NAOK = TRUE, PACKAGE="ctl")
   }
   return(result$res)
 }
 
 chiSQN <- function(correlations, nsamples){
   res <- rep(0, nrow(correlations));
-  result <- .C("R_chiSQN", nr = as.integer(ncol(correlations)), as.double(correlations), res = as.double(res), as.integer(-1), as.integer(nsamples), nrow(correlations), PACKAGE="ctl")
+  result <- .C("R_chiSQN", nr = as.integer(ncol(correlations)), as.double(correlations), 
+                           res = as.double(res), as.integer(-1), as.integer(nsamples), nrow(correlations), NAOK = TRUE, PACKAGE="ctl")
   return(result$res)
 }
 
 chiSQtoP <- function(cv, dof){
   unlist(lapply(cv, function(x){
     res <- 0;
-    result <- .C("R_chiSQtoP", Cv = as.double(x), Dof = as.integer(dof), res = as.double(res), PACKAGE="ctl")
+    result <- .C("R_chiSQtoP", Cv = as.double(x), Dof = as.integer(dof), res = as.double(res), NAOK = TRUE, PACKAGE="ctl")
     return(result$res)
   }))
 }
