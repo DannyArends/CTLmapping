@@ -91,8 +91,6 @@ When this software was helpful, please cite the JOSS paper in your publication:
 When (re-)using the any code or data provided by this package, please also cite: 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.154465.svg)](https://doi.org/10.5281/zenodo.154465)
  
-Citations are also available for import in bibtex format [TODO: bibtex with DOIs].
-
 ### License
 
 The CTL mapping source code is released under the GNU GENERAL PUBLIC LICENSE Version 3 (GPLv3). See [LICENSE.txt](LICENSE.txt).
