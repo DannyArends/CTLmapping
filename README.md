@@ -36,7 +36,7 @@ library("ctl")
 Next thing is to [map your first CTL](doc/STARTINGinR.md) 
 on either example data or your own data. For this see: [doc/STARTINGinR.md](doc/STARTINGinR.md) 
 
-Sometimes it is needed to install a develpoment version, since CRAN 
+Sometimes it is needed to install a development version, since CRAN 
 might take a while to update after a bug is fixed. To learn how to 
 install a development version see: [doc/DEVELOPMENT.md](doc/DEVELOPMENT.md) 
 
