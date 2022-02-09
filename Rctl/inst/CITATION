@@ -2,7 +2,12 @@ citHeader("To cite R/ctl in publications use:")
 
 citEntry(entry="article",
   title = "Correlation Trait Loci {CTL} mapping: phenotype network inference subject to genotype",
-  author = personList(person("Danny", "Arends"), person("Yang", "Li"), person("Gudrun", "Brockmann", "A."), person("Ritsert", "Jansen", "C."), person("Robert", "Williams", "W."), person("Pjotr", "Prins")),
+  author = personList(person(given = "Danny", family = "Arends"), 
+                      person(given = "Yang", family = "Li"), 
+                      person(given = "Gudrun A.", family = "Brockmann"), 
+                      person(given = "Ritsert C.", family = "Jansen"), 
+                      person(given = "Robert W.", family = "Williams"), 
+                      person(given = "Pjotr", family = "Prins")),
   journal = "Journal of Open Source Software",
   year = 2016,
   volume = 1,
