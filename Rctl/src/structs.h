@@ -41,7 +41,7 @@
 
     /** Create an empty Accumulator. 
      *  See http://en.wikipedia.org/wiki/Kahan_summation_algorithm */
-    inline KahanAccumulator createAccumulator(){
+    inline KahanAccumulator createAccumulator(void){
       KahanAccumulator t;
       t.sum = 0.0;
       t.cor = 0.0;

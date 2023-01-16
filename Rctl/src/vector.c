@@ -122,7 +122,7 @@ double vectormax(double* v, size_t dim){
 }
 
 /** A random double between 0 and 1 */
-double randnum(){
+double randnum(void){
   #ifdef USING_R
     return unif_rand();
   #else

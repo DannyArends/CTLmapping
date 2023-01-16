@@ -15,7 +15,7 @@ void writeout(double** ctls, size_t phenotype, size_t nmar, size_t nphe){
   char* filename = (char*)calloc(25, sizeof(char));
   char* buf      = (char*)calloc(8, sizeof(char));
   strcpy(filename,"pheno");
-  sprintf(buf,"%lu", (unsigned long) phenotype);
+  snprintf(buf, 8, "%lu", (unsigned long) phenotype);
   strcat(filename, buf);
   strcat(filename,".o");
   file = fopen(filename,"w+");
