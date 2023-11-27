@@ -38,7 +38,7 @@ double* permute(const Phenotypes phe, const Genotypes geno, size_t p, clvector* 
     scores[perm] = fabs(matrixmax(ctls, geno.nmarkers, phe.nphenotypes));
     freematrix((void**)ctls   , geno.nmarkers);
     freematrix((void**)g.data , geno.nmarkers);
-    if(verbose) info("Done with permutation %zu\n", perm);
+    if(verbose) info("Done with permutation %lu\n", (unsigned long)perm);
     #ifdef USING_R
       updateR(0);
     #endif //USING_R
@@ -62,7 +62,7 @@ double** permuteRW(const Phenotypes phe, const Genotypes geno, size_t p, clvecto
     freematrix((void**)ctls   , geno.nmarkers);
     freematrix((void**)tctls  , phe.nphenotypes);
     freematrix((void**)g.data , geno.nmarkers);
-    if(verbose) info("Done with permutation %zu\n", perm);
+    if(verbose) info("Done with permutation %lu\n", (unsigned long)perm);
     #ifdef USING_R
       updateR(0);
     #endif //USING_R

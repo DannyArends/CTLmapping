@@ -11,7 +11,7 @@
 double** newdmatrix(size_t rows, size_t cols){
   size_t i;
   double** m = (double**) calloc(rows, sizeof(double*));
-  if(m == NULL) err("Not enough memory for new double matrix [%zux%zu]\n", rows, cols);
+  if(m == NULL) err("Not enough memory for new double matrix [%lux%lu]\n", (unsigned long)rows, (unsigned long)cols);
   for(i = 0; i < rows; i++){ m[i]= newdvector(cols); }
   return m;
 }
@@ -19,21 +19,21 @@ double** newdmatrix(size_t rows, size_t cols){
 int** newimatrix(size_t rows, size_t cols){
   size_t i;
   int** m = (int**) calloc(rows, sizeof(int*));
-  if(m == NULL) err("Not enough memory for new integer matrix [%zux%zu]\n", rows, cols);
+  if(m == NULL) err("Not enough memory for new integer matrix [%lux%lu]\n", (unsigned long)rows, (unsigned long)cols);
   for(i = 0; i < rows; i++){ m[i]= newivector(cols); }
   return m;
 }
 
 double** addtodmatrix(double** matrix, size_t size, size_t cols, double* n){
   double** m = realloc(matrix, (size+1) * cols * sizeof(double));
-  if(m == NULL) err("Not enough memory for new double matrix [%zux%zu]\n", size+1, cols);
+  if(m == NULL) err("Not enough memory for new double matrix [%lux%lu]\n", (unsigned long)size+1, (unsigned long)cols);
   m[size] = n;
   return m;
 }
 
 int** addtoimatrix(int** matrix, size_t size, size_t cols, int* n){
   int** m = realloc(matrix, (size+1) * cols * sizeof(int));
-  if(m == NULL) err("Not enough memory for new integer matrix [%zux%zu]\n", size+1, cols);
+  if(m == NULL) err("Not enough memory for new integer matrix [%lux%lu]\n", (unsigned long)size+1, (unsigned long)cols);
   m[size] = n;
   return m;
 }

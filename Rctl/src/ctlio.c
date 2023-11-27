@@ -83,7 +83,7 @@ char* getFilecontent(char* name){
   fclose(file);
   if(content[cnt] != '\n') content = addtocvector(content,cnt,'\n');
   content = addtocvector(content,cnt,'\0');
-  info("File '%s' loaded: %zu bytes\n", name, fsize);
+  info("File '%s' loaded: %lu bytes\n", name, (unsigned long)fsize);
   return content;
 }
 

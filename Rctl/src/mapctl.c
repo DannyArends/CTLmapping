@@ -56,7 +56,7 @@
 double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
                 bool doperms, int nperms, int nthreads, bool adjust, bool verbose){
 
-  info("Phenotype %zu: Mapping", (phenotype+1));
+  info("Phenotype %lu: Mapping", (unsigned long)(phenotype+1));
   clvector* genoenc = getGenotypes(genotypes, false);
   size_t i;  
   double** ctls;
@@ -88,7 +88,7 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
   double** dcors = (double**) calloc(genotypes.nmarkers, sizeof(double*));
 
   if(phenotype >= phenotypes.nphenotypes){
-    err("Cannot scan phenotype %zu out of %zu phenotypes provided", (phenotype+1), phenotypes.nphenotypes);
+    err("Cannot scan phenotype %lu out of %lu phenotypes provided", (unsigned long)(phenotype+1), (unsigned long)phenotypes.nphenotypes);
   }
 
   for(m = 0; m < genotypes.nmarkers; m++){
@@ -107,7 +107,7 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
           free(P1);                                         // Clear the indexes and phenotype1 data
           freematrix((void**)P2M, phenotypes.nphenotypes);  // Clear phenotype2M data
         } else {
-          if(verbose) info("Marker %zu, genotype %zu has less then three elements (%zu)\n", m+1, g, idx.nelements);
+          if(verbose) info("Marker %lu, genotype %lu has less then three elements (%lu)\n", (unsigned long)m+1, (unsigned long)g, (unsigned long)idx.nelements);
         }
 
         free(idx.data);
@@ -123,7 +123,5 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
       dcors[m] = newdvector(phenotypes.nphenotypes);  /*!< Empty Chi^2 values */
     }
   }
-
   return dcors;
 }
-
