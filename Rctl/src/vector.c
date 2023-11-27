@@ -10,19 +10,19 @@
 
 char* newcvector(size_t dim){
   char* v =  calloc(dim, sizeof(char));
-  if(v==NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
+  if(v==NULL) err("Not enough memory for new vector of dimension %zu\n",(dim+1));
   return v;
 }
 
 double* newdvector(size_t dim){
   double* v = calloc(dim, sizeof(double));
-  if(v==NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
+  if(v==NULL) err("Not enough memory for new vector of dimension %zu\n",(dim+1));
   return v;
 }
 
 int* newivector(size_t dim){
   int* v = calloc(dim, sizeof(int));
-  if(v==NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
+  if(v==NULL) err("Not enough memory for new vector of dimension %zu\n",(dim+1));
   return v;
 }
 
@@ -35,52 +35,52 @@ clvector newclvector(size_t dim){
 
 char* addtocvector(char* v, size_t dim, char n){
   char* v1 = realloc((void*)v, (dim+1));
-  if(v1 == NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
+  if(v1 == NULL) err("Not enough memory for new vector of dimension %zu\n",(dim+1));
   v1[dim] = n;
   return v1;
 }
 
 double* addtodvector(double* v, size_t dim, double n){
   double* v1 = realloc((void*)v, (dim+1) * sizeof(double));
-  if(v1 == NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
+  if(v1 == NULL) err("Not enough memory for new vector of dimension %zu\n",(dim+1));
   v1[dim] = n;
   return v1;
 }
 
 int* addtoivector(int* v, size_t dim, int n){
   int* v1 = realloc((void*)v, (dim+1) * sizeof(int));
-  if(v1 == NULL) err("Not enough memory for new vector of dimension %d\n",(dim+1));
+  if(v1 == NULL) err("Not enough memory for new vector of dimension %zu\n",(dim+1));
   v1[dim] = n;
   return v1;
 }
 
 void printcvector(const char* v, size_t dim){
   size_t r;
-  info("[", "");
-  for(r = 0; r < dim; r++){ info("%c",v[r]); if(r != (dim-1)) info(", ", ""); }
-  info("]", "");
+  info("[%s", "");
+  for(r = 0; r < dim; r++){ info("%c",v[r]); if(r != (dim-1)) info(", %s", ""); }
+  info("]%s", "");
 }
 
 void printdvector(const double* v, size_t dim){
   size_t r;
-  info("[", "");
-  for(r = 0; r < dim; r++){ info("%.2f",v[r]); if(r != (dim-1)) info(", ", ""); }
-  info("]", "");
+  info("[%s", "");
+  for(r = 0; r < dim; r++){ info("%.2f",v[r]); if(r != (dim-1)) info(", %s", ""); }
+  info("]%s", "");
 }
 
 void printivector(const int* v, size_t dim){
   size_t r;
-  info("[", "");
-  for(r = 0; r < dim; r++){ info("%d",v[r]); if(r != (dim-1)) info(", ", ""); }
-  info("]", "");
+  info("[%s", "");
+  for(r = 0; r < dim; r++){ info("%d",v[r]); if(r != (dim-1)) info(", %s", ""); }
+  info("]%s", "");
 }
 
 void printclvector(const clvector v){
   size_t r;
   size_t dim = v.nelements;
-  info("[", "");
-  for(r = 0; r < dim; r++){ info("%d",v.data[r]); if(r != (dim-1)) info(", ", ""); }
-  info("]\n", "");
+  info("[%s", "");
+  for(r = 0; r < dim; r++){ info("%d",v.data[r]); if(r != (dim-1)) info(", %s", ""); }
+  info("]%s\n", "");
 }
 
 clvector which(const int* v, size_t dim, int e){

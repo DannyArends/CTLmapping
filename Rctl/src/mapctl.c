@@ -56,19 +56,19 @@
 double** mapctl(const Phenotypes phenotypes, const Genotypes genotypes, size_t phenotype, 
                 bool doperms, int nperms, int nthreads, bool adjust, bool verbose){
 
-  info("Phenotype %d: Mapping", (phenotype+1));
+  info("Phenotype %zu: Mapping", (phenotype+1));
   clvector* genoenc = getGenotypes(genotypes, false);
   size_t i;  
   double** ctls;
   double*  perms;
   double** scores = ctleffects(phenotypes, genotypes, phenotype, genoenc, nthreads, verbose);
   if(!doperms){
-    info(", toLOD\n", "");  // Exact calculation can be used
+    info(", toLOD%s\n", "");  // Exact calculation can be used
     ctls = toLODexact(scores, genoenc, genotypes.nmarkers, phenotypes.nphenotypes, adjust);
   }else{
-    info(", Permutation", "");
+    info(", Permutation%s", "");
     perms = permute(phenotypes, genotypes, phenotype, genoenc, nperms, nthreads, false);
-    info(", toLOD\n", "");
+    info(", toLOD%s\n", "");
     ctls = toLOD(scores, perms, genotypes.nmarkers, phenotypes.nphenotypes, nperms);
     free(perms);
   }
@@ -88,7 +88,7 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
   double** dcors = (double**) calloc(genotypes.nmarkers, sizeof(double*));
 
   if(phenotype >= phenotypes.nphenotypes){
-    err("Cannot scan phenotype %d out of %d phenotypes provided", (phenotype+1), phenotypes.nphenotypes);
+    err("Cannot scan phenotype %zu out of %zu phenotypes provided", (phenotype+1), phenotypes.nphenotypes);
   }
 
   for(m = 0; m < genotypes.nmarkers; m++){
@@ -107,7 +107,7 @@ double** ctleffects(const Phenotypes phenotypes, const Genotypes genotypes, size
           free(P1);                                         // Clear the indexes and phenotype1 data
           freematrix((void**)P2M, phenotypes.nphenotypes);  // Clear phenotype2M data
         } else {
-          if(verbose) info("Marker %d, genotype %d has less then three elements (%d)\n", m+1, g, idx.nelements);
+          if(verbose) info("Marker %zu, genotype %zu has less then three elements (%zu)\n", m+1, g, idx.nelements);
         }
 
         free(idx.data);

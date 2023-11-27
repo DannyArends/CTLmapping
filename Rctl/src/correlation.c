@@ -59,7 +59,7 @@ double correlation(const double* x, const double* y, size_t dim, bool verbose){
       XiYi += x[i] * y[i];
       n++;
     }else if(verbose) {
-      info("Missing value at i=%d\n", i);
+      info("Missing value at i=%zu\n", i);
     }
   }
   double onedivn = 1.0 / n;
@@ -101,7 +101,7 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool
         YiP2[j] += y[j][i] * y[j][i];
         n++;
       }else if(verbose) {
-        info("Missing value at i=%d\n", i);
+        info("Missing value at i=%zu\n", i);
       }
     }
     onedivn[j] = 1.0 / (double)n;
@@ -111,13 +111,13 @@ double* cor1toN(double* x, double** y, size_t dim, size_t ny, int nthreads, bool
     nom   = (XiYi[j] - (onedivn[j]*Xi*Yi[j]));
     denom = sqrt(XiP2 - (onedivn[j] * Xi * Xi)) * sqrt(YiP2[j] - (onedivn[j] * Yi[j] * Yi[j]));
     if(denom == 0){
-      if(verbose) info("Denominator = 0 in correlation (Too few samples in a genotype)\n", "");
+      if(verbose) info("Denominator = 0 in correlation (Too few samples in a genotype)%s\n", "");
       cors[j] = MISSING;
     } else {
       cors[j] = nom / denom;
     }
     if(isNaN(cors[j]) || isinf(cors[j]) || cors[j] < -(RANGE) || cors[j] > RANGE){ 
-      if(verbose) info("Correlation '%.8f' not in range [-1, 1] [%f %f %d]\n", cors[j], nom, denom, dim);
+      if(verbose) info("Correlation '%.8f' not in range [-1, 1] [%f %f %zu]\n", cors[j], nom, denom, dim);
     }
   }
   free(onedivn); free(Yi); free(YiP2); free(XiYi);
@@ -136,7 +136,7 @@ double* getCorrelations(const Phenotypes phenotypes, const Genotypes genotypes, 
       double* P2  = get(phenotypes.data[phe2], inds);
       cors[i]    = correlation(P1, P2, inds.nelements, false);
       if (verbose) {
-        info("CTL: %d %d %d | %d [%d] -> %f\n", phe1, mar, phe2, genoenc.data[i], inds.nelements, cors[i]);
+        info("CTL: %zu %zu %zu | %d [%zu] -> %f\n", phe1, mar, phe2, genoenc.data[i], inds.nelements, cors[i]);
       }
       free(P1), free(P2); // Clear phenotypes
       free(inds.data);    // Clear index data
@@ -167,7 +167,7 @@ double* chiSQN(size_t nr, double** r, size_t phe, int* nsamples, size_t nphe) {
         ret[p] = sumOfSquares - (pow(squaresOfSum, 2.0) / denom);
       } else {
         ret[p] = R_NaN;
-        info("Severe: Divide by 0 (Groups too small)", "");
+        info("Severe: Divide by 0 (Groups too small)%s\n", "");
       }
     }
     #ifdef USING_R
