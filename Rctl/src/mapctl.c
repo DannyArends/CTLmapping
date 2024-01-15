@@ -41,8 +41,8 @@
   }
 #else
   void R_openmp(int* nthr, int* ni, int* ny, double* x, double* ym, double* res) {
-    info("Unfortunately, openMP is not supported on your platform\n", "");
-    info("Using a basic for loop on 1 thread\n", "");
+    info("%s\n", "Unfortunately, openMP is not supported on your platform");
+    info("%s\n", "Using a basic for loop on 1 thread");
     int nitems = (int)(*ni);                                      /* Number of items todo */
     int ylength = (int)(*ny);                                     /* First dimension of y */
     double** y = asdmatrix(nitems, ylength, ym);                  /* y matrix */
